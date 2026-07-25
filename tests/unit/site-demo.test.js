@@ -32,6 +32,7 @@ import {
   renderTemplatesPane
 } from '../../scripts/app-lib.mjs';
 import { loadAssembly, loadSections } from '../../scripts/template-lib.mjs';
+import { renderReviewPage } from '../../scripts/review-lib.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(here, '..', '..');
@@ -221,6 +222,21 @@ describe('the Tables pane', () => {
     const html = renderTablesPane({ entries: [] });
     expect(html).toContain('class="empty"');
     expect(html).not.toContain('data-app-display-panel');
+  });
+});
+
+describe('the Text pane absorbs the review surface', () => {
+  test('QC-DEMO-015: the pane and the standalone review page differ only in the client path (#2)', () => {
+    // This is the invariant the whole design rests on: the Demo panes ARE the
+    // standalone surfaces, so there is no second copy of the review UI to drift.
+    // The one legitimate difference is which client the page loads, because
+    // /demo/client.js is the app's own.
+    const args = { config: { review: { repo: 'o/r', reviewer: 'jwildfire' } }, textBlocks: [], ards: {} };
+    const standalone = renderReviewPage(args);
+    const pane = renderReviewPage({ ...args, clientSrc: 'review/client.js' });
+    expect(standalone).toContain('<script type="module" src="client.js"></script>');
+    expect(pane).toContain('<script type="module" src="review/client.js"></script>');
+    expect(pane.replace('src="review/client.js"', 'src="client.js"')).toBe(standalone);
   });
 });
 

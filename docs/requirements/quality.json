@@ -63,7 +63,8 @@
     "QC-DEMO-011": "The Templates pane renders every section of the E3 model, marking those this report does not populate, rather than trimming the skeleton to what happens to be built.",
     "QC-DEMO-012": "Display numbers in the Templates pane are derived from assembly order by the same tested function the assembler uses, never authored; reordering the assembly moves every number and changes no slug.",
     "QC-DEMO-013": "The Templates pane renders its documented empty state when the section model is missing, and renders correctly on a tree where the assembler has never run.",
-    "QC-DEMO-014": "The auto-generated provenance section is identified as generated in the Templates pane."
+    "QC-DEMO-014": "The auto-generated provenance section is identified as generated in the Templates pane.",
+    "QC-DEMO-015": "The Demo app's Text pane and the standalone review page are the same rendered HTML, differing only in which client script the page loads."
   },
   "rows": [
     {
@@ -620,6 +621,15 @@
       "area": "Demo",
       "text": "The auto-generated provenance section is identified as generated in the Templates pane.",
       "source": "D6",
+      "evidence": "js-unit",
+      "link": "site-demo.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-DEMO-015",
+      "area": "Demo",
+      "text": "The Demo app's Text pane and the standalone review page are the same rendered HTML, differing only in which client script the page loads.",
+      "source": "#113",
       "evidence": "js-unit",
       "link": "site-demo.test.js",
       "status": "draft"
