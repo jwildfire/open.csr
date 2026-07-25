@@ -1,0 +1,22 @@
+{
+  "name": "open.csr",
+  "version": "0.1.0",
+  "description": "Open-source Clinical Study Report builder: ARD-based TFLs + text library + report templates with end-to-end traceability",
+  "type": "module",
+  "license": "Apache-2.0",
+  "repository": "github:jwildfire/open.csr",
+  "scripts": {
+    "test": "vitest run",
+    "test:r": "Rscript qc/run-tests.R",
+    "requirements": "node scripts/requirements.mjs",
+    "evidence": "node scripts/evidence.mjs",
+    "assemble": "node scripts/assemble.mjs",
+    "build": "node scripts/site.mjs"
+  },
+  "devDependencies": {
+    "gray-matter": "^4.0.3",
+    "js-yaml": "^4.1.0",
+    "marked": "^12.0.0",
+    "vitest": "^2.1.0"
+  }
+}
