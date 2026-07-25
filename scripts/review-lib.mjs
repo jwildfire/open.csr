@@ -528,12 +528,18 @@ function connectBar(cfg) {
   );
 }
 
+// `clientSrc` exists because this surface is rendered twice: as the standalone
+// /review/ permalink, and as the Text pane of the Demo app (#113), where the
+// app's own client.js already owns that filename. The review client is copied
+// into a subdirectory there and named here — the alternative is two divergent
+// copies of the review surface, which is the thing this parameter prevents.
 export function renderReviewPage({
   config = {},
   textBlocks = [],
   ards = {},
   traceIndex = {},
-  ledger = { decisions: [] }
+  ledger = { decisions: [] },
+  clientSrc = 'client.js'
 } = {}) {
   const cfg = reviewConfig(config);
   const queue = buildReviewQueue(textBlocks, ledger.decisions || []);
@@ -615,7 +621,7 @@ export function renderReviewPage({
     restSection,
     renderLedger(ledger, cfg),
     `<script type="application/json" id="review-config">${configJson.replace(/</g, '\\u003c')}</script>`,
-    `<script type="module" src="client.js"></script>`
+    `<script type="module" src="${escapeHtml(clientSrc)}"></script>`
   ]
     .filter(Boolean)
     .join('\n');

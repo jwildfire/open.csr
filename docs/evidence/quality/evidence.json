@@ -1,6 +1,6 @@
 {
   "module": "quality",
-  "generated": "2026-07-25T12:21:42.735Z",
+  "generated": "2026-07-25T12:44:27.287Z",
   "records": [
     {
       "requirementIds": [
@@ -568,6 +568,114 @@
     },
     {
       "requirementIds": [
+        "QC-DEMO-003"
+      ],
+      "title": "pane crossings QC-DEMO-003: a crossing carries the text block named in the fragment (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-003"
+      ],
+      "title": "pane crossings QC-DEMO-003: a display permalink resolves to the Tables tab with that display selected (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-003"
+      ],
+      "title": "pane crossings QC-DEMO-003: the reader, gallery index, text library and review page each resolve to a pane (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-003"
+      ],
+      "title": "pane crossings QC-DEMO-003: the rule holds at any authored depth, because panes are written for their own (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-004"
+      ],
+      "title": "pane crossings QC-DEMO-004: a bare fragment stays in-pane scrolling and is never intercepted (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-004"
+      ],
+      "title": "pane crossings QC-DEMO-004: links that are not pane crossings are left to navigate (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-005"
+      ],
+      "title": "pane crossings QC-DEMO-005: a crossing that names no display keeps the one already selected (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-005"
+      ],
+      "title": "pane crossings QC-DEMO-005: applying nothing changes nothing (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-006"
+      ],
+      "title": "pane crossings QC-DEMO-006: a stale display slug degrades to the first available rather than a blank pane (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
         "QC-DRIFT-001"
       ],
       "title": "requirement drift guard QC-DRIFT-001: added, removed and changed requirement text are all reported (#1)",
@@ -808,6 +916,54 @@
     },
     {
       "requirementIds": [
+        "QC-DEMO-007"
+      ],
+      "title": "the app page QC-DEMO-007: every pane is server-rendered and present, with exactly one visible (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-007"
+      ],
+      "title": "the app page QC-DEMO-007: the tablist carries the ARIA wiring a tab component needs (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-007"
+      ],
+      "title": "the app page QC-DEMO-007: the tablist is a distinct component from the shell tab controller (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-008"
+      ],
+      "title": "the app page QC-DEMO-008: a tab with no rendered pane is dropped rather than rendered empty (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
         "QC-SITE-005"
       ],
       "title": "the ARD tab QC-SITE-005: the ARD renders one row per statistic with its condition columns (#1)",
@@ -916,6 +1072,54 @@
     },
     {
       "requirementIds": [
+        "QC-DEMO-001"
+      ],
+      "title": "the shared selection QC-DEMO-001: a selection round-trips through the URL hash (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-001"
+      ],
+      "title": "the shared selection QC-DEMO-001: empty parts are omitted from the hash so the common case stays short (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-002"
+      ],
+      "title": "the shared selection QC-DEMO-002: an unknown or absent tab decodes to the default rather than an empty app (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-002"
+      ],
+      "title": "the shared selection QC-DEMO-002: the four tabs the requirement names are the tabs the app knows (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
         "QC-SITE-001"
       ],
       "title": "the shared shell QC-SITE-001: every shell token is substituted and none leaks into the output (#1)",
@@ -934,6 +1138,126 @@
       "suite": "js-unit",
       "passed": true,
       "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/site-render.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-009"
+      ],
+      "title": "the Tables pane QC-DEMO-009: an unknown selection falls back to the first display (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-009"
+      ],
+      "title": "the Tables pane QC-DEMO-009: one panel per display, exactly one shown, and every display in the picker (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-009"
+      ],
+      "title": "the Tables pane QC-DEMO-009: the pane opens on the selected display when one is asked for (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-010"
+      ],
+      "title": "the Tables pane QC-DEMO-010: an empty library renders a documented empty state, not a broken pane (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-011"
+      ],
+      "title": "the Templates pane QC-DEMO-011: the whole E3 skeleton is rendered, not only the sections this report fills (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-012"
+      ],
+      "title": "the Templates pane QC-DEMO-012: display numbers are derived from assembly order, never authored (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-012"
+      ],
+      "title": "the Templates pane QC-DEMO-012: reordering the assembly moves every number and no slug (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-013"
+      ],
+      "title": "the Templates pane QC-DEMO-013: a missing section model renders its documented empty state (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-013"
+      ],
+      "title": "the Templates pane QC-DEMO-013: the pane renders before the report has ever been assembled (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-014"
+      ],
+      "title": "the Templates pane QC-DEMO-014: the generated provenance section is named as generated (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/site-demo.test.js",
       "issueRefs": [
         1
       ]
