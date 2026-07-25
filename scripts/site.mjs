@@ -44,6 +44,7 @@ import {
   validateNoExternalResources,
   validateSiteLinks
 } from './site-lib.mjs';
+import { loadDecisions, renderReviewPage, reviewConfig } from './review-lib.mjs';
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const buildDir = path.join(rootDir, 'site', '_build');
@@ -173,6 +174,41 @@ page(path.join(buildDir, 'text', 'index.html'), {
   content: renderTextLibrary({ textBlocks, ards, traceIndex })
 });
 
+// --- Review and sign-off ----------------------------------------------------
+
+const reviewCfg = reviewConfig(config);
+const ledger = loadDecisions(rootDir, reviewCfg);
+if (!ledger.present) {
+  warnings.push(
+    `${reviewCfg.ledgerPath} is missing — the Review page renders its "no decision recorded yet" state.`
+  );
+}
+if (ledger.malformed) {
+  warnings.push(`${reviewCfg.ledgerPath} is not valid JSON — the decision ledger renders empty.`);
+}
+
+page(path.join(buildDir, 'review', 'index.html'), {
+  title: `Review & sign-off · ${config.siteTitle}`,
+  root: '../',
+  description:
+    'Human review of agent-drafted CSR prose: resolved text, model provenance, every binding ' +
+    'resolved to its ARD row, and one-click approval that commits through the gates.',
+  content: renderReviewPage({ config, textBlocks, ards, traceIndex, ledger })
+});
+
+// The review client is the only script the site loads from a file rather than
+// inline: it is an ES module so its pure core (site/review/core.js) is the same
+// code the builder and the test suite use. Both files are copied verbatim —
+// there is no bundler, and no external anything.
+for (const file of ['core.js', 'client.js']) {
+  copyFileSync(path.join(rootDir, 'site', 'review', file), path.join(buildDir, 'review', file));
+}
+// Machine-readable ledger beside the page it renders, as the audit page does.
+const ledgerSource = path.join(rootDir, reviewCfg.ledgerPath);
+if (existsSync(ledgerSource)) {
+  copyFileSync(ledgerSource, path.join(buildDir, 'review', 'text-decisions.json'));
+}
+
 // --- Quality ----------------------------------------------------------------
 
 page(path.join(buildDir, 'quality', 'index.html'), {
@@ -280,6 +316,8 @@ if (errors.length) {
 const built = displays.filter((display) => display.status !== 'planned').length;
 console.log(
   `✓ Built site/_build/ — ${displays.length} displays (${built} generated), ` +
-    `${textBlocks.filter((b) => b.exists).length} text blocks, ${qualityModules.length} evidence ` +
-    `pages, ${docs.length} documents. All internal links resolve; no external resources referenced.`
+    `${textBlocks.filter((b) => b.exists).length} text blocks ` +
+    `(${textBlocks.filter((b) => b.exists && b.tier === 'generated' && b.approval?.state !== 'approved').length} ` +
+    `awaiting review), ${qualityModules.length} evidence pages, ${docs.length} documents. ` +
+    `All internal links resolve; no external resources referenced.`
 );
