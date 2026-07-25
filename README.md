@@ -1,29 +1,39 @@
 # open.csr
 
-**An open-source Clinical Study Report builder for clinical trials.**
+**An open-source Clinical Study Report builder: versioned numbers, versioned words, one traceable loop.**
 
-`open.csr` assembles FDA-submission-quality Clinical Study Reports from three connected components:
+Clinical Study Reports are assembled by hand across two disconnected worlds. Statisticians produce tables in one system; medical writers paste results into document shells in another. Every revision cycle re-breaks the link between the numbers and the narrative, and consistency becomes a QC activity rather than a property of the system.
 
-1. **TFL Builder + Library** — Tables, Listings, and Figures built on [pharmaverse](https://pharmaverse.org) best practices: Analysis Results Datasets (ARDs) via `{cards}`/`{gtsummary}`, rendered to submission-quality outputs, sourced from `{pharmaverseadam}` ADaM data.
-2. **Text Library** — reusable, ICH E3-aligned prose blocks that interpret TFL results, maintained by medical writers with agentic assistance.
-3. **Report Template Library** — CSR shell templates (ICH E3 / CORE Reference structure) that place TFLs and text into a complete, traceable report.
+The tooling reflects the same split. Open-source pharma tooling (pharmaverse, NEST, the R Consortium pilots) owns *number generation* and stops at the output object. Commercial CSR platforms own *document assembly and prose* and treat the table package as an opaque input. **No open-source CSR builder exists** ([landscape research](research/README.md)).
 
-Every TFL is generated from version-controlled source code. Requested changes become code edits with live regeneration — every iteration saved and reproducible, with end-to-end traceability and quality evidence for all CSR components.
+open.csr closes the loop: **a change request becomes a code edit, which regenerates the number, which updates the sentence — as one versioned transaction.**
+
+## The three components
+
+| | What it is |
+|---|---|
+| **TFL Builder + Library** | Tables, listings and figures generated from ARDs ([`{cards}`](https://insightsengineering.github.io/cards/)/`{cardx}` → `{gtsummary}`/`{gt}`/`{r2rtf}`), aligned to CDISC's Analysis Results Standard. Each display is two diffable specs: what to compute, and how to show it. |
+| **Text Library** | ICH E3-aligned prose blocks in three tiers — boilerplate, parameterized, agent-generated — where every number is a binding to an ARD value, never typed. |
+| **Report Template Library** | ICH E3 encoded as a machine-readable document model, assembling displays and text into a complete CSR with numbering derived at build time. |
+
+## What makes it different
+
+- **The closed loop.** Requests become source-code edits with live regeneration. Every iteration is saved (`outputs/<display>/vNNN/`) and reproducible from its commit.
+- **Numbers that can't go stale.** Prose binds ARD values; CI fails any digit in the narrative that doesn't resolve to a computed result, and any binding orphaned by a regeneration.
+- **Agents that write source, not output.** Agent assistance for TFL programming, medical writing, and QC — every action lands as a reviewable diff behind a human approval gate, so the audit trail is the version history.
+- **Evidence as a product.** Requirements → tests → published evidence pages, with committed ARD snapshots as the primary QC artifact — value-level regression rather than pixel comparison or document-level double programming.
+
+## Documentation
+
+- [Design](docs/design/design.md) — architecture, twelve design decisions, delivery phases
+- [Interface contracts](docs/design/contracts.md) — schemas and file formats
+- [Research](research/README.md) — the CSR-automation landscape, CDISC ARS/ARD, pharmaverse TLG practice, ICH E3 / CORE Reference, evidence frameworks
 
 ## Status
 
-🚧 Early scaffold — research and design phase. See `research/` and `docs/design/`.
+v0 in progress: pipeline, six safety displays, text and template libraries, evidence framework, and a GitHub Pages demo. Demo data is [`{pharmaverseadam}`](https://pharmaverse.github.io/pharmaverseadam/) CDISCPILOT01 — public, regenerable, no proprietary data anywhere in the repo.
 
-## Repository layout
-
-```
-research/    Landscape research: existing tools, standards, best practices
-docs/        Design documentation
-pipeline/    R pipeline: ADaM → ARD → TFL generation
-library/     TFL, text, and template libraries
-site/        Static demo application (GitHub Pages)
-quality/     Requirements matrix + test evidence
-```
+Tracking: [open.csr#1](https://github.com/jwildfire/open.csr/issues/1) · [obot.roadmap#111](https://github.com/jwildfire/obot.roadmap/issues/111)
 
 ## License
 
