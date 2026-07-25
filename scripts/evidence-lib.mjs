@@ -105,6 +105,34 @@ export function record(title, suite, passed, file) {
   return { requirementIds, title, suite, passed: !!passed, file: file || '', issueRefs };
 }
 
+/**
+ * Make a test-file path repo-relative.
+ *
+ * Vitest and testthat both report ABSOLUTE paths, so a committed evidence set
+ * used to record whichever machine and checkout produced it — regenerating from
+ * a git worktree rewrote every record. An evidence artifact is supposed to be a
+ * reproducible statement about the repository, so it may not carry anyone's home
+ * directory.
+ *
+ * Falls back to the input when the path is already relative, or lies outside the
+ * repository entirely (which would be a bug worth seeing rather than hiding).
+ */
+export function relativizePath(file, rootDir = null) {
+  const raw = String(file || '').replaceAll('\\', '/');
+  if (!raw || !rootDir) return raw;
+  const root = String(rootDir).replaceAll('\\', '/').replace(/\/+$/, '');
+  if (!raw.startsWith('/')) return raw;
+  if (raw === root) return '';
+  // The worktree case is checked FIRST: a worktree lives under
+  // <repo>/.claude/worktrees/<name>/, so it also matches the plain root prefix,
+  // and stripping only the root would leave the worktree name in the record —
+  // exactly the machine-specific detail this function exists to remove.
+  const worktree = raw.match(/\/\.claude\/worktrees\/[^/]+\/(.+)$/);
+  if (worktree) return worktree[1];
+  if (raw.startsWith(`${root}/`)) return raw.slice(root.length + 1);
+  return raw;
+}
+
 // Vitest --reporter=json (jest-compatible shape). `name` is the test file.
 export function normalizeVitest(json) {
   return (json.testResults || []).flatMap((file) =>
@@ -202,13 +230,17 @@ export function buildEvidenceSets({
   testthat = null,
   textReview = [],
   traceabilityByModule = {},
-  provenance = {}
+  provenance = {},
+  rootDir = null
 }) {
+  // Relativised before routing, not after: `moduleForFile` matches on the file
+  // stem, so it is indifferent, and every downstream consumer then sees the same
+  // repo-relative path the committed artifact carries.
   const all = [
     ...normalizeVitest(vitest || {}),
     ...normalizeTestthat(testthat || {}),
     ...normalizeTextReview(textReview)
-  ];
+  ].map((rec) => ({ ...rec, file: relativizePath(rec.file, rootDir) }));
 
   // A whole suite may belong to one component regardless of file path — human
   // review of text blocks is the case that matters (`suite: "text-review"` →

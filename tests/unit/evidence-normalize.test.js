@@ -10,6 +10,7 @@ import {
   normalizeTextReview,
   normalizeVitest,
   parseTestName,
+  relativizePath,
   summarizeEvidence
 } from '../../scripts/evidence-lib.mjs';
 
@@ -342,5 +343,60 @@ describe('evidence summary and run provenance', () => {
       id: '99',
       url: 'https://github.com/jwildfire/open.csr/actions/runs/99'
     });
+  });
+});
+
+describe('evidence records name the repository, not the machine', () => {
+  const ROOT = '/Users/someone/code/open.csr';
+
+  test('QC-EVID-006: a test-file path is recorded relative to the repository root (#1)', () => {
+    // Vitest and testthat both report absolute paths. A committed evidence set
+    // that carried them would record whichever machine produced it.
+    expect(relativizePath(`${ROOT}/tests/unit/site-render.test.js`, ROOT)).toBe(
+      'tests/unit/site-render.test.js'
+    );
+    expect(relativizePath(`${ROOT}/pipeline/tests/testthat/test-ard-build.R`, ROOT)).toBe(
+      'pipeline/tests/testthat/test-ard-build.R'
+    );
+  });
+
+  test('QC-EVID-006: a path from a git worktree records as the same repository path (#1)', () => {
+    // Regenerating from .claude/worktrees/<name>/ used to rewrite every record.
+    expect(
+      relativizePath(`${ROOT}/.claude/worktrees/some-branch/tests/unit/site-demo.test.js`, ROOT)
+    ).toBe('tests/unit/site-demo.test.js');
+  });
+
+  test('QC-EVID-006: an already-relative path, an empty path, or no root is left alone (#1)', () => {
+    expect(relativizePath('tests/unit/site-render.test.js', ROOT)).toBe(
+      'tests/unit/site-render.test.js'
+    );
+    expect(relativizePath('', ROOT)).toBe('');
+    expect(relativizePath(`${ROOT}/tests/unit/x.test.js`, null)).toBe(
+      `${ROOT}/tests/unit/x.test.js`
+    );
+  });
+
+  test('QC-EVID-006: a path outside the repository is left visible rather than mangled (#1)', () => {
+    // That would be a bug worth seeing, not one worth hiding.
+    expect(relativizePath('/somewhere/else/x.test.js', ROOT)).toBe('/somewhere/else/x.test.js');
+  });
+
+  test('QC-EVID-006: buildEvidenceSets relativises before routing, so routing is unchanged (#1)', () => {
+    const sets = buildEvidenceSets({
+      modules: MODULES,
+      vitest: {
+        testResults: [
+          {
+            name: `${ROOT}/tests/unit/t-ae-overview.test.js`,
+            assertionResults: [{ fullName: 'DSP-AE-001: overview counts (#1)', status: 'passed' }]
+          }
+        ]
+      },
+      rootDir: ROOT
+    });
+    expect(sets['t-ae-overview']).toBeTruthy();
+    const rec = sets['t-ae-overview'].records.find((r) => r.requirementIds.includes('DSP-AE-001'));
+    expect(rec.file).toBe('tests/unit/t-ae-overview.test.js');
   });
 });
