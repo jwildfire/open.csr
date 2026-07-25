@@ -32,7 +32,6 @@ import {
   renderTemplatesPane
 } from '../../scripts/app-lib.mjs';
 import { loadAssembly, loadSections } from '../../scripts/template-lib.mjs';
-import { renderReviewPage } from '../../scripts/review-lib.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(here, '..', '..');
@@ -79,12 +78,10 @@ describe('pane crossings', () => {
     });
   });
 
-  test('QC-DEMO-003: the reader, gallery index, text library and review page each resolve to a pane (#1)', () => {
+  test('QC-DEMO-003: the reader, the gallery index and the text library each resolve to a pane (#1)', () => {
     expect(resolveAppLink('../reader/index.html').tab).toBe('reader');
     expect(resolveAppLink('../gallery/index.html').tab).toBe('tables');
     expect(resolveAppLink('../text/index.html').tab).toBe('text');
-    // The review surface IS the Text pane — absorbed, not placed beside it.
-    expect(resolveAppLink('../review/index.html').tab).toBe('text');
   });
 
   test('QC-DEMO-003: a crossing carries the text block named in the fragment (#1)', () => {
@@ -114,7 +111,7 @@ describe('pane crossings', () => {
   });
 
   test('QC-DEMO-004: a bare fragment stays in-pane scrolling and is never intercepted (#1)', () => {
-    // The review surface and the reader both link within themselves this way;
+    // The Text pane and the Reader both link within themselves this way;
     // intercepting those would break scrolling inside the visible pane.
     expect(resolveAppLink('#awaiting')).toBe(null);
     expect(resolveAppLink('#TXT-E3-1206')).toBe(null);
@@ -158,7 +155,7 @@ describe('the app page', () => {
       expect(html).toContain(`data-app-pane="${pane.id}"`);
       expect(html).toContain(pane.html);
     }
-    // Hidden, not absent: the review client wires its listeners once at module
+    // Hidden, not absent: the app client wires its listeners once at module
     // load, so a lazily injected pane would get none.
     expect((html.match(/ hidden>/g) || []).length).toBe(panes.length - 1);
   });
@@ -222,21 +219,6 @@ describe('the Tables pane', () => {
     const html = renderTablesPane({ entries: [] });
     expect(html).toContain('class="empty"');
     expect(html).not.toContain('data-app-display-panel');
-  });
-});
-
-describe('the Text pane absorbs the review surface', () => {
-  test('QC-DEMO-015: the pane and the standalone review page differ only in the client path (#2)', () => {
-    // This is the invariant the whole design rests on: the Demo panes ARE the
-    // standalone surfaces, so there is no second copy of the review UI to drift.
-    // The one legitimate difference is which client the page loads, because
-    // /demo/client.js is the app's own.
-    const args = { config: { review: { repo: 'o/r', reviewer: 'jwildfire' } }, textBlocks: [], ards: {} };
-    const standalone = renderReviewPage(args);
-    const pane = renderReviewPage({ ...args, clientSrc: 'review/client.js' });
-    expect(standalone).toContain('<script type="module" src="client.js"></script>');
-    expect(pane).toContain('<script type="module" src="review/client.js"></script>');
-    expect(pane.replace('src="review/client.js"', 'src="client.js"')).toBe(standalone);
   });
 });
 

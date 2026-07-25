@@ -35,21 +35,6 @@
     "QC-SITE-007": "A display directory present on disk but absent from the registry renders as an unregistered card rather than disappearing from the gallery.",
     "QC-CI-001": "CI runs the JS suite, both freshness guards and the site build on every pull request, and runs the R suite in a separate job.",
     "QC-CI-002": "The built site publishes to GitHub Pages from the default branch through `actions/deploy-pages` under the `pages` concurrency group.",
-    "QC-SIGN-001": "A dispatched decision is refused unless its verb is exactly `approve` or `changes`; the CLI exits 2 without opening a block file.",
-    "QC-SIGN-002": "A decision naming a block that does not exist, or whose frontmatter does not validate, is refused before any edit and never reaches the ledger.",
-    "QC-SIGN-003": "A block id that is not a `library/text` file stem is refused, and no reviewer-authored payload text is interpolated into a shell command by the workflow.",
-    "QC-SIGN-004": "Approving a block rewrites only `approval.state`, `approval.by` and `approval.at` of that block, preserving the prose, every other frontmatter key, key order and the library's quoting style.",
-    "QC-SIGN-005": "A decision changes at most one file under `library/text/`; every other block is byte-identical afterwards.",
-    "QC-SIGN-006": "A change request must carry a note, records that note against the block without approving it, and returns already-approved prose to `in_review`.",
-    "QC-SIGN-007": "A decision that breaks the assembler or the gates is reverted to the byte, recorded as `failed`, and exits non-zero so nothing is committed.",
-    "QC-SIGN-008": "A decision applied to a tree whose gates were already failing is recorded as `blocked` with nothing edited, rather than blamed on the decision.",
-    "QC-SIGN-009": "Every decision appends one flat record to `site/text-decisions.json` carrying block, decision, reviewer, timestamp, note, outcome, states and run; earlier records are never rewritten, reordered or dropped.",
-    "QC-SIGN-010": "`--dry-run` previews the frontmatter change and writes nothing: no block edit, no ledger entry, no assembler run.",
-    "QC-SIGN-011": "Notes and reviewer names are stripped of control characters, newline-normalized and length-capped before they are stored or rendered.",
-    "QC-SIGN-012": "Gate severity follows assembly inclusion: an excluded draft block's errors are deferred, an included block's are failures, and an assembler that exits 0 without output is treated as not having run.",
-    "QC-SIGN-013": "The apply workflow triggers on the `text-decision` dispatch, runs only for @jwildfire, re-runs the R-independent CI checks before committing to `dev`, and keeps a `workflow_dispatch` fallback with the same inputs.",
-    "QC-SIGN-014": "Approving an already-approved block re-affirms it, updating `by` and `at` and recording the prior state in the ledger.",
-    "QC-SIGN-015": "The committed ledger is a valid, empty, self-documenting ledger of schema `opencsr/text-decisions/v1`, so the review page has a contract to render before the first decision.",
     "QC-DEMO-001": "The Demo app's selection — active tab, display, text block, focus target — round-trips losslessly through the URL hash, so any view of the report is a shareable link.",
     "QC-DEMO-002": "An unknown or absent tab in a deep link decodes to the default tab; the four tabs are Reader, Tables, Text and Templates.",
     "QC-DEMO-003": "A link from one pane to another pane's standalone surface resolves to a tab switch carrying the selection it named — a display permalink selects that display, a text-block anchor selects that block — at any authored path depth.",
@@ -63,8 +48,7 @@
     "QC-DEMO-011": "The Templates pane renders every section of the E3 model, marking those this report does not populate, rather than trimming the skeleton to what happens to be built.",
     "QC-DEMO-012": "Display numbers in the Templates pane are derived from assembly order by the same tested function the assembler uses, never authored; reordering the assembly moves every number and changes no slug.",
     "QC-DEMO-013": "The Templates pane renders its documented empty state when the section model is missing, and renders correctly on a tree where the assembler has never run.",
-    "QC-DEMO-014": "The auto-generated provenance section is identified as generated in the Templates pane.",
-    "QC-DEMO-015": "The Demo app's Text pane and the standalone review page are the same rendered HTML, differing only in which client script the page loads."
+    "QC-DEMO-014": "The auto-generated provenance section is identified as generated in the Templates pane."
   },
   "rows": [
     {
@@ -365,141 +349,6 @@
       "status": "draft"
     },
     {
-      "id": "QC-SIGN-001",
-      "area": "Sign-off",
-      "text": "A dispatched decision is refused unless its verb is exactly `approve` or `changes`; the CLI exits 2 without opening a block file.",
-      "source": "#115",
-      "evidence": "js-unit",
-      "link": "text-decision-frontmatter.test.js",
-      "status": "draft"
-    },
-    {
-      "id": "QC-SIGN-002",
-      "area": "Sign-off",
-      "text": "A decision naming a block that does not exist, or whose frontmatter does not validate, is refused before any edit and never reaches the ledger.",
-      "source": "#115",
-      "evidence": "js-unit",
-      "link": "text-decision-apply.test.js",
-      "status": "draft"
-    },
-    {
-      "id": "QC-SIGN-003",
-      "area": "Sign-off",
-      "text": "A block id that is not a `library/text` file stem is refused, and no reviewer-authored payload text is interpolated into a shell command by the workflow.",
-      "source": "#115",
-      "evidence": "js-unit",
-      "link": "text-decision-apply.test.js",
-      "status": "draft"
-    },
-    {
-      "id": "QC-SIGN-004",
-      "area": "Sign-off",
-      "text": "Approving a block rewrites only `approval.state`, `approval.by` and `approval.at` of that block, preserving the prose, every other frontmatter key, key order and the library's quoting style.",
-      "source": "D9",
-      "evidence": "js-unit",
-      "link": "text-decision-frontmatter.test.js",
-      "status": "draft"
-    },
-    {
-      "id": "QC-SIGN-005",
-      "area": "Sign-off",
-      "text": "A decision changes at most one file under `library/text/`; every other block is byte-identical afterwards.",
-      "source": "D9",
-      "evidence": "js-unit",
-      "link": "text-decision-apply.test.js",
-      "status": "draft"
-    },
-    {
-      "id": "QC-SIGN-006",
-      "area": "Sign-off",
-      "text": "A change request must carry a note, records that note against the block without approving it, and returns already-approved prose to `in_review`.",
-      "source": "#115",
-      "evidence": "js-unit",
-      "link": "text-decision-apply.test.js",
-      "status": "draft"
-    },
-    {
-      "id": "QC-SIGN-007",
-      "area": "Sign-off",
-      "text": "A decision that breaks the assembler or the gates is reverted to the byte, recorded as `failed`, and exits non-zero so nothing is committed.",
-      "source": "D7",
-      "evidence": "js-unit",
-      "link": "text-decision-apply.test.js",
-      "status": "draft"
-    },
-    {
-      "id": "QC-SIGN-008",
-      "area": "Sign-off",
-      "text": "A decision applied to a tree whose gates were already failing is recorded as `blocked` with nothing edited, rather than blamed on the decision.",
-      "source": "open.csr",
-      "evidence": "js-unit",
-      "link": "text-decision-apply.test.js",
-      "status": "draft"
-    },
-    {
-      "id": "QC-SIGN-009",
-      "area": "Sign-off",
-      "text": "Every decision appends one flat record to `site/text-decisions.json` carrying block, decision, reviewer, timestamp, note, outcome, states and run; earlier records are never rewritten, reordered or dropped.",
-      "source": "#115",
-      "evidence": "js-unit",
-      "link": "text-decision-ledger.test.js",
-      "status": "draft"
-    },
-    {
-      "id": "QC-SIGN-010",
-      "area": "Sign-off",
-      "text": "`--dry-run` previews the frontmatter change and writes nothing: no block edit, no ledger entry, no assembler run.",
-      "source": "open.csr",
-      "evidence": "js-unit",
-      "link": "text-decision-apply.test.js",
-      "status": "draft"
-    },
-    {
-      "id": "QC-SIGN-011",
-      "area": "Sign-off",
-      "text": "Notes and reviewer names are stripped of control characters, newline-normalized and length-capped before they are stored or rendered.",
-      "source": "#115",
-      "evidence": "js-unit",
-      "link": "text-decision-frontmatter.test.js",
-      "status": "draft"
-    },
-    {
-      "id": "QC-SIGN-012",
-      "area": "Sign-off",
-      "text": "Gate severity follows assembly inclusion: an excluded draft block's errors are deferred, an included block's are failures, and an assembler that exits 0 without output is treated as not having run.",
-      "source": "D8",
-      "evidence": "js-unit",
-      "link": "text-decision-apply.test.js",
-      "status": "draft"
-    },
-    {
-      "id": "QC-SIGN-013",
-      "area": "Sign-off",
-      "text": "The apply workflow triggers on the `text-decision` dispatch, runs only for @jwildfire, re-runs the R-independent CI checks before committing to `dev`, and keeps a `workflow_dispatch` fallback with the same inputs.",
-      "source": "#115",
-      "evidence": "js-unit",
-      "link": "text-decision-workflow.test.js",
-      "status": "draft"
-    },
-    {
-      "id": "QC-SIGN-014",
-      "area": "Sign-off",
-      "text": "Approving an already-approved block re-affirms it, updating `by` and `at` and recording the prior state in the ledger.",
-      "source": "open.csr",
-      "evidence": "js-unit",
-      "link": "text-decision-apply.test.js",
-      "status": "draft"
-    },
-    {
-      "id": "QC-SIGN-015",
-      "area": "Sign-off",
-      "text": "The committed ledger is a valid, empty, self-documenting ledger of schema `opencsr/text-decisions/v1`, so the review page has a contract to render before the first decision.",
-      "source": "contracts §9",
-      "evidence": "js-unit",
-      "link": "text-decision-ledger.test.js",
-      "status": "draft"
-    },
-    {
       "id": "QC-DEMO-001",
       "area": "Demo",
       "text": "The Demo app's selection — active tab, display, text block, focus target — round-trips losslessly through the URL hash, so any view of the report is a shareable link.",
@@ -621,15 +470,6 @@
       "area": "Demo",
       "text": "The auto-generated provenance section is identified as generated in the Templates pane.",
       "source": "D6",
-      "evidence": "js-unit",
-      "link": "site-demo.test.js",
-      "status": "draft"
-    },
-    {
-      "id": "QC-DEMO-015",
-      "area": "Demo",
-      "text": "The Demo app's Text pane and the standalone review page are the same rendered HTML, differing only in which client script the page loads.",
-      "source": "#113",
       "evidence": "js-unit",
       "link": "site-demo.test.js",
       "status": "draft"

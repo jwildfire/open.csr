@@ -7,15 +7,7 @@
   "requirementUrl": "https://github.com/jwildfire/obot.roadmap/issues/111",
   "issue": 1,
   "matrixBaseUrl": "https://github.com/jwildfire/open.csr/blob/main/quality/requirements",
-  "review": {
-    "repo": "jwildfire/open.csr",
-    "branch": "dev",
-    "workflow": "text-decision.yml",
-    "ledgerPath": "site/text-decisions.json",
-    "eventType": "text-decision",
-    "reviewer": "jwildfire",
-    "issue": 2
-  },
+  "sourceBranch": "main",
   "study": {
     "id": "CDISCPILOT01",
     "title": "Safety and Efficacy of the Xanomeline Transdermal Therapeutic System (TTS) in Patients with Mild to Moderate Alzheimer's Disease",
@@ -62,8 +54,7 @@
         "library/text"
       ],
       "testPrefixes": [
-        "text-",
-        "review-"
+        "text-"
       ],
       "suites": [
         "text-review"

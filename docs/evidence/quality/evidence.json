@@ -1,6 +1,6 @@
 {
   "module": "quality",
-  "generated": "2026-07-25T12:49:03.431Z",
+  "generated": "2026-07-25T13:16:41.547Z",
   "records": [
     {
       "requirementIds": [
@@ -594,7 +594,7 @@
       "requirementIds": [
         "QC-DEMO-003"
       ],
-      "title": "pane crossings QC-DEMO-003: the reader, gallery index, text library and review page each resolve to a pane (#1)",
+      "title": "pane crossings QC-DEMO-003: the reader, the gallery index and the text library each resolve to a pane (#1)",
       "suite": "js-unit",
       "passed": true,
       "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/site-demo.test.js",
@@ -1260,18 +1260,6 @@
       "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/site-demo.test.js",
       "issueRefs": [
         1
-      ]
-    },
-    {
-      "requirementIds": [
-        "QC-DEMO-015"
-      ],
-      "title": "the Text pane absorbs the review surface QC-DEMO-015: the pane and the standalone review page differ only in the client path (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/site-demo.test.js",
-      "issueRefs": [
-        2
       ]
     },
     {

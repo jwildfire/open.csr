@@ -124,52 +124,35 @@ frontmatter — an automated suite cannot verify medical-writing judgement, so
 | TXT-CONC-001 | Section 12.6 ranks the safety findings by importance, separates local tolerability from systemic serious toxicity, states the exposure caveat, and draws no benefit-risk conclusion in the absence of efficacy data. | Content | `text-blocks.test.js` | Draft (generated tier, pending approval) |
 | TXT-DISC-001 | Section 13 integrates disposition, exposure and adverse event findings into one argument and states the limitations — exposure imbalance, missing discontinuation reasons, population composition and the absence of efficacy data — without introducing any fact absent from the referenced ARDs. | Content | `text-blocks.test.js` | Draft (generated tier, pending approval) |
 
-## Review and sign-off — the surface
+## Text status view — the surface
 
 The approval gate above (`TXT-APPR-*`) decides what assembles. These requirements
-are about the surface where that decision is *made*: the review page at `/review/`,
-its sign-off controls, and the decision ledger it renders
-([obot.roadmap#115](https://github.com/jwildfire/obot.roadmap/issues/115)). The page
-is static; a decision leaves the browser as a `text-decision` repository dispatch and
-is applied by the workflow whose requirements are in [`quality.md`](quality.md).
+are about the surface that *shows* where every block stands: the Text pane of the
+Demo app — tier, approval state, provenance, resolved prose and resolved bindings,
+and which blocks the gate is currently holding out of the report.
 
-Scope: [`scripts/review-lib.mjs`](../../scripts/review-lib.mjs) (page rendering) and
-[`site/review/core.js`](../../site/review/core.js) (the payload, request and ledger
-core shared by the builder, the tests and the browser client). The browser polling
-loop itself is not unit-tested — every decision it makes is one of the pure
-functions below.
+The view is **read-only**. In-app sign-off (a browser-dispatched decision applied by
+a workflow) was built on 2026-07-25 and removed the same day: review workflow belongs
+to the study-level GitHub configuration repos rather than to a point solution inside
+one report (see [design §12](../../docs/design/design.md)). Approval is recorded in a
+block's frontmatter and applied by the pipeline; `TXT-REVIEW-007` is the requirement
+that the surface says so rather than offering a control that does nothing.
 
-| ID | Requirement | Type | Verification | Status |
-|---|---|---|---|---|
-| TXT-REVIEW-001 | The review queue puts draft `generated`-tier blocks first — the blocks the assembly gate is holding out of the report — then every other block in ICH E3 section order. | Functional | `review-page.test.js` | Verified |
-| TXT-REVIEW-002 | Each block is shown as *resolved prose*: every binding replaced by its value from the committed ARD, each value visually distinguished from the writer's words and linked to the binding row it came from. An unresolved binding renders a marker, never a number. | Functional | `review-page.test.js` | Verified |
-| TXT-REVIEW-003 | A `generated`-tier block shows its provenance prominently — model, generation date and the **full** prompt — beside the prose rather than below the bindings; a human-written block says so explicitly; a generated block with no prompt is called out as unauditable. | Traceability | `review-page.test.js` | Verified |
-| TXT-REVIEW-004 | Every binding is resolved into a table giving the address, the ARD row it selects (analysis, statistic, group and level) and the value as the sentence shows it — scale and digits included — so a number can be checked without opening another page. A repeated address is one counted row; an unresolved one carries its reason. | Functional | `review-page.test.js` | Verified |
-| TXT-REVIEW-005 | Each block links its source file on GitHub at the review branch, every display it binds, and the display detail page behind each binding row. | Traceability | `review-page.test.js` | Verified |
-| TXT-REVIEW-006 | Each block shows its tier, its current approval state and its E3 section, and a block excluded from assembly is labelled as blocking. | Functional | `review-page.test.js` | Verified |
-| TXT-REVIEW-007 | Unconnected, the page is fully readable and every sign-off control is disabled with the reason stated, the connection requirements spelled out (token scope, storage, destination), and a documented fallback offered — the same validated dispatch from a terminal. An already-approved block locks approval but still accepts a change request. | Functional | `review-page.test.js`, `review-core.test.js` | Verified |
-| TXT-REVIEW-008 | The page carries its configuration as embedded JSON and loads one relative ES module; it references no external resource, and renders in full for a repository with no review configuration and no ledger. | Functional | `review-page.test.js` | Verified |
-
-## Review and sign-off — the decision dispatch
+Scope: [`scripts/text-status-lib.mjs`](../../scripts/text-status-lib.mjs), rendered
+as the Demo app's Text pane by [`scripts/site.mjs`](../../scripts/site.mjs). The
+catalogue view of the same blocks — the per-block permalink at `/text/#<block-id>` —
+is `site-lib.mjs` and is covered by [`quality.md`](quality.md) (`QC-SITE-*`).
 
 | ID | Requirement | Type | Verification | Status |
 |---|---|---|---|---|
-| TXT-DISPATCH-001 | A sign-off dispatches a `text-decision` event carrying exactly `{ decision, blockId, note, reviewer }` — a decision, never an edit, a file path or a target state. | Functional | `review-core.test.js` | Verified |
-| TXT-DISPATCH-002 | Requesting changes without a note is refused in the browser; a note is trimmed and length-capped rather than rejected. | Functional | `review-core.test.js` | Verified |
-| TXT-DISPATCH-003 | The decision vocabulary is two words; an unknown verb, an absent reviewer or a block id that could address a file outside the text library is refused before anything leaves the page. | Functional | `review-core.test.js` | Verified |
-| TXT-DISPATCH-004 | Every request the page can construct is an `api.github.com` request, and the guard refuses to attach a credential to any other host — including a look-alike domain. No source file in the review surface names another host. | Functional | `review-core.test.js` | Verified |
-| TXT-DISPATCH-005 | The run a decision produced is located by workflow file and by having started after the dispatch, so a run already in flight is never adopted and another workflow is never mistaken for the apply lane. | Functional | `review-core.test.js` | Verified |
-| TXT-DISPATCH-006 | Queued, running and completed runs each describe themselves for the reviewer, carrying the run link so the log is one click away. | Functional | `review-core.test.js` | Verified |
-| TXT-DISPATCH-007 | After a decision the ledger is re-read through the contents API at the review branch — never from the deployed copy, which the CDN caches and which would show a history without the decision just made. | Functional | `review-core.test.js` | Verified |
-
-## Review and sign-off — the decision ledger
-
-| ID | Requirement | Type | Verification | Status |
-|---|---|---|---|---|
-| TXT-LEDG-001 | Decisions render newest first whatever order the append-only file holds them in. | Functional | `review-core.test.js`, `review-ledger.test.js` | Verified |
-| TXT-LEDG-002 | Each row carries the block, the decision in the reviewer's language, the reviewer, the timestamp, the note, an outcome pill (applied / recorded / failed / blocked) and a link to the run that applied it; a failed approval says plainly that nothing was committed; reviewer text is escaped. | Functional | `review-core.test.js`, `review-ledger.test.js` | Verified |
-| TXT-LEDG-003 | The ledger reader accepts the record shape the apply lane writes — including the applied state transition — and degrades unknown outcomes to a neutral pill instead of failing. | Functional | `review-core.test.js`, `review-ledger.test.js` | Verified |
-| TXT-LEDG-004 | A missing, empty or unparseable ledger renders an honest empty state and never blanks the page. | Functional | `review-core.test.js`, `review-ledger.test.js` | Verified |
+| TXT-REVIEW-001 | The block list puts draft `generated`-tier blocks first — the blocks the assembly gate is holding out of the report — then every other block in ICH E3 section order. | Functional | `text-status.test.js` | Verified |
+| TXT-REVIEW-002 | Each block is shown as *resolved prose*: every binding replaced by its value from the committed ARD, each value visually distinguished from the writer's words and linked to the binding row it came from. An unresolved binding renders a marker, never a number. | Functional | `text-status.test.js` | Verified |
+| TXT-REVIEW-003 | A `generated`-tier block shows its provenance prominently — model, generation date and the **full** prompt — beside the prose rather than below the bindings; a human-written block says so explicitly; a generated block with no prompt is called out as unauditable. | Traceability | `text-status.test.js` | Verified |
+| TXT-REVIEW-004 | Every binding is resolved into a table giving the address, the ARD row it selects (analysis, statistic, group and level) and the value as the sentence shows it — scale and digits included — so a number can be checked without opening another page. A repeated address is one counted row; an unresolved one carries its reason. | Functional | `text-status.test.js` | Verified |
+| TXT-REVIEW-005 | Each block links its source file on GitHub, every display it binds, and the display detail page behind each binding row. | Traceability | `text-status.test.js` | Verified |
+| TXT-REVIEW-006 | Each block shows its tier, its current approval state and its E3 section, and a block excluded from assembly is labelled as blocking. | Functional | `text-status.test.js` | Verified |
+| TXT-REVIEW-007 | The view is a status view and nothing else: it emits no button, form, input or script, names no credential, token or API host, and states where approval is recorded and what enforces it — without describing or promising a sign-off workflow. | Functional | `text-status.test.js` | Verified |
+| TXT-REVIEW-008 | The view references no external resource, derives its source links from `repoUrl` when no branch is configured, and renders in full for a repository with no source configuration at all. | Functional | `text-status.test.js` | Verified |
 
 ## Known limitations
 

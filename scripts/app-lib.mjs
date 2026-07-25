@@ -1,18 +1,21 @@
 // The Demo surface: one app, four panes, one selection (open.csr #113 A).
 //
-// v0 published four separate browsing surfaces — a TFL gallery, a CSR reader, a
-// text library and a review page — each true, none of them the product. This
-// module folds them into a single Demo app: Reader · Tables · Text · Templates,
-// sharing a selection so that clicking a display in the report opens the table
-// behind it, and clicking a bound number opens the ARD row it came from.
+// v0 published separate browsing surfaces — a TFL gallery, a CSR reader and a
+// text library — each true, none of them the product. This module folds them
+// into a single Demo app: Reader · Tables · Text · Templates, sharing a
+// selection so that clicking a display in the report opens the table behind it,
+// and clicking a bound number opens the ARD row it came from.
 //
-// The panes are the EXISTING renderers' output, unmodified. Nothing here
-// re-implements a surface; the app is tab chrome plus a link-interception rule
-// (site/app/core.js). That is what keeps the four panes and the four standalone
-// pages from drifting apart — they are the same HTML.
+// The Reader and Tables panes are the EXISTING renderers' output, unmodified.
+// Nothing here re-implements them; the app is tab chrome plus a link-interception
+// rule (site/demo/core.js). That is what keeps those panes and their standalone
+// permalinks from drifting apart — they are the same HTML.
 //
-// The Templates pane is the exception: v0 had no template surface at all, so the
-// E3 document model is rendered here for the first time.
+// The Text and Templates panes are rendered here rather than absorbed. The Text
+// pane is the status view of the prose library (scripts/text-status-lib.mjs) —
+// where every block stands, read-only; the standalone /text/ catalogue page is a
+// different surface (site-lib.mjs) and remains the per-block permalink. The
+// Templates pane renders the E3 document model, which v0 had no surface for.
 
 import { chip, empty, escapeHtml } from './site-lib.mjs';
 import { DISPLAY_TYPE_LABELS, assignDisplayNumbers } from './template-lib.mjs';
@@ -31,7 +34,7 @@ export const APP_TABS = [
   {
     id: 'text',
     label: 'Text',
-    hint: 'Prose blocks, provenance, and sign-off'
+    hint: 'Prose blocks: provenance, bindings, status'
   },
   {
     id: 'templates',
@@ -83,9 +86,9 @@ export function renderAppPage({ config = {}, panes = [], tabs = APP_TABS, active
     `<p class="eyebrow">Demo</p>` +
     `<h1>${escapeHtml(config.study?.id || 'CDISCPILOT01')} — a Clinical Study Report you can open</h1>` +
     `<p class="lede">One report, four ways in. Read the document, inspect the table behind any ` +
-    `number, judge the prose that quotes it, and see the ICH E3 model the whole thing assembles ` +
-    `into. The four views share a selection: follow a number from the sentence to the ARD row that ` +
-    `produced it without leaving the page.</p>` +
+    `number, see where the prose that quotes it stands, and see the ICH E3 model the whole thing ` +
+    `assembles into. The four views share a selection: follow a number from the sentence to the ARD ` +
+    `row that produced it without leaving the page.</p>` +
     `</header>`;
 
   const body = shown
@@ -325,7 +328,7 @@ export function renderTemplatesPane({ config = {}, template = null, displays = [
   return [head, stats, provenance, numbering, skeleton].filter(Boolean).join('\n');
 }
 
-// The site's stat tile. review-lib keeps a private copy of the same markup;
+// The site's stat tile. text-status-lib keeps a private copy of the same markup;
 // duplicating four lines is better than either module importing the other's
 // internals, but the CLASSES must stay identical or the pane stops matching the
 // rest of the site.

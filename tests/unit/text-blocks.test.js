@@ -88,9 +88,9 @@ describe('Text Library block parsing', () => {
       expect(block, id).toBeDefined();
       expect(block.e3_section).toBe(shape.e3_section);
       expect(block.tier).toBe(shape.tier);
-      // These tiers are not gated by approval, so a reviewer sending one back
-      // (`in_review`, obot.roadmap#115) must not fail the build: what holds is
-      // that they are reviewed — never left in draft — and still assemble.
+      // These tiers are not gated by approval, so a block marked `in_review` in
+      // its frontmatter must not fail the build: what holds is that they are
+      // reviewed — never left in draft — and still assemble.
       expect(block.approval.state, id).not.toBe('draft');
       expect(checkApproval(block).included, id).toBe(true);
       if (shape.tier === 'parameterized') expect(block.displays.length).toBeGreaterThan(0);

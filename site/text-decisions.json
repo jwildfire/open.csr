@@ -1,6 +1,0 @@
-{
-  "schema": "opencsr/text-decisions/v1",
-  "documentation": "Append-only record of text review decisions (requirement jwildfire/obot.roadmap#115). One flat entry per decision; outcomes: applied (source changed, gates green) | recorded (change request noted, no source change) | failed (gates broke, the edit was reverted, nothing committed) | blocked (the gates were already failing, so nothing was touched). Written by scripts/apply-text-decision.mjs.",
-  "updated": null,
-  "decisions": []
-}

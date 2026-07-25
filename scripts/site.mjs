@@ -44,7 +44,7 @@ import {
   validateNoExternalResources,
   validateSiteLinks
 } from './site-lib.mjs';
-import { loadDecisions, renderReviewPage, reviewConfig } from './review-lib.mjs';
+import { renderTextStatus } from './text-status-lib.mjs';
 import { APP_TABS, renderAppPage, renderTablesPane, renderTemplatesPane } from './app-lib.mjs';
 import { loadAssembly, loadSections } from './template-lib.mjs';
 
@@ -192,52 +192,15 @@ page(path.join(buildDir, 'text', 'index.html'), {
   content: renderTextLibrary({ textBlocks, ards, traceIndex })
 });
 
-// --- Review and sign-off ----------------------------------------------------
+// --- Text status ------------------------------------------------------------
+// The Demo app's Text pane: where every prose block stands — tier, approval
+// state, provenance, resolved bindings, and which blocks the assembly gate is
+// currently holding out of the report. Read-only, and rendered only as a pane:
+// in-app sign-off was removed on 2026-07-25 (design §12), and a status view
+// needs no permalink of its own — a single block's permalink is the Text
+// Library page at /text/#<block-id>.
 
-const reviewCfg = reviewConfig(config);
-const ledger = loadDecisions(rootDir, reviewCfg);
-if (!ledger.present) {
-  warnings.push(
-    `${reviewCfg.ledgerPath} is missing — the Review page renders its "no decision recorded yet" state.`
-  );
-}
-if (ledger.malformed) {
-  warnings.push(`${reviewCfg.ledgerPath} is not valid JSON — the decision ledger renders empty.`);
-}
-
-page(path.join(buildDir, 'review', 'index.html'), {
-  title: `Review & sign-off · ${config.siteTitle}`,
-  root: '../',
-  description:
-    'Human review of agent-drafted CSR prose: resolved text, model provenance, every binding ' +
-    'resolved to its ARD row, and one-click approval that commits through the gates.',
-  content: renderReviewPage({ config, textBlocks, ards, traceIndex, ledger })
-});
-
-// The Demo app's Text pane IS the review surface (#113: absorbed, not placed
-// beside it). Rendered again only to point at the review client's copy under
-// /app/review/, because /app/client.js is the app's own.
-const textPaneContent = renderReviewPage({
-  config,
-  textBlocks,
-  ards,
-  traceIndex,
-  ledger,
-  clientSrc: 'review/client.js'
-});
-
-// The review client is the only script the site loads from a file rather than
-// inline: it is an ES module so its pure core (site/review/core.js) is the same
-// code the builder and the test suite use. Both files are copied verbatim —
-// there is no bundler, and no external anything.
-for (const file of ['core.js', 'client.js']) {
-  copyFileSync(path.join(rootDir, 'site', 'review', file), path.join(buildDir, 'review', file));
-}
-// Machine-readable ledger beside the page it renders, as the audit page does.
-const ledgerSource = path.join(rootDir, reviewCfg.ledgerPath);
-if (existsSync(ledgerSource)) {
-  copyFileSync(ledgerSource, path.join(buildDir, 'review', 'text-decisions.json'));
-}
+const textStatusContent = renderTextStatus({ config, textBlocks, ards, traceIndex });
 
 // --- Demo app ---------------------------------------------------------------
 // #113 increment A: the four browsing surfaces as panes of one view, sharing a
@@ -276,7 +239,7 @@ const appPanes = [
       }))
     })
   },
-  { id: 'text', html: textPaneContent },
+  { id: 'text', html: textStatusContent },
   {
     id: 'templates',
     html: renderTemplatesPane({ config, template, displays })
@@ -293,20 +256,11 @@ page(path.join(buildDir, 'demo', 'index.html'), {
   content: renderAppPage({ config, panes: appPanes, tabs: APP_TABS })
 });
 
-// The demo client and its pure core, copied verbatim as the review client is —
-// no bundler, no external anything (contracts §9).
-mkdirSync(path.join(buildDir, 'demo', 'review'), { recursive: true });
+// The demo client and its pure core, copied verbatim — no bundler, no external
+// anything (contracts §9). It is the only script the site loads from a file:
+// an ES module, so its pure core is the same code the test suite runs.
 for (const file of ['core.js', 'client.js']) {
   copyFileSync(path.join(rootDir, 'site', 'demo', file), path.join(buildDir, 'demo', file));
-  // The review client under /app/review/ so its own `./core.js` import resolves
-  // to the review core rather than the app's.
-  copyFileSync(
-    path.join(rootDir, 'site', 'review', file),
-    path.join(buildDir, 'demo', 'review', file)
-  );
-}
-if (existsSync(ledgerSource)) {
-  copyFileSync(ledgerSource, path.join(buildDir, 'demo', 'review', 'text-decisions.json'));
 }
 
 // --- Quality ----------------------------------------------------------------
@@ -418,6 +372,6 @@ console.log(
   `✓ Built site/_build/ — ${displays.length} displays (${built} generated), ` +
     `${textBlocks.filter((b) => b.exists).length} text blocks ` +
     `(${textBlocks.filter((b) => b.exists && b.tier === 'generated' && b.approval?.state !== 'approved').length} ` +
-    `awaiting review), ${qualityModules.length} evidence pages, ${docs.length} documents. ` +
+    `draft, held out of the report), ${qualityModules.length} evidence pages, ${docs.length} documents. ` +
     `All internal links resolve; no external resources referenced.`
 );

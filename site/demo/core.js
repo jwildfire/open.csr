@@ -3,7 +3,8 @@
 // The Demo surface is one page with four panes — Reader, Tables, Text,
 // Templates — that share a selection. This module owns what that selection IS
 // and how it is encoded, with no DOM in sight, so the builder, the client and
-// the test suite all agree on the same rules. Same split as site/review/core.js.
+// the test suite all agree on the same rules: pure logic here, DOM wiring in
+// client.js.
 //
 // The load-bearing idea: the panes are the existing standalone surfaces,
 // unmodified. What makes them one app is that a link *between* them is
@@ -56,8 +57,8 @@ export function formatAppHash({ tab = DEFAULT_TAB, display = null, block = null,
  * Resolve a link found inside the app into a selection change, or `null` to let
  * the browser navigate normally.
  *
- * The four panes are the standalone `/reader/`, `/gallery/`, `/text/` and
- * `/review/` surfaces, which link to each other with relative hrefs like
+ * Three of the four panes are the standalone `/reader/`, `/gallery/` and
+ * `/text/` surfaces, which link to each other with relative hrefs like
  * `../gallery/t-ae-overview.html`. Inside the app those destinations are panes,
  * so the link becomes a tab switch carrying a selection. Everything else —
  * Quality, Design & Research, the repository, any absolute URL — is a real
@@ -92,14 +93,11 @@ export function resolveAppLink(href) {
   if (clean === 'text/index.html' || clean === 'text/') {
     return { tab: 'text', block: blockFromFragment(fragment), focus };
   }
-  if (clean === 'review/index.html' || clean === 'review/') {
-    return { tab: 'text', block: blockFromFragment(fragment), focus };
-  }
   return null;
 }
 
 /**
- * A text-block anchor inside the text/review panes is `#TXT-E3-1202` or
+ * A text-block anchor inside the Text pane is `#TXT-E3-1202` or
  * `#block-TXT-E3-1202`; either way the block id is the selection.
  */
 export function blockFromFragment(fragment) {

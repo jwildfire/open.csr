@@ -1,163 +1,7 @@
 {
   "module": "text",
-  "generated": "2026-07-25T12:49:03.431Z",
+  "generated": "2026-07-25T13:16:41.547Z",
   "records": [
-    {
-      "requirementIds": [
-        "QC-SIGN-002"
-      ],
-      "title": "applying a decision QC-SIGN-002: a block whose frontmatter does not validate is refused before any edit (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-decision-apply.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "QC-SIGN-002"
-      ],
-      "title": "applying a decision QC-SIGN-002: a decision naming a block that does not exist is refused loudly (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-decision-apply.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "QC-SIGN-003"
-      ],
-      "title": "applying a decision QC-SIGN-003: a block id pointing outside library/text never resolves to a file (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-decision-apply.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "QC-SIGN-004"
-      ],
-      "title": "applying a decision QC-SIGN-004: approving a draft block writes state, by and at into its frontmatter (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-decision-apply.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "QC-SIGN-005"
-      ],
-      "title": "applying a decision QC-SIGN-005: a decision touches one block file and leaves every other alone (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-decision-apply.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "QC-SIGN-014"
-      ],
-      "title": "applying a decision QC-SIGN-014: approving an already-approved block re-affirms it and records the prior state (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-decision-apply.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "QC-SIGN-004"
-      ],
-      "title": "approval frontmatter surgery QC-SIGN-004: a block with no approval key gains one rather than being rejected (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-decision-frontmatter.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "QC-SIGN-004"
-      ],
-      "title": "approval frontmatter surgery QC-SIGN-004: a block-style approval mapping stays a block mapping (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-decision-frontmatter.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "QC-SIGN-004"
-      ],
-      "title": "approval frontmatter surgery QC-SIGN-004: a file without frontmatter is refused rather than guessed at (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-decision-frontmatter.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "QC-SIGN-004"
-      ],
-      "title": "approval frontmatter surgery QC-SIGN-004: an approval edit rewrites the approval mapping and nothing else (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-decision-frontmatter.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "QC-SIGN-004"
-      ],
-      "title": "approval frontmatter surgery QC-SIGN-004: an approval that is not a mapping is refused, not rewritten (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-decision-frontmatter.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "QC-SIGN-004"
-      ],
-      "title": "approval frontmatter surgery QC-SIGN-004: dates and logins are quoted so YAML keeps them as strings (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-decision-frontmatter.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "QC-SIGN-004"
-      ],
-      "title": "approval frontmatter surgery QC-SIGN-004: only the approval line differs, in the library inline style (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-decision-frontmatter.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
     {
       "requirementIds": [
         "TXT-BIND-001"
@@ -240,114 +84,6 @@
       "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-bindings.test.js",
       "issueRefs": [
         1
-      ]
-    },
-    {
-      "requirementIds": [
-        "QC-SIGN-006"
-      ],
-      "title": "change requests QC-SIGN-006: a change request on a draft records the note without approving it (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-decision-apply.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "QC-SIGN-006"
-      ],
-      "title": "change requests QC-SIGN-006: a change request on approved prose revokes the approval (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-decision-apply.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "QC-SIGN-001"
-      ],
-      "title": "decision payload validation QC-SIGN-001: the decision vocabulary is approve or changes, and nothing else (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-decision-frontmatter.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "QC-SIGN-003"
-      ],
-      "title": "decision payload validation QC-SIGN-003: a block id that is not a library file stem is refused (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-decision-frontmatter.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "QC-SIGN-006"
-      ],
-      "title": "decision payload validation QC-SIGN-006: a change request without a note is refused (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-decision-frontmatter.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "QC-SIGN-011"
-      ],
-      "title": "decision payload validation QC-SIGN-011: notes are stripped of control characters and capped in length (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-decision-frontmatter.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "QC-SIGN-001"
-      ],
-      "title": "dry run QC-SIGN-001: the CLI exits 2 on an invalid decision and 1 when a decision does not land (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-decision-apply.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "QC-SIGN-010"
-      ],
-      "title": "dry run QC-SIGN-010: --dry-run previews the frontmatter change and writes nothing (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-decision-apply.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "QC-SIGN-010"
-      ],
-      "title": "dry run QC-SIGN-010: the CLI dry-runs against the real text library without touching it (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-decision-apply.test.js",
-      "issueRefs": [
-        2
       ]
     },
     {
@@ -533,132 +269,12 @@
     },
     {
       "requirementIds": [
-        "TXT-LEDG-001"
-      ],
-      "title": "loading the ledger TXT-LEDG-001: entries load newest first regardless of the append order on disk (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-ledger.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "TXT-LEDG-004"
-      ],
-      "title": "loading the ledger TXT-LEDG-004: a repository with no ledger yet loads as an empty history, not an error (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-ledger.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "TXT-LEDG-004"
-      ],
-      "title": "loading the ledger TXT-LEDG-004: an unparseable ledger is reported, and the page still renders (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-ledger.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "TXT-LEDG-004"
-      ],
-      "title": "loading the ledger TXT-LEDG-004: the shipped ledger file parses and is readable by the page (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-ledger.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "TXT-DISPATCH-005"
-      ],
-      "title": "locating the run a click produced TXT-DISPATCH-005: a run that predates the click is never adopted (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-core.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "TXT-DISPATCH-005"
-      ],
-      "title": "locating the run a click produced TXT-DISPATCH-005: another workflow running at the same moment is not mistaken for this one (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-core.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "TXT-DISPATCH-005"
-      ],
-      "title": "locating the run a click produced TXT-DISPATCH-005: the API envelope is accepted as well as a bare array (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-core.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "TXT-DISPATCH-005"
-      ],
-      "title": "locating the run a click produced TXT-DISPATCH-005: the run is matched by workflow and by having started after the dispatch (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-core.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "TXT-DISPATCH-006"
-      ],
-      "title": "locating the run a click produced TXT-DISPATCH-006: queued, running and completed runs each describe themselves for the reviewer (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-core.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "TXT-DISPATCH-006"
-      ],
-      "title": "locating the run a click produced TXT-DISPATCH-006: the run link is carried through so the reviewer can leave the page for the log (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-core.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
         "TXT-REVIEW-003"
       ],
       "title": "provenance TXT-REVIEW-003: a generated block shows its model, generation date and the full prompt (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-page.test.js",
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -670,7 +286,7 @@
       "title": "provenance TXT-REVIEW-003: a generated block with no recorded prompt is called out as unauditable (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-page.test.js",
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -682,7 +298,7 @@
       "title": "provenance TXT-REVIEW-003: a human-written block says so rather than showing an empty provenance box (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-page.test.js",
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -694,151 +310,7 @@
       "title": "provenance TXT-REVIEW-003: provenance sits beside the prose, not below the fold (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-page.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "TXT-LEDG-001"
-      ],
-      "title": "reading the ledger back TXT-LEDG-001: decisions are ordered newest first whatever order the file is in (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-core.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "TXT-LEDG-002"
-      ],
-      "title": "reading the ledger back TXT-LEDG-002: a decision with no run yet renders a row rather than a broken link (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-core.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "TXT-LEDG-002"
-      ],
-      "title": "reading the ledger back TXT-LEDG-002: a ledger row carries block, decision, reviewer, time, note, outcome and run (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-core.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "TXT-LEDG-002"
-      ],
-      "title": "reading the ledger back TXT-LEDG-002: a note is escaped, so a reviewer cannot inject markup into the ledger (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-core.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "TXT-LEDG-003"
-      ],
-      "title": "reading the ledger back TXT-LEDG-003: an unknown outcome degrades to a neutral pill instead of throwing (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-core.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "TXT-LEDG-003"
-      ],
-      "title": "reading the ledger back TXT-LEDG-003: the shape the apply lane actually writes is read without loss (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-core.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "TXT-LEDG-004"
-      ],
-      "title": "reading the ledger back TXT-LEDG-004: junk in the ledger is dropped, not rendered, and never throws (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-core.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "TXT-REVIEW-007"
-      ],
-      "title": "reading the page unconnected TXT-REVIEW-007: an already-approved block locks approval but still accepts a change request (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-page.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "TXT-REVIEW-007"
-      ],
-      "title": "reading the page unconnected TXT-REVIEW-007: connecting is explained in full — scope, storage and destination (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-page.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "TXT-REVIEW-007"
-      ],
-      "title": "reading the page unconnected TXT-REVIEW-007: each block offers the documented fallback: the same dispatch from a terminal (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-page.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "TXT-REVIEW-007"
-      ],
-      "title": "reading the page unconnected TXT-REVIEW-007: every sign-off button is disabled and says why (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-page.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "TXT-REVIEW-007"
-      ],
-      "title": "reading the page unconnected TXT-REVIEW-007: the whole surface is readable read-only — prose, provenance and bindings (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-page.test.js",
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -893,96 +365,12 @@
     },
     {
       "requirementIds": [
-        "TXT-LEDG-002"
-      ],
-      "title": "rendering the ledger TXT-LEDG-002: a failed approval says what it was and that nothing was committed (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-ledger.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "TXT-LEDG-002"
-      ],
-      "title": "rendering the ledger TXT-LEDG-002: each row shows block, decision, reviewer, time, note, outcome and run (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-ledger.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "TXT-LEDG-002"
-      ],
-      "title": "rendering the ledger TXT-LEDG-002: outcomes read as pills — applied, changes requested, failed (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-ledger.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "TXT-LEDG-002"
-      ],
-      "title": "rendering the ledger TXT-LEDG-002: the state transition the lane applied is carried into the row (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-ledger.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "TXT-LEDG-003"
-      ],
-      "title": "rendering the ledger TXT-LEDG-003: the ledger source file is linked, so the history is checkable at source (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-ledger.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "TXT-LEDG-003"
-      ],
-      "title": "rendering the ledger TXT-LEDG-003: the table body has the id the client refreshes into after a decision (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-ledger.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "TXT-LEDG-004"
-      ],
-      "title": "rendering the ledger TXT-LEDG-004: an empty ledger renders the day-one state, not a broken table (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-ledger.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
         "TXT-REVIEW-002"
       ],
       "title": "resolved prose TXT-REVIEW-002: a cross-reference degrades to readable text outside the assembled document (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-page.test.js",
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -994,7 +382,7 @@
       "title": "resolved prose TXT-REVIEW-002: an unresolved binding shows a marker, never a number (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-page.test.js",
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -1006,7 +394,7 @@
       "title": "resolved prose TXT-REVIEW-002: computed values are marked and linked to the binding row they came from (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-page.test.js",
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -1018,7 +406,7 @@
       "title": "resolved prose TXT-REVIEW-002: every binding is replaced by its real value from the committed ARD (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-page.test.js",
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -1030,7 +418,7 @@
       "title": "resolved prose TXT-REVIEW-002: the writer’s own words are left untouched around the values (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-page.test.js",
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -1148,7 +536,7 @@
       "title": "the binding table TXT-REVIEW-004: a block with no bindings says so instead of rendering an empty table (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-page.test.js",
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -1160,7 +548,7 @@
       "title": "the binding table TXT-REVIEW-004: a repeated address is one row, counted, not duplicated (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-page.test.js",
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -1172,7 +560,7 @@
       "title": "the binding table TXT-REVIEW-004: an unresolved binding is shown with the reason, in place of a value (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-page.test.js",
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -1184,7 +572,7 @@
       "title": "the binding table TXT-REVIEW-004: one row per address, carrying the ARD row it selects and the value (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-page.test.js",
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -1196,7 +584,7 @@
       "title": "the binding table TXT-REVIEW-004: the ARD row is described by its group and level, not just its index (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-page.test.js",
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -1208,7 +596,7 @@
       "title": "the binding table TXT-REVIEW-004: the table value is the value the sentence shows, scale and digits included (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-page.test.js",
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -1220,7 +608,7 @@
       "title": "the block header TXT-REVIEW-005: every binding row links the display detail page it reads from (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-page.test.js",
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -1232,7 +620,7 @@
       "title": "the block header TXT-REVIEW-005: the card links the block source and every display it binds (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-page.test.js",
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -1244,163 +632,55 @@
       "title": "the block header TXT-REVIEW-006: tier, approval state and E3 section are on every card (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-page.test.js",
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
     },
     {
       "requirementIds": [
-        "QC-SIGN-009"
+        "TXT-REVIEW-001"
       ],
-      "title": "the decision ledger QC-SIGN-009: a corrupt ledger stops the lane instead of being silently replaced (#2)",
+      "title": "the block queue TXT-REVIEW-001: draft generated blocks come first — they are the ones blocking assembly (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-decision-ledger.test.js",
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
     },
     {
       "requirementIds": [
-        "QC-SIGN-009"
+        "TXT-REVIEW-001"
       ],
-      "title": "the decision ledger QC-SIGN-009: a decision that did not land is recorded too, with its outcome (#2)",
+      "title": "the block queue TXT-REVIEW-001: only unapproved generated blocks need judgment (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-decision-ledger.test.js",
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
     },
     {
       "requirementIds": [
-        "QC-SIGN-009"
+        "TXT-REVIEW-001"
       ],
-      "title": "the decision ledger QC-SIGN-009: an unknown outcome is refused rather than written to the ledger (#2)",
+      "title": "the block queue TXT-REVIEW-001: the shipped library really does have blocks held out of the report (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-decision-ledger.test.js",
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
     },
     {
       "requirementIds": [
-        "QC-SIGN-009"
+        "TXT-REVIEW-001"
       ],
-      "title": "the decision ledger QC-SIGN-009: appending never rewrites, reorders or drops an earlier decision (#2)",
+      "title": "the block queue TXT-REVIEW-001: within a group, blocks follow ICH E3 section order, not file order (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-decision-ledger.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "QC-SIGN-009"
-      ],
-      "title": "the decision ledger QC-SIGN-009: every decision appends one flat record carrying its provenance (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-decision-ledger.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "QC-SIGN-015"
-      ],
-      "title": "the decision ledger QC-SIGN-015: the committed ledger is an empty ledger of the documented schema (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-decision-ledger.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "TXT-DISPATCH-001"
-      ],
-      "title": "the decision payload TXT-DISPATCH-001: an approval dispatches the block id, the reviewer and the event type (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-core.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "TXT-DISPATCH-001"
-      ],
-      "title": "the decision payload TXT-DISPATCH-001: the payload names a decision only — never an edit, a file or a state (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-core.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "TXT-DISPATCH-002"
-      ],
-      "title": "the decision payload TXT-DISPATCH-002: an over-long note is truncated rather than rejected (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-core.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "TXT-DISPATCH-002"
-      ],
-      "title": "the decision payload TXT-DISPATCH-002: requesting changes without a note is refused in the browser (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-core.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "TXT-DISPATCH-003"
-      ],
-      "title": "the decision payload TXT-DISPATCH-003: a block id that could escape the text library never leaves the page (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-core.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "TXT-DISPATCH-003"
-      ],
-      "title": "the decision payload TXT-DISPATCH-003: an absent reviewer is null, not an empty string the lane has to guess about (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-core.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "TXT-DISPATCH-003"
-      ],
-      "title": "the decision payload TXT-DISPATCH-003: an unknown verb is refused, and the vocabulary is two words (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-core.test.js",
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -1409,106 +689,46 @@
       "requirementIds": [
         "TXT-REVIEW-007"
       ],
-      "title": "the fallback for a reviewer who cannot connect TXT-REVIEW-007: the fallback command carries the same validated payload as the button (#2)",
+      "title": "the surface is a status view, not a form TXT-REVIEW-007: nothing on the view offers to take, store or send a credential (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-core.test.js",
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
     },
     {
       "requirementIds": [
-        "QC-SIGN-008"
+        "TXT-REVIEW-007"
       ],
-      "title": "the full gate set QC-SIGN-008: a decision is blocked when the assembler fails before the edit (#2)",
+      "title": "the surface is a status view, not a form TXT-REVIEW-007: the view carries no control a visitor could act on (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-decision-apply.test.js",
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
     },
     {
       "requirementIds": [
-        "QC-SIGN-012"
+        "TXT-REVIEW-007"
       ],
-      "title": "the full gate set QC-SIGN-012: an assembler that exits 0 without output is not treated as green (#2)",
+      "title": "the surface is a status view, not a form TXT-REVIEW-007: the view says where approval lives and what enforces it (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-decision-apply.test.js",
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
     },
     {
       "requirementIds": [
-        "QC-SIGN-012"
+        "TXT-REVIEW-007"
       ],
-      "title": "the full gate set QC-SIGN-012: checkGates reports the assembler as not run when a tree has none (#2)",
+      "title": "the surface is a status view, not a form TXT-REVIEW-007: the whole library is readable — prose, provenance and bindings (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-decision-apply.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "QC-SIGN-007"
-      ],
-      "title": "the gates decide whether a decision lands QC-SIGN-007: a failed decision is still recorded in the ledger with its reason (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-decision-apply.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "QC-SIGN-007"
-      ],
-      "title": "the gates decide whether a decision lands QC-SIGN-007: an approval that breaks the gates is reverted and recorded as failed (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-decision-apply.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "QC-SIGN-007"
-      ],
-      "title": "the gates decide whether a decision lands QC-SIGN-007: the gate runner is what decides — a failing gate set always reverts (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-decision-apply.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "QC-SIGN-008"
-      ],
-      "title": "the gates decide whether a decision lands QC-SIGN-008: a tree whose gates already fail blocks the decision without editing anything (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-decision-apply.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "QC-SIGN-012"
-      ],
-      "title": "the gates decide whether a decision lands QC-SIGN-012: a draft block defers its gate errors; an included block fails on them (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-decision-apply.test.js",
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -1517,10 +737,10 @@
       "requirementIds": [
         "TXT-REVIEW-008"
       ],
-      "title": "the page as built TXT-REVIEW-008: no external resource is referenced anywhere on the page (#2)",
+      "title": "the view as built TXT-REVIEW-008: no external resource is referenced anywhere on the view (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-page.test.js",
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -1529,10 +749,10 @@
       "requirementIds": [
         "TXT-REVIEW-008"
       ],
-      "title": "the page as built TXT-REVIEW-008: registry defaults are derived from repoUrl when review config is absent (#2)",
+      "title": "the view as built TXT-REVIEW-008: source links are derived from repoUrl when no branch is configured (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-page.test.js",
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -1541,154 +761,10 @@
       "requirementIds": [
         "TXT-REVIEW-008"
       ],
-      "title": "the page as built TXT-REVIEW-008: the fixture repo — no review config, no ledger — still renders a full page (#2)",
+      "title": "the view as built TXT-REVIEW-008: the fixture repo — no source configuration — still renders in full (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-page.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "TXT-REVIEW-008"
-      ],
-      "title": "the page as built TXT-REVIEW-008: the page carries its config as data and loads one relative module (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-page.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "TXT-REVIEW-001"
-      ],
-      "title": "the review queue TXT-REVIEW-001: draft generated blocks come first — they are the ones blocking assembly (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-page.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "TXT-REVIEW-001"
-      ],
-      "title": "the review queue TXT-REVIEW-001: only unapproved generated blocks need judgment (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-page.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "TXT-REVIEW-001"
-      ],
-      "title": "the review queue TXT-REVIEW-001: the shipped library really does have blocks awaiting review (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-page.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "TXT-REVIEW-001"
-      ],
-      "title": "the review queue TXT-REVIEW-001: within a group, blocks follow ICH E3 section order, not file order (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-page.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "QC-SIGN-003"
-      ],
-      "title": "the text-decision workflow QC-SIGN-003: reviewer-authored payload text never reaches a shell command line (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-decision-workflow.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "QC-SIGN-013"
-      ],
-      "title": "the text-decision workflow QC-SIGN-013: no step other than apply runs when the decision does not land (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-decision-workflow.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "QC-SIGN-013"
-      ],
-      "title": "the text-decision workflow QC-SIGN-013: only @jwildfire can apply a decision (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-decision-workflow.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "QC-SIGN-013"
-      ],
-      "title": "the text-decision workflow QC-SIGN-013: the commit names the block and the decision and targets dev (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-decision-workflow.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "QC-SIGN-013"
-      ],
-      "title": "the text-decision workflow QC-SIGN-013: the R-independent CI checks run before anything is committed (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-decision-workflow.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "QC-SIGN-013"
-      ],
-      "title": "the text-decision workflow QC-SIGN-013: the workflow parses and triggers on the text-decision dispatch (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-decision-workflow.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "QC-SIGN-013"
-      ],
-      "title": "the text-decision workflow QC-SIGN-013: workflow_dispatch is a documented fallback with the same inputs (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-decision-workflow.test.js",
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -1727,66 +803,6 @@
       "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-bindings.test.js",
       "issueRefs": [
         1
-      ]
-    },
-    {
-      "requirementIds": [
-        "TXT-DISPATCH-004"
-      ],
-      "title": "where a credential may go TXT-DISPATCH-004: an unauthenticated request carries no Authorization header at all (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-core.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "TXT-DISPATCH-004"
-      ],
-      "title": "where a credential may go TXT-DISPATCH-004: every request the page can build is an api.github.com request (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-core.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "TXT-DISPATCH-004"
-      ],
-      "title": "where a credential may go TXT-DISPATCH-004: no source file in the review surface names a host other than the API (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-core.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "TXT-DISPATCH-004"
-      ],
-      "title": "where a credential may go TXT-DISPATCH-004: the guard refuses any other host outright (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-core.test.js",
-      "issueRefs": [
-        2
-      ]
-    },
-    {
-      "requirementIds": [
-        "TXT-DISPATCH-007"
-      ],
-      "title": "where a credential may go TXT-DISPATCH-007: the ledger is re-read through the contents API at the review branch (#2)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/review-core.test.js",
-      "issueRefs": [
-        2
       ]
     },
     {

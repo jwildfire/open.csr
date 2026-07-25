@@ -1,11 +1,15 @@
-// The review surface itself (open.csr #2): what a reviewer is shown, in what
-// order, and what the page does when nobody is connected.
+// The text status view (open.csr #2): what a reader is shown about every prose
+// block, and in what order.
 //
 // Two inputs are used deliberately. The FIXTURE repo gives controlled cases (a
 // draft generated block with a deliberately orphaned binding, an approved
-// parameterized one). The REAL repo proves the page renders the shipped library
-// against the committed ARDs — a review page that only works on fixtures would
+// parameterized one). The REAL repo proves the view renders the shipped library
+// against the committed ARDs — a status view that only works on fixtures would
 // be no evidence at all.
+//
+// In-app sign-off was built and deferred on 2026-07-25 (design §12). What
+// remains is read-only by construction: the assertions below include that the
+// rendered markup carries no control at all.
 
 import { describe, expect, test } from 'vitest';
 import { readFileSync } from 'node:fs';
@@ -16,15 +20,13 @@ import { buildTraceIndex, loadDisplays, loadTextBlocks } from '../../scripts/sit
 import {
   bindingRows,
   buildReviewQueue,
-  loadDecisions,
   needsJudgment,
   renderBindingTable,
   renderProvenance,
-  renderReviewPage,
   renderReviewProse,
-  renderSignoff,
-  reviewConfig
-} from '../../scripts/review-lib.mjs';
+  renderTextStatus,
+  sourceConfig
+} from '../../scripts/text-status-lib.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(here, '..', '..');
@@ -46,20 +48,19 @@ function load(dir) {
 
 const fixture = load(fixtureDir);
 const real = load(rootDir);
-const cfg = reviewConfig(real.config);
+const cfg = sourceConfig(real.config);
 
-const page = renderReviewPage({
+const page = renderTextStatus({
   config: real.config,
   textBlocks: real.textBlocks,
   ards: real.ards,
-  traceIndex: real.traceIndex,
-  ledger: loadDecisions(rootDir, cfg)
+  traceIndex: real.traceIndex
 });
 
 const draftBlock = real.textBlocks.find((block) => block.id === 'TXT-E3-1206');
 const approvedBlock = real.textBlocks.find((block) => block.approval?.state === 'approved');
 
-describe('the review queue', () => {
+describe('the block queue', () => {
   test('TXT-REVIEW-001: draft generated blocks come first — they are the ones blocking assembly (#2)', () => {
     const queue = buildReviewQueue(real.textBlocks);
     const firstSettled = queue.findIndex((entry) => !entry.needsJudgment);
@@ -92,10 +93,10 @@ describe('the review queue', () => {
     expect(needsJudgment({ exists: false, tier: 'generated' })).toBe(false);
   });
 
-  test('TXT-REVIEW-001: the shipped library really does have blocks awaiting review (#2)', () => {
+  test('TXT-REVIEW-001: the shipped library really does have blocks held out of the report (#2)', () => {
     const pending = buildReviewQueue(real.textBlocks).filter((entry) => entry.needsJudgment);
     expect(pending.length).toBeGreaterThan(0);
-    expect(page).toContain('awaiting judgment');
+    expect(page).toContain('blocking assembly');
   });
 });
 
@@ -238,41 +239,35 @@ describe('the binding table', () => {
   });
 });
 
-describe('reading the page unconnected', () => {
-  test('TXT-REVIEW-007: every sign-off button is disabled and says why (#2)', () => {
-    const buttons = [...page.matchAll(/<button type="button" class="button[^"]*" data-decision[^>]*>/g)];
-    expect(buttons.length).toBeGreaterThanOrEqual(real.textBlocks.length * 2 - 2);
-    expect(buttons.every((match) => match[0].includes('disabled'))).toBe(true);
-    expect(page).toContain('Connect to sign off — the page is read-only until you do.');
+describe('the surface is a status view, not a form', () => {
+  test('TXT-REVIEW-007: the view carries no control a visitor could act on (#2)', () => {
+    // In-app sign-off was removed on 2026-07-25; a disabled button or an empty
+    // note field would be worse than either a working form or none.
+    expect(page).not.toMatch(/<button/i);
+    expect(page).not.toMatch(/<form/i);
+    expect(page).not.toMatch(/<textarea|<input/i);
+    expect(page).not.toMatch(/<script/i);
   });
 
-  test('TXT-REVIEW-007: connecting is explained in full — scope, storage and destination (#2)', () => {
-    expect(page).toContain('Fine-grained personal access token');
-    expect(page).toContain('Contents: read and write');
-    expect(page).toContain('Actions: read');
-    expect(page).toContain('localStorage');
-    expect(page).toContain('api.github.com');
+  test('TXT-REVIEW-007: nothing on the view offers to take, store or send a credential (#2)', () => {
+    for (const pattern of [/localStorage/i, /api\.github\.com/i, /token/i, /dispatch/i]) {
+      expect(page).not.toMatch(pattern);
+    }
   });
 
-  test('TXT-REVIEW-007: each block offers the documented fallback: the same dispatch from a terminal (#2)', () => {
-    expect(page).toContain('Sign off without connecting');
-    expect(page).toContain('gh api repos/jwildfire/open.csr/dispatches');
-    expect(page).toContain('client_payload[blockId]=TXT-E3-1206');
+  test('TXT-REVIEW-007: the view says where approval lives and what enforces it (#2)', () => {
+    expect(page).toContain('approval.state');
+    expect(page).toContain('excludes any');
+    // …and does not describe, or promise, a workflow that does not exist.
+    expect(page).not.toMatch(/sign.?off|coming soon|not yet available/i);
   });
 
-  test('TXT-REVIEW-007: the whole surface is readable read-only — prose, provenance and bindings (#2)', () => {
+  test('TXT-REVIEW-007: the whole library is readable — prose, provenance and bindings (#2)', () => {
     for (const block of real.textBlocks.filter((entry) => entry.exists)) {
       expect(page).toContain(`id="${block.id}"`);
     }
     expect(page).toContain('Provenance');
     expect(page).toContain('binding-table');
-    expect(page).toContain('Decision ledger');
-  });
-
-  test('TXT-REVIEW-007: an already-approved block locks approval but still accepts a change request (#2)', () => {
-    const html = renderSignoff(approvedBlock, cfg, { state: 'approved' });
-    expect(html).toContain('data-locked="approved"');
-    expect(html).toContain('Request changes');
   });
 });
 
@@ -299,42 +294,31 @@ describe('the block header', () => {
   });
 });
 
-describe('the page as built', () => {
-  test('TXT-REVIEW-008: the page carries its config as data and loads one relative module (#2)', () => {
-    expect(page).toContain('<script type="application/json" id="review-config">');
-    expect(page).toContain('<script type="module" src="client.js">');
-    const config = JSON.parse(page.match(/id="review-config">([^<]*)</)[1]);
-    expect(config).toMatchObject({
-      repo: 'jwildfire/open.csr',
-      eventType: 'text-decision',
-      ledgerPath: 'site/text-decisions.json'
-    });
-  });
-
-  test('TXT-REVIEW-008: no external resource is referenced anywhere on the page (#2)', () => {
+describe('the view as built', () => {
+  test('TXT-REVIEW-008: no external resource is referenced anywhere on the view (#2)', () => {
     expect(page).not.toMatch(/<script[^>]+src=["']https?:/i);
     expect(page).not.toMatch(/<link[^>]+href=["']https?:/i);
     expect(page).not.toMatch(/<img[^>]+src=["']https?:/i);
   });
 
-  test('TXT-REVIEW-008: registry defaults are derived from repoUrl when review config is absent (#2)', () => {
-    const derived = reviewConfig({ repoUrl: 'https://github.com/someone/open.csr' });
+  test('TXT-REVIEW-008: source links are derived from repoUrl when no branch is configured (#2)', () => {
+    const derived = sourceConfig({ repoUrl: 'https://github.com/someone/open.csr' });
     expect(derived.repo).toBe('someone/open.csr');
-    expect(derived.branch).toBe('dev');
-    expect(derived.eventType).toBe('text-decision');
+    expect(derived.branch).toBe('main');
+    expect(sourceConfig({ repoUrl: 'https://github.com/someone/open.csr', sourceBranch: 'dev' }).branch).toBe(
+      'dev'
+    );
   });
 
-  test('TXT-REVIEW-008: the fixture repo — no review config, no ledger — still renders a full page (#2)', () => {
-    const html = renderReviewPage({
+  test('TXT-REVIEW-008: the fixture repo — no source configuration — still renders in full (#2)', () => {
+    const html = renderTextStatus({
       config: fixture.config,
       textBlocks: fixture.textBlocks,
       ards: fixture.ards,
-      traceIndex: fixture.traceIndex,
-      ledger: loadDecisions(fixtureDir, reviewConfig(fixture.config))
+      traceIndex: fixture.traceIndex
     });
-    expect(html).toContain('Review and sign-off');
+    expect(html).toContain('Prose blocks and their status');
     expect(html).toContain('TXT-E3-9999');
-    expect(html).toContain('No decision has been recorded yet');
     expect(html).not.toMatch(/\{\{/);
   });
 });

@@ -1,8 +1,7 @@
 // Demo app client: tab switching and the shared selection (open.csr #113).
 //
 // All logic worth testing lives in core.js; this file is the DOM wiring only.
-// It is the same split the review client uses, and for the same reason — the
-// rules are unit-tested, the wiring is verified in the browser.
+// The rules are unit-tested; the wiring is verified in the browser.
 //
 // Progressive enhancement is deliberate: the page ships with every pane
 // server-rendered and the first pane visible, so with JavaScript off a visitor
@@ -57,11 +56,11 @@ if (app) {
   }
 
   // Highlight the selected text block without hiding the others: the Text pane
-  // is a review queue, and losing your place in it is worse than scrolling.
+  // is a status list, and losing your place in it is worse than scrolling.
   //
-  // The review card owns `id="<blockId>"` (it is what the decision ledger and the
-  // review client both target), so that is what is looked up here rather than a
-  // second attribute that would have to be kept in sync with it.
+  // The block card owns `id="<blockId>"` — the same anchor the Text Library page
+  // and the template model link to — so that is what is looked up here rather
+  // than a second attribute that would have to be kept in sync with it.
   function markBlock(id) {
     for (const card of app.querySelectorAll('.app-selected')) card.classList.remove('app-selected');
     if (!id) return;

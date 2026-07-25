@@ -1450,86 +1450,13 @@ span.xref.unresolved {
   cursor: default;
 }
 
-/* ---- 6. Review and sign-off --------------------------------------------- */
+/* ---- 6. Text status view -------------------------------------------------- */
 /*
-   The review surface is a reading view first: wide measure for the prose, the
-   provenance beside it rather than under it, and the sign-off controls at the
-   foot of each block where a decision belongs. Nothing here is decorative —
-   every rule exists to separate the writer's words from the computed values, or
-   to make the state of a block legible at a glance.
+   The Text pane is a reading view: wide measure for the prose, the provenance
+   beside it rather than under it. Nothing here is decorative — every rule exists
+   to separate the writer's words from the computed values, or to make the state
+   of a block legible at a glance.
 */
-
-.connect {
-  border: 1px solid var(--rule);
-  border-radius: var(--radius);
-  background: var(--card);
-  padding: 0.75rem 1rem;
-  margin-bottom: 1.2rem;
-}
-
-.connect-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.6rem;
-}
-
-.connect-state {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  font-size: 0.86rem;
-  color: var(--muted);
-  margin-right: auto;
-}
-
-.connect-form {
-  display: grid;
-  gap: 0.6rem;
-  margin-top: 0.9rem;
-  padding-top: 0.9rem;
-  border-top: 1px solid var(--rule);
-}
-
-.connect-form[hidden] {
-  display: none;
-}
-
-.connect-form label {
-  display: grid;
-  gap: 0.25rem;
-  max-width: 34rem;
-}
-
-.connect-form label span {
-  font-size: 0.76rem;
-  color: var(--muted);
-}
-
-.connect-form input {
-  font-family: var(--mono);
-  font-size: 0.84rem;
-  padding: 0.45rem 0.6rem;
-  border: 1px solid var(--rule-strong);
-  border-radius: var(--radius-sm);
-  background: var(--paper-2);
-  color: var(--ink);
-}
-
-.connect-form input:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 1px;
-}
-
-.connect-actions {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.connect-form .sub {
-  max-width: 58rem;
-  margin: 0;
-}
 
 /* Groups ------------------------------------------------------------------ */
 
@@ -1571,10 +1498,6 @@ span.xref.unresolved {
 
 .review-block.pending {
   border-left: 3px solid var(--warn);
-}
-
-.review-block.decided {
-  border-left: 3px solid var(--good);
 }
 
 .rb-head {
@@ -1817,119 +1740,6 @@ span.xref.unresolved {
   white-space: normal;
 }
 
-/* Sign-off ---------------------------------------------------------------- */
-
-.signoff {
-  margin-top: 1.2rem;
-  padding-top: 0.9rem;
-  border-top: 1px solid var(--rule);
-  display: grid;
-  gap: 0.6rem;
-}
-
-.signoff-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.signoff button[disabled] {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.signoff-hint {
-  font-size: 0.8rem;
-  color: var(--muted);
-}
-
-.signoff-note {
-  display: grid;
-  gap: 0.25rem;
-  max-width: 46rem;
-}
-
-.signoff-note span {
-  font-size: 0.76rem;
-  color: var(--muted);
-}
-
-.signoff-note em {
-  color: var(--faint);
-  font-style: normal;
-}
-
-.signoff-note textarea {
-  font-family: var(--sans);
-  font-size: 0.86rem;
-  padding: 0.45rem 0.6rem;
-  border: 1px solid var(--rule-strong);
-  border-radius: var(--radius-sm);
-  background: var(--paper-2);
-  color: var(--ink);
-  resize: vertical;
-}
-
-.signoff-status {
-  margin: 0;
-  font-size: 0.82rem;
-  color: var(--muted);
-  min-height: 1.2em;
-}
-
-.signoff-status:empty {
-  min-height: 0;
-}
-
-.signoff-fallback summary {
-  font-size: 0.8rem;
-  color: var(--accent);
-  cursor: pointer;
-}
-
-.signoff-fallback .sub {
-  margin: 0.5rem 0;
-  max-width: 58rem;
-}
-
-.cmd {
-  font-family: var(--mono);
-  font-size: 0.72rem;
-  background: var(--band);
-  color: var(--band-ink);
-  border-radius: var(--radius-sm);
-  padding: 0.6rem 0.75rem;
-  overflow-x: auto;
-  margin: 0;
-}
-
-.rb-history {
-  margin-top: 0.9rem;
-}
-
-/* Ledger ------------------------------------------------------------------ */
-
-.ledger-table {
-  font-size: 0.82rem;
-}
-
-.ledger-table td {
-  vertical-align: top;
-}
-
-.ledger-note {
-  max-width: 26rem;
-}
-
-.nowrap {
-  white-space: nowrap;
-}
-
-.just-landed {
-  background: var(--good-bg);
-}
-
 .stat.warn .stat-value {
   color: var(--warn);
 }
@@ -2098,7 +1908,7 @@ span.xref.unresolved {
 }
 
 /* A block the shared selection is pointing at. The rule is on the left so it
-   survives the card's own background states (draft, approved, just-landed). */
+   survives the card's own background states (draft, approved). */
 .app-selected {
   box-shadow: -3px 0 0 0 var(--accent);
 }

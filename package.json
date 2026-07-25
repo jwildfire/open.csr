@@ -13,9 +13,7 @@
     "evidence": "node scripts/evidence.mjs",
     "evidence:check": "node scripts/evidence.mjs --check",
     "assemble": "node scripts/assemble.mjs",
-    "build": "node scripts/site.mjs",
-    "text:decision": "node scripts/apply-text-decision.mjs",
-    "text:decision:dry": "node scripts/apply-text-decision.mjs --dry-run"
+    "build": "node scripts/site.mjs"
   },
   "devDependencies": {
     "gray-matter": "^4.0.3",

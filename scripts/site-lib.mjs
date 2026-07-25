@@ -527,13 +527,12 @@ export function buildTraceIndex(displays) {
 // 4. Shell
 // ---------------------------------------------------------------------------
 
-// #113: the four browsing surfaces fold into one Demo app, so the nav leads with
-// it. Quality and Design & Research stay separate documentation surfaces.
+// #113: the browsing surfaces fold into one Demo app, so the nav leads with it.
+// Quality and Design & Research stay separate documentation surfaces.
 //
-// /gallery/, /reader/, /text/ and /review/ are still emitted and still the panes'
-// own HTML — they are the permalink for a single display or block, and the
-// destination the evidence pages and trace panels link to. They are addressable,
-// not advertised.
+// /gallery/, /reader/ and /text/ are still emitted — they are the permalink for
+// a single display or block, and the destination the evidence pages and trace
+// panels link to. They are addressable, not advertised.
 const NAV = [
   { href: 'index.html', label: 'Home' },
   { href: 'demo/index.html', label: 'Demo' },
@@ -1504,18 +1503,21 @@ export function renderTextLibrary({ textBlocks, ards, traceIndex }) {
     `<p>${chip('generated', 'warn')} agent-drafted, human-approved before it can assemble</p>` +
     `</div>`;
 
-  // Discovery: this page is the catalogue, /review/ is where a block is judged.
+  // Discovery: this page is the catalogue; the Demo's Text view is the status
+  // view, with the prompt behind each generated block and its bindings resolved.
   const pending = textBlocks.filter(
     (block) => block.exists && block.tier === 'generated' && block.approval?.state !== 'approved'
   ).length;
   const reviewLink =
     `<p class="callout${pending ? ' warn' : ''}">` +
     (pending
-      ? `${pending} agent-drafted block${pending === 1 ? ' is' : 's are'} waiting on human judgment ` +
-        `and excluded from the assembled report. `
-      : 'Every agent-drafted block has been signed off. ') +
-    `Approve or send one back on the <a href="../review/index.html">Review page</a>, which shows the ` +
-    `prompt that produced it and every binding resolved to its ARD row.</p>`;
+      ? `${pending} agent-drafted block${pending === 1 ? ' is' : 's are'} still marked ` +
+        `<span class="mono">draft</span> in the block source, so the assembler leaves ` +
+        `${pending === 1 ? 'it' : 'them'} out of the report. `
+      : 'Every agent-drafted block is approved in its source and assembles. ') +
+    `Approval is recorded in each block's frontmatter and applied by the assembly gate; the ` +
+    `<a href="../demo/index.html#tab=text">Demo's Text view</a> shows where every block stands, ` +
+    `with the prompt that produced it and every binding resolved to its ARD row.</p>`;
 
   if (!textBlocks.length) return [head, legend, empty('No text blocks registered yet.')].join('\n');
 
