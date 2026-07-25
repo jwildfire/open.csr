@@ -4,6 +4,7 @@ import { join } from 'node:path';
 import {
   APPROVAL_STATES,
   TIERS,
+  checkApproval,
   loadTextLibrary,
   parseBlock,
   validateBlock,
@@ -87,26 +88,36 @@ describe('Text Library block parsing', () => {
       expect(block, id).toBeDefined();
       expect(block.e3_section).toBe(shape.e3_section);
       expect(block.tier).toBe(shape.tier);
-      expect(block.approval.state).toBe('approved');
+      // These tiers are not gated by approval, so a reviewer sending one back
+      // (`in_review`, obot.roadmap#115) must not fail the build: what holds is
+      // that they are reviewed — never left in draft — and still assemble.
+      expect(block.approval.state, id).not.toBe('draft');
+      expect(checkApproval(block).included, id).toBe(true);
       if (shape.tier === 'parameterized') expect(block.displays.length).toBeGreaterThan(0);
     }
   });
 
   it('TXT-AE-001, TXT-AE-002, TXT-AE-003, TXT-SAE-001, TXT-CONC-001, TXT-DISC-001: the safety narrative sections ship blocks whose tier matches their evidentiary risk (#1)', () => {
     const expected = {
-      'TXT-E3-1221': { e3_section: '12.2.1', tier: 'parameterized', state: 'approved' },
-      'TXT-E3-1222': { e3_section: '12.2.2', tier: 'generated', state: 'draft' },
-      'TXT-E3-1224': { e3_section: '12.2.4', tier: 'boilerplate', state: 'approved' },
-      'TXT-E3-1231': { e3_section: '12.3.1', tier: 'generated', state: 'draft' },
-      'TXT-E3-1206': { e3_section: '12.6', tier: 'generated', state: 'draft' },
-      'TXT-E3-1300': { e3_section: '13', tier: 'generated', state: 'draft' },
+      'TXT-E3-1221': { e3_section: '12.2.1', tier: 'parameterized' },
+      'TXT-E3-1222': { e3_section: '12.2.2', tier: 'generated' },
+      'TXT-E3-1224': { e3_section: '12.2.4', tier: 'boilerplate' },
+      'TXT-E3-1231': { e3_section: '12.3.1', tier: 'generated' },
+      'TXT-E3-1206': { e3_section: '12.6', tier: 'generated' },
+      'TXT-E3-1300': { e3_section: '13', tier: 'generated' },
     };
     for (const [id, shape] of Object.entries(expected)) {
       const block = library.get(id);
       expect(block, id).toBeDefined();
       expect(block.e3_section).toBe(shape.e3_section);
       expect(block.tier).toBe(shape.tier);
-      expect(block.approval.state).toBe(shape.state);
+      // Approval state is now decided in the app (obot.roadmap#115), so the
+      // state a block happens to be in is not an invariant. What is invariant is
+      // the gate: a generated block is in the report only once it is approved.
+      expect(APPROVAL_STATES, id).toContain(block.approval.state);
+      expect(checkApproval(block).included, id).toBe(
+        shape.tier !== 'generated' || block.approval.state === 'approved'
+      );
     }
     // Interpretation and conclusions are generated-tier and therefore human-gated.
     expect(library.get('TXT-E3-1300').tier).toBe('generated');

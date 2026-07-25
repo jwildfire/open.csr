@@ -1449,3 +1449,492 @@ span.xref.unresolved {
   border-bottom-style: none;
   cursor: default;
 }
+
+/* ---- 6. Review and sign-off --------------------------------------------- */
+/*
+   The review surface is a reading view first: wide measure for the prose, the
+   provenance beside it rather than under it, and the sign-off controls at the
+   foot of each block where a decision belongs. Nothing here is decorative —
+   every rule exists to separate the writer's words from the computed values, or
+   to make the state of a block legible at a glance.
+*/
+
+.connect {
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--card);
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.2rem;
+}
+
+.connect-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.connect-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.86rem;
+  color: var(--muted);
+  margin-right: auto;
+}
+
+.connect-form {
+  display: grid;
+  gap: 0.6rem;
+  margin-top: 0.9rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--rule);
+}
+
+.connect-form[hidden] {
+  display: none;
+}
+
+.connect-form label {
+  display: grid;
+  gap: 0.25rem;
+  max-width: 34rem;
+}
+
+.connect-form label span {
+  font-size: 0.76rem;
+  color: var(--muted);
+}
+
+.connect-form input {
+  font-family: var(--mono);
+  font-size: 0.84rem;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-sm);
+  background: var(--paper-2);
+  color: var(--ink);
+}
+
+.connect-form input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.connect-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.connect-form .sub {
+  max-width: 58rem;
+  margin: 0;
+}
+
+/* Groups ------------------------------------------------------------------ */
+
+.review-group {
+  margin: 2rem 0 0;
+}
+
+.review-group > h2 {
+  font-size: 1.35rem;
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 0.25rem;
+  margin-bottom: 0.35rem;
+}
+
+.rm-count {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--muted);
+  vertical-align: middle;
+  border: 1px solid var(--rule-strong);
+  border-radius: 999px;
+  padding: 0.05em 0.5em;
+}
+
+.review-group > .sub {
+  margin-bottom: 1rem;
+}
+
+/* One block --------------------------------------------------------------- */
+
+.review-block {
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--card);
+  padding: 1.1rem 1.25rem 1.25rem;
+  margin-bottom: 1.4rem;
+  box-shadow: var(--shadow);
+}
+
+.review-block.pending {
+  border-left: 3px solid var(--warn);
+}
+
+.review-block.decided {
+  border-left: 3px solid var(--good);
+}
+
+.rb-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+  align-items: baseline;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 0.6rem;
+}
+
+.rb-title h2 {
+  font-size: 1.15rem;
+  margin: 0;
+}
+
+.rb-title h2 .mono {
+  font-size: 0.86rem;
+  color: var(--accent);
+  margin-right: 0.35rem;
+}
+
+.rb-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0.35rem 0 0;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.rb-links {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--faint);
+}
+
+.rb-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(15rem, 1fr);
+  gap: 1.6rem;
+  margin-top: 1rem;
+}
+
+@media (max-width: 62rem) {
+  .rb-body {
+    grid-template-columns: 1fr;
+  }
+}
+
+.rb-h {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--faint);
+  margin: 0 0 0.5rem;
+}
+
+.review-prose {
+  font-family: var(--serif);
+  font-size: 1.02rem;
+  line-height: 1.65;
+}
+
+.review-prose p {
+  margin-bottom: 0.8rem;
+}
+
+/* A bound value: underlined, tabular, numbered into the binding table. The
+   reviewer must be able to see which parts of a sentence the pipeline wrote. */
+.bound {
+  font-family: var(--sans);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.95em;
+  color: var(--ink);
+  text-decoration: none;
+  background: var(--accent-soft);
+  border-bottom: 1px solid var(--accent);
+  border-radius: 3px;
+  padding: 0 0.18em;
+  white-space: nowrap;
+}
+
+.bound:hover,
+.bound:focus-visible {
+  background: color-mix(in srgb, var(--accent) 20%, transparent);
+  color: var(--ink);
+}
+
+.bound-ref {
+  font-family: var(--mono);
+  font-size: 0.62em;
+  color: var(--accent);
+  margin-left: 0.15em;
+  top: -0.5em;
+}
+
+.bound.unresolved {
+  background: var(--bad-bg);
+  border-bottom-color: var(--bad);
+  color: var(--bad);
+}
+
+/* Provenance -------------------------------------------------------------- */
+
+.provenance {
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-sm);
+  background: var(--paper-2);
+  padding: 0.85rem 0.95rem;
+  align-self: start;
+}
+
+.provenance h3 {
+  font-size: 0.95rem;
+  margin: 0 0 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.provenance h4 {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--faint);
+  margin: 0.8rem 0 0.3rem;
+}
+
+.prov-facts {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.2rem 0.7rem;
+  margin: 0;
+  font-size: 0.82rem;
+}
+
+.prov-facts dt {
+  color: var(--muted);
+}
+
+.prov-facts dd {
+  margin: 0;
+}
+
+.provenance .prompt {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.7rem;
+  margin: 0;
+  max-height: 22rem;
+  overflow: auto;
+}
+
+.provenance .sub {
+  margin: 0.6rem 0 0;
+}
+
+.provenance.not-generated {
+  background: transparent;
+  border-style: dashed;
+}
+
+/* Bindings ---------------------------------------------------------------- */
+
+.rb-bindings {
+  margin-top: 1.3rem;
+}
+
+.rb-bindings .rb-h .sub {
+  font-family: var(--sans);
+  text-transform: none;
+  letter-spacing: 0;
+  margin-left: 0.4rem;
+}
+
+.binding-table {
+  font-size: 0.8rem;
+}
+
+.binding-table td {
+  vertical-align: top;
+}
+
+.binding-table code {
+  font-size: 0.74rem;
+  word-break: break-word;
+}
+
+.binding-table tr:target {
+  background: var(--accent-soft);
+}
+
+.binding-table .unresolved-row {
+  background: var(--bad-bg);
+}
+
+.quals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin-top: 0.25rem;
+}
+
+.qual {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--muted);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding: 0.02em 0.45em;
+}
+
+.qual b {
+  color: var(--faint);
+  font-weight: 500;
+}
+
+.value-num {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.binding-table .value {
+  white-space: nowrap;
+}
+
+.binding-table .value .sub {
+  display: block;
+  white-space: normal;
+}
+
+/* Sign-off ---------------------------------------------------------------- */
+
+.signoff {
+  margin-top: 1.2rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--rule);
+  display: grid;
+  gap: 0.6rem;
+}
+
+.signoff-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.signoff button[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.signoff-hint {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.signoff-note {
+  display: grid;
+  gap: 0.25rem;
+  max-width: 46rem;
+}
+
+.signoff-note span {
+  font-size: 0.76rem;
+  color: var(--muted);
+}
+
+.signoff-note em {
+  color: var(--faint);
+  font-style: normal;
+}
+
+.signoff-note textarea {
+  font-family: var(--sans);
+  font-size: 0.86rem;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-sm);
+  background: var(--paper-2);
+  color: var(--ink);
+  resize: vertical;
+}
+
+.signoff-status {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--muted);
+  min-height: 1.2em;
+}
+
+.signoff-status:empty {
+  min-height: 0;
+}
+
+.signoff-fallback summary {
+  font-size: 0.8rem;
+  color: var(--accent);
+  cursor: pointer;
+}
+
+.signoff-fallback .sub {
+  margin: 0.5rem 0;
+  max-width: 58rem;
+}
+
+.cmd {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  background: var(--band);
+  color: var(--band-ink);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.75rem;
+  overflow-x: auto;
+  margin: 0;
+}
+
+.rb-history {
+  margin-top: 0.9rem;
+}
+
+/* Ledger ------------------------------------------------------------------ */
+
+.ledger-table {
+  font-size: 0.82rem;
+}
+
+.ledger-table td {
+  vertical-align: top;
+}
+
+.ledger-note {
+  max-width: 26rem;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.just-landed {
+  background: var(--good-bg);
+}
+
+.stat.warn .stat-value {
+  color: var(--warn);
+}
+
+.stat.warn {
+  border-color: var(--warn-rule);
+  background: var(--warn-bg);
+}

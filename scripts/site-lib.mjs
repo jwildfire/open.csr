@@ -532,6 +532,7 @@ const NAV = [
   { href: 'gallery/index.html', label: 'TFL Gallery' },
   { href: 'reader/index.html', label: 'CSR Reader' },
   { href: 'text/index.html', label: 'Text Library' },
+  { href: 'review/index.html', label: 'Review' },
   { href: 'quality/index.html', label: 'Quality' },
   { href: 'docs/index.html', label: 'Design & Research' }
 ];
@@ -1495,6 +1496,19 @@ export function renderTextLibrary({ textBlocks, ards, traceIndex }) {
     `<p>${chip('generated', 'warn')} agent-drafted, human-approved before it can assemble</p>` +
     `</div>`;
 
+  // Discovery: this page is the catalogue, /review/ is where a block is judged.
+  const pending = textBlocks.filter(
+    (block) => block.exists && block.tier === 'generated' && block.approval?.state !== 'approved'
+  ).length;
+  const reviewLink =
+    `<p class="callout${pending ? ' warn' : ''}">` +
+    (pending
+      ? `${pending} agent-drafted block${pending === 1 ? ' is' : 's are'} waiting on human judgment ` +
+        `and excluded from the assembled report. `
+      : 'Every agent-drafted block has been signed off. ') +
+    `Approve or send one back on the <a href="../review/index.html">Review page</a>, which shows the ` +
+    `prompt that produced it and every binding resolved to its ARD row.</p>`;
+
   if (!textBlocks.length) return [head, legend, empty('No text blocks registered yet.')].join('\n');
 
   const cards = textBlocks
@@ -1585,6 +1599,7 @@ export function renderTextLibrary({ textBlocks, ards, traceIndex }) {
   return [
     head,
     legend,
+    reviewLink,
     gate,
     `<div class="card-grid text-grid">${cards}</div>`,
     traceStyleNote(),
