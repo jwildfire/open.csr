@@ -1,0 +1,10 @@
+{
+  "schema": "opencsr/ard/v1",
+  "display": "t-demo",
+  "created": "2026-07-24T04:00:00Z",
+  "provenance": { "spec_hash": "sha256:0000", "data": [], "git_commit": null },
+  "rows": [
+    { "analysis": "any_ae", "group1_level": "Placebo", "variable_level": "Y",
+      "stat_name": "n", "stat": 69, "warning": null, "error": null }
+  ]
+}

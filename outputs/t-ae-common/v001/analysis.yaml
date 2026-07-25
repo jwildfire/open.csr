@@ -1,0 +1,16 @@
+id: t-ae-common
+title: "Treatment-Emergent Adverse Events by System Organ Class and Preferred Term"
+regulatory_id: AET02
+type: table
+dataset: adae
+analysis_set: safety
+denominator: adsl
+group:
+  - TRT01A
+total: false
+analyses:
+  - name: by_soc_pt
+    method: hierarchical_count
+    label: "Adverse events by system organ class and preferred term"
+    hierarchy: [AEBODSYS, AEDECOD]
+    filter: "TRTEMFL == 'Y'"

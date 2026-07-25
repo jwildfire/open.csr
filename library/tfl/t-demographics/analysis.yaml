@@ -1,0 +1,35 @@
+id: t-demographics
+title: "Demographic and Baseline Characteristics"
+regulatory_id: DMT01
+type: table
+dataset: adsl
+analysis_set: safety
+denominator: adsl
+group:
+  - TRT01A
+total: true
+analyses:
+  - name: age
+    method: continuous
+    label: "Age (years)"
+    variables: [AGE]
+  - name: agegr
+    method: categorical
+    label: "Age group"
+    variables: [AGEGR1]
+  - name: sex
+    method: categorical
+    label: "Sex"
+    variables: [SEX]
+  - name: race
+    method: categorical
+    label: "Race"
+    variables: [RACE]
+  - name: ethnic
+    method: categorical
+    label: "Ethnicity"
+    variables: [ETHNIC]
+  - name: baseline
+    method: continuous
+    label: "Baseline vital signs"
+    variables: [BLWT, BLHT, BLBMI]

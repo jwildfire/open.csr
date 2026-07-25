@@ -1,0 +1,383 @@
+{
+  "module": "templates",
+  "generated": "2026-07-25T06:39:18.051Z",
+  "records": [
+    {
+      "requirementIds": [
+        "RPT-ARD-001"
+      ],
+      "title": "Assembled CSR document model RPT-ARD-001: every display resolves to a real ARD, and the source is recorded as outputs or fixture (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/assemble-document.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "RPT-ASM-008"
+      ],
+      "title": "Assembled CSR document model RPT-ASM-008: in-text displays land in narrative sections and post-text displays only under Section 14 (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/assemble-document.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "RPT-ASM-009"
+      ],
+      "title": "Assembled CSR document model RPT-ASM-009: the same display appears in-text and post-text from a single ARD (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/assemble-document.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "RPT-OUT-001"
+      ],
+      "title": "Assembled CSR document model RPT-OUT-001: assemble() emits the documented csr.json shape (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/assemble-document.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "RPT-OUT-002"
+      ],
+      "title": "Assembled CSR document model RPT-OUT-002: the section list is flat, in document order, and every child names a parent that is present (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/assemble-document.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "RPT-OUT-003"
+      ],
+      "title": "Assembled CSR document model RPT-OUT-003: the build has no errors and every gate passes (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/assemble-document.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "RPT-OUT-004"
+      ],
+      "title": "Assembled CSR document model RPT-OUT-004: the full E3 skeleton is present, with unpopulated sections flagged rather than dropped (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/assemble-document.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "RPT-PROV-001"
+      ],
+      "title": "Assembled CSR document model RPT-PROV-001: Section 16.1.9 is generated from the ARD provenance envelopes, not authored (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/assemble-document.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-APPR-005"
+      ],
+      "title": "Assembled CSR document model TXT-APPR-005: draft generated blocks are excluded from the assembled report but still reported (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/assemble-document.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-TRACE-001"
+      ],
+      "title": "Assembled CSR document model TXT-TRACE-001: every rendered block carries its resolved bindings back to an ARD row (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/assemble-document.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-XREF-003"
+      ],
+      "title": "Assembled CSR document model TXT-XREF-003: every cross-reference in the assembled document resolved (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/assemble-document.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "RPT-OUT-005"
+      ],
+      "title": "Assembled CSR rendering RPT-OUT-005: csr.html is written and contains resolved numbers, never a raw binding (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/assemble-document.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "RPT-OUT-006"
+      ],
+      "title": "Assembled CSR rendering RPT-OUT-006: csr.html is self-contained — no external host, script or stylesheet (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/assemble-document.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "RPT-OUT-007"
+      ],
+      "title": "Assembled CSR rendering RPT-OUT-007: the rendered document shows the numbering, the gate report and the provenance appendix (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/assemble-document.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "RPT-ASM-001"
+      ],
+      "title": "Assembly configuration RPT-ASM-001: every slot targets a section that exists and accepts the content it is given (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/assemble-template.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "RPT-ASM-002"
+      ],
+      "title": "Assembly configuration RPT-ASM-002: every text block named by a slot exists in the Text Library (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/assemble-template.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "RPT-ASM-003"
+      ],
+      "title": "Assembly configuration RPT-ASM-003: 14.x numbers are assigned from post_text order, not written in the source (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/assemble-template.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "RPT-ASM-004"
+      ],
+      "title": "Assembly configuration RPT-ASM-004: an assigned display number that would collide with a section number fails the build (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/assemble-template.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "RPT-ASM-005"
+      ],
+      "title": "Assembly configuration RPT-ASM-005: a display may not occupy two post-text positions, and positions may not repeat (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/assemble-template.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "RPT-ASM-006"
+      ],
+      "title": "Assembly configuration RPT-ASM-006: a slot pointing at an unknown section, an unknown block or the wrong content type is rejected (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/assemble-template.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "RPT-ASM-007"
+      ],
+      "title": "Assembly configuration RPT-ASM-007: the assembly claims only sections the demonstration populates, and declares its scope (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/assemble-template.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "RPT-MODEL-001"
+      ],
+      "title": "ICH E3 document model RPT-MODEL-001: sections.yaml carries all sixteen top-level ICH E3 sections in order (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/assemble-template.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "RPT-MODEL-002"
+      ],
+      "title": "ICH E3 document model RPT-MODEL-002: the Section 14 substructure matches ICH E3, including 14.3.1 to 14.3.4 (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/assemble-template.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "RPT-MODEL-003"
+      ],
+      "title": "ICH E3 document model RPT-MODEL-003: Section 16 carries 16.1.1 to 16.1.12, 16.2.1 to 16.2.8, 16.3 and 16.4 (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/assemble-template.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "RPT-MODEL-004"
+      ],
+      "title": "ICH E3 document model RPT-MODEL-004: 16.1.9 is the auto-generated provenance slot (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/assemble-template.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "RPT-MODEL-005"
+      ],
+      "title": "ICH E3 document model RPT-MODEL-005: section numbers and slugs are unique and every subsection has a defined parent (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/assemble-template.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "RPT-MODEL-006"
+      ],
+      "title": "ICH E3 document model RPT-MODEL-006: every content type comes from the closed vocabulary (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/assemble-template.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "RPT-MODEL-007"
+      ],
+      "title": "ICH E3 document model RPT-MODEL-007: section level, parent and document ordering derive from the dotted number (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/assemble-template.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-ALL-001"
+      ],
+      "title": "DSP-ALL-001: every display renders a table that actually contains numbers (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-ALL-002"
+      ],
+      "title": "DSP-ALL-002: every display declares a regulatory identifier and a source line (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    }
+  ],
+  "traceability": {
+    "adamDatasets": [],
+    "adamHashes": {},
+    "ardFile": null,
+    "ardHash": null,
+    "displayFile": null,
+    "specHash": null,
+    "iteration": null,
+    "sourceCommit": null
+  },
+  "environment": {
+    "os": "Darwin 23.6.0",
+    "node": "v24.14.0",
+    "vitest": "2.1.9",
+    "r": "4.3.3"
+  },
+  "run": null
+}

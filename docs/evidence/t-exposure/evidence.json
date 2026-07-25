@@ -1,0 +1,77 @@
+{
+  "module": "t-exposure",
+  "generated": "2026-07-25T06:39:18.051Z",
+  "records": [
+    {
+      "requirementIds": [
+        "DSP-ALL-001"
+      ],
+      "title": "DSP-ALL-001: every display renders a table that actually contains numbers (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-ALL-002"
+      ],
+      "title": "DSP-ALL-002: every display declares a regulatory identifier and a source line (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-EXP-001"
+      ],
+      "title": "DSP-EXP-001: exposure duration matches the ADEX TDURD parameter (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-EXP-002"
+      ],
+      "title": "DSP-EXP-002: cumulative exposure categories are monotone non-increasing (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    }
+  ],
+  "traceability": {
+    "adamDatasets": [
+      "adex",
+      "adsl"
+    ],
+    "adamHashes": {
+      "adsl": "sha256:f9a1c3605cb277363fba0add4c4228df6a288685586575be159718696c582107",
+      "adex": "sha256:e89d24c9364ba5a20a49a86de8428a8e4d8b35899b4d154ff83f89645c733f5f"
+    },
+    "ardFile": "outputs/t-exposure/v001/ard.json",
+    "ardHash": "sha256:f6624be3da3d7343345ba139c4213486d414e8eecce6382a38fa2e64c0b70159",
+    "displayFile": "library/tfl/t-exposure/display.yaml",
+    "specHash": "sha256:dcb569bb84c890fe5d3322fbb111cdaeabd917ad388c89d10b2e754b8d322dd8",
+    "iteration": "v001",
+    "sourceCommit": null
+  },
+  "environment": {
+    "os": "Darwin 23.6.0",
+    "node": "v24.14.0",
+    "vitest": "2.1.9",
+    "r": "4.3.3"
+  },
+  "run": null
+}

@@ -1,0 +1,131 @@
+# open.csr CI (#1).
+#
+# Two independent jobs because open.csr is two stacks with one evidence stream:
+#
+#   node — the document/publishing half: vitest, the two freshness guards, and
+#          the static site build (which fails on a broken internal link or any
+#          external resource reference).
+#   r    — the statistics half: the opencsr testthat suite, re-run from scratch
+#          and compared against the committed qc/testthat-results.json so the R
+#          evidence in the repo can never be stale.
+#
+# Suite-once discipline: the node job runs vitest exactly once, writes the JSON
+# report to qc/vitest-results.json, and every later step reuses it (--no-run).
+
+name: CI
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  node:
+    name: Node — tests, guards, site
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Unit tests (JSON report reused by the evidence guard)
+        run: |
+          mkdir -p qc
+          npx vitest run --reporter=default --reporter=json \
+            --outputFile=qc/vitest-results.json
+
+      - name: Requirement extracts are fresh
+        run: node scripts/requirements.mjs --check
+
+      - name: Evidence sets are fresh
+        run: node scripts/evidence.mjs --check --no-run
+
+      - name: Assemble the CSR (enforces the D7 gates)
+        # Re-assembles from library/ + outputs/ so the binding-resolution,
+        # numeric-fidelity, cross-reference and approval gates run on every PR.
+        # Non-zero exit on any gate failure.
+        run: node scripts/assemble.mjs
+
+      - name: Build the demo site
+        run: node scripts/site.mjs
+
+      - name: Upload the built site
+        uses: actions/upload-artifact@v4
+        with:
+          name: site
+          path: site/_build
+          retention-days: 14
+
+  r:
+    name: R — opencsr testthat suite
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      R_KEEP_PKG_SOURCE: yes
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: 'release'
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          working-directory: pipeline
+          extra-packages: |
+            any::testthat
+            any::jsonlite
+            any::pkgload
+            any::pharmaverseadam
+            any::cardx
+
+      - name: Run the testthat suite
+        run: Rscript qc/run-tests.R
+
+      - name: Committed R results match this run
+        # run-tests.R rewrites qc/testthat-results.json; anything but a
+        # provenance-only difference means the committed evidence is stale.
+        run: |
+          node -e '
+            const fs = require("node:fs");
+            const { execSync } = require("node:child_process");
+            const fresh = JSON.parse(fs.readFileSync("qc/testthat-results.json", "utf8"));
+            const committed = JSON.parse(
+              execSync("git show HEAD:qc/testthat-results.json", { encoding: "utf8" })
+            );
+            const key = (r) => `${r.file}|${r.test}|${r.status}`;
+            const a = new Set((committed.records || []).map(key));
+            const b = new Set((fresh.records || []).map(key));
+            const diff = [
+              ...[...a].filter((k) => !b.has(k)).map((k) => `only in the commit: ${k}`),
+              ...[...b].filter((k) => !a.has(k)).map((k) => `only in this run:   ${k}`)
+            ];
+            if (diff.length) {
+              console.error("qc/testthat-results.json is stale:");
+              diff.forEach((d) => console.error("  - " + d));
+              process.exit(1);
+            }
+            console.log(`OK — ${b.size} R test records match the commit.`);
+          '
+
+      - name: Upload the R results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: testthat-results
+          path: qc/testthat-results.json
+          retention-days: 14

@@ -1,0 +1,27 @@
+display: t-ae-common
+iterations:
+- version: v001
+  created: '2026-07-25T06:39:08Z'
+  actor: '@jwildfire'
+  change_request: 'Initial generation of AET02 from the statistical analysis plan
+    shell: treatment-emergent adverse events by system organ class and preferred term,
+    with a 5% threshold on the in-text variant.'
+  git_commit: ''
+  spec_hash: sha256:750a0b3607475b3e8ee4dc247d74d6b2c1e35c5dcd06f3ddadab7ac15e059567
+  display_hash: sha256:dc5fa1c19b7b9cd79a571c0394ccfefd87cdd56bab75caea1aee7dfca465ab22
+  ard_hash: sha256:e62a942e524bb3fce5634f767adf632c1480927164d9cb276123df1a0624c868
+  ard_rows: 2286
+- version: v002
+  created: '2026-07-25T06:39:10Z'
+  actor: '@medical-writer'
+  change_request: 'Change request CR-001 (medical writer, Section 12.2.1 review):
+    add an All Subjects (Total) column to AET02 so the in-text summary can quote a
+    pooled overall rate alongside the by-arm rates. Applied as a spec edit - analysis.yaml
+    `total: false` -> `true`, display.yaml `columns.order` gains Total - and regenerated;
+    no output was hand-edited.'
+  git_commit: ''
+  spec_hash: sha256:a45e3a1f2586dd0bffa2e2f660162d958e9ae20f6eb87df9511b7d49b5c74203
+  display_hash: sha256:c749510c8b10f6e4f45381eacb9d85aca93d56e62e9b5f2b71f41d050d112433
+  ard_hash: sha256:ed1716a6a94e4c3f679686f1fc8842f47e793348b155b16b8c18cfc275219fa9
+  ard_rows: 3048
+

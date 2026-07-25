@@ -1,0 +1,53 @@
+id: t-exposure
+title: "Extent of Exposure to Study Drug"
+study: CDISCPILOT01
+population_label: "Safety Analysis Set"
+cutoff: "2014-07-01"
+source: "Source: adex, adsl (pharmaverseadam). Data cut-off: 2014-07-01."
+footnotes:
+  - "Duration, total dose, average daily dose and dose intensity are the overall-study ADEX parameters TDURD, TDOSE, AVDDSE and TDOSINT respectively."
+  - "Exposure categories are cumulative: a subject exposed for 200 days is counted in every category up to 180 days."
+  - "Q1 and Q3 are type-2 (SAS-compatible) quantiles, as computed by {cards}; they differ from R\u2019s default type-7 quantiles."
+  - "Percentages are based on the number of subjects in the safety analysis set for each treatment group."
+  - "Placebo subjects have no ADEX dose-intensity (TDOSINT) records because planned placebo dose is zero; the dose-intensity rows are therefore empty for that column."
+columns:
+  order: [Placebo, "Xanomeline Low Dose", "Xanomeline High Dose", Total]
+format:
+  digits:
+    p: 1
+    mean: 1
+    sd: 2
+    median: 1
+    min: 0
+    max: 0
+rows:
+  - { label: "Duration of exposure (days)", section: true }
+  - { analysis: duration, variable: AVAL, pattern: "{N}", label: "n", indent: 1 }
+  - { analysis: duration, variable: AVAL, pattern: mean_sd, label: "Mean (SD)", indent: 1 }
+  - { analysis: duration, variable: AVAL, pattern: median, label: "Median", indent: 1 }
+  - { analysis: duration, variable: AVAL, pattern: q1_q3, label: "Q1, Q3", indent: 1 }
+  - { analysis: duration, variable: AVAL, pattern: range, label: "Min, Max", indent: 1 }
+  - { label: "Total dose administered (mg)", section: true }
+  - { analysis: total_dose, variable: AVAL, pattern: mean_sd, label: "Mean (SD)", indent: 1,
+      digits: { mean: 1, sd: 1 } }
+  - { analysis: total_dose, variable: AVAL, pattern: median, label: "Median", indent: 1 }
+  - { analysis: total_dose, variable: AVAL, pattern: range, label: "Min, Max", indent: 1 }
+  - { label: "Average daily dose (mg)", section: true }
+  - { analysis: avg_daily_dose, variable: AVAL, pattern: mean_sd, label: "Mean (SD)", indent: 1,
+      digits: { mean: 2, sd: 2 } }
+  - { analysis: avg_daily_dose, variable: AVAL, pattern: median, label: "Median", indent: 1,
+      digits: { median: 2 } }
+  - { label: "Overall dose intensity (%)", section: true }
+  - { analysis: dose_intensity, variable: AVAL, pattern: "{N}", label: "n", indent: 1 }
+  - { analysis: dose_intensity, variable: AVAL, pattern: mean_sd, label: "Mean (SD)", indent: 1,
+      digits: { mean: 1, sd: 2 } }
+  - { analysis: dose_intensity, variable: AVAL, pattern: median, label: "Median", indent: 1 }
+  - { label: "Cumulative exposure, n (%)", section: true }
+  - { analysis: dur_any, label: "≥ 1 day", pattern: n_pct, indent: 1 }
+  - { analysis: dur_30, label: "≥ 30 days", pattern: n_pct, indent: 1 }
+  - { analysis: dur_90, label: "≥ 90 days", pattern: n_pct, indent: 1 }
+  - { analysis: dur_180, label: "≥ 180 days", pattern: n_pct, indent: 1 }
+variants:
+  post_text: {}
+  in_text:
+    title: "Extent of Exposure (Summary)"

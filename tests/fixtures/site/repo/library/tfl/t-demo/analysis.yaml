@@ -1,0 +1,14 @@
+id: t-demo
+title: "Overview of Adverse Events"
+regulatory_id: AET01
+type: table
+dataset: adae
+analysis_set: safety
+group:
+  - TRT01A
+total: true
+analyses:
+  - name: any_ae
+    method: subject_count
+    label: "Subjects with any adverse event"
+denominator: adsl

@@ -1,0 +1,148 @@
+{
+  "component": "t-ae-overview",
+  "matrix": "displays.md",
+  "requirements": {
+    "DSP-DEMO-001": "The age summary (n, mean, SD, median, min, max) by treatment arm equals the value computed directly from ADSL, at the display's declared precision.",
+    "DSP-DEMO-002": "Sex, race and age-group counts and percentages by treatment arm and overall equal the values computed directly from ADSL.",
+    "DSP-DISP-001": "Randomised, treated, completed and discontinued counts reproduce `EOSSTT` by treatment arm, with percentages based on randomised subjects.",
+    "DSP-DISP-002": "The derived discontinuation reasons partition the discontinued subjects exactly, in every column including Total, and the death count matches `DTHFL`.",
+    "DSP-EXP-001": "Duration-of-exposure statistics equal those computed directly from the ADEX `TDURD` parameter for each treatment arm.",
+    "DSP-EXP-002": "Cumulative exposure categories are monotone non-increasing and each equals the number of subjects reaching that duration threshold.",
+    "DSP-AE-001": "Any-AE and serious-AE subject counts and percentages equal the values computed directly from ADAE over the safety analysis set.",
+    "DSP-AE-002": "Severity, seriousness and relatedness rows never exceed the any-AE row in any column — a subject counted in a subset must be counted in the whole.",
+    "DSP-AE-003": "The event-count row supplied by `custom.R` counts ADAE records, not subjects, and exceeds the number of subjects reporting them.",
+    "DSP-AE-004": "System organ class and preferred term subject counts equal the values computed directly from ADAE, with each subject counted once per term.",
+    "DSP-AE-005": "The in-text variant of AET02 applies the 5% threshold declared in its spec: terms reaching 5% in any treatment group are shown, terms below it in every group are not, and the full display is unaffected.",
+    "DSP-SAE-001": "The serious-AE listing has exactly one row per `AESER == \"Y\"` record, reports the recorded preferred terms and subjects, and is sorted as its spec declares.",
+    "DSP-ALL-001": "Every display in the library renders a table containing real numbers — no shells, no placeholder output.",
+    "DSP-ALL-002": "Every display declares a regulatory identifier, a source line naming the data cut-off, and at least one footnote."
+  },
+  "rows": [
+    {
+      "id": "DSP-DEMO-001",
+      "area": "",
+      "text": "The age summary (n, mean, SD, median, min, max) by treatment arm equals the value computed directly from ADSL, at the display's declared precision.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "DSP-DEMO-002",
+      "area": "",
+      "text": "Sex, race and age-group counts and percentages by treatment arm and overall equal the values computed directly from ADSL.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "DSP-DISP-001",
+      "area": "",
+      "text": "Randomised, treated, completed and discontinued counts reproduce `EOSSTT` by treatment arm, with percentages based on randomised subjects.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "DSP-DISP-002",
+      "area": "",
+      "text": "The derived discontinuation reasons partition the discontinued subjects exactly, in every column including Total, and the death count matches `DTHFL`.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "DSP-EXP-001",
+      "area": "",
+      "text": "Duration-of-exposure statistics equal those computed directly from the ADEX `TDURD` parameter for each treatment arm.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "DSP-EXP-002",
+      "area": "",
+      "text": "Cumulative exposure categories are monotone non-increasing and each equals the number of subjects reaching that duration threshold.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "DSP-AE-001",
+      "area": "",
+      "text": "Any-AE and serious-AE subject counts and percentages equal the values computed directly from ADAE over the safety analysis set.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "DSP-AE-002",
+      "area": "",
+      "text": "Severity, seriousness and relatedness rows never exceed the any-AE row in any column — a subject counted in a subset must be counted in the whole.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "DSP-AE-003",
+      "area": "",
+      "text": "The event-count row supplied by `custom.R` counts ADAE records, not subjects, and exceeds the number of subjects reporting them.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "DSP-AE-004",
+      "area": "",
+      "text": "System organ class and preferred term subject counts equal the values computed directly from ADAE, with each subject counted once per term.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "DSP-AE-005",
+      "area": "",
+      "text": "The in-text variant of AET02 applies the 5% threshold declared in its spec: terms reaching 5% in any treatment group are shown, terms below it in every group are not, and the full display is unaffected.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "DSP-SAE-001",
+      "area": "",
+      "text": "The serious-AE listing has exactly one row per `AESER == \"Y\"` record, reports the recorded preferred terms and subjects, and is sorted as its spec declares.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "DSP-ALL-001",
+      "area": "",
+      "text": "Every display in the library renders a table containing real numbers — no shells, no placeholder output.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "DSP-ALL-002",
+      "area": "",
+      "text": "Every display declares a regulatory identifier, a source line naming the data cut-off, and at least one footnote.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    }
+  ]
+}

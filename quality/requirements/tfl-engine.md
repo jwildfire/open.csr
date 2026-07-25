@@ -1,0 +1,104 @@
+# Requirement matrix — TFL engine (`opencsr`)
+
+Requirements for the R pipeline that turns ADaM data into Analysis Results Data
+and rendered displays: data preparation, spec validation, ARD construction, ARD
+serialisation, rendering, and the iteration ledger behind the change-request
+loop.
+
+Scope: the R package in [`pipeline/`](../../pipeline). Display-level requirements
+(the correctness of individual tables and listings) live in
+[`displays.md`](displays.md).
+
+**Verification** names the test file that carries the requirement ID in its test
+titles. Every ID below is cited by at least one `testthat` test, and every ID a
+test cites appears below — both directions are enforced by `TFL-QC-002` and
+`TFL-QC-003`.
+
+## Data preparation
+
+| ID | Requirement | Type | Verification | Status |
+|---|---|---|---|---|
+| TFL-PREP-001 | `prepare_data()` excludes all screen-failure subjects (`ARM == "Screen Failure"`) from ADSL and restricts every other prepared dataset to the surviving subjects. | Functional | `test-data-prep.R` | Verified |
+| TFL-PREP-002 | `ITTFL` is derived from randomisation (`!is.na(RANDDT)`); `SAFFL` is used as shipped with `NA` recoded to `"N"`. | Functional | `test-data-prep.R` | Verified |
+| TFL-PREP-003 | `COMPLFL` and the derived `DISCREAS` reproduce `EOSSTT` exactly and partition the discontinued subjects. | Functional | `test-data-prep.R` | Verified |
+| TFL-PREP-004 | Baseline weight, height and BMI are merged onto ADSL from the ADVS records flagged `ABLFL == "Y"`, so display code never joins subject-level data. | Functional | `test-data-prep.R` | Verified |
+| TFL-PREP-005 | Every prepared dataset is described in a manifest with row/column counts, a SHA-256 content hash, and the source package and version. | Traceability | `test-data-prep.R` | Verified |
+| TFL-PREP-006 | The analysis-set registry maps `analysis_set` keys onto population flags and rejects unknown sets and datasets lacking the required flag. | Functional | `test-data-prep.R` | Verified |
+| TFL-PREP-007 | Treatment arms are ordered by dose, not alphabetically, in every prepared dataset. | Functional | `test-data-prep.R` | Verified |
+
+## Specification validation
+
+| ID | Requirement | Type | Verification | Status |
+|---|---|---|---|---|
+| TFL-SPEC-001 | An analysis method outside the documented vocabulary is rejected, naming the offending analysis and listing the known methods. | Functional | `test-spec-validation.R` | Verified |
+| TFL-SPEC-002 | Missing required keys and missing per-method fields (`variables`, `hierarchy`, `custom`) are rejected before any `{cards}` call is attempted. | Functional | `test-spec-validation.R` | Verified |
+| TFL-SPEC-003 | A display specification must carry a study identifier, a population label and a data cut-off — the ICH E3 header requirement — as non-empty strings. | Regulatory | `test-spec-validation.R` | Verified |
+| TFL-SPEC-004 | Row-plan keys that YAML 1.1 silently coerces to booleans (bare `n`, `y`, `no`, `on`, `off`) are rejected with an explanation rather than rendered as `FALSE`. | Robustness | `test-spec-validation.R` | Verified |
+| TFL-SPEC-005 | A display row referencing an analysis the analysis spec does not define, or an id mismatch between the two specs, fails the build. | Functional | `test-spec-validation.R` | Verified |
+| TFL-SPEC-006 | Every display committed to `library/tfl/` validates, has matching ids, and declares a `post_text` variant. | Functional | `test-spec-validation.R` | Verified |
+
+## ARD construction
+
+| ID | Requirement | Type | Verification | Status |
+|---|---|---|---|---|
+| TFL-ARD-001 | `build_ard()` emits one row per computed statistic, carrying the `analyses[].name` that produced it, and its continuous statistics equal a direct `dplyr` computation. | Functional | `test-ard-build.R` | Verified |
+| TFL-ARD-002 | `subject_count` counts distinct subjects over the analysis-set subject denominator, never over event records. | Functional | `test-ard-build.R` | Verified |
+| TFL-ARD-003 | `hierarchical_count` nests inner terms under their outer level, counts each subject once per level, and matches a direct `dplyr` computation. | Functional | `test-ard-build.R` | Verified |
+| TFL-ARD-004 | The total column is computed by the same code path as the treatment columns and is labelled with the grouping variable, not an internal constant. | Functional | `test-ard-build.R` | Verified |
+| TFL-ARD-005 | `listing` passes records through as one ARD row per record per listed variable, addressable by record index. | Functional | `test-ard-build.R` | Verified |
+| TFL-ARD-006 | An analysis may dispatch to a function in the display's `custom.R`; a missing custom function is a build failure, not a silent skip. | Functional | `test-ard-build.R` | Verified |
+| TFL-ARD-007 | An analysis `filter` restricts the records summarised, and a filter that is not one logical per row or references an unknown variable fails loudly. | Functional | `test-ard-build.R` | Verified |
+| TFL-ARD-008 | `{cards}`' per-statistic `warning` and `error` values are retained as ARD columns; statistics computed on empty groups are recorded, not dropped. | Quality evidence | `test-ard-build.R` | Verified |
+| TFL-ARD-009 | A binding address resolves to exactly one ARD row; zero or multiple matches raise an error. | Traceability | `test-ard-build.R` | Verified |
+| TFL-QNT-001 | Quartiles use the SAS-compatible type-2 quantile definition, not R's default type 7. | Regulatory | `test-ard-build.R` | Verified |
+
+## ARD serialisation
+
+| ID | Requirement | Type | Verification | Status |
+|---|---|---|---|---|
+| TFL-IO-001 | `ard.json` conforms to the owned schema: `schema`, `display`, `created`, `provenance`, `rows`, with the full thirteen-key row shape on every row. | Interface | `test-ard-io.R` | Verified |
+| TFL-IO-002 | The provenance envelope records spec and display hashes, per-dataset hashes and versions, the R and package environment, and the git commit. | Traceability | `test-ard-io.R` | Verified |
+| TFL-IO-003 | `write_ard()` / `read_ard()` round-trip an ARD without loss; numeric statistics stay numeric. | Interface | `test-ard-io.R` | Verified |
+| TFL-IO-004 | Reading refuses a document that is not an `opencsr/ard/v1` ARD; writing refuses rows missing schema columns. | Robustness | `test-ard-io.R` | Verified |
+| TFL-IO-005 | Every committed ARD is readable, names only analyses its spec defines, and carries no statistic-level errors. | Quality evidence | `test-ard-io.R` | Verified |
+
+## Formatting and precision
+
+| ID | Requirement | Type | Verification | Status |
+|---|---|---|---|---|
+| TFL-FMT-001 | Rounding is half away from zero (SAS behaviour), not R's round-half-to-even, and is stable against binary representation error. | Regulatory | `test-formatting.R` | Verified |
+| TFL-FMT-002 | Proportions are scaled to percent and every statistic is rendered at its declared precision, including trailing zeros. | Functional | `test-formatting.R` | Verified |
+| TFL-FMT-003 | The digit plan is declarative: a display-level plan applies by default and a row-level plan overrides it for variables with different collected precision. | Functional | `test-formatting.R` | Verified |
+
+## Rendering
+
+| ID | Requirement | Type | Verification | Status |
+|---|---|---|---|---|
+| TFL-RND-001 | Rendered HTML is a standalone document with inline CSS and no external stylesheet, script or CDN reference. | Interface | `test-render.R` | Verified |
+| TFL-RND-002 | In-text and post-text variants render from one ARD; the in-text variant is a strict subset of the post-text variant and applies the declared percentage threshold exactly. | Functional | `test-render.R` | Verified |
+| TFL-RND-003 | Columns follow the declared order, carry group headcounts, and silently omit declared columns absent from the ARD. | Functional | `test-render.R` | Verified |
+| TFL-RND-004 | Every rendered display states its study, its analysis set and its data cut-off, and carries a source line. | Regulatory | `test-render.R` | Verified |
+| TFL-RND-005 | Rendering a variant the display does not declare is an error. | Robustness | `test-render.R` | Verified |
+| TFL-RND-006 | Section headings left without data rows are dropped, and indentation distinguishes headings from the rows beneath them. | Functional | `test-render.R` | Verified |
+| TFL-RND-007 | A listing renders one column per listed variable with the label declared in the display spec. | Functional | `test-render.R` | Verified |
+
+## Iteration ledger and regeneration
+
+| ID | Requirement | Type | Verification | Status |
+|---|---|---|---|---|
+| TFL-ITER-001 | `regenerate()` writes a complete iteration directory — spec snapshots, `ard.json`, rendered variants and a manifest — with spec snapshots byte-identical to the specs read. | Functional | `test-regenerate.R` | Verified |
+| TFL-ITER-002 | The iteration manifest records the actor, the change request, the regulatory identifier, the ARD hash, row counts, error counts, the rendered variants and the environment. | Traceability | `test-regenerate.R` | Verified |
+| TFL-ITER-003 | A second regeneration — whether through `regenerate()` or `regenerate_all()` — allocates a new version and never overwrites an earlier one; `current.json` moves and the ledger grows. | Functional | `test-regenerate.R` | Verified |
+| TFL-ITER-004 | Version allocation takes the maximum of the filesystem and the ledger, so a partially written or partially deleted iteration cannot be silently overwritten. | Robustness | `test-regenerate.R` | Verified |
+| TFL-ITER-005 | The committed `t-ae-common` ledger records a real two-iteration change-request story: differing spec and ARD hashes, a recorded request and actor, and unchanged values for the numbers the change did not touch. | Traceability | `test-regenerate.R` | Verified |
+| TFL-ITER-006 | Regenerating a display whose spec id does not match its directory is an error. | Robustness | `test-regenerate.R` | Verified |
+| TFL-ITER-007 | Every display in the library has a current iteration on disk, referenced by both `current.json` and the ledger. | Quality evidence | `test-regenerate.R` | Verified |
+
+## Quality framework guards
+
+| ID | Requirement | Type | Verification | Status |
+|---|---|---|---|---|
+| TFL-QC-001 | Every `testthat` test name matches `<REQ-ID>[, <REQ-ID>]: <description> (#<issue>)`. | Process | `test-naming-convention.R` | Verified |
+| TFL-QC-002 | Every requirement ID cited by a test exists in a matrix under `quality/requirements/`. | Process | `test-naming-convention.R` | Verified |
+| TFL-QC-003 | Every requirement in a matrix is cited by at least one test — no untested claims. | Process | `test-naming-convention.R` | Verified |
+| TFL-QC-004 | Requirement matrices use the five columns ID, Requirement, Type, Verification and Status, with five cells on every requirement row. | Process | `test-naming-convention.R` | Verified |

@@ -1,0 +1,338 @@
+{
+  "component": "quality",
+  "matrix": "quality.md",
+  "requirements": {
+    "QC-MATRIX-001": "A requirement matrix row contributes to the extract only when its ID cell is exactly a requirement ID matching `^[A-Z]{2,4}-[A-Z]+-\\d+[A-D]?$` and its requirement text is non-empty.",
+    "QC-MATRIX-002": "When a table header row is present, columns are located by name (ID, Area, Requirement, Source, Evidence Type, Status); the safety.viz positional layout is the fallback.",
+    "QC-MATRIX-003": "Requirement text containing an escaped pipe (`|`) is extracted intact rather than split into two cells.",
+    "QC-MATRIX-004": "Tables in the document that are not requirement tables, and prose containing requirement IDs, contribute nothing to the extract.",
+    "QC-MATRIX-005": "The committed extract is timestamp-free and a pure function of the matrix content, so the freshness guard is a plain content comparison.",
+    "QC-DRIFT-001": "`requirements --check` reports added, removed and text-changed requirement IDs and exits non-zero when the committed extract differs from a fresh extraction.",
+    "QC-DRIFT-002": "`evidence --check` reports missing tests, new tests and pass/fail changes, and ignores provenance and traceability fields entirely.",
+    "QC-NAME-001": "Every test title in both suites matches `\"<REQ-ID>[, <REQ-ID>]: <description> (#<issue>)\"`; a guard test in each suite enforces it.",
+    "QC-NAME-002": "Requirement IDs and issue references are parsed out of a test title, supporting several IDs and several issue refs in one title.",
+    "QC-EVID-001": "Vitest JSON reporter output normalizes into contracts §8 records carrying `requirementIds`, `title`, `suite`, `passed` and `file`.",
+    "QC-EVID-002": "testthat results from `qc/testthat-results.json` normalize into the same record shape with `suite: \"r-unit\"`.",
+    "QC-EVID-003": "Any testthat status that is not exactly `pass` (fail, error, skip) records as not passed, so the evidence page never overstates a run.",
+    "QC-EVID-004": "Human review of a text block records as a `text-review` suite record carrying `reviewedBy` and `reviewedAt`, so one page shows automated and human evidence together.",
+    "QC-ROUTE-001": "A JS test file routes to its module by path — `tests/unit/<module>/**` or `tests/unit/<module>-<topic>.test.js`.",
+    "QC-ROUTE-002": "An R test file `test-<module>[-<topic>].R` routes to `<module>` by longest-prefix match against the registry.",
+    "QC-ROUTE-003": "A test that routes to no module is shared scaffold and is duplicated into every module's evidence set, so each set is self-contained.",
+    "QC-ROUTE-004": "The module universe comes from `site/config.json` — components plus displays — so registering a display is all it takes for its evidence set to appear.",
+    "QC-ROUTE-005": "A component whose test files are named by topic rather than by module declares its file stems in the registry (`testPrefixes`), and the longest declared prefix wins.",
+    "QC-ROUTE-006": "A whole suite may be owned by one component through the registry (`suites`), which is how `text-review` records route to the Text Library regardless of file path.",
+    "QC-ROUTE-007": "When a test file covers several modules, records route by the requirement-ID prefixes their owning registry entries declare; a record whose IDs no entry claims stays shared.",
+    "QC-EVID-005": "A text block awaiting human approval is reported as pending review and blocks assembly, but does not fail the evidence run — draft is a lifecycle state, not a defect.",
+    "QC-UNRES-001": "Requirement IDs referenced by a test but defined in no matrix are reported as UNRESOLVED at build time and rendered on the Quality page.",
+    "QC-UNRES-002": "Reviewed requirements that no test references are reported as uncovered, with a coverage proportion per component.",
+    "QC-UNRES-003": "An ID defined in a sibling component's matrix counts as resolved, not unresolved, so shared IDs do not produce false alarms.",
+    "QC-SITE-001": "The shared shell substitutes title, description, navigation and root prefix, so one build serves the site at any mount depth via relative URLs.",
+    "QC-SITE-002": "The build fails when any internal `href`/`src` in the emitted HTML does not resolve to an emitted file.",
+    "QC-SITE-003": "The build fails when the emitted site references any external resource — script, stylesheet, font, image or CSS import — so the whole site works offline.",
+    "QC-SITE-004": "HTML embedded from the pipeline (a rendered display, an assembled fragment) is stripped of scripts, event handlers, external stylesheets and document wrappers before it is placed on a page.",
+    "QC-SITE-005": "A registry entry's status is derived from the filesystem — `planned` until an ARD exists, `built` once it does, `evidenced` once an evidence set does.",
+    "QC-SITE-006": "Every page renders a documented \"not yet generated\" state when its input is absent, and the build never throws on a missing or malformed input.",
+    "QC-SITE-007": "A display directory present on disk but absent from the registry renders as an unregistered card rather than disappearing from the gallery.",
+    "QC-CI-001": "CI runs the JS suite, both freshness guards and the site build on every pull request, and runs the R suite in a separate job.",
+    "QC-CI-002": "The built site publishes to GitHub Pages from the default branch through `actions/deploy-pages` under the `pages` concurrency group."
+  },
+  "rows": [
+    {
+      "id": "QC-MATRIX-001",
+      "area": "Extraction",
+      "text": "A requirement matrix row contributes to the extract only when its ID cell is exactly a requirement ID matching `^[A-Z]{2,4}-[A-Z]+-\\d+[A-D]?$` and its requirement text is non-empty.",
+      "source": "D11",
+      "evidence": "js-unit",
+      "link": "requirements-matrix.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-MATRIX-002",
+      "area": "Extraction",
+      "text": "When a table header row is present, columns are located by name (ID, Area, Requirement, Source, Evidence Type, Status); the safety.viz positional layout is the fallback.",
+      "source": "open.csr",
+      "evidence": "js-unit",
+      "link": "requirements-matrix.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-MATRIX-003",
+      "area": "Extraction",
+      "text": "Requirement text containing an escaped pipe (`|`) is extracted intact rather than split into two cells.",
+      "source": "safety.viz",
+      "evidence": "js-unit",
+      "link": "requirements-matrix.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-MATRIX-004",
+      "area": "Extraction",
+      "text": "Tables in the document that are not requirement tables, and prose containing requirement IDs, contribute nothing to the extract.",
+      "source": "safety.viz",
+      "evidence": "js-unit",
+      "link": "requirements-matrix.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-MATRIX-005",
+      "area": "Extraction",
+      "text": "The committed extract is timestamp-free and a pure function of the matrix content, so the freshness guard is a plain content comparison.",
+      "source": "safety.viz",
+      "evidence": "js-unit",
+      "link": "requirements-matrix.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-DRIFT-001",
+      "area": "Guards",
+      "text": "`requirements --check` reports added, removed and text-changed requirement IDs and exits non-zero when the committed extract differs from a fresh extraction.",
+      "source": "safety.viz",
+      "evidence": "js-unit",
+      "link": "requirements-matrix.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-DRIFT-002",
+      "area": "Guards",
+      "text": "`evidence --check` reports missing tests, new tests and pass/fail changes, and ignores provenance and traceability fields entirely.",
+      "source": "safety.viz",
+      "evidence": "js-unit",
+      "link": "evidence-normalize.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-NAME-001",
+      "area": "Convention",
+      "text": "Every test title in both suites matches `\"<REQ-ID>[, <REQ-ID>]: <description> (#<issue>)\"`; a guard test in each suite enforces it.",
+      "source": "D11",
+      "evidence": "js-unit",
+      "link": "site-convention.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-NAME-002",
+      "area": "Convention",
+      "text": "Requirement IDs and issue references are parsed out of a test title, supporting several IDs and several issue refs in one title.",
+      "source": "safety.viz",
+      "evidence": "js-unit",
+      "link": "evidence-normalize.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-EVID-001",
+      "area": "Evidence",
+      "text": "Vitest JSON reporter output normalizes into contracts §8 records carrying `requirementIds`, `title`, `suite`, `passed` and `file`.",
+      "source": "contracts §8",
+      "evidence": "js-unit",
+      "link": "evidence-normalize.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-EVID-002",
+      "area": "Evidence",
+      "text": "testthat results from `qc/testthat-results.json` normalize into the same record shape with `suite: \"r-unit\"`.",
+      "source": "contracts §8",
+      "evidence": "js-unit",
+      "link": "evidence-normalize.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-EVID-003",
+      "area": "Evidence",
+      "text": "Any testthat status that is not exactly `pass` (fail, error, skip) records as not passed, so the evidence page never overstates a run.",
+      "source": "open.csr",
+      "evidence": "js-unit",
+      "link": "evidence-normalize.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-EVID-004",
+      "area": "Evidence",
+      "text": "Human review of a text block records as a `text-review` suite record carrying `reviewedBy` and `reviewedAt`, so one page shows automated and human evidence together.",
+      "source": "research §16",
+      "evidence": "js-unit",
+      "link": "evidence-normalize.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-ROUTE-001",
+      "area": "Routing",
+      "text": "A JS test file routes to its module by path — `tests/unit/<module>/**` or `tests/unit/<module>-<topic>.test.js`.",
+      "source": "safety.viz",
+      "evidence": "js-unit",
+      "link": "evidence-normalize.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-ROUTE-002",
+      "area": "Routing",
+      "text": "An R test file `test-<module>[-<topic>].R` routes to `<module>` by longest-prefix match against the registry.",
+      "source": "research §13",
+      "evidence": "js-unit",
+      "link": "evidence-normalize.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-ROUTE-003",
+      "area": "Routing",
+      "text": "A test that routes to no module is shared scaffold and is duplicated into every module's evidence set, so each set is self-contained.",
+      "source": "safety.viz",
+      "evidence": "js-unit",
+      "link": "evidence-normalize.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-ROUTE-004",
+      "area": "Routing",
+      "text": "The module universe comes from `site/config.json` — components plus displays — so registering a display is all it takes for its evidence set to appear.",
+      "source": "contracts §9",
+      "evidence": "js-unit",
+      "link": "evidence-normalize.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-ROUTE-005",
+      "area": "Routing",
+      "text": "A component whose test files are named by topic rather than by module declares its file stems in the registry (`testPrefixes`), and the longest declared prefix wins.",
+      "source": "open.csr",
+      "evidence": "js-unit",
+      "link": "evidence-normalize.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-ROUTE-006",
+      "area": "Routing",
+      "text": "A whole suite may be owned by one component through the registry (`suites`), which is how `text-review` records route to the Text Library regardless of file path.",
+      "source": "research §16",
+      "evidence": "js-unit",
+      "link": "evidence-normalize.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-ROUTE-007",
+      "area": "Routing",
+      "text": "When a test file covers several modules, records route by the requirement-ID prefixes their owning registry entries declare; a record whose IDs no entry claims stays shared.",
+      "source": "open.csr",
+      "evidence": "js-unit",
+      "link": "evidence-normalize.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-EVID-005",
+      "area": "Evidence",
+      "text": "A text block awaiting human approval is reported as pending review and blocks assembly, but does not fail the evidence run — draft is a lifecycle state, not a defect.",
+      "source": "D8",
+      "evidence": "js-unit",
+      "link": "evidence-normalize.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-UNRES-001",
+      "area": "Resolution",
+      "text": "Requirement IDs referenced by a test but defined in no matrix are reported as UNRESOLVED at build time and rendered on the Quality page.",
+      "source": "research §16",
+      "evidence": "js-unit",
+      "link": "requirements-matrix.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-UNRES-002",
+      "area": "Resolution",
+      "text": "Reviewed requirements that no test references are reported as uncovered, with a coverage proportion per component.",
+      "source": "research §16",
+      "evidence": "js-unit",
+      "link": "requirements-matrix.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-UNRES-003",
+      "area": "Resolution",
+      "text": "An ID defined in a sibling component's matrix counts as resolved, not unresolved, so shared IDs do not produce false alarms.",
+      "source": "research §16",
+      "evidence": "js-unit",
+      "link": "requirements-matrix.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-SITE-001",
+      "area": "Site",
+      "text": "The shared shell substitutes title, description, navigation and root prefix, so one build serves the site at any mount depth via relative URLs.",
+      "source": "safety.viz",
+      "evidence": "js-unit",
+      "link": "site-render.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-SITE-002",
+      "area": "Site",
+      "text": "The build fails when any internal `href`/`src` in the emitted HTML does not resolve to an emitted file.",
+      "source": "safety.viz",
+      "evidence": "js-unit",
+      "link": "site-validate.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-SITE-003",
+      "area": "Site",
+      "text": "The build fails when the emitted site references any external resource — script, stylesheet, font, image or CSS import — so the whole site works offline.",
+      "source": "D11",
+      "evidence": "js-unit",
+      "link": "site-validate.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-SITE-004",
+      "area": "Site",
+      "text": "HTML embedded from the pipeline (a rendered display, an assembled fragment) is stripped of scripts, event handlers, external stylesheets and document wrappers before it is placed on a page.",
+      "source": "open.csr",
+      "evidence": "js-unit",
+      "link": "site-validate.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-SITE-005",
+      "area": "Site",
+      "text": "A registry entry's status is derived from the filesystem — `planned` until an ARD exists, `built` once it does, `evidenced` once an evidence set does.",
+      "source": "contracts §9",
+      "evidence": "js-unit",
+      "link": "site-render.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-SITE-006",
+      "area": "Site",
+      "text": "Every page renders a documented \"not yet generated\" state when its input is absent, and the build never throws on a missing or malformed input.",
+      "source": "open.csr",
+      "evidence": "js-unit",
+      "link": "site-render.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-SITE-007",
+      "area": "Site",
+      "text": "A display directory present on disk but absent from the registry renders as an unregistered card rather than disappearing from the gallery.",
+      "source": "open.csr",
+      "evidence": "js-unit",
+      "link": "site-render.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-CI-001",
+      "area": "CI",
+      "text": "CI runs the JS suite, both freshness guards and the site build on every pull request, and runs the R suite in a separate job.",
+      "source": "D11",
+      "evidence": "ci",
+      "link": ".github/workflows/ci.yml",
+      "status": "draft"
+    },
+    {
+      "id": "QC-CI-002",
+      "area": "CI",
+      "text": "The built site publishes to GitHub Pages from the default branch through `actions/deploy-pages` under the `pages` concurrency group.",
+      "source": "D11",
+      "evidence": "ci",
+      "link": ".github/workflows/pages.yml",
+      "status": "draft"
+    }
+  ]
+}

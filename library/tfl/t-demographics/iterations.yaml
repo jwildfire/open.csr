@@ -1,0 +1,12 @@
+display: t-demographics
+iterations:
+- version: v001
+  created: '2026-07-25T06:39:06Z'
+  actor: '@jwildfire'
+  change_request: Initial generation of DMT01 from the statistical analysis plan shell.
+  git_commit: ''
+  spec_hash: sha256:0f1e9b9029b61b70bfa00f93c9f0c52050859ff26cacb67ee2fed50c39392854
+  display_hash: sha256:47d64c3c97e9a311b8b5bfdd7ae6d2a3cb1ff5a6442ad77664da993634c629bd
+  ard_hash: sha256:67ad8d0cceb4f6b0e678695b341c9bcf83b234dae44c584b21abdf3e0f23cf19
+  ard_rows: 236
+

@@ -1,0 +1,12 @@
+display: t-disposition
+iterations:
+- version: v001
+  created: '2026-07-25T06:39:07Z'
+  actor: '@jwildfire'
+  change_request: Initial generation of DST01 from the statistical analysis plan shell.
+  git_commit: ''
+  spec_hash: sha256:8c432e510cf8fe58349f0315cb25c51231c261a2276707cfd7168cd064a3d62d
+  display_hash: sha256:18ca5acb502028c38848124b04a9db836b79b9072640bf54883c4ca98350a71d
+  ard_hash: sha256:1f4596be244faafa87bcfc37534ad2f83447ff0520ed746606ff4be33c5839a2
+  ard_rows: 84
+

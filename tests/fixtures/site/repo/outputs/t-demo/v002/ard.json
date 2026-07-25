@@ -1,0 +1,98 @@
+{
+  "schema": "opencsr/ard/v1",
+  "display": "t-demo",
+  "created": "2026-07-25T04:00:00Z",
+  "provenance": {
+    "spec_hash": "sha256:aaaa1111",
+    "display_hash": "sha256:bbbb2222",
+    "data": [
+      {
+        "dataset": "adae",
+        "hash": "sha256:cccc3333",
+        "n_row": 1191,
+        "source_pkg": "pharmaverseadam",
+        "source_version": "1.1.0"
+      },
+      {
+        "dataset": "adsl",
+        "hash": "sha256:dddd4444",
+        "n_row": 254,
+        "source_pkg": "pharmaverseadam",
+        "source_version": "1.1.0"
+      }
+    ],
+    "environment": {
+      "r": "4.3.3",
+      "os": "darwin23.6.0",
+      "packages": { "cards": "0.8.1", "gtsummary": "2.5.1" }
+    },
+    "git_commit": "abc1234def5678"
+  },
+  "rows": [
+    {
+      "analysis": "any_ae",
+      "group1": "TRT01A",
+      "group1_level": "Placebo",
+      "variable": "AEFL",
+      "variable_level": "Y",
+      "context": "subject_count",
+      "stat_name": "n",
+      "stat_label": "n",
+      "stat": 69,
+      "warning": null,
+      "error": null
+    },
+    {
+      "analysis": "any_ae",
+      "group1": "TRT01A",
+      "group1_level": "Placebo",
+      "variable": "AEFL",
+      "variable_level": "Y",
+      "context": "subject_count",
+      "stat_name": "p",
+      "stat_label": "%",
+      "stat": 81.2,
+      "warning": null,
+      "error": null
+    },
+    {
+      "analysis": "any_ae",
+      "group1": "TRT01A",
+      "group1_level": "Xanomeline High Dose",
+      "variable": "AEFL",
+      "variable_level": "Y",
+      "context": "subject_count",
+      "stat_name": "n",
+      "stat_label": "n",
+      "stat": 79,
+      "warning": null,
+      "error": null
+    },
+    {
+      "analysis": "any_ae",
+      "group1": "TRT01A",
+      "group1_level": "Xanomeline High Dose",
+      "variable": "AEFL",
+      "variable_level": "Y",
+      "context": "subject_count",
+      "stat_name": "p",
+      "stat_label": "%",
+      "stat": 94,
+      "warning": null,
+      "error": null
+    },
+    {
+      "analysis": "age",
+      "group1": "TRT01A",
+      "group1_level": "Placebo",
+      "variable": "AGE",
+      "variable_level": null,
+      "context": "continuous",
+      "stat_name": "mean",
+      "stat_label": "Mean",
+      "stat": 75.2,
+      "warning": "NAs introduced by coercion",
+      "error": null
+    }
+  ]
+}

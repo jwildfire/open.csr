@@ -1,0 +1,75 @@
+{
+  "module": "t-disposition",
+  "generated": "2026-07-25T06:39:18.051Z",
+  "records": [
+    {
+      "requirementIds": [
+        "DSP-ALL-001"
+      ],
+      "title": "DSP-ALL-001: every display renders a table that actually contains numbers (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-ALL-002"
+      ],
+      "title": "DSP-ALL-002: every display declares a regulatory identifier and a source line (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-DISP-001"
+      ],
+      "title": "DSP-DISP-001: disposition counts reproduce EOSSTT (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-DISP-002"
+      ],
+      "title": "DSP-DISP-002: the derived discontinuation reasons partition the discontinuations (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    }
+  ],
+  "traceability": {
+    "adamDatasets": [
+      "adsl"
+    ],
+    "adamHashes": {
+      "adsl": "sha256:f9a1c3605cb277363fba0add4c4228df6a288685586575be159718696c582107"
+    },
+    "ardFile": "outputs/t-disposition/v001/ard.json",
+    "ardHash": "sha256:1f4596be244faafa87bcfc37534ad2f83447ff0520ed746606ff4be33c5839a2",
+    "displayFile": "library/tfl/t-disposition/display.yaml",
+    "specHash": "sha256:8c432e510cf8fe58349f0315cb25c51231c261a2276707cfd7168cd064a3d62d",
+    "iteration": "v001",
+    "sourceCommit": null
+  },
+  "environment": {
+    "os": "Darwin 23.6.0",
+    "node": "v24.14.0",
+    "vitest": "2.1.9",
+    "r": "4.3.3"
+  },
+  "run": null
+}

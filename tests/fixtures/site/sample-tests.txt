@@ -1,0 +1,16 @@
+// Sample test source used to exercise extractIdsFromTestSource. Kept out of
+// tests/unit/ so the naming-convention guard does not lint the deliberately
+// non-compliant examples below.
+
+describe('the engine', () => {
+  test('FIX-AREA-001: computes something useful (#1)', () => {});
+  it('FIX-AREA-002A, FIX-AREA-002B: covers both split behaviours (#1) (#7)', () => {});
+  test('a scaffold test with no requirement id (#1)', () => {});
+});
+
+// An ID in a comment must not count: FIX-AREA-999
+const message = 'FIX-AREA-998 in an assertion string';
+
+test_that("FIX-AREA-004: the R side names requirements too (#1)", {
+  expect_true(TRUE)
+})

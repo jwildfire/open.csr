@@ -1,0 +1,8 @@
+id: t-demo
+title: "Table 14.3.1.1  Overview of Adverse Events"
+population_label: "Safety Analysis Set"
+footnotes:
+  - "Percentages are based on the number of subjects in the safety analysis set."
+format:
+  n_pct: "{n} ({p}%)"
+  digits: { p: 1 }

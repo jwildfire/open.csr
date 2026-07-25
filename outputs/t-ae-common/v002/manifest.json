@@ -1,0 +1,59 @@
+{
+  "display": "t-ae-common",
+  "version": "v002",
+  "created": "2026-07-25T06:39:10Z",
+  "actor": "@medical-writer",
+  "change_request": "Change request CR-001 (medical writer, Section 12.2.1 review): add an All Subjects (Total) column to AET02 so the in-text summary can quote a pooled overall rate alongside the by-arm rates. Applied as a spec edit - analysis.yaml `total: false` -> `true`, display.yaml `columns.order` gains Total - and regenerated; no output was hand-edited.",
+  "regulatory_id": "AET02",
+  "git_commit": null,
+  "spec_hash": "sha256:a45e3a1f2586dd0bffa2e2f660162d958e9ae20f6eb87df9511b7d49b5c74203",
+  "display_hash": "sha256:c749510c8b10f6e4f45381eacb9d85aca93d56e62e9b5f2b71f41d050d112433",
+  "ard_hash": "sha256:ed1716a6a94e4c3f679686f1fc8842f47e793348b155b16b8c18cfc275219fa9",
+  "ard_rows": 3048,
+  "ard_warnings": 0,
+  "ard_errors": 0,
+  "datasets": ["adsl", "adae"],
+  "data": [
+    {
+      "dataset": "adsl",
+      "hash": "sha256:f9a1c3605cb277363fba0add4c4228df6a288685586575be159718696c582107",
+      "n_row": 254,
+      "n_col": 60,
+      "source_pkg": "pharmaverseadam",
+      "source_version": "1.1.0"
+    },
+    {
+      "dataset": "adae",
+      "hash": "sha256:7d4237afdbf934742091e6b7e0a756fcba6a0e79fc9f35b578f86574baf8f7d4",
+      "n_row": 1191,
+      "n_col": 105,
+      "source_pkg": "pharmaverseadam",
+      "source_version": "1.1.0"
+    }
+  ],
+  "environment": {
+    "r": "4.3.3",
+    "os": "Darwin 23.6.0",
+    "packages": {
+      "cards": "0.6.1",
+      "cardx": "0.2.5",
+      "gtsummary": "2.3.0",
+      "gt": "1.0.0",
+      "dplyr": "1.1.4",
+      "pharmaverseadam": "1.1.0",
+      "jsonlite": "2.0.0",
+      "yaml": "2.3.10",
+      "digest": "0.6.37"
+    }
+  },
+  "variants": {
+    "post_text": {
+      "file": "table.html",
+      "n_rows": 253
+    },
+    "in_text": {
+      "file": "table-in-text.html",
+      "n_rows": 31
+    }
+  }
+}

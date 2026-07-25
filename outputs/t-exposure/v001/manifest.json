@@ -1,0 +1,59 @@
+{
+  "display": "t-exposure",
+  "version": "v001",
+  "created": "2026-07-25T06:39:07Z",
+  "actor": "@jwildfire",
+  "change_request": "Initial generation of EXT01 from the statistical analysis plan shell.",
+  "regulatory_id": "EXT01",
+  "git_commit": null,
+  "spec_hash": "sha256:dcb569bb84c890fe5d3322fbb111cdaeabd917ad388c89d10b2e754b8d322dd8",
+  "display_hash": "sha256:5cf918ab32731b85dcf031052e201c763ba0972d98f2badb1c8d7a216b812c44",
+  "ard_hash": "sha256:f6624be3da3d7343345ba139c4213486d414e8eecce6382a38fa2e64c0b70159",
+  "ard_rows": 176,
+  "ard_warnings": 0,
+  "ard_errors": 0,
+  "datasets": ["adsl", "adex"],
+  "data": [
+    {
+      "dataset": "adsl",
+      "hash": "sha256:f9a1c3605cb277363fba0add4c4228df6a288685586575be159718696c582107",
+      "n_row": 254,
+      "n_col": 60,
+      "source_pkg": "pharmaverseadam",
+      "source_version": "1.1.0"
+    },
+    {
+      "dataset": "adex",
+      "hash": "sha256:e89d24c9364ba5a20a49a86de8428a8e4d8b35899b4d154ff83f89645c733f5f",
+      "n_row": 6315,
+      "n_col": 92,
+      "source_pkg": "pharmaverseadam",
+      "source_version": "1.1.0"
+    }
+  ],
+  "environment": {
+    "r": "4.3.3",
+    "os": "Darwin 23.6.0",
+    "packages": {
+      "cards": "0.6.1",
+      "cardx": "0.2.5",
+      "gtsummary": "2.3.0",
+      "gt": "1.0.0",
+      "dplyr": "1.1.4",
+      "pharmaverseadam": "1.1.0",
+      "jsonlite": "2.0.0",
+      "yaml": "2.3.10",
+      "digest": "0.6.37"
+    }
+  },
+  "variants": {
+    "post_text": {
+      "file": "table.html",
+      "n_rows": 22
+    },
+    "in_text": {
+      "file": "table-in-text.html",
+      "n_rows": 22
+    }
+  }
+}

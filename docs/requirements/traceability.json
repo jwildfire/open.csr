@@ -1,0 +1,168 @@
+{
+  "component": "traceability",
+  "matrix": "traceability.md",
+  "requirements": {
+    "TRC-ARD-001": "The evidence set's `traceability` object is assembled from the display's current output manifest and the ARD's provenance envelope, carrying ADaM datasets, ARD file and hash, display spec, spec hash, iteration and source commit.",
+    "TRC-ARD-002": "A missing manifest, a missing ARD, or an ARD with no provenance yields a traceability object of nulls and empty lists rather than an exception.",
+    "TRC-ARD-003": "Every ADaM dataset named in the ARD provenance is surfaced with its content hash, so the data behind a number is identifiable.",
+    "TRC-ARD-004": "When the output manifest records no ARD hash, one is computed from the committed `ard.json` so the chain is never hash-less.",
+    "TRC-ITER-001": "The iteration timeline merges `iterations.yaml` entries with the manifests found under `outputs/<slug>/`, so it renders from either source alone.",
+    "TRC-ITER-002": "The live iteration is the one named by `outputs/<slug>/current.json`; with no pointer, or a pointer to a version that does not exist, the highest `vNNN` present is used.",
+    "TRC-ITER-003": "A ledger entry with no corresponding output directory is rendered and flagged rather than dropped.",
+    "TRC-BIND-001": "A binding address parses into display, analysis, statistic name and qualifiers per contracts §5, including `group=` and `variable_level=`.",
+    "TRC-BIND-002": "A binding resolves only when exactly one ARD row matches; zero matches and multiple matches are both unresolved, with the reason recorded.",
+    "TRC-BIND-003": "An unresolved binding renders as a visibly marked, non-numeric placeholder carrying its reason — a stale number is never displayed in its place.",
+    "TRC-BIND-004": "A resolved binding renders as a clickable element carrying its display, address, analysis and statistic, so the trace panel needs no lookup service.",
+    "TRC-CHAIN-001": "The build emits a trace index keyed by display slug carrying datasets, dataset hashes, both spec files, the ARD file and hash, the iteration, and the source commit.",
+    "TRC-CHAIN-002": "Every trace index entry links to that display's gallery page and its evidence page, closing the loop from a sentence back to the requirement.",
+    "TRC-DOC-001": "The CSR reader normalizes the assembled document tolerantly — sections, nested sections, text blocks and display placements — and renders a documented empty state when no assembly exists.",
+    "TRC-DOC-003": "A `{{xref:section:…}}` reference resolves to an in-page link and a `{{xref:display:…}}` reference to a trace handle carrying the display's assigned number; an unresolved reference degrades to readable text and never leaks the marker.",
+    "TRC-DOC-002": "Prose that still carries `{{ard:…}}` markers at render time is resolved against the committed ARDs, so the trace panel works whether or not the assembler pre-resolved the bindings."
+  },
+  "rows": [
+    {
+      "id": "TRC-ARD-001",
+      "area": "Provenance",
+      "text": "The evidence set's `traceability` object is assembled from the display's current output manifest and the ARD's provenance envelope, carrying ADaM datasets, ARD file and hash, display spec, spec hash, iteration and source commit.",
+      "source": "contracts §8",
+      "evidence": "js-unit",
+      "link": "evidence-traceability.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "TRC-ARD-002",
+      "area": "Provenance",
+      "text": "A missing manifest, a missing ARD, or an ARD with no provenance yields a traceability object of nulls and empty lists rather than an exception.",
+      "source": "open.csr",
+      "evidence": "js-unit",
+      "link": "evidence-traceability.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "TRC-ARD-003",
+      "area": "Provenance",
+      "text": "Every ADaM dataset named in the ARD provenance is surfaced with its content hash, so the data behind a number is identifiable.",
+      "source": "D5",
+      "evidence": "js-unit",
+      "link": "evidence-traceability.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "TRC-ARD-004",
+      "area": "Provenance",
+      "text": "When the output manifest records no ARD hash, one is computed from the committed `ard.json` so the chain is never hash-less.",
+      "source": "open.csr",
+      "evidence": "js-unit",
+      "link": "site-render.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "TRC-ITER-001",
+      "area": "Iterations",
+      "text": "The iteration timeline merges `iterations.yaml` entries with the manifests found under `outputs/<slug>/`, so it renders from either source alone.",
+      "source": "D10",
+      "evidence": "js-unit",
+      "link": "site-render.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "TRC-ITER-002",
+      "area": "Iterations",
+      "text": "The live iteration is the one named by `outputs/<slug>/current.json`; with no pointer, or a pointer to a version that does not exist, the highest `vNNN` present is used.",
+      "source": "contracts §1",
+      "evidence": "js-unit",
+      "link": "site-render.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "TRC-ITER-003",
+      "area": "Iterations",
+      "text": "A ledger entry with no corresponding output directory is rendered and flagged rather than dropped.",
+      "source": "open.csr",
+      "evidence": "js-unit",
+      "link": "site-render.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "TRC-BIND-001",
+      "area": "Bindings",
+      "text": "A binding address parses into display, analysis, statistic name and qualifiers per contracts §5, including `group=` and `variable_level=`.",
+      "source": "contracts §5",
+      "evidence": "js-unit",
+      "link": "site-binding.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "TRC-BIND-002",
+      "area": "Bindings",
+      "text": "A binding resolves only when exactly one ARD row matches; zero matches and multiple matches are both unresolved, with the reason recorded.",
+      "source": "contracts §6",
+      "evidence": "js-unit",
+      "link": "site-binding.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "TRC-BIND-003",
+      "area": "Bindings",
+      "text": "An unresolved binding renders as a visibly marked, non-numeric placeholder carrying its reason — a stale number is never displayed in its place.",
+      "source": "D7",
+      "evidence": "js-unit",
+      "link": "site-binding.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "TRC-BIND-004",
+      "area": "Bindings",
+      "text": "A resolved binding renders as a clickable element carrying its display, address, analysis and statistic, so the trace panel needs no lookup service.",
+      "source": "D7",
+      "evidence": "js-unit",
+      "link": "site-binding.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "TRC-CHAIN-001",
+      "area": "Trace",
+      "text": "The build emits a trace index keyed by display slug carrying datasets, dataset hashes, both spec files, the ARD file and hash, the iteration, and the source commit.",
+      "source": "design §8",
+      "evidence": "js-unit",
+      "link": "site-render.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "TRC-CHAIN-002",
+      "area": "Trace",
+      "text": "Every trace index entry links to that display's gallery page and its evidence page, closing the loop from a sentence back to the requirement.",
+      "source": "design §9",
+      "evidence": "js-unit",
+      "link": "site-render.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "TRC-DOC-001",
+      "area": "Document",
+      "text": "The CSR reader normalizes the assembled document tolerantly — sections, nested sections, text blocks and display placements — and renders a documented empty state when no assembly exists.",
+      "source": "open.csr",
+      "evidence": "js-unit",
+      "link": "site-render.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "TRC-DOC-003",
+      "area": "Document",
+      "text": "A `{{xref:section:…}}` reference resolves to an in-page link and a `{{xref:display:…}}` reference to a trace handle carrying the display's assigned number; an unresolved reference degrades to readable text and never leaks the marker.",
+      "source": "design §6",
+      "evidence": "js-unit",
+      "link": "site-binding.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "TRC-DOC-002",
+      "area": "Document",
+      "text": "Prose that still carries `{{ard:…}}` markers at render time is resolved against the committed ARDs, so the trace panel works whether or not the assembler pre-resolved the bindings.",
+      "source": "open.csr",
+      "evidence": "js-unit",
+      "link": "site-binding.test.js",
+      "status": "draft"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "display": "t-disposition",
+  "version": "v001",
+  "updated": "2026-07-25T06:39:07Z",
+  "path": "outputs/t-disposition/v001",
+  "ard": "outputs/t-disposition/v001/ard.json",
+  "table": "outputs/t-disposition/v001/table.html",
+  "variants": ["post_text", "in_text"]
+}

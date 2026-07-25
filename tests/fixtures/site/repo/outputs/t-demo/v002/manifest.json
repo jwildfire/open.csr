@@ -1,0 +1,11 @@
+{
+  "display": "t-demo",
+  "version": "v002",
+  "date": "2026-07-25",
+  "actor": "@jwildfire",
+  "request": "Add a percentage column to the high-dose arm.",
+  "commit": "abc1234def5678",
+  "ardFile": "outputs/t-demo/v002/ard.json",
+  "ardHash": "sha256:manifestsuppliedhash",
+  "specHash": "sha256:aaaa1111"
+}

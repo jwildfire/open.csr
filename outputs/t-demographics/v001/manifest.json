@@ -1,0 +1,51 @@
+{
+  "display": "t-demographics",
+  "version": "v001",
+  "created": "2026-07-25T06:39:06Z",
+  "actor": "@jwildfire",
+  "change_request": "Initial generation of DMT01 from the statistical analysis plan shell.",
+  "regulatory_id": "DMT01",
+  "git_commit": null,
+  "spec_hash": "sha256:0f1e9b9029b61b70bfa00f93c9f0c52050859ff26cacb67ee2fed50c39392854",
+  "display_hash": "sha256:47d64c3c97e9a311b8b5bfdd7ae6d2a3cb1ff5a6442ad77664da993634c629bd",
+  "ard_hash": "sha256:67ad8d0cceb4f6b0e678695b341c9bcf83b234dae44c584b21abdf3e0f23cf19",
+  "ard_rows": 236,
+  "ard_warnings": 0,
+  "ard_errors": 0,
+  "datasets": "adsl",
+  "data": [
+    {
+      "dataset": "adsl",
+      "hash": "sha256:f9a1c3605cb277363fba0add4c4228df6a288685586575be159718696c582107",
+      "n_row": 254,
+      "n_col": 60,
+      "source_pkg": "pharmaverseadam",
+      "source_version": "1.1.0"
+    }
+  ],
+  "environment": {
+    "r": "4.3.3",
+    "os": "Darwin 23.6.0",
+    "packages": {
+      "cards": "0.6.1",
+      "cardx": "0.2.5",
+      "gtsummary": "2.3.0",
+      "gt": "1.0.0",
+      "dplyr": "1.1.4",
+      "pharmaverseadam": "1.1.0",
+      "jsonlite": "2.0.0",
+      "yaml": "2.3.10",
+      "digest": "0.6.37"
+    }
+  },
+  "variants": {
+    "post_text": {
+      "file": "table.html",
+      "n_rows": 29
+    },
+    "in_text": {
+      "file": "table-in-text.html",
+      "n_rows": 29
+    }
+  }
+}

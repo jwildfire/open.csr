@@ -1,0 +1,31 @@
+Package: opencsr
+Title: Analysis Results Data and Display Engine for open.csr
+Version: 0.0.1
+Authors@R:
+    person("open.csr", "contributors", role = c("aut", "cre"),
+           email = "noreply@example.org")
+Description: The R spine of open.csr. Prepares public ADaM data, interprets
+    ARS-aligned analysis specifications into Analysis Results Data (ARD) via
+    the 'cards' stack, serialises ARDs in an owned, provenance-stamped JSON
+    schema, and renders ARD plus display specification into self-contained
+    'gt' HTML displays. Every regeneration is recorded as a numbered
+    iteration so the change-request loop is fully versioned.
+License: Apache License (>= 2)
+Encoding: UTF-8
+Depends:
+    R (>= 4.1)
+Imports:
+    cards,
+    digest,
+    dplyr,
+    gt,
+    jsonlite,
+    rlang,
+    tibble,
+    yaml
+Suggests:
+    cardx,
+    pharmaverseadam,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+RoxygenNote: 7.3.2

@@ -1,0 +1,698 @@
+{
+  "module": "text",
+  "generated": "2026-07-25T06:39:18.051Z",
+  "records": [
+    {
+      "requirementIds": [
+        "TXT-BIND-001"
+      ],
+      "title": "Binding addresses TXT-BIND-001: parseBindingAddress splits display, analysis, statistic and qualifiers (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-bindings.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-BIND-002"
+      ],
+      "title": "Binding addresses TXT-BIND-002: a malformed address or an unknown qualifier is rejected rather than silently ignored (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-bindings.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-BIND-003"
+      ],
+      "title": "Binding addresses TXT-BIND-003: a fully qualified binding resolves to exactly one ARD row (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-bindings.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-BIND-004"
+      ],
+      "title": "Binding addresses TXT-BIND-004: an under-specified binding that matches several rows fails as ambiguous (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-bindings.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-BIND-005"
+      ],
+      "title": "Binding addresses TXT-BIND-005: a binding no ARD row satisfies fails loudly as orphaned (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-bindings.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-BIND-006"
+      ],
+      "title": "Binding addresses TXT-BIND-006: a binding to a display with no ARD fails instead of rendering an empty string (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-bindings.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-BIND-007"
+      ],
+      "title": "Binding addresses TXT-BIND-007: variable, variable_level and group2 qualifiers select within a hierarchical ARD (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-bindings.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-APPR-001"
+      ],
+      "title": "Gate: approval TXT-APPR-001: a draft generated-tier block is excluded from assembly and the reason is reported (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-gates.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-APPR-002"
+      ],
+      "title": "Gate: approval TXT-APPR-002: an approved generated-tier block is included (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-gates.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-APPR-003"
+      ],
+      "title": "Gate: approval TXT-APPR-003: the gate applies to the generated tier only; boilerplate is not tier-gated (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-gates.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-APPR-004"
+      ],
+      "title": "Gate: approval TXT-APPR-004: runGates lists every excluded block so the exclusion is visible, not silent (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-gates.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-BIND-008"
+      ],
+      "title": "Gate: binding resolution across the library TXT-BIND-008: runGates reports an orphaned and an ambiguous binding as resolution errors (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-gates.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-LIB-001"
+      ],
+      "title": "Gate: binding resolution across the library TXT-LIB-001: a block that binds a display it does not declare is reported (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-gates.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-LIB-002"
+      ],
+      "title": "Gate: binding resolution across the library TXT-LIB-002: every binding in the shipped Text Library resolves against the fixture ARDs (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-gates.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-LIB-003"
+      ],
+      "title": "Gate: binding resolution across the library TXT-LIB-003: full-precision values without a digits qualifier are surfaced as a warning (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-gates.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-NUM-001"
+      ],
+      "title": "Gate: numeric fidelity TXT-NUM-001: prose whose every digit came from a binding passes the gate (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-gates.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-NUM-002"
+      ],
+      "title": "Gate: numeric fidelity TXT-NUM-002: a hand-typed result in prose is caught, with its value and surrounding context (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-gates.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-NUM-003",
+        "TXT-NUM-004"
+      ],
+      "title": "Gate: numeric fidelity TXT-NUM-003, TXT-NUM-004: digits inside inline code and inside a link destination are exempt (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-gates.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-NUM-005"
+      ],
+      "title": "Gate: numeric fidelity TXT-NUM-005: allow_digits exempts only the literals it lists, and reports how often each was used (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-gates.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-NUM-006"
+      ],
+      "title": "Gate: numeric fidelity TXT-NUM-006: allow_digits does not exempt a digit run it does not literally cover (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-gates.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-NUM-007"
+      ],
+      "title": "Gate: numeric fidelity TXT-NUM-007: the gate reads the RENDERED prose, so a binding that resolves to a digit run is never a violation (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-gates.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-NUM-008"
+      ],
+      "title": "Gate: numeric fidelity TXT-NUM-008: every block in the shipped Text Library passes the numeric-fidelity gate (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-gates.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-REND-001"
+      ],
+      "title": "Rendering and cross-references TXT-REND-001: renderBlock substitutes every token and records the span each value occupies (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-bindings.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-REND-002"
+      ],
+      "title": "Rendering and cross-references TXT-REND-002: an unresolved binding leaves a visible marker and is reported as an error (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-bindings.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-XREF-001"
+      ],
+      "title": "Rendering and cross-references TXT-XREF-001: display cross-references render the number assigned at build time (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-bindings.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-XREF-002"
+      ],
+      "title": "Rendering and cross-references TXT-XREF-002: a cross-reference to an unknown display or section fails the build (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-bindings.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-AE-001",
+        "TXT-AE-002",
+        "TXT-AE-003",
+        "TXT-SAE-001",
+        "TXT-CONC-001",
+        "TXT-DISC-001"
+      ],
+      "title": "Text Library block parsing TXT-AE-001, TXT-AE-002, TXT-AE-003, TXT-SAE-001, TXT-CONC-001, TXT-DISC-001: the safety narrative sections ship blocks whose tier matches their evidentiary risk (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-blocks.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-BLOCK-001"
+      ],
+      "title": "Text Library block parsing TXT-BLOCK-001: parseBlock splits frontmatter from prose and keeps every declared field (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-blocks.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-BLOCK-002"
+      ],
+      "title": "Text Library block parsing TXT-BLOCK-002: validateBlock rejects an unknown tier, an unknown approval state and a generated block with no provenance (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-blocks.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-BLOCK-003"
+      ],
+      "title": "Text Library block parsing TXT-BLOCK-003: the shipped library loads with unique ids and no structural errors (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-blocks.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-BLOCK-004"
+      ],
+      "title": "Text Library block parsing TXT-BLOCK-004: every library block uses all three reuse tiers and carries requirement ids (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-blocks.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-BLOCK-005"
+      ],
+      "title": "Text Library block parsing TXT-BLOCK-005: every generated-tier block records the model and prompt that produced it (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-blocks.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-BLOCK-006"
+      ],
+      "title": "Text Library block parsing TXT-BLOCK-006: block file names match the block id so the library is addressable from disk (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-blocks.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-ETH-001",
+        "TXT-DESIGN-001",
+        "TXT-DISP-001",
+        "TXT-POP-001",
+        "TXT-DEMO-001",
+        "TXT-EXP-001"
+      ],
+      "title": "Text Library block parsing TXT-ETH-001, TXT-DESIGN-001, TXT-DISP-001, TXT-POP-001, TXT-DEMO-001, TXT-EXP-001: the study-conduct narrative sections each ship an approved block (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-blocks.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-FMT-001"
+      ],
+      "title": "Value formatting TXT-FMT-001: rounding is half-up, not R half-to-even (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-bindings.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-FMT-002"
+      ],
+      "title": "Value formatting TXT-FMT-002: integers render without a decimal point and digits fixes the decimal places (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-bindings.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-FMT-003"
+      ],
+      "title": "Value formatting TXT-FMT-003: the scale qualifier converts the ARD proportion to a percentage for prose (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-bindings.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-ALL-001"
+      ],
+      "title": "DSP-ALL-001: every display renders a table that actually contains numbers (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-ALL-002"
+      ],
+      "title": "DSP-ALL-002: every display declares a regulatory identifier and a source line (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-AE-001"
+      ],
+      "title": "TXT-AE-001: TXT-E3-1221 parameterized block reviewed by @jwildfire on 2026-07-25 (#1)",
+      "suite": "text-review",
+      "passed": true,
+      "file": "library/text/TXT-E3-1221.md",
+      "issueRefs": [
+        1
+      ],
+      "reviewedBy": "@jwildfire",
+      "reviewedAt": "2026-07-25"
+    },
+    {
+      "requirementIds": [
+        "TXT-AE-002"
+      ],
+      "title": "TXT-AE-002: TXT-E3-1222 generated block reviewed (#1)",
+      "suite": "text-review",
+      "passed": false,
+      "file": "library/text/TXT-E3-1222.md",
+      "issueRefs": [
+        1
+      ],
+      "reviewedBy": null,
+      "reviewedAt": null
+    },
+    {
+      "requirementIds": [
+        "TXT-AE-003"
+      ],
+      "title": "TXT-AE-003: TXT-E3-1224 boilerplate block reviewed by @jwildfire on 2026-07-25 (#1)",
+      "suite": "text-review",
+      "passed": true,
+      "file": "library/text/TXT-E3-1224.md",
+      "issueRefs": [
+        1
+      ],
+      "reviewedBy": "@jwildfire",
+      "reviewedAt": "2026-07-25"
+    },
+    {
+      "requirementIds": [
+        "TXT-CONC-001"
+      ],
+      "title": "TXT-CONC-001: TXT-E3-1206 generated block reviewed (#1)",
+      "suite": "text-review",
+      "passed": false,
+      "file": "library/text/TXT-E3-1206.md",
+      "issueRefs": [
+        1
+      ],
+      "reviewedBy": null,
+      "reviewedAt": null
+    },
+    {
+      "requirementIds": [
+        "TXT-DEMO-001"
+      ],
+      "title": "TXT-DEMO-001: TXT-E3-1102 parameterized block reviewed by @jwildfire on 2026-07-25 (#1)",
+      "suite": "text-review",
+      "passed": true,
+      "file": "library/text/TXT-E3-1102.md",
+      "issueRefs": [
+        1
+      ],
+      "reviewedBy": "@jwildfire",
+      "reviewedAt": "2026-07-25"
+    },
+    {
+      "requirementIds": [
+        "TXT-DESIGN-001"
+      ],
+      "title": "TXT-DESIGN-001: TXT-E3-0901 parameterized block reviewed by @jwildfire on 2026-07-25 (#1)",
+      "suite": "text-review",
+      "passed": true,
+      "file": "library/text/TXT-E3-0901.md",
+      "issueRefs": [
+        1
+      ],
+      "reviewedBy": "@jwildfire",
+      "reviewedAt": "2026-07-25"
+    },
+    {
+      "requirementIds": [
+        "TXT-DESIGN-001"
+      ],
+      "title": "TXT-DESIGN-001: TXT-E3-0908 boilerplate block reviewed by @jwildfire on 2026-07-25 (#1)",
+      "suite": "text-review",
+      "passed": true,
+      "file": "library/text/TXT-E3-0908.md",
+      "issueRefs": [
+        1
+      ],
+      "reviewedBy": "@jwildfire",
+      "reviewedAt": "2026-07-25"
+    },
+    {
+      "requirementIds": [
+        "TXT-DISC-001"
+      ],
+      "title": "TXT-DISC-001: TXT-E3-1300 generated block reviewed (#1)",
+      "suite": "text-review",
+      "passed": false,
+      "file": "library/text/TXT-E3-1300.md",
+      "issueRefs": [
+        1
+      ],
+      "reviewedBy": null,
+      "reviewedAt": null
+    },
+    {
+      "requirementIds": [
+        "TXT-DISP-001"
+      ],
+      "title": "TXT-DISP-001: TXT-E3-1001 parameterized block reviewed by @jwildfire on 2026-07-25 (#1)",
+      "suite": "text-review",
+      "passed": true,
+      "file": "library/text/TXT-E3-1001.md",
+      "issueRefs": [
+        1
+      ],
+      "reviewedBy": "@jwildfire",
+      "reviewedAt": "2026-07-25"
+    },
+    {
+      "requirementIds": [
+        "TXT-ETH-001"
+      ],
+      "title": "TXT-ETH-001: TXT-E3-0502 boilerplate block reviewed by @jwildfire on 2026-07-25 (#1)",
+      "suite": "text-review",
+      "passed": true,
+      "file": "library/text/TXT-E3-0502.md",
+      "issueRefs": [
+        1
+      ],
+      "reviewedBy": "@jwildfire",
+      "reviewedAt": "2026-07-25"
+    },
+    {
+      "requirementIds": [
+        "TXT-ETH-001"
+      ],
+      "title": "TXT-ETH-001: TXT-E3-0503 boilerplate block reviewed by @jwildfire on 2026-07-25 (#1)",
+      "suite": "text-review",
+      "passed": true,
+      "file": "library/text/TXT-E3-0503.md",
+      "issueRefs": [
+        1
+      ],
+      "reviewedBy": "@jwildfire",
+      "reviewedAt": "2026-07-25"
+    },
+    {
+      "requirementIds": [
+        "TXT-EXP-001"
+      ],
+      "title": "TXT-EXP-001: TXT-E3-1201 parameterized block reviewed by @jwildfire on 2026-07-25 (#1)",
+      "suite": "text-review",
+      "passed": true,
+      "file": "library/text/TXT-E3-1201.md",
+      "issueRefs": [
+        1
+      ],
+      "reviewedBy": "@jwildfire",
+      "reviewedAt": "2026-07-25"
+    },
+    {
+      "requirementIds": [
+        "TXT-POP-001"
+      ],
+      "title": "TXT-POP-001: TXT-E3-1101 parameterized block reviewed by @jwildfire on 2026-07-25 (#1)",
+      "suite": "text-review",
+      "passed": true,
+      "file": "library/text/TXT-E3-1101.md",
+      "issueRefs": [
+        1
+      ],
+      "reviewedBy": "@jwildfire",
+      "reviewedAt": "2026-07-25"
+    },
+    {
+      "requirementIds": [
+        "TXT-SAE-001"
+      ],
+      "title": "TXT-SAE-001: TXT-E3-1231 generated block reviewed (#1)",
+      "suite": "text-review",
+      "passed": false,
+      "file": "library/text/TXT-E3-1231.md",
+      "issueRefs": [
+        1
+      ],
+      "reviewedBy": null,
+      "reviewedAt": null
+    }
+  ],
+  "traceability": {
+    "adamDatasets": [],
+    "adamHashes": {},
+    "ardFile": null,
+    "ardHash": null,
+    "displayFile": null,
+    "specHash": null,
+    "iteration": null,
+    "sourceCommit": null
+  },
+  "environment": {
+    "os": "Darwin 23.6.0",
+    "node": "v24.14.0",
+    "vitest": "2.1.9",
+    "r": "4.3.3"
+  },
+  "run": null
+}

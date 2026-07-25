@@ -1,0 +1,28 @@
+id: t-ae-common
+title: "Treatment-Emergent Adverse Events by System Organ Class and Preferred Term"
+study: CDISCPILOT01
+population_label: "Safety Analysis Set"
+cutoff: "2014-07-01"
+source: "Source: adae, adsl (pharmaverseadam). Data cut-off: 2014-07-01."
+footnotes:
+  - "Subjects are counted once per system organ class and once per preferred term, regardless of how many events they reported."
+  - "Percentages are based on the number of subjects in the safety analysis set for each treatment group."
+  - "System organ classes and preferred terms are sorted by descending subject count."
+columns:
+  order: [Placebo, "Xanomeline Low Dose", "Xanomeline High Dose"]
+format:
+  digits:
+    p: 1
+rows:
+  - analysis: by_soc_pt
+    type: hierarchical
+    levels: [AEBODSYS, AEDECOD]
+    pattern: n_pct
+variants:
+  post_text: {}
+  in_text:
+    title: "Common Treatment-Emergent Adverse Events (≥5% in any treatment group)"
+    filter:
+      min_pct: 5
+    footnotes:
+      - "Reduced variant: only preferred terms reported by at least 5% of subjects in at least one treatment group are shown. The full display is Section 14."

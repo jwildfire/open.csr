@@ -1,0 +1,498 @@
+{
+  "component": "tfl-engine",
+  "matrix": "tfl-engine.md",
+  "requirements": {
+    "TFL-PREP-001": "`prepare_data()` excludes all screen-failure subjects (`ARM == \"Screen Failure\"`) from ADSL and restricts every other prepared dataset to the surviving subjects.",
+    "TFL-PREP-002": "`ITTFL` is derived from randomisation (`!is.na(RANDDT)`); `SAFFL` is used as shipped with `NA` recoded to `\"N\"`.",
+    "TFL-PREP-003": "`COMPLFL` and the derived `DISCREAS` reproduce `EOSSTT` exactly and partition the discontinued subjects.",
+    "TFL-PREP-004": "Baseline weight, height and BMI are merged onto ADSL from the ADVS records flagged `ABLFL == \"Y\"`, so display code never joins subject-level data.",
+    "TFL-PREP-005": "Every prepared dataset is described in a manifest with row/column counts, a SHA-256 content hash, and the source package and version.",
+    "TFL-PREP-006": "The analysis-set registry maps `analysis_set` keys onto population flags and rejects unknown sets and datasets lacking the required flag.",
+    "TFL-PREP-007": "Treatment arms are ordered by dose, not alphabetically, in every prepared dataset.",
+    "TFL-SPEC-001": "An analysis method outside the documented vocabulary is rejected, naming the offending analysis and listing the known methods.",
+    "TFL-SPEC-002": "Missing required keys and missing per-method fields (`variables`, `hierarchy`, `custom`) are rejected before any `{cards}` call is attempted.",
+    "TFL-SPEC-003": "A display specification must carry a study identifier, a population label and a data cut-off — the ICH E3 header requirement — as non-empty strings.",
+    "TFL-SPEC-004": "Row-plan keys that YAML 1.1 silently coerces to booleans (bare `n`, `y`, `no`, `on`, `off`) are rejected with an explanation rather than rendered as `FALSE`.",
+    "TFL-SPEC-005": "A display row referencing an analysis the analysis spec does not define, or an id mismatch between the two specs, fails the build.",
+    "TFL-SPEC-006": "Every display committed to `library/tfl/` validates, has matching ids, and declares a `post_text` variant.",
+    "TFL-ARD-001": "`build_ard()` emits one row per computed statistic, carrying the `analyses[].name` that produced it, and its continuous statistics equal a direct `dplyr` computation.",
+    "TFL-ARD-002": "`subject_count` counts distinct subjects over the analysis-set subject denominator, never over event records.",
+    "TFL-ARD-003": "`hierarchical_count` nests inner terms under their outer level, counts each subject once per level, and matches a direct `dplyr` computation.",
+    "TFL-ARD-004": "The total column is computed by the same code path as the treatment columns and is labelled with the grouping variable, not an internal constant.",
+    "TFL-ARD-005": "`listing` passes records through as one ARD row per record per listed variable, addressable by record index.",
+    "TFL-ARD-006": "An analysis may dispatch to a function in the display's `custom.R`; a missing custom function is a build failure, not a silent skip.",
+    "TFL-ARD-007": "An analysis `filter` restricts the records summarised, and a filter that is not one logical per row or references an unknown variable fails loudly.",
+    "TFL-ARD-008": "`{cards}`' per-statistic `warning` and `error` values are retained as ARD columns; statistics computed on empty groups are recorded, not dropped.",
+    "TFL-ARD-009": "A binding address resolves to exactly one ARD row; zero or multiple matches raise an error.",
+    "TFL-QNT-001": "Quartiles use the SAS-compatible type-2 quantile definition, not R's default type 7.",
+    "TFL-IO-001": "`ard.json` conforms to the owned schema: `schema`, `display`, `created`, `provenance`, `rows`, with the full thirteen-key row shape on every row.",
+    "TFL-IO-002": "The provenance envelope records spec and display hashes, per-dataset hashes and versions, the R and package environment, and the git commit.",
+    "TFL-IO-003": "`write_ard()` / `read_ard()` round-trip an ARD without loss; numeric statistics stay numeric.",
+    "TFL-IO-004": "Reading refuses a document that is not an `opencsr/ard/v1` ARD; writing refuses rows missing schema columns.",
+    "TFL-IO-005": "Every committed ARD is readable, names only analyses its spec defines, and carries no statistic-level errors.",
+    "TFL-FMT-001": "Rounding is half away from zero (SAS behaviour), not R's round-half-to-even, and is stable against binary representation error.",
+    "TFL-FMT-002": "Proportions are scaled to percent and every statistic is rendered at its declared precision, including trailing zeros.",
+    "TFL-FMT-003": "The digit plan is declarative: a display-level plan applies by default and a row-level plan overrides it for variables with different collected precision.",
+    "TFL-RND-001": "Rendered HTML is a standalone document with inline CSS and no external stylesheet, script or CDN reference.",
+    "TFL-RND-002": "In-text and post-text variants render from one ARD; the in-text variant is a strict subset of the post-text variant and applies the declared percentage threshold exactly.",
+    "TFL-RND-003": "Columns follow the declared order, carry group headcounts, and silently omit declared columns absent from the ARD.",
+    "TFL-RND-004": "Every rendered display states its study, its analysis set and its data cut-off, and carries a source line.",
+    "TFL-RND-005": "Rendering a variant the display does not declare is an error.",
+    "TFL-RND-006": "Section headings left without data rows are dropped, and indentation distinguishes headings from the rows beneath them.",
+    "TFL-RND-007": "A listing renders one column per listed variable with the label declared in the display spec.",
+    "TFL-ITER-001": "`regenerate()` writes a complete iteration directory — spec snapshots, `ard.json`, rendered variants and a manifest — with spec snapshots byte-identical to the specs read.",
+    "TFL-ITER-002": "The iteration manifest records the actor, the change request, the regulatory identifier, the ARD hash, row counts, error counts, the rendered variants and the environment.",
+    "TFL-ITER-003": "A second regeneration — whether through `regenerate()` or `regenerate_all()` — allocates a new version and never overwrites an earlier one; `current.json` moves and the ledger grows.",
+    "TFL-ITER-004": "Version allocation takes the maximum of the filesystem and the ledger, so a partially written or partially deleted iteration cannot be silently overwritten.",
+    "TFL-ITER-005": "The committed `t-ae-common` ledger records a real two-iteration change-request story: differing spec and ARD hashes, a recorded request and actor, and unchanged values for the numbers the change did not touch.",
+    "TFL-ITER-006": "Regenerating a display whose spec id does not match its directory is an error.",
+    "TFL-ITER-007": "Every display in the library has a current iteration on disk, referenced by both `current.json` and the ledger.",
+    "TFL-QC-001": "Every `testthat` test name matches `<REQ-ID>[, <REQ-ID>]: <description> (#<issue>)`.",
+    "TFL-QC-002": "Every requirement ID cited by a test exists in a matrix under `quality/requirements/`.",
+    "TFL-QC-003": "Every requirement in a matrix is cited by at least one test — no untested claims.",
+    "TFL-QC-004": "Requirement matrices use the five columns ID, Requirement, Type, Verification and Status, with five cells on every requirement row."
+  },
+  "rows": [
+    {
+      "id": "TFL-PREP-001",
+      "area": "",
+      "text": "`prepare_data()` excludes all screen-failure subjects (`ARM == \"Screen Failure\"`) from ADSL and restricts every other prepared dataset to the surviving subjects.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-PREP-002",
+      "area": "",
+      "text": "`ITTFL` is derived from randomisation (`!is.na(RANDDT)`); `SAFFL` is used as shipped with `NA` recoded to `\"N\"`.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-PREP-003",
+      "area": "",
+      "text": "`COMPLFL` and the derived `DISCREAS` reproduce `EOSSTT` exactly and partition the discontinued subjects.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-PREP-004",
+      "area": "",
+      "text": "Baseline weight, height and BMI are merged onto ADSL from the ADVS records flagged `ABLFL == \"Y\"`, so display code never joins subject-level data.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-PREP-005",
+      "area": "",
+      "text": "Every prepared dataset is described in a manifest with row/column counts, a SHA-256 content hash, and the source package and version.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-PREP-006",
+      "area": "",
+      "text": "The analysis-set registry maps `analysis_set` keys onto population flags and rejects unknown sets and datasets lacking the required flag.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-PREP-007",
+      "area": "",
+      "text": "Treatment arms are ordered by dose, not alphabetically, in every prepared dataset.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-SPEC-001",
+      "area": "",
+      "text": "An analysis method outside the documented vocabulary is rejected, naming the offending analysis and listing the known methods.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-SPEC-002",
+      "area": "",
+      "text": "Missing required keys and missing per-method fields (`variables`, `hierarchy`, `custom`) are rejected before any `{cards}` call is attempted.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-SPEC-003",
+      "area": "",
+      "text": "A display specification must carry a study identifier, a population label and a data cut-off — the ICH E3 header requirement — as non-empty strings.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-SPEC-004",
+      "area": "",
+      "text": "Row-plan keys that YAML 1.1 silently coerces to booleans (bare `n`, `y`, `no`, `on`, `off`) are rejected with an explanation rather than rendered as `FALSE`.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-SPEC-005",
+      "area": "",
+      "text": "A display row referencing an analysis the analysis spec does not define, or an id mismatch between the two specs, fails the build.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-SPEC-006",
+      "area": "",
+      "text": "Every display committed to `library/tfl/` validates, has matching ids, and declares a `post_text` variant.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-ARD-001",
+      "area": "",
+      "text": "`build_ard()` emits one row per computed statistic, carrying the `analyses[].name` that produced it, and its continuous statistics equal a direct `dplyr` computation.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-ARD-002",
+      "area": "",
+      "text": "`subject_count` counts distinct subjects over the analysis-set subject denominator, never over event records.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-ARD-003",
+      "area": "",
+      "text": "`hierarchical_count` nests inner terms under their outer level, counts each subject once per level, and matches a direct `dplyr` computation.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-ARD-004",
+      "area": "",
+      "text": "The total column is computed by the same code path as the treatment columns and is labelled with the grouping variable, not an internal constant.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-ARD-005",
+      "area": "",
+      "text": "`listing` passes records through as one ARD row per record per listed variable, addressable by record index.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-ARD-006",
+      "area": "",
+      "text": "An analysis may dispatch to a function in the display's `custom.R`; a missing custom function is a build failure, not a silent skip.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-ARD-007",
+      "area": "",
+      "text": "An analysis `filter` restricts the records summarised, and a filter that is not one logical per row or references an unknown variable fails loudly.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-ARD-008",
+      "area": "",
+      "text": "`{cards}`' per-statistic `warning` and `error` values are retained as ARD columns; statistics computed on empty groups are recorded, not dropped.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-ARD-009",
+      "area": "",
+      "text": "A binding address resolves to exactly one ARD row; zero or multiple matches raise an error.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-QNT-001",
+      "area": "",
+      "text": "Quartiles use the SAS-compatible type-2 quantile definition, not R's default type 7.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-IO-001",
+      "area": "",
+      "text": "`ard.json` conforms to the owned schema: `schema`, `display`, `created`, `provenance`, `rows`, with the full thirteen-key row shape on every row.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-IO-002",
+      "area": "",
+      "text": "The provenance envelope records spec and display hashes, per-dataset hashes and versions, the R and package environment, and the git commit.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-IO-003",
+      "area": "",
+      "text": "`write_ard()` / `read_ard()` round-trip an ARD without loss; numeric statistics stay numeric.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-IO-004",
+      "area": "",
+      "text": "Reading refuses a document that is not an `opencsr/ard/v1` ARD; writing refuses rows missing schema columns.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-IO-005",
+      "area": "",
+      "text": "Every committed ARD is readable, names only analyses its spec defines, and carries no statistic-level errors.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-FMT-001",
+      "area": "",
+      "text": "Rounding is half away from zero (SAS behaviour), not R's round-half-to-even, and is stable against binary representation error.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-FMT-002",
+      "area": "",
+      "text": "Proportions are scaled to percent and every statistic is rendered at its declared precision, including trailing zeros.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-FMT-003",
+      "area": "",
+      "text": "The digit plan is declarative: a display-level plan applies by default and a row-level plan overrides it for variables with different collected precision.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-RND-001",
+      "area": "",
+      "text": "Rendered HTML is a standalone document with inline CSS and no external stylesheet, script or CDN reference.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-RND-002",
+      "area": "",
+      "text": "In-text and post-text variants render from one ARD; the in-text variant is a strict subset of the post-text variant and applies the declared percentage threshold exactly.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-RND-003",
+      "area": "",
+      "text": "Columns follow the declared order, carry group headcounts, and silently omit declared columns absent from the ARD.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-RND-004",
+      "area": "",
+      "text": "Every rendered display states its study, its analysis set and its data cut-off, and carries a source line.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-RND-005",
+      "area": "",
+      "text": "Rendering a variant the display does not declare is an error.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-RND-006",
+      "area": "",
+      "text": "Section headings left without data rows are dropped, and indentation distinguishes headings from the rows beneath them.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-RND-007",
+      "area": "",
+      "text": "A listing renders one column per listed variable with the label declared in the display spec.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-ITER-001",
+      "area": "",
+      "text": "`regenerate()` writes a complete iteration directory — spec snapshots, `ard.json`, rendered variants and a manifest — with spec snapshots byte-identical to the specs read.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-ITER-002",
+      "area": "",
+      "text": "The iteration manifest records the actor, the change request, the regulatory identifier, the ARD hash, row counts, error counts, the rendered variants and the environment.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-ITER-003",
+      "area": "",
+      "text": "A second regeneration — whether through `regenerate()` or `regenerate_all()` — allocates a new version and never overwrites an earlier one; `current.json` moves and the ledger grows.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-ITER-004",
+      "area": "",
+      "text": "Version allocation takes the maximum of the filesystem and the ledger, so a partially written or partially deleted iteration cannot be silently overwritten.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-ITER-005",
+      "area": "",
+      "text": "The committed `t-ae-common` ledger records a real two-iteration change-request story: differing spec and ARD hashes, a recorded request and actor, and unchanged values for the numbers the change did not touch.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-ITER-006",
+      "area": "",
+      "text": "Regenerating a display whose spec id does not match its directory is an error.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-ITER-007",
+      "area": "",
+      "text": "Every display in the library has a current iteration on disk, referenced by both `current.json` and the ledger.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-QC-001",
+      "area": "",
+      "text": "Every `testthat` test name matches `<REQ-ID>[, <REQ-ID>]: <description> (#<issue>)`.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-QC-002",
+      "area": "",
+      "text": "Every requirement ID cited by a test exists in a matrix under `quality/requirements/`.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-QC-003",
+      "area": "",
+      "text": "Every requirement in a matrix is cited by at least one test — no untested claims.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-QC-004",
+      "area": "",
+      "text": "Requirement matrices use the five columns ID, Requirement, Type, Verification and Status, with five cells on every requirement row.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    }
+  ]
+}

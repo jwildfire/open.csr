@@ -1,0 +1,417 @@
+{
+  "siteTitle": "open.csr",
+  "tagline": "Versioned numbers, versioned words, one traceable loop.",
+  "description": "An open-source Clinical Study Report builder: ARD-first TFLs, an ICH E3 document model, and a published requirements-to-evidence framework.",
+  "repoUrl": "https://github.com/jwildfire/open.csr",
+  "hubUrl": "https://jwildfire.github.io/obot.roadmap/",
+  "requirementUrl": "https://github.com/jwildfire/obot.roadmap/issues/111",
+  "issue": 1,
+  "matrixBaseUrl": "https://github.com/jwildfire/open.csr/blob/main/quality/requirements",
+  "study": {
+    "id": "CDISCPILOT01",
+    "title": "Safety and Efficacy of the Xanomeline Transdermal Therapeutic System (TTS) in Patients with Mild to Moderate Alzheimer's Disease",
+    "cutoff": "2014-07-01",
+    "source": "pharmaverseadam (CDISC Pilot 01)"
+  },
+  "components": [
+    {
+      "module": "tfl-engine",
+      "kind": "engine",
+      "title": "TFL Engine",
+      "matrix": "tfl-engine.md",
+      "status": "planned",
+      "blurb": "The R package that turns ADaM into ARDs and ARDs into displays: data-prep, the analysis.yaml interpreter, the owned ard.json serialization, and the gt/tfrmt/r2rtf renderers.",
+      "prefixes": [
+        "TFL"
+      ],
+      "paths": [
+        "pipeline/R",
+        "pipeline/tests/testthat"
+      ],
+      "testPrefixes": [
+        "ard-build",
+        "ard-io",
+        "data-prep",
+        "spec-validation",
+        "formatting",
+        "regenerate",
+        "render",
+        "tfl-"
+      ]
+    },
+    {
+      "module": "text",
+      "kind": "text",
+      "title": "Text Library",
+      "matrix": "text.md",
+      "status": "planned",
+      "blurb": "ICH E3-aligned prose blocks in three tiers, binding every number to an ARD address rather than stating it.",
+      "prefixes": [
+        "TXT"
+      ],
+      "paths": [
+        "library/text"
+      ],
+      "testPrefixes": [
+        "text-"
+      ],
+      "suites": [
+        "text-review"
+      ]
+    },
+    {
+      "module": "templates",
+      "kind": "templates",
+      "title": "Report Template Library",
+      "matrix": "templates.md",
+      "status": "planned",
+      "blurb": "ICH E3 encoded as data — the 16-section skeleton, assembly slots, 14.x numbering, and the auto-generated 16.1.9 provenance appendix.",
+      "prefixes": [
+        "RPT"
+      ],
+      "paths": [
+        "library/templates/ich-e3"
+      ],
+      "testPrefixes": [
+        "templates-",
+        "assemble",
+        "csr-",
+        "template-"
+      ]
+    },
+    {
+      "module": "traceability",
+      "kind": "framework",
+      "title": "Traceability",
+      "matrix": "traceability.md",
+      "status": "planned",
+      "blurb": "The data to ARD to display to sentence chain: provenance envelopes, iteration ledgers, and the trace panel that answers all five questions about any number on the site.",
+      "prefixes": [
+        "TRC"
+      ],
+      "paths": [
+        "scripts",
+        "outputs"
+      ],
+      "testPrefixes": [
+        "site-binding",
+        "evidence-traceability",
+        "traceability-",
+        "trace-"
+      ]
+    },
+    {
+      "module": "quality",
+      "kind": "framework",
+      "title": "Quality Framework",
+      "matrix": "quality.md",
+      "status": "planned",
+      "blurb": "The requirements to tests to evidence loop itself: matrix extraction, test-name conventions, evidence normalization across testthat and vitest, drift guards, and the published evidence pages.",
+      "prefixes": [
+        "QC"
+      ],
+      "paths": [
+        "scripts",
+        "tests/unit"
+      ],
+      "testPrefixes": [
+        "site-render",
+        "site-validate",
+        "site-convention",
+        "site-",
+        "requirements-",
+        "evidence-normalize",
+        "evidence-",
+        "quality-",
+        "naming-convention",
+        "convention"
+      ]
+    }
+  ],
+  "displays": [
+    {
+      "module": "t-disposition",
+      "slug": "t-disposition",
+      "title": "Subject Disposition",
+      "regulatoryId": "DST01",
+      "type": "table",
+      "e3Section": "14.1",
+      "matrix": "displays.md",
+      "status": "planned",
+      "datasets": [
+        "adsl"
+      ],
+      "blurb": "Screened, randomised, treated, completed and discontinued counts with reasons for discontinuation, over the ITT set.",
+      "prefixes": [
+        "DSP-DISP"
+      ]
+    },
+    {
+      "module": "t-demographics",
+      "slug": "t-demographics",
+      "title": "Demographic and Baseline Characteristics",
+      "regulatoryId": "DMT01",
+      "type": "table",
+      "e3Section": "14.1",
+      "matrix": "displays.md",
+      "status": "planned",
+      "datasets": [
+        "adsl"
+      ],
+      "blurb": "Age, sex, race and baseline characteristics by treatment arm over the safety analysis set.",
+      "prefixes": [
+        "DSP-DEMO"
+      ]
+    },
+    {
+      "module": "t-exposure",
+      "slug": "t-exposure",
+      "title": "Extent of Exposure to Study Drug",
+      "regulatoryId": "EXT01",
+      "type": "table",
+      "e3Section": "14.3.1",
+      "matrix": "displays.md",
+      "status": "planned",
+      "datasets": [
+        "adex",
+        "adsl"
+      ],
+      "blurb": "Duration and cumulative dose of study treatment by arm.",
+      "prefixes": [
+        "DSP-EXP"
+      ]
+    },
+    {
+      "module": "t-ae-overview",
+      "slug": "t-ae-overview",
+      "title": "Overview of Treatment-Emergent Adverse Events",
+      "regulatoryId": "AET01",
+      "type": "table",
+      "e3Section": "14.3.1",
+      "matrix": "displays.md",
+      "status": "planned",
+      "datasets": [
+        "adae",
+        "adsl"
+      ],
+      "blurb": "Subject counts for any AE, related AEs, serious AEs, and AEs leading to discontinuation or death.",
+      "prefixes": [
+        "DSP-AE"
+      ]
+    },
+    {
+      "module": "t-ae-common",
+      "slug": "t-ae-common",
+      "title": "Treatment-Emergent Adverse Events by System Organ Class and Preferred Term",
+      "regulatoryId": "AET02",
+      "type": "table",
+      "e3Section": "14.3.1",
+      "matrix": "displays.md",
+      "status": "planned",
+      "datasets": [
+        "adae",
+        "adsl"
+      ],
+      "blurb": "Hierarchical subject incidence of treatment-emergent adverse events, SOC rows expanded to preferred terms.",
+      "prefixes": [
+        "DSP-AE"
+      ]
+    },
+    {
+      "module": "l-ae-serious",
+      "slug": "l-ae-serious",
+      "title": "Listing of Serious Adverse Events",
+      "regulatoryId": "AEL01",
+      "type": "listing",
+      "e3Section": "14.3.2",
+      "matrix": "displays.md",
+      "status": "planned",
+      "datasets": [
+        "adae"
+      ],
+      "blurb": "Subject-level listing of serious adverse events with onset, severity, outcome and relationship.",
+      "prefixes": [
+        "DSP-SAE"
+      ]
+    }
+  ],
+  "textBlocks": [
+    {
+      "id": "TXT-E3-0502",
+      "e3Section": "5.2",
+      "title": "Ethical Conduct of the Study",
+      "tier": "boilerplate",
+      "displays": []
+    },
+    {
+      "id": "TXT-E3-0503",
+      "e3Section": "5.3",
+      "title": "Patient Information and Consent",
+      "tier": "boilerplate",
+      "displays": []
+    },
+    {
+      "id": "TXT-E3-0901",
+      "e3Section": "9.1",
+      "title": "Overall Study Design and Plan: Description",
+      "tier": "parameterized",
+      "displays": [
+        "t-disposition"
+      ]
+    },
+    {
+      "id": "TXT-E3-0908",
+      "e3Section": "9.8",
+      "title": "Changes in the Conduct of the Study or Planned Analyses",
+      "tier": "boilerplate",
+      "displays": []
+    },
+    {
+      "id": "TXT-E3-1001",
+      "e3Section": "10.1",
+      "title": "Disposition of Patients",
+      "tier": "parameterized",
+      "displays": [
+        "t-disposition"
+      ]
+    },
+    {
+      "id": "TXT-E3-1101",
+      "e3Section": "11.1",
+      "title": "Data Sets Analysed",
+      "tier": "parameterized",
+      "displays": [
+        "t-demographics",
+        "t-disposition"
+      ]
+    },
+    {
+      "id": "TXT-E3-1102",
+      "e3Section": "11.2",
+      "title": "Demographic and Other Baseline Characteristics",
+      "tier": "parameterized",
+      "displays": [
+        "t-demographics"
+      ]
+    },
+    {
+      "id": "TXT-E3-1201",
+      "e3Section": "12.1",
+      "title": "Extent of Exposure",
+      "tier": "parameterized",
+      "displays": [
+        "t-exposure"
+      ]
+    },
+    {
+      "id": "TXT-E3-1221",
+      "e3Section": "12.2.1",
+      "title": "Brief Summary of Adverse Events",
+      "tier": "parameterized",
+      "displays": [
+        "t-ae-overview"
+      ]
+    },
+    {
+      "id": "TXT-E3-1222",
+      "e3Section": "12.2.2",
+      "title": "Display of Adverse Events",
+      "tier": "generated",
+      "displays": [
+        "t-ae-common",
+        "t-ae-overview"
+      ]
+    },
+    {
+      "id": "TXT-E3-1224",
+      "e3Section": "12.2.4",
+      "title": "Listing of Adverse Events by Patient",
+      "tier": "boilerplate",
+      "displays": [
+        "l-ae-serious"
+      ]
+    },
+    {
+      "id": "TXT-E3-1231",
+      "e3Section": "12.3.1",
+      "title": "Listing of Deaths, Other Serious and Other Significant Adverse Events",
+      "tier": "generated",
+      "displays": [
+        "t-ae-overview",
+        "l-ae-serious"
+      ]
+    },
+    {
+      "id": "TXT-E3-1206",
+      "e3Section": "12.6",
+      "title": "Safety Conclusions",
+      "tier": "generated",
+      "displays": [
+        "t-ae-overview",
+        "t-ae-common",
+        "t-exposure"
+      ]
+    },
+    {
+      "id": "TXT-E3-1300",
+      "e3Section": "13",
+      "title": "Discussion and Overall Conclusions",
+      "tier": "generated",
+      "displays": [
+        "t-disposition",
+        "t-demographics",
+        "t-exposure",
+        "t-ae-overview",
+        "t-ae-common"
+      ]
+    }
+  ],
+  "template": {
+    "module": "templates",
+    "dir": "library/templates/ich-e3",
+    "sections": "sections.yaml",
+    "assembly": "assembly.yaml"
+  },
+  "docs": [
+    {
+      "file": "docs/design/design.md",
+      "title": "Design",
+      "group": "Design"
+    },
+    {
+      "file": "docs/design/contracts.md",
+      "title": "Interface Contracts",
+      "group": "Design"
+    },
+    {
+      "file": "research/README.md",
+      "title": "Research overview",
+      "group": "Research"
+    },
+    {
+      "file": "research/sections/01_existing-tools.md",
+      "title": "01 · The CSR-automation landscape",
+      "group": "Research"
+    },
+    {
+      "file": "research/sections/02_ars-ard-standards.md",
+      "title": "02 · CDISC ARS and the ARD ecosystem",
+      "group": "Research"
+    },
+    {
+      "file": "research/sections/03_tlg-pharmaverse-practice.md",
+      "title": "03 · Pharmaverse TLG practice",
+      "group": "Research"
+    },
+    {
+      "file": "research/sections/04_csr-document-standards.md",
+      "title": "04 · CSR document standards",
+      "group": "Research"
+    },
+    {
+      "file": "research/sections/05_safetyviz-evidence-framework.md",
+      "title": "05 · The safety.viz evidence framework",
+      "group": "Research"
+    }
+  ]
+}

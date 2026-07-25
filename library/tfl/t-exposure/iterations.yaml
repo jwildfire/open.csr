@@ -1,0 +1,12 @@
+display: t-exposure
+iterations:
+- version: v001
+  created: '2026-07-25T06:39:07Z'
+  actor: '@jwildfire'
+  change_request: Initial generation of EXT01 from the statistical analysis plan shell.
+  git_commit: ''
+  spec_hash: sha256:dcb569bb84c890fe5d3322fbb111cdaeabd917ad388c89d10b2e754b8d322dd8
+  display_hash: sha256:5cf918ab32731b85dcf031052e201c763ba0972d98f2badb1c8d7a216b812c44
+  ard_hash: sha256:f6624be3da3d7343345ba139c4213486d414e8eecce6382a38fa2e64c0b70159
+  ard_rows: 176
+

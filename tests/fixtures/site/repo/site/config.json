@@ -1,0 +1,26 @@
+{
+  "siteTitle": "open.csr fixture",
+  "tagline": "fixture",
+  "repoUrl": "https://github.com/jwildfire/open.csr",
+  "hubUrl": "https://jwildfire.github.io/obot.roadmap/",
+  "matrixBaseUrl": "https://github.com/jwildfire/open.csr/blob/main/quality/requirements",
+  "issue": 1,
+  "study": { "id": "CDISCPILOT01", "cutoff": "2014-07-01" },
+  "components": [
+    { "module": "tfl-engine", "kind": "engine", "title": "TFL Engine", "matrix": "tfl-engine.md", "status": "planned" },
+    { "module": "text", "kind": "text", "title": "Text Library", "matrix": "text.md", "status": "planned" }
+  ],
+  "displays": [
+    { "module": "t-demo", "slug": "t-demo", "title": "Demo display", "regulatoryId": "AET01",
+      "type": "table", "e3Section": "14.3.1", "matrix": "displays.md", "status": "planned",
+      "datasets": ["adae", "adsl"], "blurb": "A fixture display." },
+    { "module": "t-missing", "slug": "t-missing", "title": "Never generated", "type": "table",
+      "matrix": "displays.md", "status": "planned", "datasets": [], "blurb": "No outputs on disk." }
+  ],
+  "textBlocks": [
+    { "id": "TXT-E3-1202", "e3Section": "12.2.1", "title": "Brief Summary of Adverse Events",
+      "tier": "parameterized", "displays": ["t-demo"] }
+  ],
+  "template": { "module": "templates", "dir": "library/templates/ich-e3" },
+  "docs": []
+}

@@ -1,0 +1,9 @@
+{
+  "display": "t-ae-common",
+  "version": "v002",
+  "updated": "2026-07-25T06:39:10Z",
+  "path": "outputs/t-ae-common/v002",
+  "ard": "outputs/t-ae-common/v002/ard.json",
+  "table": "outputs/t-ae-common/v002/table.html",
+  "variants": ["post_text", "in_text"]
+}

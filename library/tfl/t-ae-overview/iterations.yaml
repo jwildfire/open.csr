@@ -1,0 +1,12 @@
+display: t-ae-overview
+iterations:
+- version: v001
+  created: '2026-07-25T06:39:08Z'
+  actor: '@jwildfire'
+  change_request: Initial generation of AET01 from the statistical analysis plan shell.
+  git_commit: ''
+  spec_hash: sha256:6b0ba696f8cb4abffc3741982f36bb3bc4a47a68d84e0da1cb5cbf210c19a90a
+  display_hash: sha256:04520444415a62c1f632d67d37a67e33c3f2a9dd4c9b7006cae32eb21bcdf2bb
+  ard_hash: sha256:8c7cee6762652e384a76179c0ba6cc2ee8ac50a23e33df6404a23f32135d8f25
+  ard_rows: 88
+

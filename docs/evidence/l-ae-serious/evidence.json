@@ -1,0 +1,65 @@
+{
+  "module": "l-ae-serious",
+  "generated": "2026-07-25T06:39:18.051Z",
+  "records": [
+    {
+      "requirementIds": [
+        "DSP-ALL-001"
+      ],
+      "title": "DSP-ALL-001: every display renders a table that actually contains numbers (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-ALL-002"
+      ],
+      "title": "DSP-ALL-002: every display declares a regulatory identifier and a source line (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-SAE-001"
+      ],
+      "title": "DSP-SAE-001: the serious-AE listing has one row per serious event record (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    }
+  ],
+  "traceability": {
+    "adamDatasets": [
+      "adae",
+      "adsl"
+    ],
+    "adamHashes": {
+      "adsl": "sha256:f9a1c3605cb277363fba0add4c4228df6a288685586575be159718696c582107",
+      "adae": "sha256:7d4237afdbf934742091e6b7e0a756fcba6a0e79fc9f35b578f86574baf8f7d4"
+    },
+    "ardFile": "outputs/l-ae-serious/v001/ard.json",
+    "ardHash": "sha256:f3a6c72fd7fa9d5955e4f220cc90ba1424ca1073123c18a0f1aa335d191f6c49",
+    "displayFile": "library/tfl/l-ae-serious/display.yaml",
+    "specHash": "sha256:a046fb1cdc11ed10d586284efeb97e30ab743f4ad394869bd83ae1bfb401d140",
+    "iteration": "v001",
+    "sourceCommit": null
+  },
+  "environment": {
+    "os": "Darwin 23.6.0",
+    "node": "v24.14.0",
+    "vitest": "2.1.9",
+    "r": "4.3.3"
+  },
+  "run": null
+}

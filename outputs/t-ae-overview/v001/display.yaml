@@ -1,0 +1,30 @@
+id: t-ae-overview
+title: "Overview of Treatment-Emergent Adverse Events"
+study: CDISCPILOT01
+population_label: "Safety Analysis Set"
+cutoff: "2014-07-01"
+source: "Source: adae, adsl (pharmaverseadam). Data cut-off: 2014-07-01."
+footnotes:
+  - "A treatment-emergent adverse event is an event with TRTEMFL = 'Y'."
+  - "Percentages are based on the number of subjects in the safety analysis set for each treatment group."
+  - "Subjects reporting more than one event are counted once in each row they qualify for; severity rows count subjects with at least one event of that severity and therefore do not sum to the number of subjects with any event."
+columns:
+  order: [Placebo, "Xanomeline Low Dose", "Xanomeline High Dose", Total]
+format:
+  digits:
+    p: 1
+rows:
+  - { label: "Adverse events", section: true }
+  - { analysis: n_events, variable: AENUM, pattern: "n", label: "Number of events", indent: 1 }
+  - { analysis: any_ae, label: "Subjects with ≥1 adverse event", pattern: n_pct, indent: 1 }
+  - { analysis: serious_ae, label: "Subjects with a serious adverse event", pattern: n_pct, indent: 1 }
+  - { analysis: fatal_ae, label: "Subjects with a fatal adverse event", pattern: n_pct, indent: 1 }
+  - { analysis: related_ae, label: "Subjects with a related adverse event", pattern: n_pct, indent: 1 }
+  - { label: "Subjects by severity, n (%)", section: true }
+  - { analysis: sev_mild, label: "Mild", pattern: n_pct, indent: 1 }
+  - { analysis: sev_moderate, label: "Moderate", pattern: n_pct, indent: 1 }
+  - { analysis: sev_severe, label: "Severe", pattern: n_pct, indent: 1 }
+variants:
+  post_text: {}
+  in_text:
+    title: "Overview of Treatment-Emergent Adverse Events (Summary)"

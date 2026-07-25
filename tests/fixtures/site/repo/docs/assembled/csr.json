@@ -1,0 +1,17 @@
+{
+  "study": { "id": "CDISCPILOT01", "title": "A fixture study", "cutoff": "2014-07-01" },
+  "sections": [
+    {
+      "number": "12.2.1",
+      "title": "Brief Summary of Adverse Events",
+      "content": [
+        { "type": "text", "id": "TXT-E3-1202", "tier": "parameterized",
+          "markdown": "Overall, {{ard:t-demo:any_ae:n;group=Xanomeline High Dose}} subjects reported at least one adverse event." },
+        { "type": "display", "slug": "t-demo", "variant": "in_text", "number": "Table 14.3.1.1" }
+      ],
+      "sections": [
+        { "number": "12.2.1.1", "title": "Nested subsection", "text": ["Plain prose with no numbers."] }
+      ]
+    }
+  ]
+}

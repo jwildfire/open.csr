@@ -1,0 +1,113 @@
+{
+  "module": "t-ae-overview",
+  "generated": "2026-07-25T06:39:18.051Z",
+  "records": [
+    {
+      "requirementIds": [
+        "DSP-AE-001"
+      ],
+      "title": "DSP-AE-001: AE overview subject counts match ADAE computed directly (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-AE-002"
+      ],
+      "title": "DSP-AE-002: severity rows never exceed the any-AE row (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-AE-003"
+      ],
+      "title": "DSP-AE-003: the custom event-count row counts records, not subjects (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-AE-004"
+      ],
+      "title": "DSP-AE-004: common-AE SOC and PT counts match ADAE computed directly (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-AE-005"
+      ],
+      "title": "DSP-AE-005: the in-text AE variant applies the 5% threshold declared in the spec (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-ALL-001"
+      ],
+      "title": "DSP-ALL-001: every display renders a table that actually contains numbers (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-ALL-002"
+      ],
+      "title": "DSP-ALL-002: every display declares a regulatory identifier and a source line (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    }
+  ],
+  "traceability": {
+    "adamDatasets": [
+      "adae",
+      "adsl"
+    ],
+    "adamHashes": {
+      "adsl": "sha256:f9a1c3605cb277363fba0add4c4228df6a288685586575be159718696c582107",
+      "adae": "sha256:7d4237afdbf934742091e6b7e0a756fcba6a0e79fc9f35b578f86574baf8f7d4"
+    },
+    "ardFile": "outputs/t-ae-overview/v001/ard.json",
+    "ardHash": "sha256:8c7cee6762652e384a76179c0ba6cc2ee8ac50a23e33df6404a23f32135d8f25",
+    "displayFile": "library/tfl/t-ae-overview/display.yaml",
+    "specHash": "sha256:6b0ba696f8cb4abffc3741982f36bb3bc4a47a68d84e0da1cb5cbf210c19a90a",
+    "iteration": "v001",
+    "sourceCommit": null
+  },
+  "environment": {
+    "os": "Darwin 23.6.0",
+    "node": "v24.14.0",
+    "vitest": "2.1.9",
+    "r": "4.3.3"
+  },
+  "run": null
+}

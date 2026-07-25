@@ -1,0 +1,108 @@
+# ------------------------------------------------------------------------------
+# assembly.yaml — the per-CSR configuration for the open.csr v0 demonstration.
+# ------------------------------------------------------------------------------
+# sections.yaml says what an ICH E3 CSR IS. This file says what THIS report puts
+# in it: which Text Library blocks populate which sections, which displays are
+# rendered in-text, and which displays occupy which Section 14 slot.
+#
+# It deliberately claims only the sections the v0 demo actually fills. Every other
+# E3 section still appears in the assembled document as a heading marked "not
+# populated in this demonstration" — honest about scope, and it keeps the full
+# skeleton visible (design.md §10, delivery phase v0).
+#
+# Numbering (design decision D6): display numbers are NOT written here. The
+# assembler derives 14.x positions from `post_text` order at build time, so a
+# reordering is a one-line diff and the display slug never changes.
+# ------------------------------------------------------------------------------
+template: ich-e3
+
+study:
+  id: CDISCPILOT01
+  title: >-
+    Safety and Efficacy of the Xanomeline Transdermal Therapeutic System (TTS) in
+    Patients with Mild to Moderate Alzheimer's Disease
+  short_title: "Xanomeline TTS in Mild to Moderate Alzheimer's Disease"
+  phase: "Phase 2"
+  indication: "Mild to moderate Alzheimer's disease"
+  product: "Xanomeline Transdermal Therapeutic System (TTS)"
+  sponsor: "open.csr demonstration report (CDISC pilot study data)"
+  cutoff: "2014-07-01"
+  design: "Randomised, double-blind, placebo-controlled, parallel-group"
+  treatment_groups: ["Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"]
+  primary_analysis_set: "Safety Analysis Set"
+  data_source: "pharmaverseadam (CDISCPILOT01 ADaM)"
+  scope_note: >-
+    Safety-focused demonstration. No efficacy ADaM exists for CDISCPILOT01 in
+    pharmaverseadam, so Sections 11.4 and 14.2 are intentionally unpopulated
+    (design decision D12); deriving an ADQSADAS-class dataset is roadmap v0.3.
+
+# Where the assembler writes the auto-generated provenance appendix.
+provenance_section: "16.1.9"
+
+# ---------------------------------------------------------------------- narrative
+# `text`      Text Library block IDs, in order.
+# `displays`  rendered here as the display's `in_text` variant (a reduced or
+#             thresholded rendering of the same ARD that feeds Section 14).
+slots:
+  - section: "5.2"
+    text: [TXT-E3-0502]
+
+  - section: "5.3"
+    text: [TXT-E3-0503]
+
+  - section: "9.1"
+    text: [TXT-E3-0901]
+
+  - section: "9.8"
+    text: [TXT-E3-0908]
+
+  - section: "10.1"
+    text: [TXT-E3-1001]
+    displays: [t-disposition]
+
+  - section: "11.1"
+    text: [TXT-E3-1101]
+
+  - section: "11.2"
+    text: [TXT-E3-1102]
+    displays: [t-demographics]
+
+  - section: "12.1"
+    text: [TXT-E3-1201]
+    displays: [t-exposure]
+
+  - section: "12.2.1"
+    text: [TXT-E3-1221]
+    displays: [t-ae-overview]
+
+  - section: "12.2.2"
+    text: [TXT-E3-1222]
+    displays: [t-ae-common]
+
+  - section: "12.2.4"
+    text: [TXT-E3-1224]
+
+  - section: "12.3.1"
+    text: [TXT-E3-1231]
+    displays: [l-ae-serious]
+
+  - section: "12.6"
+    text: [TXT-E3-1206]
+
+  - section: "13"
+    text: [TXT-E3-1300]
+
+# ---------------------------------------------------------------------- post-text
+# Section 14 assignment. Order within a section determines the assigned number:
+# the first display under "14.1" becomes Table 14.1.1, the second 14.1.2, and so
+# on. Assigned numbers may never collide with a section number in sections.yaml —
+# the assembler treats a collision as a build failure (RPT-ASM-004).
+post_text:
+  - section: "14.1"
+    displays: [t-disposition, t-demographics]
+
+  - section: "14.3.1"
+    displays: [t-exposure, t-ae-overview, t-ae-common]
+
+  - section: "14.3.2"
+    displays: [l-ae-serious]
