@@ -49,7 +49,22 @@
     "QC-SIGN-012": "Gate severity follows assembly inclusion: an excluded draft block's errors are deferred, an included block's are failures, and an assembler that exits 0 without output is treated as not having run.",
     "QC-SIGN-013": "The apply workflow triggers on the `text-decision` dispatch, runs only for @jwildfire, re-runs the R-independent CI checks before committing to `dev`, and keeps a `workflow_dispatch` fallback with the same inputs.",
     "QC-SIGN-014": "Approving an already-approved block re-affirms it, updating `by` and `at` and recording the prior state in the ledger.",
-    "QC-SIGN-015": "The committed ledger is a valid, empty, self-documenting ledger of schema `opencsr/text-decisions/v1`, so the review page has a contract to render before the first decision."
+    "QC-SIGN-015": "The committed ledger is a valid, empty, self-documenting ledger of schema `opencsr/text-decisions/v1`, so the review page has a contract to render before the first decision.",
+    "QC-DEMO-001": "The Demo app's selection — active tab, display, text block, focus target — round-trips losslessly through the URL hash, so any view of the report is a shareable link.",
+    "QC-DEMO-002": "An unknown or absent tab in a deep link decodes to the default tab; the four tabs are Reader, Tables, Text and Templates.",
+    "QC-DEMO-003": "A link from one pane to another pane's standalone surface resolves to a tab switch carrying the selection it named — a display permalink selects that display, a text-block anchor selects that block — at any authored path depth.",
+    "QC-DEMO-004": "Links that are not pane crossings are left to navigate: Quality, Design & Research, absolute URLs, and bare fragments (which are in-pane scrolling).",
+    "QC-DEMO-005": "A crossing that names no display keeps the display already selected, so moving between panes does not silently reset what the visitor was looking at.",
+    "QC-DEMO-006": "A display slug that is not in the build falls back to the first available display rather than rendering a blank pane.",
+    "QC-DEMO-007": "Every pane is server-rendered and present in the emitted HTML with exactly one visible; the app's tablist uses its own class vocabulary and carries the tablist/tab/tabpanel ARIA wiring.",
+    "QC-DEMO-008": "A tab whose pane did not render is dropped from the tablist rather than shown empty.",
+    "QC-DEMO-009": "The Tables pane renders one panel per display and one picker entry per display, shows exactly one, opens on the requested display, and falls back to the first when the request is unknown.",
+    "QC-DEMO-010": "An empty display library renders the documented empty state rather than an app with no content.",
+    "QC-DEMO-011": "The Templates pane renders every section of the E3 model, marking those this report does not populate, rather than trimming the skeleton to what happens to be built.",
+    "QC-DEMO-012": "Display numbers in the Templates pane are derived from assembly order by the same tested function the assembler uses, never authored; reordering the assembly moves every number and changes no slug.",
+    "QC-DEMO-013": "The Templates pane renders its documented empty state when the section model is missing, and renders correctly on a tree where the assembler has never run.",
+    "QC-DEMO-014": "The auto-generated provenance section is identified as generated in the Templates pane.",
+    "QC-DEMO-015": "The Demo app's Text pane and the standalone review page are the same rendered HTML, differing only in which client script the page loads."
   },
   "rows": [
     {
@@ -482,6 +497,141 @@
       "source": "contracts §9",
       "evidence": "js-unit",
       "link": "text-decision-ledger.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-DEMO-001",
+      "area": "Demo",
+      "text": "The Demo app's selection — active tab, display, text block, focus target — round-trips losslessly through the URL hash, so any view of the report is a shareable link.",
+      "source": "#113",
+      "evidence": "js-unit",
+      "link": "site-demo.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-DEMO-002",
+      "area": "Demo",
+      "text": "An unknown or absent tab in a deep link decodes to the default tab; the four tabs are Reader, Tables, Text and Templates.",
+      "source": "#113",
+      "evidence": "js-unit",
+      "link": "site-demo.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-DEMO-003",
+      "area": "Demo",
+      "text": "A link from one pane to another pane's standalone surface resolves to a tab switch carrying the selection it named — a display permalink selects that display, a text-block anchor selects that block — at any authored path depth.",
+      "source": "#113",
+      "evidence": "js-unit",
+      "link": "site-demo.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-DEMO-004",
+      "area": "Demo",
+      "text": "Links that are not pane crossings are left to navigate: Quality, Design & Research, absolute URLs, and bare fragments (which are in-pane scrolling).",
+      "source": "#113",
+      "evidence": "js-unit",
+      "link": "site-demo.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-DEMO-005",
+      "area": "Demo",
+      "text": "A crossing that names no display keeps the display already selected, so moving between panes does not silently reset what the visitor was looking at.",
+      "source": "#113",
+      "evidence": "js-unit",
+      "link": "site-demo.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-DEMO-006",
+      "area": "Demo",
+      "text": "A display slug that is not in the build falls back to the first available display rather than rendering a blank pane.",
+      "source": "#113",
+      "evidence": "js-unit",
+      "link": "site-demo.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-DEMO-007",
+      "area": "Demo",
+      "text": "Every pane is server-rendered and present in the emitted HTML with exactly one visible; the app's tablist uses its own class vocabulary and carries the tablist/tab/tabpanel ARIA wiring.",
+      "source": "#113",
+      "evidence": "js-unit",
+      "link": "site-demo.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-DEMO-008",
+      "area": "Demo",
+      "text": "A tab whose pane did not render is dropped from the tablist rather than shown empty.",
+      "source": "#113",
+      "evidence": "js-unit",
+      "link": "site-demo.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-DEMO-009",
+      "area": "Demo",
+      "text": "The Tables pane renders one panel per display and one picker entry per display, shows exactly one, opens on the requested display, and falls back to the first when the request is unknown.",
+      "source": "#113",
+      "evidence": "js-unit",
+      "link": "site-demo.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-DEMO-010",
+      "area": "Demo",
+      "text": "An empty display library renders the documented empty state rather than an app with no content.",
+      "source": "#113",
+      "evidence": "js-unit",
+      "link": "site-demo.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-DEMO-011",
+      "area": "Demo",
+      "text": "The Templates pane renders every section of the E3 model, marking those this report does not populate, rather than trimming the skeleton to what happens to be built.",
+      "source": "D6",
+      "evidence": "js-unit",
+      "link": "site-demo.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-DEMO-012",
+      "area": "Demo",
+      "text": "Display numbers in the Templates pane are derived from assembly order by the same tested function the assembler uses, never authored; reordering the assembly moves every number and changes no slug.",
+      "source": "D6",
+      "evidence": "js-unit",
+      "link": "site-demo.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-DEMO-013",
+      "area": "Demo",
+      "text": "The Templates pane renders its documented empty state when the section model is missing, and renders correctly on a tree where the assembler has never run.",
+      "source": "#113",
+      "evidence": "js-unit",
+      "link": "site-demo.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-DEMO-014",
+      "area": "Demo",
+      "text": "The auto-generated provenance section is identified as generated in the Templates pane.",
+      "source": "D6",
+      "evidence": "js-unit",
+      "link": "site-demo.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-DEMO-015",
+      "area": "Demo",
+      "text": "The Demo app's Text pane and the standalone review page are the same rendered HTML, differing only in which client script the page loads.",
+      "source": "#113",
+      "evidence": "js-unit",
+      "link": "site-demo.test.js",
       "status": "draft"
     }
   ]

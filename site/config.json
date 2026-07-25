@@ -394,6 +394,11 @@
       "group": "Design"
     },
     {
+      "file": "docs/design/webr-spike.md",
+      "title": "webR spike — regenerating in the browser",
+      "group": "Design"
+    },
+    {
       "file": "research/README.md",
       "title": "Research overview",
       "group": "Research"

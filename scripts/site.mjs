@@ -45,6 +45,8 @@ import {
   validateSiteLinks
 } from './site-lib.mjs';
 import { loadDecisions, renderReviewPage, reviewConfig } from './review-lib.mjs';
+import { APP_TABS, renderAppPage, renderTablesPane, renderTemplatesPane } from './app-lib.mjs';
+import { loadAssembly, loadSections } from './template-lib.mjs';
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const buildDir = path.join(rootDir, 'site', '_build');
@@ -136,14 +138,29 @@ page(path.join(buildDir, 'gallery', 'index.html'), {
   content: renderGallery({ config, displays })
 });
 
-for (const display of displays) {
+// Rendered once, used twice: as the /gallery/<slug>.html permalink and as a
+// panel of the Demo app's Tables pane. The two cannot drift because they are
+// the same string.
+const displayFragments = displays.map((display) => {
   const evidence = loadEvidence(rootDir, display.module);
   const requirements = loadRequirements(rootDir, display.module).requirements || {};
-  page(path.join(buildDir, 'gallery', `${display.slug}.html`), {
+  return {
+    slug: display.slug,
+    title: display.title,
+    regulatoryId: display.regulatoryId,
+    type: display.type,
+    status: display.status,
+    html: renderDisplayPage({ config, display, evidence, requirements })
+  };
+});
+
+for (const fragment of displayFragments) {
+  const display = displays.find((entry) => entry.slug === fragment.slug);
+  page(path.join(buildDir, 'gallery', `${fragment.slug}.html`), {
     title: `${display.title} · ${config.siteTitle}`,
     root: '../',
     description: display.blurb || `The ${display.title} display, its ARD, and its specs.`,
-    content: renderDisplayPage({ config, display, evidence, requirements })
+    content: fragment.html
   });
 }
 
@@ -154,13 +171,14 @@ if (!csr.json && !csr.html) {
     'docs/assembled/csr.json is missing — the CSR Reader renders its "not assembled yet" state.'
   );
 }
+const readerContent = renderCsrReader({ config, csr, displays, ards, traceIndex, textBlocks });
 page(path.join(buildDir, 'reader', 'index.html'), {
   title: `CSR Reader · ${config.siteTitle}`,
   root: '../',
   description:
     'The assembled Clinical Study Report with a trace panel: click any bound number or display ' +
     'to follow the data → ARD → display → sentence chain.',
-  content: renderCsrReader({ config, csr, displays, ards, traceIndex, textBlocks })
+  content: readerContent
 });
 
 // --- Text Library -----------------------------------------------------------
@@ -196,6 +214,18 @@ page(path.join(buildDir, 'review', 'index.html'), {
   content: renderReviewPage({ config, textBlocks, ards, traceIndex, ledger })
 });
 
+// The Demo app's Text pane IS the review surface (#113: absorbed, not placed
+// beside it). Rendered again only to point at the review client's copy under
+// /app/review/, because /app/client.js is the app's own.
+const textPaneContent = renderReviewPage({
+  config,
+  textBlocks,
+  ards,
+  traceIndex,
+  ledger,
+  clientSrc: 'review/client.js'
+});
+
 // The review client is the only script the site loads from a file rather than
 // inline: it is an ES module so its pure core (site/review/core.js) is the same
 // code the builder and the test suite use. Both files are copied verbatim —
@@ -207,6 +237,76 @@ for (const file of ['core.js', 'client.js']) {
 const ledgerSource = path.join(rootDir, reviewCfg.ledgerPath);
 if (existsSync(ledgerSource)) {
   copyFileSync(ledgerSource, path.join(buildDir, 'review', 'text-decisions.json'));
+}
+
+// --- Demo app ---------------------------------------------------------------
+// #113 increment A: the four browsing surfaces as panes of one view, sharing a
+// selection. Every pane is the same HTML the standalone page serves; what makes
+// it an app is site/app/client.js resolving a link between panes into a
+// selection change instead of a navigation.
+
+// The template model comes from template-lib, the same tested loaders the
+// assembler uses — so the pane's numbering is the document's numbering (D6)
+// rather than a second implementation of it.
+const templateDir = path.join(rootDir, config.template?.dir || 'library/templates/ich-e3');
+const template = {
+  dir: path.relative(rootDir, templateDir).replaceAll('\\', '/'),
+  sections: existsSync(path.join(templateDir, config.template?.sections || 'sections.yaml'))
+    ? loadSections(path.join(templateDir, config.template?.sections || 'sections.yaml'))
+    : null,
+  assembly: existsSync(path.join(templateDir, config.template?.assembly || 'assembly.yaml'))
+    ? loadAssembly(path.join(templateDir, config.template?.assembly || 'assembly.yaml'))
+    : null
+};
+if (!template.sections?.sections?.length) {
+  warnings.push(
+    `${template.dir}/sections.yaml is missing or empty — the Templates pane renders its ` +
+      '"not committed yet" state.'
+  );
+}
+
+const appPanes = [
+  { id: 'reader', html: readerContent },
+  {
+    id: 'tables',
+    html: renderTablesPane({
+      entries: displayFragments.map((fragment) => ({
+        ...fragment,
+        number: (csr.json?.displayIndex || []).find((entry) => entry.slug === fragment.slug)?.number || null
+      }))
+    })
+  },
+  { id: 'text', html: textPaneContent },
+  {
+    id: 'templates',
+    html: renderTemplatesPane({ config, template, displays })
+  }
+];
+
+page(path.join(buildDir, 'demo', 'index.html'), {
+  title: `Demo · ${config.siteTitle}`,
+  root: '../',
+  description:
+    'The open.csr demo: read the assembled report, inspect the table and ARD behind any number, ' +
+    'judge the prose that quotes it, and see the ICH E3 model it assembles into — one view, four ' +
+    'panes, one shared selection.',
+  content: renderAppPage({ config, panes: appPanes, tabs: APP_TABS })
+});
+
+// The demo client and its pure core, copied verbatim as the review client is —
+// no bundler, no external anything (contracts §9).
+mkdirSync(path.join(buildDir, 'demo', 'review'), { recursive: true });
+for (const file of ['core.js', 'client.js']) {
+  copyFileSync(path.join(rootDir, 'site', 'demo', file), path.join(buildDir, 'demo', file));
+  // The review client under /app/review/ so its own `./core.js` import resolves
+  // to the review core rather than the app's.
+  copyFileSync(
+    path.join(rootDir, 'site', 'review', file),
+    path.join(buildDir, 'demo', 'review', file)
+  );
+}
+if (existsSync(ledgerSource)) {
+  copyFileSync(ledgerSource, path.join(buildDir, 'demo', 'review', 'text-decisions.json'));
 }
 
 // --- Quality ----------------------------------------------------------------
