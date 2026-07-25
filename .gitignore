@@ -1,0 +1,7 @@
+.Rproj.user
+.Rhistory
+.RData
+.DS_Store
+node_modules/
+site/_build/
+*.log
