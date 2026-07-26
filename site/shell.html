@@ -22,7 +22,7 @@
       })();
     </script>
   </head>
-  <body>
+  <body class="{{bodyclass}}">
     <a class="skip" href="#main">Skip to content</a>
     <header class="site-header">
       <a class="site-name" href="{{root}}index.html">
@@ -51,6 +51,7 @@
         </a>
       </nav>
     </header>
+    {{appbar}}
     <main class="site-main" id="main">{{content}}</main>
     <footer class="site-footer">
       <p>

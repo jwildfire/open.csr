@@ -20,49 +20,299 @@
 import { chip, empty, escapeHtml } from './site-lib.mjs';
 import { DISPLAY_TYPE_LABELS, assignDisplayNumbers } from './template-lib.mjs';
 
+// Each view's `href` is its standalone permalink. The client upgrades a click
+// into an in-place pane switch through the same interception rule the panes
+// already use (site/demo/core.js), so with JavaScript off these are working
+// links to working pages rather than dead buttons (demo-layout.md §5).
+//
+// The emitted paths keep their v0 names: /reader/ and /gallery/ are what the
+// evidence pages and the trace panel link to, and renaming those directories
+// would break every one of those links to change a label.
 export const APP_TABS = [
-  {
-    id: 'reader',
-    label: 'Reader',
-    hint: 'The assembled report, every number bound'
-  },
-  {
-    id: 'tables',
-    label: 'Tables',
-    hint: 'Each display: output, ARD, specs, iterations'
-  },
-  {
-    id: 'text',
-    label: 'Text',
-    hint: 'Prose blocks: provenance, bindings, status'
-  },
-  {
-    id: 'templates',
-    label: 'Templates',
-    hint: 'The ICH E3 model and this report’s assembly'
-  }
+  { id: 'documents', label: 'Documents', href: '../reader/index.html', scope: 'study' },
+  { id: 'displays', label: 'Displays', href: '../gallery/index.html', scope: 'study' },
+  { id: 'text', label: 'Text', href: '../text/index.html', scope: 'study' },
+  // Templates describe what a report of this kind IS, so they belong to no one
+  // study and stay in the header rather than under the study in the tree.
+  { id: 'templates', label: 'Templates', href: '../templates/index.html', scope: 'global' }
 ];
+
+export const STUDY_TABS = APP_TABS.filter((tab) => tab.scope === 'study');
+export const GLOBAL_TABS = APP_TABS.filter((tab) => tab.scope === 'global');
 
 // ---------------------------------------------------------------------------
 // Tab chrome
 // ---------------------------------------------------------------------------
 
-function tablist(tabs, active) {
-  const buttons = tabs
+function viewLinks(tabs, active) {
+  return tabs
     .map((tab) => {
       const on = tab.id === active;
       return (
-        `<button type="button" class="app-tab${on ? ' current' : ''}" role="tab" ` +
-        `id="app-tab-${tab.id}" aria-controls="app-pane-${tab.id}" ` +
-        `aria-selected="${on ? 'true' : 'false'}" tabindex="${on ? '0' : '-1'}" ` +
-        `data-app-tab="${tab.id}">` +
-        `<span class="app-tab-label">${escapeHtml(tab.label)}</span>` +
-        `<span class="app-tab-hint">${escapeHtml(tab.hint)}</span>` +
-        `</button>`
+        `<a class="app-view${on ? ' current' : ''}" href="${escapeHtml(tab.href || '#')}" ` +
+        `id="app-tab-${tab.id}" aria-controls="app-pane-${tab.id}"` +
+        `${on ? ' aria-current="page"' : ''} data-app-tab="${tab.id}">` +
+        `${escapeHtml(tab.label)}</a>`
       );
     })
     .join('');
-  return `<div class="app-tabs" role="tablist" aria-label="Demo views">${buttons}</div>`;
+}
+
+/**
+ * The navigation tree: a study, and everything under it.
+ *
+ * The shape is the product's, not the filesystem's. A study owns documents,
+ * displays and text; **displays sit beside documents rather than inside one**,
+ * because the same display can be referenced by more than one document — the
+ * AE overview belongs in the CSR and would belong in an ISS too. Each display
+ * therefore carries the documents that use it rather than living under one.
+ *
+ * @returns {{study: object, groups: Array}}
+ */
+export function buildNavTree({ config = {}, csr = null, displays = [], textBlocks = [] } = {}) {
+  const numbers = new Map(
+    (csr?.displayIndex || []).map((entry) => [entry.slug, { number: entry.number, label: entry.label }])
+  );
+  const usedInCsr = new Set((csr?.displayIndex || []).map((entry) => entry.slug));
+
+  // A document's own contents are the third level of the tree rather than a
+  // second navigation column beside it: which document and which section are the
+  // same question asked twice, and one place to ask it is enough.
+  //
+  // Top-level sections only, which is exactly what the reader's own table of
+  // contents listed — this is a move, not a redesign. The full 119-entry model
+  // stays where it belongs, on the Templates view.
+  const sectionsFor = (doc) => {
+    if (doc.status !== 'built' || !csr?.sections) return [];
+    // A top-level section counts as populated when it OR anything beneath it is.
+    // E3 puts the content in subsections — 12.2.1 carries the AE summary, not
+    // section 12 — so testing only the top-level flag would report almost the
+    // whole report empty.
+    const filled = csr.sections
+      .filter((section) => section.populated && section.number)
+      .map((section) => String(section.number));
+    const hasContent = (number) =>
+      !!number &&
+      filled.some((entry) => entry === String(number) || entry.startsWith(`${number}.`));
+    return csr.sections
+      .filter((section) => (section.level || 1) === 1)
+      .map((section) => ({
+        id: section.slug,
+        number: section.number || null,
+        label: section.title || section.slug,
+        populated: hasContent(section.number)
+      }));
+  };
+
+  const documents = (config.documents || []).map((doc) => ({
+    id: doc.id,
+    label: doc.title,
+    abbr: doc.abbr || null,
+    status: doc.status || 'planned',
+    sections: sectionsFor(doc),
+    detail:
+      doc.status === 'built' && csr?.sections
+        ? `${csr.sections.filter((section) => section.populated).length} of ${csr.sections.length} sections`
+        : doc.blurb || ''
+  }));
+
+  return {
+    study: {
+      id: config.study?.id || 'Study',
+      title: config.study?.title || '',
+      cutoff: config.study?.cutoff || null
+    },
+    groups: [
+      { id: 'documents', label: 'Documents', items: documents },
+      {
+        id: 'displays',
+        label: 'Displays',
+        note: 'Tables, figures and listings',
+        items: displays.map((display) => ({
+          id: display.slug,
+          label: display.title,
+          number: numbers.get(display.slug)?.number || null,
+          status: display.status,
+          // Which documents reference it — a display is shared, not owned.
+          usedIn: usedInCsr.has(display.slug) ? ['CSR'] : []
+        }))
+      },
+      {
+        id: 'text',
+        label: 'Text',
+        items: textBlocks
+          .filter((block) => block.exists !== false)
+          .map((block) => ({
+            id: block.id,
+            label: block.title || block.id,
+            number: block.e3Section ? `§${block.e3Section}` : null,
+            status: block.tier === 'generated' && block.approval?.state !== 'approved' ? 'draft' : 'ok',
+            tier: block.tier || null
+          }))
+      }
+    ]
+  };
+}
+
+// A document's sections: the fourth level, shown for the selected document.
+function sectionList(doc, groupId) {
+  if (!doc.sections?.length) return '';
+  const items = doc.sections
+    .map(
+      (section) =>
+        `<li><a class="nav-section${section.populated ? '' : ' is-empty'}" ` +
+        `data-nav-group="${groupId}" data-nav-doc="${escapeHtml(doc.id)}" ` +
+        `data-nav-section="${escapeHtml(section.id)}" ` +
+        `href="#tab=${groupId}&amp;doc=${encodeURIComponent(doc.id)}` +
+        `&amp;focus=${encodeURIComponent(section.id)}"` +
+        (section.populated ? '' : ' title="Modelled but not populated in this demonstration"') +
+        `>` +
+        (section.number ? `<span class="nav-num">${escapeHtml(section.number)}</span>` : '') +
+        `<span class="nav-label">${escapeHtml(section.label)}</span></a></li>`
+    )
+    .join('');
+  return `<ul class="nav-sections">${items}</ul>`;
+}
+
+function treeItem(groupId, item, kind) {
+  const chip =
+    item.status === 'planned'
+      ? `<span class="nav-flag" title="Not built yet">planned</span>`
+      : item.status === 'draft'
+        ? `<span class="nav-flag warn" title="Draft: held out of the report">draft</span>`
+        : '';
+  const number = item.number ? `<span class="nav-num">${escapeHtml(item.number)}</span>` : '';
+  const disabled = item.status === 'planned';
+  const attrs =
+    `class="nav-item${disabled ? ' is-planned' : ''}" data-nav-group="${groupId}" ` +
+    `data-nav-item="${escapeHtml(item.id)}"` +
+    (disabled ? ' aria-disabled="true"' : '');
+  return (
+    `<li>${
+      disabled
+        ? `<span ${attrs}>`
+        : `<a ${attrs} href="#tab=${groupId}&amp;${kind}=${encodeURIComponent(item.id)}">`
+    }` +
+    number +
+    `<span class="nav-label">${escapeHtml(item.label)}</span>` +
+    chip +
+    `${disabled ? '</span>' : '</a>'}` +
+    sectionList(item, groupId) +
+    `</li>`
+  );
+}
+
+const ITEM_KEY = { documents: 'doc', displays: 'display', text: 'block' };
+
+/**
+ * The persistent explorer. Study at the top, then the three collections that
+ * belong to it, each expandable. Selecting an item both switches the view and
+ * selects the thing — which is why the sidebar replaces the Displays pane's own
+ * picker rather than sitting beside it.
+ */
+export function renderSidebar({ tree, active = null, selected = {} } = {}) {
+  if (!tree) return '';
+  const groups = tree.groups
+    .map((group) => {
+      const open = group.id === active;
+      const key = ITEM_KEY[group.id] || 'item';
+      const current = selected[key] || null;
+      const items = group.items.length
+        ? `<ul class="nav-items">${group.items
+            .map((item) =>
+              treeItem(group.id, item, key).replace(
+                `data-nav-item="${escapeHtml(item.id)}"`,
+                `data-nav-item="${escapeHtml(item.id)}"${item.id === current ? ' data-current="true"' : ''}`
+              )
+            )
+            .join('')}</ul>`
+        : `<p class="nav-empty">Nothing registered yet.</p>`;
+      return (
+        `<li class="nav-group${open ? ' open' : ''}" data-nav-group-root="${group.id}">` +
+        `<button type="button" class="nav-group-head" data-nav-group-toggle="${group.id}" ` +
+        `aria-expanded="${open ? 'true' : 'false'}">` +
+        `<span class="nav-caret" aria-hidden="true"></span>` +
+        `<span class="nav-group-label">${escapeHtml(group.label)}</span>` +
+        `<span class="nav-count">${group.items.length}</span>` +
+        `</button>${items}</li>`
+      );
+    })
+    .join('');
+
+  return (
+    `<aside class="app-nav" data-app-nav aria-label="Study contents">` +
+    `<div class="nav-study">` +
+    `<span class="nav-study-id">${escapeHtml(tree.study.id)}</span>` +
+    (tree.study.cutoff
+      ? `<span class="nav-study-meta">cut-off ${escapeHtml(tree.study.cutoff)}</span>`
+      : '') +
+    `</div>` +
+    `<nav><ul class="nav-tree">${groups}</ul></nav>` +
+    `</aside>`
+  );
+}
+
+/**
+ * The application strip: the four views, and where you are.
+ *
+ * The context readout is the one place this shell spends any boldness. A CSR is
+ * a document in which everything carries a number and a provenance — section
+ * 12.2.1, Table 14.3.1.3, `adae` at cut-off 2014-07-01, iteration v002, ARD
+ * sha256:1a2b… — and the claim open.csr makes is that the chain from dataset to
+ * sentence is always available. So identity lives in the chrome rather than
+ * behind a properties dialog: study, then the assigned number, slug, iteration
+ * and short ARD hash of whatever is selected, updated live by the client.
+ *
+ * Monospace because these are identifiers, not prose.
+ *
+ * @param {Array<{slug: string, number: string|null, title: string,
+ *   version: string|null, ardHash: string|null}>} displays selection metadata
+ */
+export function renderAppBar({
+  config = {},
+  tabs = GLOBAL_TABS,
+  active = null,
+  displays = [],
+  mode = 'read'
+} = {}) {
+  const study = config.study?.id || '';
+  const context = Object.fromEntries(
+    displays.map((entry) => [
+      entry.slug,
+      {
+        number: entry.number || null,
+        title: entry.title || entry.slug,
+        version: entry.version || null,
+        hash: entry.ardHash ? String(entry.ardHash).replace(/^sha256:/, '').slice(0, 7) : null
+      }
+    ])
+  );
+
+  // Read / Edit. Edit is genuinely disabled rather than merely styled as such:
+  // there is nothing to edit until the spec editor lands (#113 increment B), and
+  // a control that looks live but does nothing is worse than one that says so.
+  const modeToggle =
+    `<div class="app-mode" role="group" aria-label="Mode">` +
+    `<button type="button" class="app-mode-btn${mode === 'read' ? ' current' : ''}" ` +
+    `data-app-mode="read" aria-pressed="${mode === 'read' ? 'true' : 'false'}">Read</button>` +
+    `<button type="button" class="app-mode-btn" data-app-mode="edit" disabled ` +
+    `aria-disabled="true" title="Editing arrives with the spec editor — the browser can already ` +
+    `regenerate a display, but an edit has to land as a source change first">Edit</button>` +
+    `</div>`;
+
+  return (
+    `<div class="app-bar" data-app-bar>` +
+    `<p class="app-context" data-app-context aria-live="polite">` +
+    (study ? `<span class="ac-study">${escapeHtml(study)}</span>` : '') +
+    `</p>` +
+    `<div class="app-bar-right">` +
+    `<nav class="app-views" aria-label="Views">${viewLinks(tabs, active)}</nav>` +
+    modeToggle +
+    `</div>` +
+    `<script type="application/json" id="app-context-index">` +
+    `${JSON.stringify({ study, displays: context }).replace(/</g, '\\u003c')}</script>` +
+    `</div>`
+  );
 }
 
 /**
@@ -76,21 +326,21 @@ function tablist(tabs, active) {
  * @param {object} options
  * @param {Array<{id: string, html: string}>} options.panes rendered pane content, in tab order
  */
-export function renderAppPage({ config = {}, panes = [], tabs = APP_TABS, active = null } = {}) {
+export function renderAppPage({
+  config = {},
+  panes = [],
+  tabs = APP_TABS,
+  active = null,
+  sidebar = ''
+} = {}) {
   const byId = new Map(panes.map((pane) => [pane.id, pane.html]));
   const shown = tabs.filter((tab) => byId.has(tab.id));
   const current = active && shown.some((tab) => tab.id === active) ? active : shown[0]?.id || null;
 
-  const head =
-    `<header class="page-head app-head">` +
-    `<p class="eyebrow">Demo</p>` +
-    `<h1>${escapeHtml(config.study?.id || 'CDISCPILOT01')} — a Clinical Study Report you can open</h1>` +
-    `<p class="lede">One report, four ways in. Read the document, inspect the table behind any ` +
-    `number, see where the prose that quotes it stands, and see the ICH E3 model the whole thing ` +
-    `assembles into. The four views share a selection: follow a number from the sentence to the ARD ` +
-    `row that produced it without leaving the page.</p>` +
-    `</header>`;
-
+  // No page title and no lede: the demo page is not a page about the
+  // application, it is the application, and content starts at the top of the
+  // pane (demo-layout.md §1, §5). The views and the context live in the app bar
+  // above `<main>`, rendered by renderAppBar.
   const body = shown
     .map((tab) => {
       const on = tab.id === current;
@@ -105,10 +355,11 @@ export function renderAppPage({ config = {}, panes = [], tabs = APP_TABS, active
     .join('\n');
 
   return (
-    `<div class="app" data-app>` +
-    head +
-    tablist(shown, current) +
+    `<div class="app${sidebar ? ' has-nav' : ''}" data-app>` +
+    sidebar +
+    `<div class="app-stage">` +
     body +
+    `</div>` +
     `</div>\n` +
     `<script type="module" src="client.js"></script>`
   );
@@ -128,7 +379,7 @@ export function renderAppPage({ config = {}, panes = [], tabs = APP_TABS, active
  * @param {Array<{slug: string, title: string, html: string, regulatoryId?: string,
  *   type?: string, status?: string, number?: string|null}>} entries
  */
-export function renderTablesPane({ entries = [], selected = null } = {}) {
+export function renderTablesPane({ entries = [], selected = null, picker = true } = {}) {
   if (!entries.length) {
     return (
       `<div class="app-tables">` +
@@ -138,7 +389,7 @@ export function renderTablesPane({ entries = [], selected = null } = {}) {
   }
   const current = entries.some((entry) => entry.slug === selected) ? selected : entries[0].slug;
 
-  const picker = entries
+  const pickerHtml = entries
     .map((entry) => {
       const on = entry.slug === current;
       return (
@@ -162,7 +413,9 @@ export function renderTablesPane({ entries = [], selected = null } = {}) {
 
   return (
     `<div class="app-tables">` +
-    `<nav class="app-display-picker" aria-label="Displays">${picker}</nav>` +
+    // The explorer already lists every display, so the in-pane picker is only
+    // rendered when there is no sidebar to do the job.
+    (picker ? `<nav class="app-display-picker" aria-label="Displays">${pickerHtml}</nav>` : '') +
     `<div class="app-display-stage">${panels}</div>` +
     `</div>`
   );

@@ -14,6 +14,26 @@
     "cutoff": "2014-07-01",
     "source": "pharmaverseadam (CDISC Pilot 01)"
   },
+  "documents": [
+    {
+      "id": "csr",
+      "title": "Clinical Study Report",
+      "abbr": "CSR",
+      "template": "ich-e3",
+      "source": "docs/assembled/csr.json",
+      "status": "built",
+      "blurb": "The ICH E3 report assembled from the text library and the display library."
+    },
+    {
+      "id": "sap",
+      "title": "Statistical Analysis Plan",
+      "abbr": "SAP",
+      "template": null,
+      "source": null,
+      "status": "planned",
+      "blurb": "Planned. Needs a SAP template in library/templates/ before it can assemble."
+    }
+  ],
   "components": [
     {
       "module": "tfl-engine",
@@ -66,7 +86,7 @@
       "title": "Report Template Library",
       "matrix": "templates.md",
       "status": "planned",
-      "blurb": "ICH E3 encoded as data — the 16-section skeleton, assembly slots, 14.x numbering, and the auto-generated 16.1.9 provenance appendix.",
+      "blurb": "ICH E3 encoded as data \u2014 the 16-section skeleton, assembly slots, 14.x numbering, and the auto-generated 16.1.9 provenance appendix.",
       "prefixes": [
         "RPT"
       ],
@@ -385,8 +405,13 @@
       "group": "Design"
     },
     {
+      "file": "docs/design/demo-layout.md",
+      "title": "Demo application layout",
+      "group": "Design"
+    },
+    {
       "file": "docs/design/webr-spike.md",
-      "title": "webR spike — regenerating in the browser",
+      "title": "webR spike \u2014 regenerating in the browser",
       "group": "Design"
     },
     {
@@ -396,27 +421,27 @@
     },
     {
       "file": "research/sections/01_existing-tools.md",
-      "title": "01 · The CSR-automation landscape",
+      "title": "01 \u00b7 The CSR-automation landscape",
       "group": "Research"
     },
     {
       "file": "research/sections/02_ars-ard-standards.md",
-      "title": "02 · CDISC ARS and the ARD ecosystem",
+      "title": "02 \u00b7 CDISC ARS and the ARD ecosystem",
       "group": "Research"
     },
     {
       "file": "research/sections/03_tlg-pharmaverse-practice.md",
-      "title": "03 · Pharmaverse TLG practice",
+      "title": "03 \u00b7 Pharmaverse TLG practice",
       "group": "Research"
     },
     {
       "file": "research/sections/04_csr-document-standards.md",
-      "title": "04 · CSR document standards",
+      "title": "04 \u00b7 CSR document standards",
       "group": "Research"
     },
     {
       "file": "research/sections/05_safetyviz-evidence-framework.md",
-      "title": "05 · The safety.viz evidence framework",
+      "title": "05 \u00b7 The safety.viz evidence framework",
       "group": "Research"
     }
   ]
