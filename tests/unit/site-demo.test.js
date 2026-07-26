@@ -27,6 +27,7 @@ import {
 } from '../../site/demo/core.js';
 import {
   APP_TABS,
+  renderAppBar,
   renderAppPage,
   renderTablesPane,
   renderTemplatesPane
@@ -160,31 +161,104 @@ describe('the app page', () => {
     expect((html.match(/ hidden>/g) || []).length).toBe(panes.length - 1);
   });
 
-  test('QC-DEMO-007: the tablist is a distinct component from the shell tab controller (#1)', () => {
+  test('QC-DEMO-007: the page carries no title or lede — content starts at the pane (#1)', () => {
+    // demo-layout.md §1: the demo page is not a page about the application, it
+    // is the application. A paragraph explaining the four views would outrank
+    // the views themselves.
+    const html = renderAppPage({ config: { study: { id: 'CDISCPILOT01' } }, panes });
+    expect(html).not.toContain('app-head');
+    expect(html).not.toContain('class="lede"');
+    expect(html).not.toMatch(/<h1[ >]/);
+  });
+
+  test('QC-DEMO-007: panes do not collide with the shell tab controller (#1)', () => {
     const html = renderAppPage({ panes });
     // shell.html pairs .tab with .tab-panel by index across a whole .tabs group,
-    // so the outer app must not use those class names or it desyncs the inner
-    // per-display tabs.
-    expect(html).toContain('class="app-tabs"');
+    // so the app's own containers must not use those class names or they desync
+    // the inner per-display tabs.
     expect(html).not.toMatch(/class="tabs"/);
     expect(html).not.toMatch(/class="tab"/);
     expect(html).not.toMatch(/class="tab-panel/);
-  });
-
-  test('QC-DEMO-007: the tablist carries the ARIA wiring a tab component needs (#1)', () => {
-    const html = renderAppPage({ panes });
-    expect(html).toContain('role="tablist"');
-    expect(html).toContain('role="tab"');
     expect(html).toContain('role="tabpanel"');
-    expect(html).toContain('aria-controls="app-pane-reader"');
     expect(html).toContain('aria-labelledby="app-tab-reader"');
-    expect((html.match(/aria-selected="true"/g) || []).length).toBe(1);
   });
 
   test('QC-DEMO-008: a tab with no rendered pane is dropped rather than rendered empty (#1)', () => {
     const html = renderAppPage({ panes: [{ id: 'reader', html: '<p>only pane</p>' }] });
-    expect(html).toContain('data-app-tab="reader"');
-    expect(html).not.toContain('data-app-tab="templates"');
+    expect(html).toContain('data-app-pane="reader"');
+    expect(html).not.toContain('data-app-pane="templates"');
+  });
+});
+
+describe('the application strip', () => {
+  const displays = [
+    {
+      slug: 't-ae-common',
+      title: 'Common AEs',
+      number: '14.3.1.3',
+      version: 'v001',
+      ardHash: 'sha256:1a2b3c4d5e6f7890'
+    }
+  ];
+
+  test('QC-DEMO-016: the four views are real links to real pages, so the bar works with no JS (#1)', () => {
+    // demo-layout.md §5. The client upgrades a click into a pane switch through
+    // the same interception rule the panes use; without it these still navigate.
+    const html = renderAppBar({ config: { study: { id: 'CDISCPILOT01' } } });
+    expect(html).toContain('href="../reader/index.html"');
+    expect(html).toContain('href="../gallery/index.html"');
+    expect(html).toContain('href="../text/index.html"');
+    expect(html).toContain('href="../templates/index.html"');
+    expect(html).not.toContain('<button');
+    for (const id of TAB_IDS) expect(html).toContain(`data-app-tab="${id}"`);
+  });
+
+  test('QC-DEMO-016: the current view is marked as navigation, not as a selected control (#1)', () => {
+    const html = renderAppBar({ active: 'tables' });
+    expect(html).toContain('aria-current="page"');
+    expect((html.match(/aria-current="page"/g) || []).length).toBe(1);
+    // Navigation semantics, not tab semantics: these links change the URL and
+    // work without the client, so announcing them as tabs would misdescribe them.
+    expect(html).not.toContain('role="tab"');
+    expect(html).not.toContain('aria-selected');
+    expect(html).toContain('aria-label="Views"');
+  });
+
+  test('QC-DEMO-017: the bar carries the study, and a context index for the live readout (#1)', () => {
+    const html = renderAppBar({ config: { study: { id: 'CDISCPILOT01' } }, displays });
+    expect(html).toContain('CDISCPILOT01');
+    expect(html).toContain('data-app-context');
+    const index = JSON.parse(
+      html.match(/<script type="application\/json" id="app-context-index">(.*?)<\/script>/s)[1]
+    );
+    expect(index.study).toBe('CDISCPILOT01');
+    expect(index.displays['t-ae-common']).toEqual({
+      number: '14.3.1.3',
+      title: 'Common AEs',
+      version: 'v001',
+      // Identity and provenance live in the chrome: the ARD hash is shortened
+      // for the bar but it is the real one.
+      hash: '1a2b3c4'
+    });
+  });
+
+  test('QC-DEMO-017: a display with no iteration yet contributes nulls, not a broken readout (#1)', () => {
+    const html = renderAppBar({ displays: [{ slug: 't-new', title: 'New' }] });
+    const index = JSON.parse(
+      html.match(/<script type="application\/json" id="app-context-index">(.*?)<\/script>/s)[1]
+    );
+    expect(index.displays['t-new']).toEqual({
+      number: null,
+      title: 'New',
+      version: null,
+      hash: null
+    });
+  });
+
+  test('QC-DEMO-017: the embedded context index cannot close the script element (#1)', () => {
+    const html = renderAppBar({ displays: [{ slug: 'x', title: '</script><script>alert(1)' }] });
+    expect(html).not.toContain('</script><script>alert(1)');
+    expect(html).toContain('\\u003c/script>');
   });
 });
 

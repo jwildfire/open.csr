@@ -20,11 +20,24 @@ import {
 
 const app = document.querySelector('[data-app]');
 if (app) {
-  const tabs = [...app.querySelectorAll('[data-app-tab]')];
+  // The views live in the app bar, which sits above <main> and so OUTSIDE
+  // [data-app] (demo-layout.md §5). Panes are looked up inside the app; views and
+  // the context readout are looked up in the document.
+  const bar = document.querySelector('[data-app-bar]');
+  const tabs = [...document.querySelectorAll('[data-app-tab]')];
   const panes = [...app.querySelectorAll('[data-app-pane]')];
+  const contextEl = document.querySelector('[data-app-context]');
   const displaySlugs = [...app.querySelectorAll('[data-app-display-panel]')].map((el) =>
     el.getAttribute('data-app-display-panel')
   );
+
+  let contextIndex = { study: '', displays: {} };
+  try {
+    const node = document.getElementById('app-context-index');
+    if (node) contextIndex = JSON.parse(node.textContent);
+  } catch (e) {
+    /* a malformed index degrades to the study alone */
+  }
 
   let state = { tab: DEFAULT_TAB, display: null, block: null, focus: null };
 
@@ -32,14 +45,35 @@ if (app) {
     for (const tab of tabs) {
       const on = tab.getAttribute('data-app-tab') === id;
       tab.classList.toggle('current', on);
-      tab.setAttribute('aria-selected', on ? 'true' : 'false');
-      tab.tabIndex = on ? 0 : -1;
+      if (on) tab.setAttribute('aria-current', 'page');
+      else tab.removeAttribute('aria-current');
     }
     for (const pane of panes) {
       const on = pane.getAttribute('data-app-pane') === id;
       pane.hidden = !on;
       pane.classList.toggle('current', on);
     }
+  }
+
+  // The context readout: what you are looking at, in the chrome rather than in a
+  // dialog. Only the parts that apply to the current view are shown — the
+  // display's number and provenance are meaningless in the Templates view.
+  function showContext() {
+    if (!contextEl) return;
+    const parts = [];
+    if (contextIndex.study) parts.push(`<span class="ac-study">${contextIndex.study}</span>`);
+    const entry = state.tab === 'tables' ? contextIndex.displays[state.display] : null;
+    if (entry) {
+      if (entry.number) parts.push(`<span class="ac-number">${entry.number}</span>`);
+      parts.push(`<span class="ac-slug">${state.display}</span>`);
+      if (entry.version) parts.push(`<span class="ac-version">${entry.version}</span>`);
+      if (entry.hash) {
+        parts.push(`<span class="ac-hash" title="ARD sha256">ard&nbsp;${entry.hash}</span>`);
+      }
+    } else if (state.tab === 'text' && state.block) {
+      parts.push(`<span class="ac-slug">${state.block}</span>`);
+    }
+    contextEl.innerHTML = parts.join('<span class="ac-sep" aria-hidden="true">·</span>');
   }
 
   function showDisplay(slug) {
@@ -89,6 +123,7 @@ if (app) {
     showTab(state.tab);
     state.display = showDisplay(state.display);
     markBlock(state.block);
+    showContext();
     const hash = formatAppHash(state);
     if (push && location.hash !== hash) {
       history.pushState(null, '', hash);
@@ -110,10 +145,12 @@ if (app) {
     });
   }
 
-  // Roving arrow-key focus across the tablist, as the ARIA pattern expects.
-  const tablist = app.querySelector('[role="tablist"]');
-  if (tablist) {
-    tablist.addEventListener('keydown', (event) => {
+  // Arrow keys move along the view bar. These are links, not a tablist, so Tab
+  // still reaches each one — the arrows are an addition for a bar the user is
+  // already inside, not a replacement for normal focus order.
+  if (bar) {
+    bar.addEventListener('keydown', (event) => {
+      if (!event.target.closest('[data-app-tab]')) return;
       const index = tabs.findIndex((tab) => tab.getAttribute('data-app-tab') === state.tab);
       let next = null;
       if (event.key === 'ArrowRight') next = (index + 1) % tabs.length;

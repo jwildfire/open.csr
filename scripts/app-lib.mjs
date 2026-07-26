@@ -20,49 +20,75 @@
 import { chip, empty, escapeHtml } from './site-lib.mjs';
 import { DISPLAY_TYPE_LABELS, assignDisplayNumbers } from './template-lib.mjs';
 
+// Each view's `href` is its standalone permalink. The client upgrades a click
+// into an in-place pane switch through the same interception rule the panes
+// already use (site/demo/core.js), so with JavaScript off these are four working
+// links to four working pages rather than four dead buttons (demo-layout.md §5).
 export const APP_TABS = [
-  {
-    id: 'reader',
-    label: 'Reader',
-    hint: 'The assembled report, every number bound'
-  },
-  {
-    id: 'tables',
-    label: 'Tables',
-    hint: 'Each display: output, ARD, specs, iterations'
-  },
-  {
-    id: 'text',
-    label: 'Text',
-    hint: 'Prose blocks: provenance, bindings, status'
-  },
-  {
-    id: 'templates',
-    label: 'Templates',
-    hint: 'The ICH E3 model and this report’s assembly'
-  }
+  { id: 'reader', label: 'Reader', href: '../reader/index.html' },
+  { id: 'tables', label: 'Tables', href: '../gallery/index.html' },
+  { id: 'text', label: 'Text', href: '../text/index.html' },
+  { id: 'templates', label: 'Templates', href: '../templates/index.html' }
 ];
 
 // ---------------------------------------------------------------------------
 // Tab chrome
 // ---------------------------------------------------------------------------
 
-function tablist(tabs, active) {
-  const buttons = tabs
+function viewLinks(tabs, active) {
+  return tabs
     .map((tab) => {
       const on = tab.id === active;
       return (
-        `<button type="button" class="app-tab${on ? ' current' : ''}" role="tab" ` +
-        `id="app-tab-${tab.id}" aria-controls="app-pane-${tab.id}" ` +
-        `aria-selected="${on ? 'true' : 'false'}" tabindex="${on ? '0' : '-1'}" ` +
-        `data-app-tab="${tab.id}">` +
-        `<span class="app-tab-label">${escapeHtml(tab.label)}</span>` +
-        `<span class="app-tab-hint">${escapeHtml(tab.hint)}</span>` +
-        `</button>`
+        `<a class="app-view${on ? ' current' : ''}" href="${escapeHtml(tab.href || '#')}" ` +
+        `id="app-tab-${tab.id}" aria-controls="app-pane-${tab.id}"` +
+        `${on ? ' aria-current="page"' : ''} data-app-tab="${tab.id}">` +
+        `${escapeHtml(tab.label)}</a>`
       );
     })
     .join('');
-  return `<div class="app-tabs" role="tablist" aria-label="Demo views">${buttons}</div>`;
+}
+
+/**
+ * The application strip: the four views, and where you are.
+ *
+ * The context readout is the one place this shell spends any boldness. A CSR is
+ * a document in which everything carries a number and a provenance — section
+ * 12.2.1, Table 14.3.1.3, `adae` at cut-off 2014-07-01, iteration v002, ARD
+ * sha256:1a2b… — and the claim open.csr makes is that the chain from dataset to
+ * sentence is always available. So identity lives in the chrome rather than
+ * behind a properties dialog: study, then the assigned number, slug, iteration
+ * and short ARD hash of whatever is selected, updated live by the client.
+ *
+ * Monospace because these are identifiers, not prose.
+ *
+ * @param {Array<{slug: string, number: string|null, title: string,
+ *   version: string|null, ardHash: string|null}>} displays selection metadata
+ */
+export function renderAppBar({ config = {}, tabs = APP_TABS, active = null, displays = [] } = {}) {
+  const study = config.study?.id || '';
+  const context = Object.fromEntries(
+    displays.map((entry) => [
+      entry.slug,
+      {
+        number: entry.number || null,
+        title: entry.title || entry.slug,
+        version: entry.version || null,
+        hash: entry.ardHash ? String(entry.ardHash).replace(/^sha256:/, '').slice(0, 7) : null
+      }
+    ])
+  );
+
+  return (
+    `<div class="app-bar" data-app-bar>` +
+    `<nav class="app-views" aria-label="Views">${viewLinks(tabs, active)}</nav>` +
+    `<p class="app-context" data-app-context aria-live="polite">` +
+    (study ? `<span class="ac-study">${escapeHtml(study)}</span>` : '') +
+    `</p>` +
+    `<script type="application/json" id="app-context-index">` +
+    `${JSON.stringify({ study, displays: context }).replace(/</g, '\\u003c')}</script>` +
+    `</div>`
+  );
 }
 
 /**
@@ -81,16 +107,10 @@ export function renderAppPage({ config = {}, panes = [], tabs = APP_TABS, active
   const shown = tabs.filter((tab) => byId.has(tab.id));
   const current = active && shown.some((tab) => tab.id === active) ? active : shown[0]?.id || null;
 
-  const head =
-    `<header class="page-head app-head">` +
-    `<p class="eyebrow">Demo</p>` +
-    `<h1>${escapeHtml(config.study?.id || 'CDISCPILOT01')} — a Clinical Study Report you can open</h1>` +
-    `<p class="lede">One report, four ways in. Read the document, inspect the table behind any ` +
-    `number, see where the prose that quotes it stands, and see the ICH E3 model the whole thing ` +
-    `assembles into. The four views share a selection: follow a number from the sentence to the ARD ` +
-    `row that produced it without leaving the page.</p>` +
-    `</header>`;
-
+  // No page title and no lede: the demo page is not a page about the
+  // application, it is the application, and content starts at the top of the
+  // pane (demo-layout.md §1, §5). The views and the context live in the app bar
+  // above `<main>`, rendered by renderAppBar.
   const body = shown
     .map((tab) => {
       const on = tab.id === current;
@@ -106,8 +126,6 @@ export function renderAppPage({ config = {}, panes = [], tabs = APP_TABS, active
 
   return (
     `<div class="app" data-app>` +
-    head +
-    tablist(shown, current) +
     body +
     `</div>\n` +
     `<script type="module" src="client.js"></script>`

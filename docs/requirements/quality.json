@@ -48,7 +48,9 @@
     "QC-DEMO-011": "The Templates pane renders every section of the E3 model, marking those this report does not populate, rather than trimming the skeleton to what happens to be built.",
     "QC-DEMO-012": "Display numbers in the Templates pane are derived from assembly order by the same tested function the assembler uses, never authored; reordering the assembly moves every number and changes no slug.",
     "QC-DEMO-013": "The Templates pane renders its documented empty state when the section model is missing, and renders correctly on a tree where the assembler has never run.",
-    "QC-DEMO-014": "The auto-generated provenance section is identified as generated in the Templates pane."
+    "QC-DEMO-014": "The auto-generated provenance section is identified as generated in the Templates pane.",
+    "QC-DEMO-016": "The application strip's four views are real links to real pages, marked with `aria-current` rather than tab-selection state, so the bar is working navigation with no JavaScript and the client only upgrades it.",
+    "QC-DEMO-017": "The application strip carries a live context readout — study, assigned display number, slug, iteration and short ARD hash — built from an embedded index that is escaped so it cannot close its own script element."
   },
   "rows": [
     {
@@ -470,6 +472,24 @@
       "area": "Demo",
       "text": "The auto-generated provenance section is identified as generated in the Templates pane.",
       "source": "D6",
+      "evidence": "js-unit",
+      "link": "site-demo.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-DEMO-016",
+      "area": "Demo",
+      "text": "The application strip's four views are real links to real pages, marked with `aria-current` rather than tab-selection state, so the bar is working navigation with no JavaScript and the client only upgrades it.",
+      "source": "#113",
+      "evidence": "js-unit",
+      "link": "site-demo.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-DEMO-017",
+      "area": "Demo",
+      "text": "The application strip carries a live context readout — study, assigned display number, slug, iteration and short ARD hash — built from an embedded index that is escaped so it cannot close its own script element.",
+      "source": "demo-layout §2",
       "evidence": "js-unit",
       "link": "site-demo.test.js",
       "status": "draft"

@@ -45,7 +45,13 @@ import {
   validateSiteLinks
 } from './site-lib.mjs';
 import { renderTextStatus } from './text-status-lib.mjs';
-import { APP_TABS, renderAppPage, renderTablesPane, renderTemplatesPane } from './app-lib.mjs';
+import {
+  APP_TABS,
+  renderAppBar,
+  renderAppPage,
+  renderTablesPane,
+  renderTemplatesPane
+} from './app-lib.mjs';
 import { loadAssembly, loadSections } from './template-lib.mjs';
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -56,9 +62,9 @@ const shell = readFileSync(path.join(rootDir, 'site', 'shell.html'), 'utf8');
 const errors = [];
 const warnings = [];
 
-function page(file, { title, content, root = '', description = '' }) {
+function page(file, { title, content, root = '', description = '', appbar = '' }) {
   mkdirSync(path.dirname(file), { recursive: true });
-  writeFileSync(file, renderShell({ shell, title, content, root, description, config }));
+  writeFileSync(file, renderShell({ shell, title, content, root, description, config, appbar }));
 }
 
 // --- Reset ------------------------------------------------------------------
@@ -228,6 +234,18 @@ if (!template.sections?.sections?.length) {
   );
 }
 
+// Selection metadata for the app bar's context readout: what the chrome says you
+// are looking at (demo-layout.md §5).
+const displayContext = displays.map((display) => ({
+  slug: display.slug,
+  title: display.title,
+  number: (csr.json?.displayIndex || []).find((entry) => entry.slug === display.slug)?.number || null,
+  version: display.outputs?.current?.version || null,
+  ardHash: display.outputs?.current?.ardHash || null
+}));
+
+const templatesContent = renderTemplatesPane({ config, template, displays });
+
 const appPanes = [
   { id: 'reader', html: readerContent },
   {
@@ -235,15 +253,12 @@ const appPanes = [
     html: renderTablesPane({
       entries: displayFragments.map((fragment) => ({
         ...fragment,
-        number: (csr.json?.displayIndex || []).find((entry) => entry.slug === fragment.slug)?.number || null
+        number: displayContext.find((entry) => entry.slug === fragment.slug)?.number || null
       }))
     })
   },
   { id: 'text', html: textStatusContent },
-  {
-    id: 'templates',
-    html: renderTemplatesPane({ config, template, displays })
-  }
+  { id: 'templates', html: templatesContent }
 ];
 
 page(path.join(buildDir, 'demo', 'index.html'), {
@@ -251,9 +266,22 @@ page(path.join(buildDir, 'demo', 'index.html'), {
   root: '../',
   description:
     'The open.csr demo: read the assembled report, inspect the table and ARD behind any number, ' +
-    'judge the prose that quotes it, and see the ICH E3 model it assembles into — one view, four ' +
-    'panes, one shared selection.',
+    'see where the prose that quotes it stands, and see the ICH E3 model it assembles into — one ' +
+    'view, four panes, one shared selection.',
+  appbar: renderAppBar({ config, tabs: APP_TABS, active: 'reader', displays: displayContext }),
   content: renderAppPage({ config, panes: appPanes, tabs: APP_TABS })
+});
+
+// Every view in the app bar is a real link to a real page, so the Templates view
+// needs the permalink the other three already had. That is what makes the bar
+// work with JavaScript off (demo-layout.md §5).
+page(path.join(buildDir, 'templates', 'index.html'), {
+  title: `Report template · ${config.siteTitle}`,
+  root: '../',
+  description:
+    'The ICH E3 document model as data: the full section skeleton, what this report puts in each ' +
+    'section, and the 14.x numbering derived from assembly order.',
+  content: templatesContent
 });
 
 // The demo client and its pure core, copied verbatim — no bundler, no external

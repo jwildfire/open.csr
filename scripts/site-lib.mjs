@@ -544,8 +544,20 @@ export function renderNav(root = '') {
   return NAV.map((item) => `<a href="${root}${item.href}">${escapeHtml(item.label)}</a>`).join('');
 }
 
-export function renderShell({ shell, title, content, root = '', description = '', config = {} }) {
+// `appbar` is the application strip (demo-layout.md §5): a second header band
+// carrying the app's own navigation and its live context readout. Empty on every
+// documentation page, which is why it is a slot rather than part of the header.
+export function renderShell({
+  shell,
+  title,
+  content,
+  root = '',
+  description = '',
+  config = {},
+  appbar = ''
+}) {
   return String(shell)
+    .replaceAll('{{appbar}}', appbar)
     .replaceAll('{{title}}', escapeHtml(title))
     .replaceAll('{{description}}', escapeHtml(description))
     .replaceAll('{{siteTitle}}', escapeHtml(config.siteTitle || 'open.csr'))
