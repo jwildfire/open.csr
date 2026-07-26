@@ -23,6 +23,7 @@
     "QC-ROUTE-006": "A whole suite may be owned by one component through the registry (`suites`), which is how `text-review` records route to the Text Library regardless of file path.",
     "QC-ROUTE-007": "When a test file covers several modules, records route by the requirement-ID prefixes their owning registry entries declare; a record whose IDs no entry claims stays shared.",
     "QC-EVID-005": "A text block awaiting human approval is reported as pending review and blocks assembly, but does not fail the evidence run — draft is a lifecycle state, not a defect.",
+    "QC-EVID-006": "Test-file paths in a committed evidence set are recorded relative to the repository root, including when the run happens in a git worktree, so the artifact names the repository rather than the machine that produced it.",
     "QC-UNRES-001": "Requirement IDs referenced by a test but defined in no matrix are reported as UNRESOLVED at build time and rendered on the Quality page.",
     "QC-UNRES-002": "Reviewed requirements that no test references are reported as uncovered, with a coverage proportion per component.",
     "QC-UNRES-003": "An ID defined in a sibling component's matrix counts as resolved, not unresolved, so shared IDs do not produce false alarms.",
@@ -48,7 +49,16 @@
     "QC-DEMO-011": "The Templates pane renders every section of the E3 model, marking those this report does not populate, rather than trimming the skeleton to what happens to be built.",
     "QC-DEMO-012": "Display numbers in the Templates pane are derived from assembly order by the same tested function the assembler uses, never authored; reordering the assembly moves every number and changes no slug.",
     "QC-DEMO-013": "The Templates pane renders its documented empty state when the section model is missing, and renders correctly on a tree where the assembler has never run.",
-    "QC-DEMO-014": "The auto-generated provenance section is identified as generated in the Templates pane."
+    "QC-DEMO-014": "The auto-generated provenance section is identified as generated in the Templates pane.",
+    "QC-DEMO-016": "The application strip's four views are real links to real pages, marked with `aria-current` rather than tab-selection state, so the bar is working navigation with no JavaScript and the client only upgrades it.",
+    "QC-DEMO-017": "The application strip carries a live context readout — study, assigned display number, slug, iteration and short ARD hash — built from an embedded index that is escaped so it cannot close its own script element.",
+    "QC-DEMO-018": "The navigation tree is rooted at the study, with documents, displays and text as the collections beneath it; more than one document is listed, and one that is not built is marked rather than hidden.",
+    "QC-DEMO-019": "A display records the documents that reference it rather than living inside one, and a text block that is not on disk is left out of the tree while a draft block is flagged in it.",
+    "QC-DEMO-020": "The explorer renders the study, every group with its item count, opens only the active group, and marks the selected item.",
+    "QC-DEMO-021": "Every selectable item in the explorer is a real link carrying its own deep link, and an unbuilt item is not a link at all.",
+    "QC-DEMO-022": "The header carries a Read/Edit mode control in which Read is current and Edit is genuinely disabled, and the explorer renders without throwing on an empty registry.",
+    "QC-DEMO-023": "A built document contributes its own top-level sections to the tree, and a section counts as populated when it or anything beneath it is; an unbuilt document contributes none.",
+    "QC-DEMO-024": "Sections render beneath their own document, each a deep link to its heading, with unpopulated sections still navigable and labelled as modelled-but-not-populated."
   },
   "rows": [
     {
@@ -236,6 +246,15 @@
       "area": "Evidence",
       "text": "A text block awaiting human approval is reported as pending review and blocks assembly, but does not fail the evidence run — draft is a lifecycle state, not a defect.",
       "source": "D8",
+      "evidence": "js-unit",
+      "link": "evidence-normalize.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-EVID-006",
+      "area": "Evidence",
+      "text": "Test-file paths in a committed evidence set are recorded relative to the repository root, including when the run happens in a git worktree, so the artifact names the repository rather than the machine that produced it.",
+      "source": "contracts §8",
       "evidence": "js-unit",
       "link": "evidence-normalize.test.js",
       "status": "draft"
@@ -470,6 +489,87 @@
       "area": "Demo",
       "text": "The auto-generated provenance section is identified as generated in the Templates pane.",
       "source": "D6",
+      "evidence": "js-unit",
+      "link": "site-demo.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-DEMO-016",
+      "area": "Demo",
+      "text": "The application strip's four views are real links to real pages, marked with `aria-current` rather than tab-selection state, so the bar is working navigation with no JavaScript and the client only upgrades it.",
+      "source": "#113",
+      "evidence": "js-unit",
+      "link": "site-demo.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-DEMO-017",
+      "area": "Demo",
+      "text": "The application strip carries a live context readout — study, assigned display number, slug, iteration and short ARD hash — built from an embedded index that is escaped so it cannot close its own script element.",
+      "source": "demo-layout §2",
+      "evidence": "js-unit",
+      "link": "site-demo.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-DEMO-018",
+      "area": "Demo",
+      "text": "The navigation tree is rooted at the study, with documents, displays and text as the collections beneath it; more than one document is listed, and one that is not built is marked rather than hidden.",
+      "source": "#113",
+      "evidence": "js-unit",
+      "link": "site-demo.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-DEMO-019",
+      "area": "Demo",
+      "text": "A display records the documents that reference it rather than living inside one, and a text block that is not on disk is left out of the tree while a draft block is flagged in it.",
+      "source": "#113",
+      "evidence": "js-unit",
+      "link": "site-demo.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-DEMO-020",
+      "area": "Demo",
+      "text": "The explorer renders the study, every group with its item count, opens only the active group, and marks the selected item.",
+      "source": "#113",
+      "evidence": "js-unit",
+      "link": "site-demo.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-DEMO-021",
+      "area": "Demo",
+      "text": "Every selectable item in the explorer is a real link carrying its own deep link, and an unbuilt item is not a link at all.",
+      "source": "#113",
+      "evidence": "js-unit",
+      "link": "site-demo.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-DEMO-022",
+      "area": "Demo",
+      "text": "The header carries a Read/Edit mode control in which Read is current and Edit is genuinely disabled, and the explorer renders without throwing on an empty registry.",
+      "source": "#113",
+      "evidence": "js-unit",
+      "link": "site-demo.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-DEMO-023",
+      "area": "Demo",
+      "text": "A built document contributes its own top-level sections to the tree, and a section counts as populated when it or anything beneath it is; an unbuilt document contributes none.",
+      "source": "#113",
+      "evidence": "js-unit",
+      "link": "site-demo.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-DEMO-024",
+      "area": "Demo",
+      "text": "Sections render beneath their own document, each a deep link to its heading, with unpopulated sections still navigable and labelled as modelled-but-not-populated.",
+      "source": "#113",
       "evidence": "js-unit",
       "link": "site-demo.test.js",
       "status": "draft"

@@ -1,6 +1,6 @@
 {
   "module": "traceability",
-  "generated": "2026-07-25T13:16:41.547Z",
+  "generated": "2026-07-26T02:07:59.323Z",
   "records": [
     {
       "requirementIds": [
@@ -9,7 +9,7 @@
       "title": "binding addresses TRC-BIND-001: an address parses into display, analysis, statistic and qualifiers (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/site-binding.test.js",
+      "file": "tests/unit/site-binding.test.js",
       "issueRefs": [
         1
       ]
@@ -21,7 +21,7 @@
       "title": "binding addresses TRC-BIND-001: an address with no qualifiers parses with an empty filter set (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/site-binding.test.js",
+      "file": "tests/unit/site-binding.test.js",
       "issueRefs": [
         1
       ]
@@ -33,7 +33,7 @@
       "title": "binding resolution TRC-BIND-002: a binding matching exactly one ARD row resolves to its value (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/site-binding.test.js",
+      "file": "tests/unit/site-binding.test.js",
       "issueRefs": [
         1
       ]
@@ -45,7 +45,7 @@
       "title": "binding resolution TRC-BIND-002: a binding matching no ARD row is unresolved (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/site-binding.test.js",
+      "file": "tests/unit/site-binding.test.js",
       "issueRefs": [
         1
       ]
@@ -57,7 +57,7 @@
       "title": "binding resolution TRC-BIND-002: a binding matching several ARD rows is unresolved with a reason (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/site-binding.test.js",
+      "file": "tests/unit/site-binding.test.js",
       "issueRefs": [
         1
       ]
@@ -69,7 +69,7 @@
       "title": "binding resolution TRC-BIND-002: a binding naming a display with no generated ARD is unresolved (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/site-binding.test.js",
+      "file": "tests/unit/site-binding.test.js",
       "issueRefs": [
         1
       ]
@@ -81,7 +81,7 @@
       "title": "bound prose TRC-BIND-003: an unresolved binding renders a marked placeholder, never a number (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/site-binding.test.js",
+      "file": "tests/unit/site-binding.test.js",
       "issueRefs": [
         1
       ]
@@ -93,7 +93,7 @@
       "title": "bound prose TRC-BIND-004: a resolved binding renders as a clickable element carrying its address (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/site-binding.test.js",
+      "file": "tests/unit/site-binding.test.js",
       "issueRefs": [
         1
       ]
@@ -105,7 +105,7 @@
       "title": "bound prose TRC-BIND-004: scale and digits qualifiers turn a stored proportion into a percentage (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/site-binding.test.js",
+      "file": "tests/unit/site-binding.test.js",
       "issueRefs": [
         1
       ]
@@ -117,7 +117,7 @@
       "title": "bound prose TRC-BIND-004: statistics format for display without losing list values (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/site-binding.test.js",
+      "file": "tests/unit/site-binding.test.js",
       "issueRefs": [
         1
       ]
@@ -129,7 +129,7 @@
       "title": "bound prose TRC-DOC-002: a value the assembler already resolved is used even without an ARD (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/site-binding.test.js",
+      "file": "tests/unit/site-binding.test.js",
       "issueRefs": [
         1
       ]
@@ -141,7 +141,7 @@
       "title": "bound prose TRC-DOC-002: markers left in the assembled document are resolved at render time (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/site-binding.test.js",
+      "file": "tests/unit/site-binding.test.js",
       "issueRefs": [
         1
       ]
@@ -153,7 +153,7 @@
       "title": "cross-references TRC-DOC-003: a display reference becomes a trace handle with its assigned number (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/site-binding.test.js",
+      "file": "tests/unit/site-binding.test.js",
       "issueRefs": [
         1
       ]
@@ -165,7 +165,7 @@
       "title": "cross-references TRC-DOC-003: a section reference becomes an in-page link (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/site-binding.test.js",
+      "file": "tests/unit/site-binding.test.js",
       "issueRefs": [
         1
       ]
@@ -177,7 +177,7 @@
       "title": "cross-references TRC-DOC-003: an unresolved reference degrades to text and never leaks the marker (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/site-binding.test.js",
+      "file": "tests/unit/site-binding.test.js",
       "issueRefs": [
         1
       ]
@@ -189,7 +189,7 @@
       "title": "cross-references TRC-DOC-003: prose rendering resolves bindings and cross-references together (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/site-binding.test.js",
+      "file": "tests/unit/site-binding.test.js",
       "issueRefs": [
         1
       ]
@@ -201,7 +201,7 @@
       "title": "the traceability object TRC-ARD-001: the chain is assembled from the manifest and the ARD provenance envelope (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/evidence-traceability.test.js",
+      "file": "tests/unit/evidence-traceability.test.js",
       "issueRefs": [
         1
       ]
@@ -213,7 +213,7 @@
       "title": "the traceability object TRC-ARD-001: the git commit falls back to the ARD envelope when the manifest omits it (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/evidence-traceability.test.js",
+      "file": "tests/unit/evidence-traceability.test.js",
       "issueRefs": [
         1
       ]
@@ -225,7 +225,7 @@
       "title": "the traceability object TRC-ARD-002: a display with no manifest and no ARD yields nulls, not an exception (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/evidence-traceability.test.js",
+      "file": "tests/unit/evidence-traceability.test.js",
       "issueRefs": [
         1
       ]
@@ -237,7 +237,7 @@
       "title": "the traceability object TRC-ARD-002: an ARD with an empty provenance envelope still produces a usable object (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/evidence-traceability.test.js",
+      "file": "tests/unit/evidence-traceability.test.js",
       "issueRefs": [
         1
       ]
@@ -249,7 +249,7 @@
       "title": "the traceability object TRC-ARD-003: every ADaM dataset in the envelope carries its content hash (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/evidence-traceability.test.js",
+      "file": "tests/unit/evidence-traceability.test.js",
       "issueRefs": [
         1
       ]

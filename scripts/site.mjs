@@ -45,7 +45,16 @@ import {
   validateSiteLinks
 } from './site-lib.mjs';
 import { renderTextStatus } from './text-status-lib.mjs';
-import { APP_TABS, renderAppPage, renderTablesPane, renderTemplatesPane } from './app-lib.mjs';
+import {
+  APP_TABS,
+  GLOBAL_TABS,
+  buildNavTree,
+  renderAppBar,
+  renderAppPage,
+  renderSidebar,
+  renderTablesPane,
+  renderTemplatesPane
+} from './app-lib.mjs';
 import { loadAssembly, loadSections } from './template-lib.mjs';
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -56,9 +65,12 @@ const shell = readFileSync(path.join(rootDir, 'site', 'shell.html'), 'utf8');
 const errors = [];
 const warnings = [];
 
-function page(file, { title, content, root = '', description = '' }) {
+function page(file, { title, content, root = '', description = '', appbar = '', bodyClass = '' }) {
   mkdirSync(path.dirname(file), { recursive: true });
-  writeFileSync(file, renderShell({ shell, title, content, root, description, config }));
+  writeFileSync(
+    file,
+    renderShell({ shell, title, content, root, description, config, appbar, bodyClass })
+  );
 }
 
 // --- Reset ------------------------------------------------------------------
@@ -228,32 +240,72 @@ if (!template.sections?.sections?.length) {
   );
 }
 
+// Selection metadata for the app bar's context readout: what the chrome says you
+// are looking at (demo-layout.md §5).
+const displayContext = displays.map((display) => ({
+  slug: display.slug,
+  title: display.title,
+  number: (csr.json?.displayIndex || []).find((entry) => entry.slug === display.slug)?.number || null,
+  version: display.outputs?.current?.version || null,
+  ardHash: display.outputs?.current?.ardHash || null
+}));
+
+const templatesContent = renderTemplatesPane({ config, template, displays });
+
 const appPanes = [
-  { id: 'reader', html: readerContent },
+  { id: 'documents', html: readerContent },
   {
-    id: 'tables',
+    id: 'displays',
+    // No in-pane picker: the explorer lists every display, and two pickers for
+    // one selection is one too many.
     html: renderTablesPane({
+      picker: false,
       entries: displayFragments.map((fragment) => ({
         ...fragment,
-        number: (csr.json?.displayIndex || []).find((entry) => entry.slug === fragment.slug)?.number || null
+        number: displayContext.find((entry) => entry.slug === fragment.slug)?.number || null
       }))
     })
   },
   { id: 'text', html: textStatusContent },
-  {
-    id: 'templates',
-    html: renderTemplatesPane({ config, template, displays })
-  }
+  { id: 'templates', html: templatesContent }
 ];
+
+const navTree = buildNavTree({ config, csr: csr.json, displays, textBlocks });
 
 page(path.join(buildDir, 'demo', 'index.html'), {
   title: `Demo · ${config.siteTitle}`,
   root: '../',
   description:
     'The open.csr demo: read the assembled report, inspect the table and ARD behind any number, ' +
-    'judge the prose that quotes it, and see the ICH E3 model it assembles into — one view, four ' +
-    'panes, one shared selection.',
-  content: renderAppPage({ config, panes: appPanes, tabs: APP_TABS })
+    'see where the prose that quotes it stands, and see the ICH E3 model it assembles into — one ' +
+    'view, four panes, one shared selection.',
+  // The app fills the viewport: an explorer plus a wide table has no business
+  // inside the 74rem measure the documentation pages read at.
+  bodyClass: 'app-page',
+  appbar: renderAppBar({ config, tabs: GLOBAL_TABS, displays: displayContext }),
+  content: renderAppPage({
+    config,
+    panes: appPanes,
+    tabs: APP_TABS,
+    active: 'documents',
+    sidebar: renderSidebar({
+      tree: navTree,
+      active: 'documents',
+      selected: { doc: (config.documents || [])[0]?.id || null }
+    })
+  })
+});
+
+// Every view in the app bar is a real link to a real page, so the Templates view
+// needs the permalink the other three already had. That is what makes the bar
+// work with JavaScript off (demo-layout.md §5).
+page(path.join(buildDir, 'templates', 'index.html'), {
+  title: `Report template · ${config.siteTitle}`,
+  root: '../',
+  description:
+    'The ICH E3 document model as data: the full section skeleton, what this report puts in each ' +
+    'section, and the 14.x numbering derived from assembly order.',
+  content: templatesContent
 });
 
 // The demo client and its pure core, copied verbatim — no bundler, no external

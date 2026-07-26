@@ -1751,72 +1751,129 @@ span.xref.unresolved {
 
 /* Demo app: four panes, one selection (#113) ------------------------------- */
 
-/* The tablist is the page's primary control, so it reads as a switch between
-   views rather than as a set of sub-tabs inside one. Wider than .tab-list, with
-   a hint line, because a first-time visitor is choosing what kind of thing to
-   look at, not filtering something they already understand. */
-.app-tabs {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
-  gap: 0.4rem;
-  margin: 0 0 1.8rem;
-  padding: 0.35rem;
-  background: var(--paper-2);
-  border: 1px solid var(--rule);
-  border-radius: var(--radius);
-}
-
-.app-tab {
+/* The application strip (demo-layout.md §5). A second header band under the site
+   header: the four views on the left, and on the right a live readout of what
+   you are looking at. Sticky, because in a document this long the answer to
+   "which display is this?" must not scroll away. */
+.app-bar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
   display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
-  text-align: left;
-  border: 1px solid transparent;
-  border-radius: var(--radius-sm);
-  background: none;
-  color: var(--muted);
-  font: inherit;
-  padding: 0.6rem 0.8rem;
-  cursor: pointer;
-  transition: background 0.12s, color 0.12s, border-color 0.12s;
-}
-
-.app-tab:hover {
-  color: var(--ink);
-  background: color-mix(in srgb, var(--card) 70%, transparent);
-}
-
-.app-tab.current {
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 44px;
+  padding: 0 var(--band-pad);
   background: var(--card);
-  border-color: var(--rule-strong);
+  border-bottom: 1px solid var(--rule);
+}
+
+.app-views {
+  display: flex;
+  align-items: stretch;
+  gap: 0.15rem;
+  margin-left: -0.7rem;
+}
+
+/* Navigation, not a control: a rule under the current label rather than a filled
+   tab. These are real links to real pages, upgraded to pane switches by JS. */
+.app-view {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.7rem 0.7rem 0.6rem;
+  border-bottom: 2px solid transparent;
+  color: var(--muted);
+  font-size: 0.92rem;
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.12s, border-color 0.12s;
+}
+
+.app-view:hover {
   color: var(--ink);
-  box-shadow: 0 1px 2px rgb(16 24 35 / 6%);
+  border-bottom-color: var(--rule-strong);
+  text-decoration: none;
 }
 
-.app-tab-label {
-  font-weight: 600;
-  font-size: 1rem;
-}
-
-.app-tab.current .app-tab-label {
+.app-view.current {
   color: var(--accent);
+  border-bottom-color: var(--accent);
 }
 
-.app-tab-hint {
-  font-size: 0.78rem;
-  line-height: 1.35;
-  color: var(--faint);
-}
-
-.app-tab:focus-visible {
+.app-view:focus-visible {
   outline: 2px solid var(--accent);
-  outline-offset: 1px;
+  outline-offset: -2px;
+  border-radius: 2px;
 }
 
-/* Each pane carries its own page-head from the surface it was rendered as, so
-   the app's own h1 is the only one that needs the extra room above it. */
-.app-head {
-  margin-bottom: 1.4rem;
+/* Identity and provenance live in the chrome, not in a dialog. Monospace because
+   every part of this is an identifier — a number, a slug, an iteration, a hash —
+   and none of it is prose. */
+.app-context {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  min-width: 0;
+  font-family: var(--mono);
+  font-size: 0.76rem;
+  letter-spacing: 0.01em;
+  color: var(--faint);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.app-context .ac-study {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.app-context .ac-number {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.app-context .ac-slug {
+  color: var(--muted);
+}
+
+.app-context .ac-sep {
+  color: var(--rule-strong);
+}
+
+@media (max-width: 900px) {
+  /* Below this the bar cannot hold both; the views win — they are the
+     navigation, and the context is recoverable from the content. */
+  .app-context .ac-number,
+  .app-context .ac-slug,
+  .app-context .ac-version,
+  .app-context .ac-hash,
+  .app-context .ac-sep {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .app-views {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .app-views::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Content starts at the top of the pane. Each pane is the same HTML its
+   standalone page serves, so it arrives carrying that page's title and lede —
+   correct at /reader/, redundant here, where the app bar already names the view
+   and labels the pane (aria-labelledby). Suppressed in presentation rather than
+   removed from the markup, because the panes not drifting from their permalinks
+   is worth more than the four elements this hides. */
+.app-pane > .page-head {
+  display: none;
 }
 
 .app-pane > .page-head h1,
@@ -1913,12 +1970,343 @@ span.xref.unresolved {
   box-shadow: -3px 0 0 0 var(--accent);
 }
 
+/* The app bar sits on the card surface in both themes; in dark it needs a
+   slightly lifted background so it separates from the page beneath it. */
 @media (prefers-color-scheme: dark) {
-  .app-tab.current {
-    box-shadow: none;
+  .app-bar {
+    background: var(--paper-2);
   }
 }
 
-:root[data-theme='dark'] .app-tab.current {
-  box-shadow: none;
+:root[data-theme='dark'] .app-bar {
+  background: var(--paper-2);
+}
+
+:root[data-theme='light'] .app-bar {
+  background: var(--card);
+}
+
+/* The explorer (#113, revised layout) --------------------------------------
+   A persistent tree on the left: study at the top, then the collections that
+   belong to it. Displays sit beside documents rather than inside one, because
+   the same display can be referenced by more than one document. */
+
+.app.has-nav {
+  display: grid;
+  grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
+  gap: 0;
+  align-items: start;
+}
+
+.app.has-nav .app-stage {
+  min-width: 0;
+  padding-left: 2rem;
+}
+
+.app-nav {
+  position: sticky;
+  top: 45px;
+  align-self: start;
+  max-height: calc(100vh - 45px);
+  overflow-y: auto;
+  padding: 1.2rem 0.9rem 2rem 0;
+  border-right: 1px solid var(--rule);
+  font-size: 0.86rem;
+}
+
+.nav-study {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  padding: 0 0.4rem 0.7rem;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.nav-study-id {
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.nav-study-meta {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--faint);
+}
+
+.nav-tree,
+.nav-items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-group + .nav-group {
+  margin-top: 0.15rem;
+}
+
+.nav-group-head {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  width: 100%;
+  padding: 0.35rem 0.4rem;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.nav-group-head:hover {
+  background: var(--paper-2);
+  color: var(--ink);
+}
+
+.nav-group.is-active .nav-group-head {
+  color: var(--ink);
+}
+
+/* A disclosure triangle, rotated when open — the one place this reads as a file
+   explorer rather than a menu. */
+.nav-caret {
+  width: 0;
+  height: 0;
+  border-left: 4px solid currentColor;
+  border-top: 3.5px solid transparent;
+  border-bottom: 3.5px solid transparent;
+  transition: transform 0.14s ease;
+  flex: none;
+}
+
+.nav-group.open .nav-caret {
+  transform: rotate(90deg);
+}
+
+.nav-count {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: var(--faint);
+  letter-spacing: 0;
+}
+
+.nav-items {
+  display: none;
+  margin: 0.1rem 0 0.4rem;
+}
+
+.nav-group.open .nav-items {
+  display: block;
+}
+
+.nav-item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  padding: 0.3rem 0.45rem 0.3rem 1.1rem;
+  border-radius: var(--radius-sm);
+  color: var(--muted);
+  text-decoration: none;
+  line-height: 1.35;
+}
+
+.nav-item:hover {
+  background: var(--paper-2);
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.nav-item[data-current] {
+  background: var(--accent-soft);
+  color: var(--ink);
+  box-shadow: inset 2px 0 0 var(--accent);
+}
+
+.nav-item.is-planned {
+  color: var(--faint);
+  cursor: default;
+}
+
+.nav-num {
+  flex: none;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--faint);
+}
+
+.nav-item[data-current] .nav-num {
+  color: var(--accent);
+}
+
+.nav-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nav-flag {
+  flex: none;
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.nav-flag.warn {
+  color: var(--warn);
+}
+
+.nav-empty {
+  margin: 0.2rem 0 0.5rem 1.1rem;
+  font-size: 0.78rem;
+  color: var(--faint);
+}
+
+/* Read / Edit. Edit is disabled until there is something to edit. */
+.app-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+}
+
+.app-mode {
+  display: inline-flex;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.app-mode-btn {
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.78rem;
+  padding: 0.22rem 0.6rem;
+  cursor: pointer;
+}
+
+.app-mode-btn.current {
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.app-mode-btn[disabled] {
+  color: var(--faint);
+  cursor: not-allowed;
+  opacity: 0.75;
+}
+
+.app-mode-btn + .app-mode-btn {
+  border-left: 1px solid var(--rule-strong);
+}
+
+/* Below this the explorer stops paying for itself: wide tables need the width
+   more than a permanently visible tree does. */
+@media (max-width: 950px) {
+  .app.has-nav {
+    display: block;
+  }
+
+  .app.has-nav .app-stage {
+    padding-left: 0;
+  }
+
+  .app-nav {
+    position: static;
+    max-height: none;
+    border-right: 0;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 1.4rem;
+    padding-right: 0;
+  }
+}
+
+/* The app fills the viewport. Documentation pages keep the 74rem measure that
+   makes prose readable; an explorer beside a six-column table does not. */
+body.app-page .site-main {
+  max-width: none;
+  padding: 0 1.5rem 3rem;
+}
+
+body.app-page .app-bar {
+  padding: 0 1.5rem;
+}
+
+/* A document's own contents, as the level below it. Shown for the selected
+   document only — sixteen sections per document is a list worth having in the
+   tree, and every document's list at once is not. */
+.nav-sections {
+  display: none;
+  list-style: none;
+  margin: 0.15rem 0 0.4rem;
+  padding: 0;
+  border-left: 1px solid var(--rule);
+  margin-left: 1.35rem;
+}
+
+.nav-item[data-current] + .nav-sections {
+  display: block;
+}
+
+.nav-section {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  padding: 0.22rem 0.4rem 0.22rem 0.6rem;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+  line-height: 1.3;
+  text-decoration: none;
+}
+
+.nav-section:hover {
+  background: var(--paper-2);
+  color: var(--ink);
+  text-decoration: none;
+}
+
+/* Modelled but not filled by this report. Still navigable — the heading is
+   really in the document, saying so. */
+.nav-section.is-empty .nav-label {
+  color: var(--faint);
+}
+
+.nav-section .nav-num {
+  min-width: 1.4rem;
+}
+
+/* The reader carries its own table of contents, which is right at /reader/ and
+   redundant here now that the tree lists the same sections. */
+.app-pane .reader-toc {
+  display: none;
+}
+
+.app-pane .reader {
+  display: block;
+}
+
+.nav-section.current {
+  background: var(--accent-soft);
+  color: var(--ink);
+  box-shadow: inset 2px 0 0 var(--accent);
+}
+
+.nav-section.current .nav-num,
+.nav-section.current .nav-label {
+  color: var(--accent);
 }

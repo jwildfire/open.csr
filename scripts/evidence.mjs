@@ -148,7 +148,8 @@ const sets = buildEvidenceSets({
   testthat,
   textReview: textBlocks,
   traceabilityByModule,
-  provenance
+  provenance,
+  rootDir
 });
 
 const committedModules = existsSync(evidenceRoot)

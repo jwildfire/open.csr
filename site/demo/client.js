@@ -20,26 +20,99 @@ import {
 
 const app = document.querySelector('[data-app]');
 if (app) {
-  const tabs = [...app.querySelectorAll('[data-app-tab]')];
+  // The views live in the app bar, which sits above <main> and so OUTSIDE
+  // [data-app] (demo-layout.md §5). Panes are looked up inside the app; views and
+  // the context readout are looked up in the document.
+  const bar = document.querySelector('[data-app-bar]');
+  const tabs = [...document.querySelectorAll('[data-app-tab]')];
   const panes = [...app.querySelectorAll('[data-app-pane]')];
+  const contextEl = document.querySelector('[data-app-context]');
   const displaySlugs = [...app.querySelectorAll('[data-app-display-panel]')].map((el) =>
     el.getAttribute('data-app-display-panel')
   );
 
-  let state = { tab: DEFAULT_TAB, display: null, block: null, focus: null };
+  let contextIndex = { study: '', displays: {} };
+  try {
+    const node = document.getElementById('app-context-index');
+    if (node) contextIndex = JSON.parse(node.textContent);
+  } catch (e) {
+    /* a malformed index degrades to the study alone */
+  }
+
+  const nav = document.querySelector('[data-app-nav]');
+  let state = { tab: DEFAULT_TAB, doc: null, display: null, block: null, focus: null };
 
   function showTab(id) {
     for (const tab of tabs) {
       const on = tab.getAttribute('data-app-tab') === id;
       tab.classList.toggle('current', on);
-      tab.setAttribute('aria-selected', on ? 'true' : 'false');
-      tab.tabIndex = on ? 0 : -1;
+      if (on) tab.setAttribute('aria-current', 'page');
+      else tab.removeAttribute('aria-current');
     }
     for (const pane of panes) {
       const on = pane.getAttribute('data-app-pane') === id;
       pane.hidden = !on;
       pane.classList.toggle('current', on);
     }
+  }
+
+  // The explorer reflects the selection: the group for the current view opens,
+  // and the selected item is marked. Other groups keep whatever the visitor left
+  // them at — collapsing them on every switch would fight the person using it.
+  function showNav() {
+    if (!nav) return;
+    const key = { documents: 'doc', displays: 'display', text: 'block' }[state.tab] || null;
+    const current = key ? state[key] : null;
+    for (const root of nav.querySelectorAll('[data-nav-group-root]')) {
+      const id = root.getAttribute('data-nav-group-root');
+      if (id === state.tab) {
+        root.classList.add('open');
+        const head = root.querySelector('[data-nav-group-toggle]');
+        if (head) head.setAttribute('aria-expanded', 'true');
+      }
+      root.classList.toggle('is-active', id === state.tab);
+    }
+    for (const item of nav.querySelectorAll('[data-nav-item]')) {
+      const on =
+        item.getAttribute('data-nav-group') === state.tab &&
+        item.getAttribute('data-nav-item') === current;
+      item.toggleAttribute('data-current', on);
+    }
+    // A document with no explicit selection still shows its contents: the
+    // Documents view always has one document open, so the tree should say which.
+    if (state.tab === 'documents' && !state.doc) {
+      const first = nav.querySelector('[data-nav-group="documents"][data-nav-item]:not([aria-disabled])');
+      if (first) first.toggleAttribute('data-current', true);
+    }
+    if (state.tab === 'documents') markSection(state.focus);
+  }
+
+  function markSection(id) {
+    if (!nav) return;
+    for (const link of nav.querySelectorAll('[data-nav-section]')) {
+      link.classList.toggle('current', !!id && link.getAttribute('data-nav-section') === id);
+    }
+  }
+
+  // The context readout: what you are looking at, in the chrome rather than in a
+  // dialog. Only the parts that apply to the current view are shown — the
+  // display's number and provenance are meaningless in the Templates view.
+  function showContext() {
+    if (!contextEl) return;
+    const parts = [];
+    if (contextIndex.study) parts.push(`<span class="ac-study">${contextIndex.study}</span>`);
+    const entry = state.tab === 'displays' ? contextIndex.displays[state.display] : null;
+    if (entry) {
+      if (entry.number) parts.push(`<span class="ac-number">${entry.number}</span>`);
+      parts.push(`<span class="ac-slug">${state.display}</span>`);
+      if (entry.version) parts.push(`<span class="ac-version">${entry.version}</span>`);
+      if (entry.hash) {
+        parts.push(`<span class="ac-hash" title="ARD sha256">ard&nbsp;${entry.hash}</span>`);
+      }
+    } else if (state.tab === 'text' && state.block) {
+      parts.push(`<span class="ac-slug">${state.block}</span>`);
+    }
+    contextEl.innerHTML = parts.join('<span class="ac-sep" aria-hidden="true">·</span>');
   }
 
   function showDisplay(slug) {
@@ -70,15 +143,30 @@ if (app) {
     if (card) card.classList.add('app-selected');
   }
 
+  // Scroll the target under the sticky bar.
+  //
+  // Not `scrollIntoView({behavior:'smooth'})`: the assembled report is a ~35,000px
+  // document, and Chrome's smooth-scroll animation over a jump of that size
+  // stalls outright — the page simply never arrives. Distance decides the
+  // behaviour, so a nearby target still animates and a jump across the document
+  // lands immediately, which is the better reading experience anyway.
   function scrollToFocus(focus) {
     if (!focus) return;
     const target =
       app.querySelector(`#${cssEscape(focus)}`) ||
       app.querySelector(`[data-app-block="${cssEscape(focus)}"]`) ||
       app.querySelector(`[name="${cssEscape(focus)}"]`);
-    if (target && typeof target.scrollIntoView === 'function') {
-      target.scrollIntoView({ block: 'start', behavior: 'smooth' });
-    }
+    if (!target) return;
+
+    const offset = (bar ? bar.getBoundingClientRect().height : 0) + 12;
+    const top = Math.max(0, window.scrollY + target.getBoundingClientRect().top - offset);
+    const far = Math.abs(top - window.scrollY) > window.innerHeight * 2;
+    const reduced =
+      window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // scroll-behavior: smooth is set on :root in the stylesheet, so an "instant"
+    // scroll has to say so explicitly.
+    window.scrollTo({ top, behavior: far || reduced ? 'instant' : 'smooth' });
   }
 
   function cssEscape(value) {
@@ -89,6 +177,8 @@ if (app) {
     showTab(state.tab);
     state.display = showDisplay(state.display);
     markBlock(state.block);
+    showNav();
+    showContext();
     const hash = formatAppHash(state);
     if (push && location.hash !== hash) {
       history.pushState(null, '', hash);
@@ -110,10 +200,12 @@ if (app) {
     });
   }
 
-  // Roving arrow-key focus across the tablist, as the ARIA pattern expects.
-  const tablist = app.querySelector('[role="tablist"]');
-  if (tablist) {
-    tablist.addEventListener('keydown', (event) => {
+  // Arrow keys move along the view bar. These are links, not a tablist, so Tab
+  // still reaches each one — the arrows are an addition for a bar the user is
+  // already inside, not a replacement for normal focus order.
+  if (bar) {
+    bar.addEventListener('keydown', (event) => {
+      if (!event.target.closest('[data-app-tab]')) return;
       const index = tabs.findIndex((tab) => tab.getAttribute('data-app-tab') === state.tab);
       let next = null;
       if (event.key === 'ArrowRight') next = (index + 1) % tabs.length;
@@ -127,11 +219,48 @@ if (app) {
     });
   }
 
+  // --- the explorer ------------------------------------------------------
+  if (nav) {
+    nav.addEventListener('click', (event) => {
+      const toggle = event.target.closest('[data-nav-group-toggle]');
+      if (toggle) {
+        const root = toggle.closest('[data-nav-group-root]');
+        const open = root.classList.toggle('open');
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        // Opening a group also moves to that view: in an explorer the folder and
+        // the place are the same thing.
+        if (open) goto({ tab: toggle.getAttribute('data-nav-group-toggle'), focus: null });
+        return;
+      }
+      // A section inside a document: keep the document selected — losing it
+      // would collapse the very list being navigated — and scroll to the
+      // heading.
+      const section = event.target.closest('[data-nav-section]');
+      if (section) {
+        event.preventDefault();
+        goto({
+          tab: section.getAttribute('data-nav-group'),
+          doc: section.getAttribute('data-nav-doc'),
+          focus: section.getAttribute('data-nav-section')
+        });
+        markSection(section.getAttribute('data-nav-section'));
+        return;
+      }
+      const item = event.target.closest('[data-nav-item]');
+      if (!item || item.hasAttribute('aria-disabled')) return;
+      event.preventDefault();
+      const group = item.getAttribute('data-nav-group');
+      const id = item.getAttribute('data-nav-item');
+      const key = { documents: 'doc', displays: 'display', text: 'block' }[group];
+      goto({ tab: group, [key]: id, focus: group === 'text' ? id : null });
+    });
+  }
+
   // --- display selection -------------------------------------------------
   for (const option of app.querySelectorAll('[data-app-select-display]')) {
     option.addEventListener('click', (event) => {
       event.preventDefault();
-      goto({ tab: 'tables', display: option.getAttribute('data-app-select-display'), focus: null });
+      goto({ tab: 'displays', display: option.getAttribute('data-app-select-display'), focus: null });
     });
   }
 
