@@ -125,7 +125,72 @@ Option 2 is rejected outright.
 
 **Density.** The app strip is 44px, the site strip 56px. Content gets everything below.
 
-## 6. What this does not change
+## 6. Revision: the explorer (2026-07-25, same day)
+
+@jwildfire reviewed §4 and **overrode it**: the application gets a persistent
+left sidebar listing the contents of the study, file-explorer style. That is
+closer to Option 2 than to Option 1, and the recommendation in §4 was wrong
+about one thing — it weighed width against a *nav rail*, when what the product
+actually needs on the left is a **content tree**, which is a different and far
+more valuable use of the same pixels. A rail that only switches four views does
+not earn 200px. A tree that lists every document, display and text block does,
+because it replaces navigation *and* the in-pane display picker, and it is the
+surface a second study or a second document would extend.
+
+The shape, from his direction:
+
+```
+  ┌──────────────────────────────────────────────────────────────────────┐
+  │ ▪ open.csr                        Home  Quality  Design   ◐  GitHub  │
+  ├──────────────────────────────────────────────────────────────────────┤
+  │ CDISCPILOT01 · 14.3.1.3 · t-ae-common · v002        Templates │Read│Edit│
+  ├──────────────────┬───────────────────────────────────────────────────┤
+  │ CDISCPILOT01     │                                                   │
+  │ cut-off 2014-…   │                                                   │
+  │ ▾ DOCUMENTS   2  │  content                                          │
+  │   Clinical Stu…  │                                                   │
+  │   Statistical…   │                                                   │
+  │        PLANNED   │                                                   │
+  │ ▸ DISPLAYS    6  │                                                   │
+  │ ▸ TEXT       14  │                                                   │
+  └──────────────────┴───────────────────────────────────────────────────┘
+```
+
+Four decisions this encodes:
+
+1. **The study is the root.** Everything under it belongs to it. A second study
+   becomes a second root, not a second application.
+2. **Documents is a collection, not a page.** The CSR is one document; a SAP is
+   another; an ISS would be a third. The registry lives in
+   `site/config.json` → `documents`, so adding one is a config edit. Documents
+   that have no template yet are listed and marked `planned` rather than hidden,
+   because the point is to show the shape.
+3. **Displays sit beside documents, not inside one.** The same display can be
+   referenced by more than one document — the AE overview belongs in the CSR and
+   would belong in an ISS. So a display records *which documents use it* instead
+   of living under one of them.
+4. **Templates stays in the header.** A template describes what a report of that
+   kind *is*, across every study, so it does not hang off one study in the tree.
+
+**Vocabulary:** *Reader* → **Documents**, *Tables* → **Displays** (tables,
+figures and listings). The emitted directories keep their v0 names — `/reader/`
+and `/gallery/` are what the evidence pages and the trace panel already link to,
+and renaming them would break every one of those links to change a label.
+
+**Read / Edit** sits at the right of the application strip. Edit is genuinely
+disabled, not merely styled that way: there is nothing to edit until the spec
+editor lands (#113 increment B), and a control that looks live but does nothing
+is worse than one that says so.
+
+**The width objection from §4 still stands and is handled**, not dismissed: the
+explorer collapses below 950px, where wide tables need the room more than a
+permanently visible tree does, and the app page drops the 74rem measure the
+documentation pages read at.
+
+Option 3's inspector is unaffected by this revision — it remains the target for
+when spec editing produces a diff that needs somewhere to live.
+
+## 7. What this does not change
 
 The panes themselves, the shared selection, the link-interception rule, and the standalone permalinks are all unchanged — this is a shell replacement, not a rewrite. `/gallery/`, `/reader/`, `/text/` and now `/templates/` remain the addressable permalinks and the destinations the evidence pages and trace panels link to.
 

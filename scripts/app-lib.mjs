@@ -22,14 +22,23 @@ import { DISPLAY_TYPE_LABELS, assignDisplayNumbers } from './template-lib.mjs';
 
 // Each view's `href` is its standalone permalink. The client upgrades a click
 // into an in-place pane switch through the same interception rule the panes
-// already use (site/demo/core.js), so with JavaScript off these are four working
-// links to four working pages rather than four dead buttons (demo-layout.md §5).
+// already use (site/demo/core.js), so with JavaScript off these are working
+// links to working pages rather than dead buttons (demo-layout.md §5).
+//
+// The emitted paths keep their v0 names: /reader/ and /gallery/ are what the
+// evidence pages and the trace panel link to, and renaming those directories
+// would break every one of those links to change a label.
 export const APP_TABS = [
-  { id: 'reader', label: 'Reader', href: '../reader/index.html' },
-  { id: 'tables', label: 'Tables', href: '../gallery/index.html' },
-  { id: 'text', label: 'Text', href: '../text/index.html' },
-  { id: 'templates', label: 'Templates', href: '../templates/index.html' }
+  { id: 'documents', label: 'Documents', href: '../reader/index.html', scope: 'study' },
+  { id: 'displays', label: 'Displays', href: '../gallery/index.html', scope: 'study' },
+  { id: 'text', label: 'Text', href: '../text/index.html', scope: 'study' },
+  // Templates describe what a report of this kind IS, so they belong to no one
+  // study and stay in the header rather than under the study in the tree.
+  { id: 'templates', label: 'Templates', href: '../templates/index.html', scope: 'global' }
 ];
+
+export const STUDY_TABS = APP_TABS.filter((tab) => tab.scope === 'study');
+export const GLOBAL_TABS = APP_TABS.filter((tab) => tab.scope === 'global');
 
 // ---------------------------------------------------------------------------
 // Tab chrome
@@ -50,6 +59,148 @@ function viewLinks(tabs, active) {
 }
 
 /**
+ * The navigation tree: a study, and everything under it.
+ *
+ * The shape is the product's, not the filesystem's. A study owns documents,
+ * displays and text; **displays sit beside documents rather than inside one**,
+ * because the same display can be referenced by more than one document — the
+ * AE overview belongs in the CSR and would belong in an ISS too. Each display
+ * therefore carries the documents that use it rather than living under one.
+ *
+ * @returns {{study: object, groups: Array}}
+ */
+export function buildNavTree({ config = {}, csr = null, displays = [], textBlocks = [] } = {}) {
+  const numbers = new Map(
+    (csr?.displayIndex || []).map((entry) => [entry.slug, { number: entry.number, label: entry.label }])
+  );
+  const usedInCsr = new Set((csr?.displayIndex || []).map((entry) => entry.slug));
+
+  const documents = (config.documents || []).map((doc) => ({
+    id: doc.id,
+    label: doc.title,
+    abbr: doc.abbr || null,
+    status: doc.status || 'planned',
+    detail:
+      doc.status === 'built' && csr?.sections
+        ? `${csr.sections.filter((section) => section.populated).length} of ${csr.sections.length} sections`
+        : doc.blurb || ''
+  }));
+
+  return {
+    study: {
+      id: config.study?.id || 'Study',
+      title: config.study?.title || '',
+      cutoff: config.study?.cutoff || null
+    },
+    groups: [
+      { id: 'documents', label: 'Documents', items: documents },
+      {
+        id: 'displays',
+        label: 'Displays',
+        note: 'Tables, figures and listings',
+        items: displays.map((display) => ({
+          id: display.slug,
+          label: display.title,
+          number: numbers.get(display.slug)?.number || null,
+          status: display.status,
+          // Which documents reference it — a display is shared, not owned.
+          usedIn: usedInCsr.has(display.slug) ? ['CSR'] : []
+        }))
+      },
+      {
+        id: 'text',
+        label: 'Text',
+        items: textBlocks
+          .filter((block) => block.exists !== false)
+          .map((block) => ({
+            id: block.id,
+            label: block.title || block.id,
+            number: block.e3Section ? `§${block.e3Section}` : null,
+            status: block.tier === 'generated' && block.approval?.state !== 'approved' ? 'draft' : 'ok',
+            tier: block.tier || null
+          }))
+      }
+    ]
+  };
+}
+
+function treeItem(groupId, item, kind) {
+  const chip =
+    item.status === 'planned'
+      ? `<span class="nav-flag" title="Not built yet">planned</span>`
+      : item.status === 'draft'
+        ? `<span class="nav-flag warn" title="Draft: held out of the report">draft</span>`
+        : '';
+  const number = item.number ? `<span class="nav-num">${escapeHtml(item.number)}</span>` : '';
+  const disabled = item.status === 'planned';
+  const attrs =
+    `class="nav-item${disabled ? ' is-planned' : ''}" data-nav-group="${groupId}" ` +
+    `data-nav-item="${escapeHtml(item.id)}"` +
+    (disabled ? ' aria-disabled="true"' : '');
+  return (
+    `<li>${
+      disabled
+        ? `<span ${attrs}>`
+        : `<a ${attrs} href="#tab=${groupId}&amp;${kind}=${encodeURIComponent(item.id)}">`
+    }` +
+    number +
+    `<span class="nav-label">${escapeHtml(item.label)}</span>` +
+    chip +
+    `${disabled ? '</span>' : '</a>'}</li>`
+  );
+}
+
+const ITEM_KEY = { documents: 'doc', displays: 'display', text: 'block' };
+
+/**
+ * The persistent explorer. Study at the top, then the three collections that
+ * belong to it, each expandable. Selecting an item both switches the view and
+ * selects the thing — which is why the sidebar replaces the Displays pane's own
+ * picker rather than sitting beside it.
+ */
+export function renderSidebar({ tree, active = null, selected = {} } = {}) {
+  if (!tree) return '';
+  const groups = tree.groups
+    .map((group) => {
+      const open = group.id === active;
+      const key = ITEM_KEY[group.id] || 'item';
+      const current = selected[key] || null;
+      const items = group.items.length
+        ? `<ul class="nav-items">${group.items
+            .map((item) =>
+              treeItem(group.id, item, key).replace(
+                `data-nav-item="${escapeHtml(item.id)}"`,
+                `data-nav-item="${escapeHtml(item.id)}"${item.id === current ? ' data-current="true"' : ''}`
+              )
+            )
+            .join('')}</ul>`
+        : `<p class="nav-empty">Nothing registered yet.</p>`;
+      return (
+        `<li class="nav-group${open ? ' open' : ''}" data-nav-group-root="${group.id}">` +
+        `<button type="button" class="nav-group-head" data-nav-group-toggle="${group.id}" ` +
+        `aria-expanded="${open ? 'true' : 'false'}">` +
+        `<span class="nav-caret" aria-hidden="true"></span>` +
+        `<span class="nav-group-label">${escapeHtml(group.label)}</span>` +
+        `<span class="nav-count">${group.items.length}</span>` +
+        `</button>${items}</li>`
+      );
+    })
+    .join('');
+
+  return (
+    `<aside class="app-nav" data-app-nav aria-label="Study contents">` +
+    `<div class="nav-study">` +
+    `<span class="nav-study-id">${escapeHtml(tree.study.id)}</span>` +
+    (tree.study.cutoff
+      ? `<span class="nav-study-meta">cut-off ${escapeHtml(tree.study.cutoff)}</span>`
+      : '') +
+    `</div>` +
+    `<nav><ul class="nav-tree">${groups}</ul></nav>` +
+    `</aside>`
+  );
+}
+
+/**
  * The application strip: the four views, and where you are.
  *
  * The context readout is the one place this shell spends any boldness. A CSR is
@@ -65,7 +216,13 @@ function viewLinks(tabs, active) {
  * @param {Array<{slug: string, number: string|null, title: string,
  *   version: string|null, ardHash: string|null}>} displays selection metadata
  */
-export function renderAppBar({ config = {}, tabs = APP_TABS, active = null, displays = [] } = {}) {
+export function renderAppBar({
+  config = {},
+  tabs = GLOBAL_TABS,
+  active = null,
+  displays = [],
+  mode = 'read'
+} = {}) {
   const study = config.study?.id || '';
   const context = Object.fromEntries(
     displays.map((entry) => [
@@ -79,12 +236,27 @@ export function renderAppBar({ config = {}, tabs = APP_TABS, active = null, disp
     ])
   );
 
+  // Read / Edit. Edit is genuinely disabled rather than merely styled as such:
+  // there is nothing to edit until the spec editor lands (#113 increment B), and
+  // a control that looks live but does nothing is worse than one that says so.
+  const modeToggle =
+    `<div class="app-mode" role="group" aria-label="Mode">` +
+    `<button type="button" class="app-mode-btn${mode === 'read' ? ' current' : ''}" ` +
+    `data-app-mode="read" aria-pressed="${mode === 'read' ? 'true' : 'false'}">Read</button>` +
+    `<button type="button" class="app-mode-btn" data-app-mode="edit" disabled ` +
+    `aria-disabled="true" title="Editing arrives with the spec editor — the browser can already ` +
+    `regenerate a display, but an edit has to land as a source change first">Edit</button>` +
+    `</div>`;
+
   return (
     `<div class="app-bar" data-app-bar>` +
-    `<nav class="app-views" aria-label="Views">${viewLinks(tabs, active)}</nav>` +
     `<p class="app-context" data-app-context aria-live="polite">` +
     (study ? `<span class="ac-study">${escapeHtml(study)}</span>` : '') +
     `</p>` +
+    `<div class="app-bar-right">` +
+    `<nav class="app-views" aria-label="Views">${viewLinks(tabs, active)}</nav>` +
+    modeToggle +
+    `</div>` +
     `<script type="application/json" id="app-context-index">` +
     `${JSON.stringify({ study, displays: context }).replace(/</g, '\\u003c')}</script>` +
     `</div>`
@@ -102,7 +274,13 @@ export function renderAppBar({ config = {}, tabs = APP_TABS, active = null, disp
  * @param {object} options
  * @param {Array<{id: string, html: string}>} options.panes rendered pane content, in tab order
  */
-export function renderAppPage({ config = {}, panes = [], tabs = APP_TABS, active = null } = {}) {
+export function renderAppPage({
+  config = {},
+  panes = [],
+  tabs = APP_TABS,
+  active = null,
+  sidebar = ''
+} = {}) {
   const byId = new Map(panes.map((pane) => [pane.id, pane.html]));
   const shown = tabs.filter((tab) => byId.has(tab.id));
   const current = active && shown.some((tab) => tab.id === active) ? active : shown[0]?.id || null;
@@ -125,8 +303,11 @@ export function renderAppPage({ config = {}, panes = [], tabs = APP_TABS, active
     .join('\n');
 
   return (
-    `<div class="app" data-app>` +
+    `<div class="app${sidebar ? ' has-nav' : ''}" data-app>` +
+    sidebar +
+    `<div class="app-stage">` +
     body +
+    `</div>` +
     `</div>\n` +
     `<script type="module" src="client.js"></script>`
   );
@@ -146,7 +327,7 @@ export function renderAppPage({ config = {}, panes = [], tabs = APP_TABS, active
  * @param {Array<{slug: string, title: string, html: string, regulatoryId?: string,
  *   type?: string, status?: string, number?: string|null}>} entries
  */
-export function renderTablesPane({ entries = [], selected = null } = {}) {
+export function renderTablesPane({ entries = [], selected = null, picker = true } = {}) {
   if (!entries.length) {
     return (
       `<div class="app-tables">` +
@@ -156,7 +337,7 @@ export function renderTablesPane({ entries = [], selected = null } = {}) {
   }
   const current = entries.some((entry) => entry.slug === selected) ? selected : entries[0].slug;
 
-  const picker = entries
+  const pickerHtml = entries
     .map((entry) => {
       const on = entry.slug === current;
       return (
@@ -180,7 +361,9 @@ export function renderTablesPane({ entries = [], selected = null } = {}) {
 
   return (
     `<div class="app-tables">` +
-    `<nav class="app-display-picker" aria-label="Displays">${picker}</nav>` +
+    // The explorer already lists every display, so the in-pane picker is only
+    // rendered when there is no sidebar to do the job.
+    (picker ? `<nav class="app-display-picker" aria-label="Displays">${pickerHtml}</nav>` : '') +
     `<div class="app-display-stage">${panels}</div>` +
     `</div>`
   );

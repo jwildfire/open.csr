@@ -39,7 +39,8 @@ if (app) {
     /* a malformed index degrades to the study alone */
   }
 
-  let state = { tab: DEFAULT_TAB, display: null, block: null, focus: null };
+  const nav = document.querySelector('[data-app-nav]');
+  let state = { tab: DEFAULT_TAB, doc: null, display: null, block: null, focus: null };
 
   function showTab(id) {
     for (const tab of tabs) {
@@ -55,6 +56,30 @@ if (app) {
     }
   }
 
+  // The explorer reflects the selection: the group for the current view opens,
+  // and the selected item is marked. Other groups keep whatever the visitor left
+  // them at — collapsing them on every switch would fight the person using it.
+  function showNav() {
+    if (!nav) return;
+    const key = { documents: 'doc', displays: 'display', text: 'block' }[state.tab] || null;
+    const current = key ? state[key] : null;
+    for (const root of nav.querySelectorAll('[data-nav-group-root]')) {
+      const id = root.getAttribute('data-nav-group-root');
+      if (id === state.tab) {
+        root.classList.add('open');
+        const head = root.querySelector('[data-nav-group-toggle]');
+        if (head) head.setAttribute('aria-expanded', 'true');
+      }
+      root.classList.toggle('is-active', id === state.tab);
+    }
+    for (const item of nav.querySelectorAll('[data-nav-item]')) {
+      const on =
+        item.getAttribute('data-nav-group') === state.tab &&
+        item.getAttribute('data-nav-item') === current;
+      item.toggleAttribute('data-current', on);
+    }
+  }
+
   // The context readout: what you are looking at, in the chrome rather than in a
   // dialog. Only the parts that apply to the current view are shown — the
   // display's number and provenance are meaningless in the Templates view.
@@ -62,7 +87,7 @@ if (app) {
     if (!contextEl) return;
     const parts = [];
     if (contextIndex.study) parts.push(`<span class="ac-study">${contextIndex.study}</span>`);
-    const entry = state.tab === 'tables' ? contextIndex.displays[state.display] : null;
+    const entry = state.tab === 'displays' ? contextIndex.displays[state.display] : null;
     if (entry) {
       if (entry.number) parts.push(`<span class="ac-number">${entry.number}</span>`);
       parts.push(`<span class="ac-slug">${state.display}</span>`);
@@ -123,6 +148,7 @@ if (app) {
     showTab(state.tab);
     state.display = showDisplay(state.display);
     markBlock(state.block);
+    showNav();
     showContext();
     const hash = formatAppHash(state);
     if (push && location.hash !== hash) {
@@ -164,11 +190,34 @@ if (app) {
     });
   }
 
+  // --- the explorer ------------------------------------------------------
+  if (nav) {
+    nav.addEventListener('click', (event) => {
+      const toggle = event.target.closest('[data-nav-group-toggle]');
+      if (toggle) {
+        const root = toggle.closest('[data-nav-group-root]');
+        const open = root.classList.toggle('open');
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        // Opening a group also moves to that view: in an explorer the folder and
+        // the place are the same thing.
+        if (open) goto({ tab: toggle.getAttribute('data-nav-group-toggle'), focus: null });
+        return;
+      }
+      const item = event.target.closest('[data-nav-item]');
+      if (!item || item.hasAttribute('aria-disabled')) return;
+      event.preventDefault();
+      const group = item.getAttribute('data-nav-group');
+      const id = item.getAttribute('data-nav-item');
+      const key = { documents: 'doc', displays: 'display', text: 'block' }[group];
+      goto({ tab: group, [key]: id, focus: group === 'text' ? id : null });
+    });
+  }
+
   // --- display selection -------------------------------------------------
   for (const option of app.querySelectorAll('[data-app-select-display]')) {
     option.addEventListener('click', (event) => {
       event.preventDefault();
-      goto({ tab: 'tables', display: option.getAttribute('data-app-select-display'), focus: null });
+      goto({ tab: 'displays', display: option.getAttribute('data-app-select-display'), focus: null });
     });
   }
 

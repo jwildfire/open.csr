@@ -47,8 +47,11 @@ import {
 import { renderTextStatus } from './text-status-lib.mjs';
 import {
   APP_TABS,
+  GLOBAL_TABS,
+  buildNavTree,
   renderAppBar,
   renderAppPage,
+  renderSidebar,
   renderTablesPane,
   renderTemplatesPane
 } from './app-lib.mjs';
@@ -62,9 +65,12 @@ const shell = readFileSync(path.join(rootDir, 'site', 'shell.html'), 'utf8');
 const errors = [];
 const warnings = [];
 
-function page(file, { title, content, root = '', description = '', appbar = '' }) {
+function page(file, { title, content, root = '', description = '', appbar = '', bodyClass = '' }) {
   mkdirSync(path.dirname(file), { recursive: true });
-  writeFileSync(file, renderShell({ shell, title, content, root, description, config, appbar }));
+  writeFileSync(
+    file,
+    renderShell({ shell, title, content, root, description, config, appbar, bodyClass })
+  );
 }
 
 // --- Reset ------------------------------------------------------------------
@@ -247,10 +253,13 @@ const displayContext = displays.map((display) => ({
 const templatesContent = renderTemplatesPane({ config, template, displays });
 
 const appPanes = [
-  { id: 'reader', html: readerContent },
+  { id: 'documents', html: readerContent },
   {
-    id: 'tables',
+    id: 'displays',
+    // No in-pane picker: the explorer lists every display, and two pickers for
+    // one selection is one too many.
     html: renderTablesPane({
+      picker: false,
       entries: displayFragments.map((fragment) => ({
         ...fragment,
         number: displayContext.find((entry) => entry.slug === fragment.slug)?.number || null
@@ -261,6 +270,8 @@ const appPanes = [
   { id: 'templates', html: templatesContent }
 ];
 
+const navTree = buildNavTree({ config, csr: csr.json, displays, textBlocks });
+
 page(path.join(buildDir, 'demo', 'index.html'), {
   title: `Demo · ${config.siteTitle}`,
   root: '../',
@@ -268,8 +279,21 @@ page(path.join(buildDir, 'demo', 'index.html'), {
     'The open.csr demo: read the assembled report, inspect the table and ARD behind any number, ' +
     'see where the prose that quotes it stands, and see the ICH E3 model it assembles into — one ' +
     'view, four panes, one shared selection.',
-  appbar: renderAppBar({ config, tabs: APP_TABS, active: 'reader', displays: displayContext }),
-  content: renderAppPage({ config, panes: appPanes, tabs: APP_TABS })
+  // The app fills the viewport: an explorer plus a wide table has no business
+  // inside the 74rem measure the documentation pages read at.
+  bodyClass: 'app-page',
+  appbar: renderAppBar({ config, tabs: GLOBAL_TABS, displays: displayContext }),
+  content: renderAppPage({
+    config,
+    panes: appPanes,
+    tabs: APP_TABS,
+    active: 'documents',
+    sidebar: renderSidebar({
+      tree: navTree,
+      active: 'documents',
+      selected: { doc: (config.documents || [])[0]?.id || null }
+    })
+  })
 });
 
 // Every view in the app bar is a real link to a real page, so the Templates view

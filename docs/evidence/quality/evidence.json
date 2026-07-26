@@ -1,6 +1,6 @@
 {
   "module": "quality",
-  "generated": "2026-07-25T13:52:20.682Z",
+  "generated": "2026-07-26T01:48:38.856Z",
   "records": [
     {
       "requirementIds": [
@@ -642,7 +642,7 @@
       "requirementIds": [
         "QC-DEMO-003"
       ],
-      "title": "pane crossings QC-DEMO-003: a display permalink resolves to the Tables tab with that display selected (#1)",
+      "title": "pane crossings QC-DEMO-003: a display permalink resolves to the Displays view with that display selected (#1)",
       "suite": "js-unit",
       "passed": true,
       "file": "tests/unit/site-demo.test.js",
@@ -654,7 +654,7 @@
       "requirementIds": [
         "QC-DEMO-003"
       ],
-      "title": "pane crossings QC-DEMO-003: the reader, the gallery index and the text library each resolve to a pane (#1)",
+      "title": "pane crossings QC-DEMO-003: each standalone permalink resolves to the view that replaced it (#1)",
       "suite": "js-unit",
       "passed": true,
       "file": "tests/unit/site-demo.test.js",
@@ -990,7 +990,7 @@
       "requirementIds": [
         "QC-DEMO-007"
       ],
-      "title": "the app page QC-DEMO-007: the tablist carries the ARIA wiring a tab component needs (#1)",
+      "title": "the app page QC-DEMO-007: panes do not collide with the shell tab controller (#1)",
       "suite": "js-unit",
       "passed": true,
       "file": "tests/unit/site-demo.test.js",
@@ -1002,7 +1002,7 @@
       "requirementIds": [
         "QC-DEMO-007"
       ],
-      "title": "the app page QC-DEMO-007: the tablist is a distinct component from the shell tab controller (#1)",
+      "title": "the app page QC-DEMO-007: the page carries no title or lede — content starts at the pane (#1)",
       "suite": "js-unit",
       "passed": true,
       "file": "tests/unit/site-demo.test.js",
@@ -1015,6 +1015,66 @@
         "QC-DEMO-008"
       ],
       "title": "the app page QC-DEMO-008: a tab with no rendered pane is dropped rather than rendered empty (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-016"
+      ],
+      "title": "the application strip QC-DEMO-016: a view in the bar is a real link, marked as navigation not as a control (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-016"
+      ],
+      "title": "the application strip QC-DEMO-016: the bar carries only what is not scoped to a study (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-017"
+      ],
+      "title": "the application strip QC-DEMO-017: a display with no iteration yet contributes nulls, not a broken readout (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-017"
+      ],
+      "title": "the application strip QC-DEMO-017: the bar carries the study, and a context index for the live readout (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-017"
+      ],
+      "title": "the application strip QC-DEMO-017: the embedded context index cannot close the script element (#1)",
       "suite": "js-unit",
       "passed": true,
       "file": "tests/unit/site-demo.test.js",
@@ -1126,6 +1186,126 @@
       "suite": "js-unit",
       "passed": true,
       "file": "tests/unit/site-render.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-018"
+      ],
+      "title": "the navigation tree QC-DEMO-018: more than one document is listed, and an unbuilt one says so (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-018"
+      ],
+      "title": "the navigation tree QC-DEMO-018: the study is the root, and documents, displays and text hang off it (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-019"
+      ],
+      "title": "the navigation tree QC-DEMO-019: a display records the documents that use it rather than living inside one (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-019"
+      ],
+      "title": "the navigation tree QC-DEMO-019: a text block that is not on disk is left out, and a draft is flagged (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-020"
+      ],
+      "title": "the navigation tree QC-DEMO-020: only the active group is open, and the selected item is marked (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-020"
+      ],
+      "title": "the navigation tree QC-DEMO-020: the explorer renders the study, every group, and a count per group (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-021"
+      ],
+      "title": "the navigation tree QC-DEMO-021: an unbuilt document is not a link, so it cannot be selected (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-021"
+      ],
+      "title": "the navigation tree QC-DEMO-021: every selectable item is a real link carrying its own deep link (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-022"
+      ],
+      "title": "the navigation tree QC-DEMO-022: an empty registry renders the explorer without throwing (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-022"
+      ],
+      "title": "the navigation tree QC-DEMO-022: Read is the current mode and Edit is genuinely disabled (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
       "issueRefs": [
         1
       ]

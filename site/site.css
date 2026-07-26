@@ -1985,3 +1985,263 @@ span.xref.unresolved {
 :root[data-theme='light'] .app-bar {
   background: var(--card);
 }
+
+/* The explorer (#113, revised layout) --------------------------------------
+   A persistent tree on the left: study at the top, then the collections that
+   belong to it. Displays sit beside documents rather than inside one, because
+   the same display can be referenced by more than one document. */
+
+.app.has-nav {
+  display: grid;
+  grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
+  gap: 0;
+  align-items: start;
+}
+
+.app.has-nav .app-stage {
+  min-width: 0;
+  padding-left: 2rem;
+}
+
+.app-nav {
+  position: sticky;
+  top: 45px;
+  align-self: start;
+  max-height: calc(100vh - 45px);
+  overflow-y: auto;
+  padding: 1.2rem 0.9rem 2rem 0;
+  border-right: 1px solid var(--rule);
+  font-size: 0.86rem;
+}
+
+.nav-study {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  padding: 0 0.4rem 0.7rem;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.nav-study-id {
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.nav-study-meta {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--faint);
+}
+
+.nav-tree,
+.nav-items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-group + .nav-group {
+  margin-top: 0.15rem;
+}
+
+.nav-group-head {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  width: 100%;
+  padding: 0.35rem 0.4rem;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.nav-group-head:hover {
+  background: var(--paper-2);
+  color: var(--ink);
+}
+
+.nav-group.is-active .nav-group-head {
+  color: var(--ink);
+}
+
+/* A disclosure triangle, rotated when open — the one place this reads as a file
+   explorer rather than a menu. */
+.nav-caret {
+  width: 0;
+  height: 0;
+  border-left: 4px solid currentColor;
+  border-top: 3.5px solid transparent;
+  border-bottom: 3.5px solid transparent;
+  transition: transform 0.14s ease;
+  flex: none;
+}
+
+.nav-group.open .nav-caret {
+  transform: rotate(90deg);
+}
+
+.nav-count {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: var(--faint);
+  letter-spacing: 0;
+}
+
+.nav-items {
+  display: none;
+  margin: 0.1rem 0 0.4rem;
+}
+
+.nav-group.open .nav-items {
+  display: block;
+}
+
+.nav-item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  padding: 0.3rem 0.45rem 0.3rem 1.1rem;
+  border-radius: var(--radius-sm);
+  color: var(--muted);
+  text-decoration: none;
+  line-height: 1.35;
+}
+
+.nav-item:hover {
+  background: var(--paper-2);
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.nav-item[data-current] {
+  background: var(--accent-soft);
+  color: var(--ink);
+  box-shadow: inset 2px 0 0 var(--accent);
+}
+
+.nav-item.is-planned {
+  color: var(--faint);
+  cursor: default;
+}
+
+.nav-num {
+  flex: none;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--faint);
+}
+
+.nav-item[data-current] .nav-num {
+  color: var(--accent);
+}
+
+.nav-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nav-flag {
+  flex: none;
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.nav-flag.warn {
+  color: var(--warn);
+}
+
+.nav-empty {
+  margin: 0.2rem 0 0.5rem 1.1rem;
+  font-size: 0.78rem;
+  color: var(--faint);
+}
+
+/* Read / Edit. Edit is disabled until there is something to edit. */
+.app-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+}
+
+.app-mode {
+  display: inline-flex;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.app-mode-btn {
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.78rem;
+  padding: 0.22rem 0.6rem;
+  cursor: pointer;
+}
+
+.app-mode-btn.current {
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.app-mode-btn[disabled] {
+  color: var(--faint);
+  cursor: not-allowed;
+  opacity: 0.75;
+}
+
+.app-mode-btn + .app-mode-btn {
+  border-left: 1px solid var(--rule-strong);
+}
+
+/* Below this the explorer stops paying for itself: wide tables need the width
+   more than a permanently visible tree does. */
+@media (max-width: 950px) {
+  .app.has-nav {
+    display: block;
+  }
+
+  .app.has-nav .app-stage {
+    padding-left: 0;
+  }
+
+  .app-nav {
+    position: static;
+    max-height: none;
+    border-right: 0;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 1.4rem;
+    padding-right: 0;
+  }
+}
+
+/* The app fills the viewport. Documentation pages keep the 74rem measure that
+   makes prose readable; an explorer beside a six-column table does not. */
+body.app-page .site-main {
+  max-width: none;
+  padding: 0 1.5rem 3rem;
+}
+
+body.app-page .app-bar {
+  padding: 0 1.5rem;
+}

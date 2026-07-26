@@ -14,6 +14,26 @@
     "cutoff": "2014-07-01",
     "source": "pharmaverseadam (CDISC Pilot 01)"
   },
+  "documents": [
+    {
+      "id": "csr",
+      "title": "Clinical Study Report",
+      "abbr": "CSR",
+      "template": "ich-e3",
+      "source": "docs/assembled/csr.json",
+      "status": "built",
+      "blurb": "The ICH E3 report assembled from the text library and the display library."
+    },
+    {
+      "id": "sap",
+      "title": "Statistical Analysis Plan",
+      "abbr": "SAP",
+      "template": null,
+      "source": null,
+      "status": "planned",
+      "blurb": "Planned. Needs a SAP template in library/templates/ before it can assemble."
+    }
+  ],
   "components": [
     {
       "module": "tfl-engine",

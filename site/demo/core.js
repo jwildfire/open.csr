@@ -12,9 +12,9 @@
 // That is why `resolveAppLink` is the centre of this file — cross-pane
 // behaviour is a link-rewriting rule, not a rewrite of every renderer.
 
-export const TAB_IDS = ['reader', 'tables', 'text', 'templates'];
+export const TAB_IDS = ['documents', 'displays', 'text', 'templates'];
 
-export const DEFAULT_TAB = 'reader';
+export const DEFAULT_TAB = 'documents';
 
 /** Is this a tab the app knows how to show? */
 export function isTab(id) {
@@ -37,6 +37,7 @@ export function parseAppHash(hash) {
   const tab = params.get('tab');
   return {
     tab: isTab(tab) ? tab : DEFAULT_TAB,
+    doc: params.get('doc') || null,
     display: params.get('display') || null,
     block: params.get('block') || null,
     focus: params.get('focus') || null
@@ -44,9 +45,16 @@ export function parseAppHash(hash) {
 }
 
 /** Encode a selection back into a hash. Empty parts are omitted, so the common case stays short. */
-export function formatAppHash({ tab = DEFAULT_TAB, display = null, block = null, focus = null } = {}) {
+export function formatAppHash({
+  tab = DEFAULT_TAB,
+  doc = null,
+  display = null,
+  block = null,
+  focus = null
+} = {}) {
   const params = new URLSearchParams();
   params.set('tab', isTab(tab) ? tab : DEFAULT_TAB);
+  if (doc) params.set('doc', doc);
   if (display) params.set('display', display);
   if (block) params.set('block', block);
   if (focus) params.set('focus', focus);
@@ -80,15 +88,22 @@ export function resolveAppLink(href) {
   const clean = pathPart.replace(/^(\.\.?\/)+/, '').replace(/^\/+/, '');
   const focus = fragment || null;
 
+  // The emitted paths keep their v0 names — /reader/ and /gallery/ are what the
+  // evidence pages and the trace panel already link to — while the views they
+  // open are now called Documents and Displays. Renaming the directories would
+  // break every one of those links for a vocabulary change.
   if (clean === 'reader/index.html' || clean === 'reader/') {
-    return { tab: 'reader', focus };
+    return { tab: 'documents', focus };
   }
   if (clean === 'gallery/index.html' || clean === 'gallery/') {
-    return { tab: 'tables', focus };
+    return { tab: 'displays', focus };
   }
   const gallery = clean.match(/^gallery\/([a-z0-9-]+)\.html$/);
   if (gallery) {
-    return { tab: 'tables', display: gallery[1], focus };
+    return { tab: 'displays', display: gallery[1], focus };
+  }
+  if (clean === 'templates/index.html' || clean === 'templates/') {
+    return { tab: 'templates', focus };
   }
   if (clean === 'text/index.html' || clean === 'text/') {
     return { tab: 'text', block: blockFromFragment(fragment), focus };
@@ -118,6 +133,7 @@ export function applySelection(current, change) {
   if (!change) return current;
   return {
     tab: isTab(change.tab) ? change.tab : current.tab,
+    doc: change.doc || current.doc,
     display: change.display || current.display,
     block: change.block || current.block,
     focus: change.focus ?? null

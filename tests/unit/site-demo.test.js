@@ -27,8 +27,12 @@ import {
 } from '../../site/demo/core.js';
 import {
   APP_TABS,
+  GLOBAL_TABS,
+  STUDY_TABS,
+  buildNavTree,
   renderAppBar,
   renderAppPage,
+  renderSidebar,
   renderTablesPane,
   renderTemplatesPane
 } from '../../scripts/app-lib.mjs';
@@ -43,12 +47,12 @@ const rootDir = path.resolve(here, '..', '..');
 
 describe('the shared selection', () => {
   test('QC-DEMO-001: a selection round-trips through the URL hash (#1)', () => {
-    const selection = { tab: 'tables', display: 't-ae-overview', block: 'TXT-E3-1221', focus: 'bind-2' };
+    const selection = { tab: 'displays', doc: null, display: 't-ae-overview', block: 'TXT-E3-1221', focus: 'bind-2' };
     expect(parseAppHash(formatAppHash(selection))).toEqual(selection);
   });
 
   test('QC-DEMO-001: empty parts are omitted from the hash so the common case stays short (#1)', () => {
-    expect(formatAppHash({ tab: 'reader' })).toBe('#tab=reader');
+    expect(formatAppHash({ tab: 'documents' })).toBe('#tab=documents');
   });
 
   test('QC-DEMO-002: an unknown or absent tab decodes to the default rather than an empty app (#1)', () => {
@@ -59,7 +63,7 @@ describe('the shared selection', () => {
   });
 
   test('QC-DEMO-002: the four tabs the requirement names are the tabs the app knows (#1)', () => {
-    expect(TAB_IDS).toEqual(['reader', 'tables', 'text', 'templates']);
+    expect(TAB_IDS).toEqual(['documents', 'displays', 'text', 'templates']);
     expect(APP_TABS.map((tab) => tab.id)).toEqual(TAB_IDS);
     expect(TAB_IDS.every(isTab)).toBe(true);
     expect(isTab('gallery')).toBe(false);
@@ -71,18 +75,21 @@ describe('the shared selection', () => {
 // ---------------------------------------------------------------------------
 
 describe('pane crossings', () => {
-  test('QC-DEMO-003: a display permalink resolves to the Tables tab with that display selected (#1)', () => {
+  test('QC-DEMO-003: a display permalink resolves to the Displays view with that display selected (#1)', () => {
     expect(resolveAppLink('../gallery/t-ae-overview.html')).toEqual({
-      tab: 'tables',
+      tab: 'displays',
       display: 't-ae-overview',
       focus: null
     });
   });
 
-  test('QC-DEMO-003: the reader, the gallery index and the text library each resolve to a pane (#1)', () => {
-    expect(resolveAppLink('../reader/index.html').tab).toBe('reader');
-    expect(resolveAppLink('../gallery/index.html').tab).toBe('tables');
+  test('QC-DEMO-003: each standalone permalink resolves to the view that replaced it (#1)', () => {
+    // The directories keep their v0 names because the evidence pages and the
+    // trace panel link to them; only the vocabulary changed.
+    expect(resolveAppLink('../reader/index.html').tab).toBe('documents');
+    expect(resolveAppLink('../gallery/index.html').tab).toBe('displays');
     expect(resolveAppLink('../text/index.html').tab).toBe('text');
+    expect(resolveAppLink('../templates/index.html').tab).toBe('templates');
   });
 
   test('QC-DEMO-003: a crossing carries the text block named in the fragment (#1)', () => {
@@ -119,13 +126,19 @@ describe('pane crossings', () => {
   });
 
   test('QC-DEMO-005: a crossing that names no display keeps the one already selected (#1)', () => {
-    const current = { tab: 'tables', display: 't-ae-common', block: null, focus: null };
+    const current = { tab: 'displays', doc: null, display: 't-ae-common', block: null, focus: null };
     const next = applySelection(current, resolveAppLink('../reader/index.html'));
-    expect(next).toEqual({ tab: 'reader', display: 't-ae-common', block: null, focus: null });
+    expect(next).toEqual({
+      tab: 'documents',
+      doc: null,
+      display: 't-ae-common',
+      block: null,
+      focus: null
+    });
   });
 
   test('QC-DEMO-005: applying nothing changes nothing (#1)', () => {
-    const current = { tab: 'text', display: 't-exposure', block: 'TXT-E3-1201', focus: null };
+    const current = { tab: 'text', doc: null, display: 't-exposure', block: 'TXT-E3-1201', focus: null };
     expect(applySelection(current, null)).toBe(current);
   });
 
@@ -144,8 +157,8 @@ describe('pane crossings', () => {
 
 describe('the app page', () => {
   const panes = [
-    { id: 'reader', html: '<h2>Reader body</h2>' },
-    { id: 'tables', html: '<h2>Tables body</h2>' },
+    { id: 'documents', html: '<h2>Reader body</h2>' },
+    { id: 'displays', html: '<h2>Tables body</h2>' },
     { id: 'text', html: '<h2>Text body</h2>' },
     { id: 'templates', html: '<h2>Templates body</h2>' }
   ];
@@ -180,12 +193,12 @@ describe('the app page', () => {
     expect(html).not.toMatch(/class="tab"/);
     expect(html).not.toMatch(/class="tab-panel/);
     expect(html).toContain('role="tabpanel"');
-    expect(html).toContain('aria-labelledby="app-tab-reader"');
+    expect(html).toContain('aria-labelledby="app-tab-documents"');
   });
 
   test('QC-DEMO-008: a tab with no rendered pane is dropped rather than rendered empty (#1)', () => {
-    const html = renderAppPage({ panes: [{ id: 'reader', html: '<p>only pane</p>' }] });
-    expect(html).toContain('data-app-pane="reader"');
+    const html = renderAppPage({ panes: [{ id: 'documents', html: '<p>only pane</p>' }] });
+    expect(html).toContain('data-app-pane="documents"');
     expect(html).not.toContain('data-app-pane="templates"');
   });
 });
@@ -201,20 +214,22 @@ describe('the application strip', () => {
     }
   ];
 
-  test('QC-DEMO-016: the four views are real links to real pages, so the bar works with no JS (#1)', () => {
-    // demo-layout.md §5. The client upgrades a click into a pane switch through
-    // the same interception rule the panes use; without it these still navigate.
+  test('QC-DEMO-016: the bar carries only what is not scoped to a study (#1)', () => {
+    // Documents, Displays and Text belong to the study and live in the explorer.
+    // Templates describe what a report of this kind IS, so they belong to no one
+    // study and stay in the header.
     const html = renderAppBar({ config: { study: { id: 'CDISCPILOT01' } } });
-    expect(html).toContain('href="../reader/index.html"');
-    expect(html).toContain('href="../gallery/index.html"');
-    expect(html).toContain('href="../text/index.html"');
+    expect(html).toContain('data-app-tab="templates"');
     expect(html).toContain('href="../templates/index.html"');
-    expect(html).not.toContain('<button');
-    for (const id of TAB_IDS) expect(html).toContain(`data-app-tab="${id}"`);
+    for (const id of ['documents', 'displays', 'text']) {
+      expect(html).not.toContain(`data-app-tab="${id}"`);
+    }
+    expect(GLOBAL_TABS.map((tab) => tab.id)).toEqual(['templates']);
+    expect(STUDY_TABS.map((tab) => tab.id)).toEqual(['documents', 'displays', 'text']);
   });
 
-  test('QC-DEMO-016: the current view is marked as navigation, not as a selected control (#1)', () => {
-    const html = renderAppBar({ active: 'tables' });
+  test('QC-DEMO-016: a view in the bar is a real link, marked as navigation not as a control (#1)', () => {
+    const html = renderAppBar({ active: 'templates' });
     expect(html).toContain('aria-current="page"');
     expect((html.match(/aria-current="page"/g) || []).length).toBe(1);
     // Navigation semantics, not tab semantics: these links change the URL and
@@ -371,5 +386,121 @@ describe('the Templates pane', () => {
     const html = renderTemplatesPane({ template, displays });
     expect(html).toContain(String(template.assembly.provenanceSection));
     expect(html).toContain('generated');
+  });
+});
+
+// ---------------------------------------------------------------------------
+// The explorer
+// ---------------------------------------------------------------------------
+
+describe('the navigation tree', () => {
+  const config = {
+    study: { id: 'CDISCPILOT01', cutoff: '2014-07-01' },
+    documents: [
+      { id: 'csr', title: 'Clinical Study Report', abbr: 'CSR', status: 'built' },
+      { id: 'sap', title: 'Statistical Analysis Plan', abbr: 'SAP', status: 'planned' }
+    ]
+  };
+  const displays = [
+    { slug: 't-ae-overview', title: 'AE Overview', status: 'evidenced' },
+    { slug: 't-unused', title: 'Not in any document', status: 'built' }
+  ];
+  const textBlocks = [
+    { id: 'TXT-E3-1001', title: 'Disposition', e3Section: '10.1', tier: 'parameterized', exists: true },
+    {
+      id: 'TXT-E3-1206',
+      title: 'Safety Conclusions',
+      e3Section: '12.6',
+      tier: 'generated',
+      approval: { state: 'draft' },
+      exists: true
+    },
+    { id: 'TXT-GONE', title: 'Missing on disk', exists: false }
+  ];
+  const csr = { displayIndex: [{ slug: 't-ae-overview', number: '14.3.1.2', label: 'Table' }] };
+
+  test('QC-DEMO-018: the study is the root, and documents, displays and text hang off it (#1)', () => {
+    const tree = buildNavTree({ config, csr, displays, textBlocks });
+    expect(tree.study).toMatchObject({ id: 'CDISCPILOT01', cutoff: '2014-07-01' });
+    expect(tree.groups.map((group) => group.id)).toEqual(['documents', 'displays', 'text']);
+  });
+
+  test('QC-DEMO-018: more than one document is listed, and an unbuilt one says so (#1)', () => {
+    const tree = buildNavTree({ config, csr, displays, textBlocks });
+    const documents = tree.groups[0].items;
+    expect(documents.map((doc) => doc.id)).toEqual(['csr', 'sap']);
+    expect(documents[1].status).toBe('planned');
+  });
+
+  test('QC-DEMO-019: a display records the documents that use it rather than living inside one (#1)', () => {
+    // A display can be referenced by more than one document, so displays are a
+    // peer collection of documents, not a child of one.
+    const tree = buildNavTree({ config, csr, displays, textBlocks });
+    const items = tree.groups[1].items;
+    expect(items.find((item) => item.id === 't-ae-overview')).toMatchObject({
+      number: '14.3.1.2',
+      usedIn: ['CSR']
+    });
+    // Registered, generated, and in no document yet — still listed, with nothing
+    // claiming it.
+    expect(items.find((item) => item.id === 't-unused').usedIn).toEqual([]);
+  });
+
+  test('QC-DEMO-019: a text block that is not on disk is left out, and a draft is flagged (#1)', () => {
+    const tree = buildNavTree({ config, csr, displays, textBlocks });
+    const items = tree.groups[2].items;
+    expect(items.map((item) => item.id)).toEqual(['TXT-E3-1001', 'TXT-E3-1206']);
+    expect(items.find((item) => item.id === 'TXT-E3-1206').status).toBe('draft');
+    expect(items.find((item) => item.id === 'TXT-E3-1001').status).toBe('ok');
+  });
+
+  test('QC-DEMO-020: the explorer renders the study, every group, and a count per group (#1)', () => {
+    const html = renderSidebar({ tree: buildNavTree({ config, csr, displays, textBlocks }) });
+    expect(html).toContain('CDISCPILOT01');
+    expect(html).toContain('cut-off 2014-07-01');
+    for (const id of ['documents', 'displays', 'text']) {
+      expect(html).toContain(`data-nav-group-root="${id}"`);
+      expect(html).toContain(`data-nav-group-toggle="${id}"`);
+    }
+    expect(html).toContain('data-nav-item="t-ae-overview"');
+    expect(html).toContain('data-nav-item="TXT-E3-1001"');
+  });
+
+  test('QC-DEMO-020: only the active group is open, and the selected item is marked (#1)', () => {
+    const tree = buildNavTree({ config, csr, displays, textBlocks });
+    const html = renderSidebar({ tree, active: 'displays', selected: { display: 't-ae-overview' } });
+    expect(html).toMatch(/class="nav-group open" data-nav-group-root="displays"/);
+    expect(html).toMatch(/data-nav-group-root="documents"/);
+    expect(html).not.toMatch(/class="nav-group open" data-nav-group-root="documents"/);
+    expect(html).toContain('data-nav-item="t-ae-overview" data-current="true"');
+  });
+
+  test('QC-DEMO-021: an unbuilt document is not a link, so it cannot be selected (#1)', () => {
+    const html = renderSidebar({ tree: buildNavTree({ config, csr, displays, textBlocks }) });
+    expect(html).toMatch(/<span class="nav-item is-planned"[^>]*data-nav-item="sap"[^>]*aria-disabled="true">/);
+    expect(html).not.toMatch(/<a[^>]*data-nav-item="sap"/);
+  });
+
+  test('QC-DEMO-021: every selectable item is a real link carrying its own deep link (#1)', () => {
+    const html = renderSidebar({ tree: buildNavTree({ config, csr, displays, textBlocks }) });
+    expect(html).toContain('href="#tab=displays&amp;display=t-ae-overview"');
+    expect(html).toContain('href="#tab=text&amp;block=TXT-E3-1001"');
+    expect(html).toContain('href="#tab=documents&amp;doc=csr"');
+  });
+
+  test('QC-DEMO-022: Read is the current mode and Edit is genuinely disabled (#1)', () => {
+    // There is nothing to edit until the spec editor lands; a control that looks
+    // live but does nothing is worse than one that says so.
+    const html = renderAppBar({});
+    expect(html).toMatch(/data-app-mode="read"[^>]*aria-pressed="true"/);
+    expect(html).toMatch(/data-app-mode="edit"[^>]*disabled/);
+    expect(html).toContain('aria-disabled="true"');
+  });
+
+  test('QC-DEMO-022: an empty registry renders the explorer without throwing (#1)', () => {
+    const tree = buildNavTree({ config: {}, csr: null, displays: [], textBlocks: [] });
+    const html = renderSidebar({ tree });
+    expect(html).toContain('Nothing registered yet');
+    expect(renderSidebar({ tree: null })).toBe('');
   });
 });

@@ -554,10 +554,12 @@ export function renderShell({
   root = '',
   description = '',
   config = {},
-  appbar = ''
+  appbar = '',
+  bodyClass = ''
 }) {
   return String(shell)
     .replaceAll('{{appbar}}', appbar)
+    .replaceAll('{{bodyclass}}', escapeHtml(bodyClass))
     .replaceAll('{{title}}', escapeHtml(title))
     .replaceAll('{{description}}', escapeHtml(description))
     .replaceAll('{{siteTitle}}', escapeHtml(config.siteTitle || 'open.csr'))
