@@ -1,6 +1,6 @@
 {
   "module": "text",
-  "generated": "2026-07-26T01:24:53.635Z",
+  "generated": "2026-07-25T13:52:20.682Z",
   "records": [
     {
       "requirementIds": [
@@ -9,7 +9,7 @@
       "title": "Binding addresses TXT-BIND-001: parseBindingAddress splits display, analysis, statistic and qualifiers (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-bindings.test.js",
+      "file": "tests/unit/text-bindings.test.js",
       "issueRefs": [
         1
       ]
@@ -21,7 +21,7 @@
       "title": "Binding addresses TXT-BIND-002: a malformed address or an unknown qualifier is rejected rather than silently ignored (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-bindings.test.js",
+      "file": "tests/unit/text-bindings.test.js",
       "issueRefs": [
         1
       ]
@@ -33,7 +33,7 @@
       "title": "Binding addresses TXT-BIND-003: a fully qualified binding resolves to exactly one ARD row (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-bindings.test.js",
+      "file": "tests/unit/text-bindings.test.js",
       "issueRefs": [
         1
       ]
@@ -45,7 +45,7 @@
       "title": "Binding addresses TXT-BIND-004: an under-specified binding that matches several rows fails as ambiguous (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-bindings.test.js",
+      "file": "tests/unit/text-bindings.test.js",
       "issueRefs": [
         1
       ]
@@ -57,7 +57,7 @@
       "title": "Binding addresses TXT-BIND-005: a binding no ARD row satisfies fails loudly as orphaned (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-bindings.test.js",
+      "file": "tests/unit/text-bindings.test.js",
       "issueRefs": [
         1
       ]
@@ -69,7 +69,7 @@
       "title": "Binding addresses TXT-BIND-006: a binding to a display with no ARD fails instead of rendering an empty string (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-bindings.test.js",
+      "file": "tests/unit/text-bindings.test.js",
       "issueRefs": [
         1
       ]
@@ -81,7 +81,7 @@
       "title": "Binding addresses TXT-BIND-007: variable, variable_level and group2 qualifiers select within a hierarchical ARD (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-bindings.test.js",
+      "file": "tests/unit/text-bindings.test.js",
       "issueRefs": [
         1
       ]
@@ -93,7 +93,7 @@
       "title": "Gate: approval TXT-APPR-001: a draft generated-tier block is excluded from assembly and the reason is reported (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-gates.test.js",
+      "file": "tests/unit/text-gates.test.js",
       "issueRefs": [
         1
       ]
@@ -105,7 +105,7 @@
       "title": "Gate: approval TXT-APPR-002: an approved generated-tier block is included (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-gates.test.js",
+      "file": "tests/unit/text-gates.test.js",
       "issueRefs": [
         1
       ]
@@ -117,7 +117,7 @@
       "title": "Gate: approval TXT-APPR-003: the gate applies to the generated tier only; boilerplate is not tier-gated (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-gates.test.js",
+      "file": "tests/unit/text-gates.test.js",
       "issueRefs": [
         1
       ]
@@ -129,7 +129,7 @@
       "title": "Gate: approval TXT-APPR-004: runGates lists every excluded block so the exclusion is visible, not silent (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-gates.test.js",
+      "file": "tests/unit/text-gates.test.js",
       "issueRefs": [
         1
       ]
@@ -141,7 +141,7 @@
       "title": "Gate: binding resolution across the library TXT-BIND-008: runGates reports an orphaned and an ambiguous binding as resolution errors (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-gates.test.js",
+      "file": "tests/unit/text-gates.test.js",
       "issueRefs": [
         1
       ]
@@ -153,7 +153,7 @@
       "title": "Gate: binding resolution across the library TXT-LIB-001: a block that binds a display it does not declare is reported (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-gates.test.js",
+      "file": "tests/unit/text-gates.test.js",
       "issueRefs": [
         1
       ]
@@ -165,7 +165,7 @@
       "title": "Gate: binding resolution across the library TXT-LIB-002: every binding in the shipped Text Library resolves against the fixture ARDs (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-gates.test.js",
+      "file": "tests/unit/text-gates.test.js",
       "issueRefs": [
         1
       ]
@@ -177,7 +177,7 @@
       "title": "Gate: binding resolution across the library TXT-LIB-003: full-precision values without a digits qualifier are surfaced as a warning (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-gates.test.js",
+      "file": "tests/unit/text-gates.test.js",
       "issueRefs": [
         1
       ]
@@ -189,7 +189,7 @@
       "title": "Gate: numeric fidelity TXT-NUM-001: prose whose every digit came from a binding passes the gate (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-gates.test.js",
+      "file": "tests/unit/text-gates.test.js",
       "issueRefs": [
         1
       ]
@@ -201,7 +201,7 @@
       "title": "Gate: numeric fidelity TXT-NUM-002: a hand-typed result in prose is caught, with its value and surrounding context (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-gates.test.js",
+      "file": "tests/unit/text-gates.test.js",
       "issueRefs": [
         1
       ]
@@ -214,7 +214,7 @@
       "title": "Gate: numeric fidelity TXT-NUM-003, TXT-NUM-004: digits inside inline code and inside a link destination are exempt (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-gates.test.js",
+      "file": "tests/unit/text-gates.test.js",
       "issueRefs": [
         1
       ]
@@ -226,7 +226,7 @@
       "title": "Gate: numeric fidelity TXT-NUM-005: allow_digits exempts only the literals it lists, and reports how often each was used (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-gates.test.js",
+      "file": "tests/unit/text-gates.test.js",
       "issueRefs": [
         1
       ]
@@ -238,7 +238,7 @@
       "title": "Gate: numeric fidelity TXT-NUM-006: allow_digits does not exempt a digit run it does not literally cover (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-gates.test.js",
+      "file": "tests/unit/text-gates.test.js",
       "issueRefs": [
         1
       ]
@@ -250,7 +250,7 @@
       "title": "Gate: numeric fidelity TXT-NUM-007: the gate reads the RENDERED prose, so a binding that resolves to a digit run is never a violation (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-gates.test.js",
+      "file": "tests/unit/text-gates.test.js",
       "issueRefs": [
         1
       ]
@@ -262,7 +262,7 @@
       "title": "Gate: numeric fidelity TXT-NUM-008: every block in the shipped Text Library passes the numeric-fidelity gate (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-gates.test.js",
+      "file": "tests/unit/text-gates.test.js",
       "issueRefs": [
         1
       ]
@@ -274,7 +274,7 @@
       "title": "provenance TXT-REVIEW-003: a generated block shows its model, generation date and the full prompt (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "file": "tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -286,7 +286,7 @@
       "title": "provenance TXT-REVIEW-003: a generated block with no recorded prompt is called out as unauditable (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "file": "tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -298,7 +298,7 @@
       "title": "provenance TXT-REVIEW-003: a human-written block says so rather than showing an empty provenance box (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "file": "tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -310,7 +310,7 @@
       "title": "provenance TXT-REVIEW-003: provenance sits beside the prose, not below the fold (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "file": "tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -322,7 +322,7 @@
       "title": "Rendering and cross-references TXT-REND-001: renderBlock substitutes every token and records the span each value occupies (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-bindings.test.js",
+      "file": "tests/unit/text-bindings.test.js",
       "issueRefs": [
         1
       ]
@@ -334,7 +334,7 @@
       "title": "Rendering and cross-references TXT-REND-002: an unresolved binding leaves a visible marker and is reported as an error (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-bindings.test.js",
+      "file": "tests/unit/text-bindings.test.js",
       "issueRefs": [
         1
       ]
@@ -346,7 +346,7 @@
       "title": "Rendering and cross-references TXT-XREF-001: display cross-references render the number assigned at build time (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-bindings.test.js",
+      "file": "tests/unit/text-bindings.test.js",
       "issueRefs": [
         1
       ]
@@ -358,7 +358,7 @@
       "title": "Rendering and cross-references TXT-XREF-002: a cross-reference to an unknown display or section fails the build (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-bindings.test.js",
+      "file": "tests/unit/text-bindings.test.js",
       "issueRefs": [
         1
       ]
@@ -370,7 +370,7 @@
       "title": "resolved prose TXT-REVIEW-002: a cross-reference degrades to readable text outside the assembled document (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "file": "tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -382,7 +382,7 @@
       "title": "resolved prose TXT-REVIEW-002: an unresolved binding shows a marker, never a number (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "file": "tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -394,7 +394,7 @@
       "title": "resolved prose TXT-REVIEW-002: computed values are marked and linked to the binding row they came from (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "file": "tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -406,7 +406,7 @@
       "title": "resolved prose TXT-REVIEW-002: every binding is replaced by its real value from the committed ARD (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "file": "tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -418,7 +418,7 @@
       "title": "resolved prose TXT-REVIEW-002: the writer’s own words are left untouched around the values (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "file": "tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -435,7 +435,7 @@
       "title": "Text Library block parsing TXT-AE-001, TXT-AE-002, TXT-AE-003, TXT-SAE-001, TXT-CONC-001, TXT-DISC-001: the safety narrative sections ship blocks whose tier matches their evidentiary risk (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-blocks.test.js",
+      "file": "tests/unit/text-blocks.test.js",
       "issueRefs": [
         1
       ]
@@ -447,7 +447,7 @@
       "title": "Text Library block parsing TXT-BLOCK-001: parseBlock splits frontmatter from prose and keeps every declared field (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-blocks.test.js",
+      "file": "tests/unit/text-blocks.test.js",
       "issueRefs": [
         1
       ]
@@ -459,7 +459,7 @@
       "title": "Text Library block parsing TXT-BLOCK-002: validateBlock rejects an unknown tier, an unknown approval state and a generated block with no provenance (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-blocks.test.js",
+      "file": "tests/unit/text-blocks.test.js",
       "issueRefs": [
         1
       ]
@@ -471,7 +471,7 @@
       "title": "Text Library block parsing TXT-BLOCK-003: the shipped library loads with unique ids and no structural errors (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-blocks.test.js",
+      "file": "tests/unit/text-blocks.test.js",
       "issueRefs": [
         1
       ]
@@ -483,7 +483,7 @@
       "title": "Text Library block parsing TXT-BLOCK-004: every library block uses all three reuse tiers and carries requirement ids (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-blocks.test.js",
+      "file": "tests/unit/text-blocks.test.js",
       "issueRefs": [
         1
       ]
@@ -495,7 +495,7 @@
       "title": "Text Library block parsing TXT-BLOCK-005: every generated-tier block records the model and prompt that produced it (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-blocks.test.js",
+      "file": "tests/unit/text-blocks.test.js",
       "issueRefs": [
         1
       ]
@@ -507,7 +507,7 @@
       "title": "Text Library block parsing TXT-BLOCK-006: block file names match the block id so the library is addressable from disk (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-blocks.test.js",
+      "file": "tests/unit/text-blocks.test.js",
       "issueRefs": [
         1
       ]
@@ -524,7 +524,7 @@
       "title": "Text Library block parsing TXT-ETH-001, TXT-DESIGN-001, TXT-DISP-001, TXT-POP-001, TXT-DEMO-001, TXT-EXP-001: the study-conduct narrative sections each ship an approved block (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-blocks.test.js",
+      "file": "tests/unit/text-blocks.test.js",
       "issueRefs": [
         1
       ]
@@ -536,7 +536,7 @@
       "title": "the binding table TXT-REVIEW-004: a block with no bindings says so instead of rendering an empty table (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "file": "tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -548,7 +548,7 @@
       "title": "the binding table TXT-REVIEW-004: a repeated address is one row, counted, not duplicated (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "file": "tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -560,7 +560,7 @@
       "title": "the binding table TXT-REVIEW-004: an unresolved binding is shown with the reason, in place of a value (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "file": "tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -572,7 +572,7 @@
       "title": "the binding table TXT-REVIEW-004: one row per address, carrying the ARD row it selects and the value (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "file": "tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -584,7 +584,7 @@
       "title": "the binding table TXT-REVIEW-004: the ARD row is described by its group and level, not just its index (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "file": "tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -596,7 +596,7 @@
       "title": "the binding table TXT-REVIEW-004: the table value is the value the sentence shows, scale and digits included (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "file": "tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -608,7 +608,7 @@
       "title": "the block header TXT-REVIEW-005: every binding row links the display detail page it reads from (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "file": "tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -620,7 +620,7 @@
       "title": "the block header TXT-REVIEW-005: the card links the block source and every display it binds (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "file": "tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -632,7 +632,7 @@
       "title": "the block header TXT-REVIEW-006: tier, approval state and E3 section are on every card (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "file": "tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -644,7 +644,7 @@
       "title": "the block queue TXT-REVIEW-001: draft generated blocks come first — they are the ones blocking assembly (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "file": "tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -656,7 +656,7 @@
       "title": "the block queue TXT-REVIEW-001: only unapproved generated blocks need judgment (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "file": "tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -668,7 +668,7 @@
       "title": "the block queue TXT-REVIEW-001: the shipped library really does have blocks held out of the report (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "file": "tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -680,7 +680,7 @@
       "title": "the block queue TXT-REVIEW-001: within a group, blocks follow ICH E3 section order, not file order (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "file": "tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -692,7 +692,7 @@
       "title": "the surface is a status view, not a form TXT-REVIEW-007: nothing on the view offers to take, store or send a credential (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "file": "tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -704,7 +704,7 @@
       "title": "the surface is a status view, not a form TXT-REVIEW-007: the view carries no control a visitor could act on (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "file": "tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -716,7 +716,7 @@
       "title": "the surface is a status view, not a form TXT-REVIEW-007: the view says where approval lives and what enforces it (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "file": "tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -728,7 +728,7 @@
       "title": "the surface is a status view, not a form TXT-REVIEW-007: the whole library is readable — prose, provenance and bindings (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "file": "tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -740,7 +740,7 @@
       "title": "the view as built TXT-REVIEW-008: no external resource is referenced anywhere on the view (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "file": "tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -752,7 +752,7 @@
       "title": "the view as built TXT-REVIEW-008: source links are derived from repoUrl when no branch is configured (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "file": "tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -764,7 +764,7 @@
       "title": "the view as built TXT-REVIEW-008: the fixture repo — no source configuration — still renders in full (#2)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "file": "tests/unit/text-status.test.js",
       "issueRefs": [
         2
       ]
@@ -776,7 +776,7 @@
       "title": "Value formatting TXT-FMT-001: rounding is half-up, not R half-to-even (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-bindings.test.js",
+      "file": "tests/unit/text-bindings.test.js",
       "issueRefs": [
         1
       ]
@@ -788,7 +788,7 @@
       "title": "Value formatting TXT-FMT-002: integers render without a decimal point and digits fixes the decimal places (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-bindings.test.js",
+      "file": "tests/unit/text-bindings.test.js",
       "issueRefs": [
         1
       ]
@@ -800,7 +800,7 @@
       "title": "Value formatting TXT-FMT-003: the scale qualifier converts the ARD proportion to a percentage for prose (#1)",
       "suite": "js-unit",
       "passed": true,
-      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-bindings.test.js",
+      "file": "tests/unit/text-bindings.test.js",
       "issueRefs": [
         1
       ]

@@ -23,6 +23,7 @@
     "QC-ROUTE-006": "A whole suite may be owned by one component through the registry (`suites`), which is how `text-review` records route to the Text Library regardless of file path.",
     "QC-ROUTE-007": "When a test file covers several modules, records route by the requirement-ID prefixes their owning registry entries declare; a record whose IDs no entry claims stays shared.",
     "QC-EVID-005": "A text block awaiting human approval is reported as pending review and blocks assembly, but does not fail the evidence run — draft is a lifecycle state, not a defect.",
+    "QC-EVID-006": "Test-file paths in a committed evidence set are recorded relative to the repository root, including when the run happens in a git worktree, so the artifact names the repository rather than the machine that produced it.",
     "QC-UNRES-001": "Requirement IDs referenced by a test but defined in no matrix are reported as UNRESOLVED at build time and rendered on the Quality page.",
     "QC-UNRES-002": "Reviewed requirements that no test references are reported as uncovered, with a coverage proportion per component.",
     "QC-UNRES-003": "An ID defined in a sibling component's matrix counts as resolved, not unresolved, so shared IDs do not produce false alarms.",
@@ -238,6 +239,15 @@
       "area": "Evidence",
       "text": "A text block awaiting human approval is reported as pending review and blocks assembly, but does not fail the evidence run — draft is a lifecycle state, not a defect.",
       "source": "D8",
+      "evidence": "js-unit",
+      "link": "evidence-normalize.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-EVID-006",
+      "area": "Evidence",
+      "text": "Test-file paths in a committed evidence set are recorded relative to the repository root, including when the run happens in a git worktree, so the artifact names the repository rather than the machine that produced it.",
+      "source": "contracts §8",
       "evidence": "js-unit",
       "link": "evidence-normalize.test.js",
       "status": "draft"
