@@ -504,3 +504,65 @@ describe('the navigation tree', () => {
     expect(renderSidebar({ tree: null })).toBe('');
   });
 });
+
+describe('a document contents in the tree', () => {
+  const config = {
+    study: { id: 'CDISCPILOT01' },
+    documents: [
+      { id: 'csr', title: 'Clinical Study Report', status: 'built' },
+      { id: 'sap', title: 'Statistical Analysis Plan', status: 'planned' }
+    ]
+  };
+  // E3 puts content in subsections: 12.2.1 carries the AE summary, not 12.
+  const csr = {
+    displayIndex: [],
+    sections: [
+      { number: '1', slug: 'title-page', title: 'Title Page', level: 1, populated: false },
+      { number: '12', slug: 'safety-evaluation', title: 'Safety Evaluation', level: 1, populated: false },
+      { number: '12.1', slug: 'extent-of-exposure', title: 'Extent of Exposure', level: 2, populated: true },
+      { number: '13', slug: 'discussion', title: 'Discussion', level: 1, populated: true },
+      { number: '15', slug: 'references', title: 'Reference List', level: 1, populated: false }
+    ]
+  };
+
+  test('QC-DEMO-023: the document lists its own top-level sections, not the whole model (#1)', () => {
+    const tree = buildNavTree({ config, csr, displays: [], textBlocks: [] });
+    const [doc] = tree.groups[0].items;
+    expect(doc.sections.map((section) => section.number)).toEqual(['1', '12', '13', '15']);
+    expect(doc.sections[0]).toMatchObject({ id: 'title-page', label: 'Title Page' });
+  });
+
+  test('QC-DEMO-023: a section counts as populated when anything beneath it is (#1)', () => {
+    // Section 12 is empty itself but 12.1 is filled, so the report does cover it.
+    // Testing only the top-level flag would report almost the whole CSR empty.
+    const tree = buildNavTree({ config, csr, displays: [], textBlocks: [] });
+    const byNumber = Object.fromEntries(
+      tree.groups[0].items[0].sections.map((section) => [section.number, section.populated])
+    );
+    expect(byNumber).toEqual({ 1: false, 12: true, 13: true, 15: false });
+  });
+
+  test('QC-DEMO-023: an unbuilt document contributes no sections (#1)', () => {
+    const tree = buildNavTree({ config, csr, displays: [], textBlocks: [] });
+    expect(tree.groups[0].items[1].sections).toEqual([]);
+  });
+
+  test('QC-DEMO-024: sections render under their document, each a deep link to its heading (#1)', () => {
+    const tree = buildNavTree({ config, csr, displays: [], textBlocks: [] });
+    const html = renderSidebar({ tree, active: 'documents', selected: { doc: 'csr' } });
+    expect(html).toContain('class="nav-sections"');
+    expect(html).toContain('data-nav-section="safety-evaluation"');
+    expect(html).toContain('href="#tab=documents&amp;doc=csr&amp;focus=safety-evaluation"');
+    // The unpopulated ones stay navigable — the heading really is in the
+    // document, saying it was not populated.
+    expect(html).toContain('class="nav-section is-empty"');
+    expect(html).toContain('Modelled but not populated');
+  });
+
+  test('QC-DEMO-024: the sections belong to their document, so a second document has its own (#1)', () => {
+    const tree = buildNavTree({ config, csr, displays: [], textBlocks: [] });
+    const html = renderSidebar({ tree, active: 'documents', selected: { doc: 'csr' } });
+    // The planned document has none, so exactly one section list exists.
+    expect((html.match(/class="nav-sections"/g) || []).length).toBe(1);
+  });
+});

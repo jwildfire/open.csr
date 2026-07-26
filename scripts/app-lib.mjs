@@ -75,11 +75,41 @@ export function buildNavTree({ config = {}, csr = null, displays = [], textBlock
   );
   const usedInCsr = new Set((csr?.displayIndex || []).map((entry) => entry.slug));
 
+  // A document's own contents are the third level of the tree rather than a
+  // second navigation column beside it: which document and which section are the
+  // same question asked twice, and one place to ask it is enough.
+  //
+  // Top-level sections only, which is exactly what the reader's own table of
+  // contents listed — this is a move, not a redesign. The full 119-entry model
+  // stays where it belongs, on the Templates view.
+  const sectionsFor = (doc) => {
+    if (doc.status !== 'built' || !csr?.sections) return [];
+    // A top-level section counts as populated when it OR anything beneath it is.
+    // E3 puts the content in subsections — 12.2.1 carries the AE summary, not
+    // section 12 — so testing only the top-level flag would report almost the
+    // whole report empty.
+    const filled = csr.sections
+      .filter((section) => section.populated && section.number)
+      .map((section) => String(section.number));
+    const hasContent = (number) =>
+      !!number &&
+      filled.some((entry) => entry === String(number) || entry.startsWith(`${number}.`));
+    return csr.sections
+      .filter((section) => (section.level || 1) === 1)
+      .map((section) => ({
+        id: section.slug,
+        number: section.number || null,
+        label: section.title || section.slug,
+        populated: hasContent(section.number)
+      }));
+  };
+
   const documents = (config.documents || []).map((doc) => ({
     id: doc.id,
     label: doc.title,
     abbr: doc.abbr || null,
     status: doc.status || 'planned',
+    sections: sectionsFor(doc),
     detail:
       doc.status === 'built' && csr?.sections
         ? `${csr.sections.filter((section) => section.populated).length} of ${csr.sections.length} sections`
@@ -124,6 +154,26 @@ export function buildNavTree({ config = {}, csr = null, displays = [], textBlock
   };
 }
 
+// A document's sections: the fourth level, shown for the selected document.
+function sectionList(doc, groupId) {
+  if (!doc.sections?.length) return '';
+  const items = doc.sections
+    .map(
+      (section) =>
+        `<li><a class="nav-section${section.populated ? '' : ' is-empty'}" ` +
+        `data-nav-group="${groupId}" data-nav-doc="${escapeHtml(doc.id)}" ` +
+        `data-nav-section="${escapeHtml(section.id)}" ` +
+        `href="#tab=${groupId}&amp;doc=${encodeURIComponent(doc.id)}` +
+        `&amp;focus=${encodeURIComponent(section.id)}"` +
+        (section.populated ? '' : ' title="Modelled but not populated in this demonstration"') +
+        `>` +
+        (section.number ? `<span class="nav-num">${escapeHtml(section.number)}</span>` : '') +
+        `<span class="nav-label">${escapeHtml(section.label)}</span></a></li>`
+    )
+    .join('');
+  return `<ul class="nav-sections">${items}</ul>`;
+}
+
 function treeItem(groupId, item, kind) {
   const chip =
     item.status === 'planned'
@@ -146,7 +196,9 @@ function treeItem(groupId, item, kind) {
     number +
     `<span class="nav-label">${escapeHtml(item.label)}</span>` +
     chip +
-    `${disabled ? '</span>' : '</a>'}</li>`
+    `${disabled ? '</span>' : '</a>'}` +
+    sectionList(item, groupId) +
+    `</li>`
   );
 }
 

@@ -187,6 +187,20 @@ explorer collapses below 950px, where wide tables need the room more than a
 permanently visible tree does, and the app page drops the 74rem measure the
 documentation pages read at.
 
+**The document's own contents moved into the tree too.** The reader carried a
+separate table of contents beside the explorer — two navigation columns asking
+the same question on different axes. A document's top-level sections are now the
+level below the document, so there is one place to navigate from. A section that
+E3 models but this report does not fill is still listed and still navigable: the
+heading really is in the document, saying so. A top-level section counts as
+populated when *anything beneath it* is, because E3 puts the content in
+subsections — 12.2.1 carries the AE summary, not section 12.
+
+One thing this exposed: jumping between sections of a ~35,000px document with
+`scrollIntoView({behavior: 'smooth'})` **stalls in Chrome** — the page never
+arrives. Distance now decides the behaviour, so a nearby target animates and a
+jump across the document lands immediately, which reads better anyway.
+
 Option 3's inspector is unaffected by this revision — it remains the target for
 when spec editing produces a diff that needs somewhere to live.
 

@@ -2245,3 +2245,68 @@ body.app-page .site-main {
 body.app-page .app-bar {
   padding: 0 1.5rem;
 }
+
+/* A document's own contents, as the level below it. Shown for the selected
+   document only — sixteen sections per document is a list worth having in the
+   tree, and every document's list at once is not. */
+.nav-sections {
+  display: none;
+  list-style: none;
+  margin: 0.15rem 0 0.4rem;
+  padding: 0;
+  border-left: 1px solid var(--rule);
+  margin-left: 1.35rem;
+}
+
+.nav-item[data-current] + .nav-sections {
+  display: block;
+}
+
+.nav-section {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  padding: 0.22rem 0.4rem 0.22rem 0.6rem;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+  line-height: 1.3;
+  text-decoration: none;
+}
+
+.nav-section:hover {
+  background: var(--paper-2);
+  color: var(--ink);
+  text-decoration: none;
+}
+
+/* Modelled but not filled by this report. Still navigable — the heading is
+   really in the document, saying so. */
+.nav-section.is-empty .nav-label {
+  color: var(--faint);
+}
+
+.nav-section .nav-num {
+  min-width: 1.4rem;
+}
+
+/* The reader carries its own table of contents, which is right at /reader/ and
+   redundant here now that the tree lists the same sections. */
+.app-pane .reader-toc {
+  display: none;
+}
+
+.app-pane .reader {
+  display: block;
+}
+
+.nav-section.current {
+  background: var(--accent-soft);
+  color: var(--ink);
+  box-shadow: inset 2px 0 0 var(--accent);
+}
+
+.nav-section.current .nav-num,
+.nav-section.current .nav-label {
+  color: var(--accent);
+}

@@ -1,7 +1,67 @@
 {
   "module": "quality",
-  "generated": "2026-07-26T01:48:38.856Z",
+  "generated": "2026-07-26T02:07:59.323Z",
   "records": [
+    {
+      "requirementIds": [
+        "QC-DEMO-023"
+      ],
+      "title": "a document contents in the tree QC-DEMO-023: a section counts as populated when anything beneath it is (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-023"
+      ],
+      "title": "a document contents in the tree QC-DEMO-023: an unbuilt document contributes no sections (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-023"
+      ],
+      "title": "a document contents in the tree QC-DEMO-023: the document lists its own top-level sections, not the whole model (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-024"
+      ],
+      "title": "a document contents in the tree QC-DEMO-024: sections render under their document, each a deep link to its heading (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-024"
+      ],
+      "title": "a document contents in the tree QC-DEMO-024: the sections belong to their document, so a second document has its own (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
     {
       "requirementIds": [
         "QC-SITE-001"

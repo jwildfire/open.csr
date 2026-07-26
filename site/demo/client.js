@@ -78,6 +78,20 @@ if (app) {
         item.getAttribute('data-nav-item') === current;
       item.toggleAttribute('data-current', on);
     }
+    // A document with no explicit selection still shows its contents: the
+    // Documents view always has one document open, so the tree should say which.
+    if (state.tab === 'documents' && !state.doc) {
+      const first = nav.querySelector('[data-nav-group="documents"][data-nav-item]:not([aria-disabled])');
+      if (first) first.toggleAttribute('data-current', true);
+    }
+    if (state.tab === 'documents') markSection(state.focus);
+  }
+
+  function markSection(id) {
+    if (!nav) return;
+    for (const link of nav.querySelectorAll('[data-nav-section]')) {
+      link.classList.toggle('current', !!id && link.getAttribute('data-nav-section') === id);
+    }
   }
 
   // The context readout: what you are looking at, in the chrome rather than in a
@@ -129,15 +143,30 @@ if (app) {
     if (card) card.classList.add('app-selected');
   }
 
+  // Scroll the target under the sticky bar.
+  //
+  // Not `scrollIntoView({behavior:'smooth'})`: the assembled report is a ~35,000px
+  // document, and Chrome's smooth-scroll animation over a jump of that size
+  // stalls outright — the page simply never arrives. Distance decides the
+  // behaviour, so a nearby target still animates and a jump across the document
+  // lands immediately, which is the better reading experience anyway.
   function scrollToFocus(focus) {
     if (!focus) return;
     const target =
       app.querySelector(`#${cssEscape(focus)}`) ||
       app.querySelector(`[data-app-block="${cssEscape(focus)}"]`) ||
       app.querySelector(`[name="${cssEscape(focus)}"]`);
-    if (target && typeof target.scrollIntoView === 'function') {
-      target.scrollIntoView({ block: 'start', behavior: 'smooth' });
-    }
+    if (!target) return;
+
+    const offset = (bar ? bar.getBoundingClientRect().height : 0) + 12;
+    const top = Math.max(0, window.scrollY + target.getBoundingClientRect().top - offset);
+    const far = Math.abs(top - window.scrollY) > window.innerHeight * 2;
+    const reduced =
+      window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // scroll-behavior: smooth is set on :root in the stylesheet, so an "instant"
+    // scroll has to say so explicitly.
+    window.scrollTo({ top, behavior: far || reduced ? 'instant' : 'smooth' });
   }
 
   function cssEscape(value) {
@@ -201,6 +230,20 @@ if (app) {
         // Opening a group also moves to that view: in an explorer the folder and
         // the place are the same thing.
         if (open) goto({ tab: toggle.getAttribute('data-nav-group-toggle'), focus: null });
+        return;
+      }
+      // A section inside a document: keep the document selected — losing it
+      // would collapse the very list being navigated — and scroll to the
+      // heading.
+      const section = event.target.closest('[data-nav-section]');
+      if (section) {
+        event.preventDefault();
+        goto({
+          tab: section.getAttribute('data-nav-group'),
+          doc: section.getAttribute('data-nav-doc'),
+          focus: section.getAttribute('data-nav-section')
+        });
+        markSection(section.getAttribute('data-nav-section'));
         return;
       }
       const item = event.target.closest('[data-nav-item]');
