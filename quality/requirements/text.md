@@ -124,6 +124,36 @@ frontmatter — an automated suite cannot verify medical-writing judgement, so
 | TXT-CONC-001 | Section 12.6 ranks the safety findings by importance, separates local tolerability from systemic serious toxicity, states the exposure caveat, and draws no benefit-risk conclusion in the absence of efficacy data. | Content | `text-blocks.test.js` | Draft (generated tier, pending approval) |
 | TXT-DISC-001 | Section 13 integrates disposition, exposure and adverse event findings into one argument and states the limitations — exposure imbalance, missing discontinuation reasons, population composition and the absence of efficacy data — without introducing any fact absent from the referenced ARDs. | Content | `text-blocks.test.js` | Draft (generated tier, pending approval) |
 
+## Text status view — the surface
+
+The approval gate above (`TXT-APPR-*`) decides what assembles. These requirements
+are about the surface that *shows* where every block stands: the Text pane of the
+Demo app — tier, approval state, provenance, resolved prose and resolved bindings,
+and which blocks the gate is currently holding out of the report.
+
+The view is **read-only**. In-app sign-off (a browser-dispatched decision applied by
+a workflow) was built on 2026-07-25 and removed the same day: review workflow belongs
+to the study-level GitHub configuration repos rather than to a point solution inside
+one report (see [design §12](../../docs/design/design.md)). Approval is recorded in a
+block's frontmatter and applied by the pipeline; `TXT-REVIEW-007` is the requirement
+that the surface says so rather than offering a control that does nothing.
+
+Scope: [`scripts/text-status-lib.mjs`](../../scripts/text-status-lib.mjs), rendered
+as the Demo app's Text pane by [`scripts/site.mjs`](../../scripts/site.mjs). The
+catalogue view of the same blocks — the per-block permalink at `/text/#<block-id>` —
+is `site-lib.mjs` and is covered by [`quality.md`](quality.md) (`QC-SITE-*`).
+
+| ID | Requirement | Type | Verification | Status |
+|---|---|---|---|---|
+| TXT-REVIEW-001 | The block list puts draft `generated`-tier blocks first — the blocks the assembly gate is holding out of the report — then every other block in ICH E3 section order. | Functional | `text-status.test.js` | Verified |
+| TXT-REVIEW-002 | Each block is shown as *resolved prose*: every binding replaced by its value from the committed ARD, each value visually distinguished from the writer's words and linked to the binding row it came from. An unresolved binding renders a marker, never a number. | Functional | `text-status.test.js` | Verified |
+| TXT-REVIEW-003 | A `generated`-tier block shows its provenance prominently — model, generation date and the **full** prompt — beside the prose rather than below the bindings; a human-written block says so explicitly; a generated block with no prompt is called out as unauditable. | Traceability | `text-status.test.js` | Verified |
+| TXT-REVIEW-004 | Every binding is resolved into a table giving the address, the ARD row it selects (analysis, statistic, group and level) and the value as the sentence shows it — scale and digits included — so a number can be checked without opening another page. A repeated address is one counted row; an unresolved one carries its reason. | Functional | `text-status.test.js` | Verified |
+| TXT-REVIEW-005 | Each block links its source file on GitHub, every display it binds, and the display detail page behind each binding row. | Traceability | `text-status.test.js` | Verified |
+| TXT-REVIEW-006 | Each block shows its tier, its current approval state and its E3 section, and a block excluded from assembly is labelled as blocking. | Functional | `text-status.test.js` | Verified |
+| TXT-REVIEW-007 | The view is a status view and nothing else: it emits no button, form, input or script, names no credential, token or API host, and states where approval is recorded and what enforces it — without describing or promising a sign-off workflow. | Functional | `text-status.test.js` | Verified |
+| TXT-REVIEW-008 | The view references no external resource, derives its source links from `repoUrl` when no branch is configured, and renders in full for a repository with no source configuration at all. | Functional | `text-status.test.js` | Verified |
+
 ## Known limitations
 
 - The numeric-fidelity gate catches **digits**. A number spelled as a word ("three

@@ -7,6 +7,7 @@
   "requirementUrl": "https://github.com/jwildfire/obot.roadmap/issues/111",
   "issue": 1,
   "matrixBaseUrl": "https://github.com/jwildfire/open.csr/blob/main/quality/requirements",
+  "sourceBranch": "main",
   "study": {
     "id": "CDISCPILOT01",
     "title": "Safety and Efficacy of the Xanomeline Transdermal Therapeutic System (TTS) in Patients with Mild to Moderate Alzheimer's Disease",
@@ -381,6 +382,11 @@
     {
       "file": "docs/design/contracts.md",
       "title": "Interface Contracts",
+      "group": "Design"
+    },
+    {
+      "file": "docs/design/webr-spike.md",
+      "title": "webR spike — regenerating in the browser",
       "group": "Design"
     },
     {

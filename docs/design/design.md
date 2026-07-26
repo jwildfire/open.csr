@@ -195,6 +195,16 @@ Static site on GitHub Pages (no server — everything precomputed by the pipelin
 | Numbers in prose sneaking past the gate | Binding syntax + digit lint + orphan-binding failures (D7); gate tested against seeded violations |
 | Evidence framework drift from safety.viz upstream | Port is vendored + documented; sync opportunistically, not automatically |
 
+## 12. Deferred: in-app review workflow (2026-07-25)
+
+In-app text review and sign-off was built and then removed on the same day. The built version let a reviewer connect a GitHub token in the browser, approve or request changes on a block, and have a `text-decision` repository dispatch applied by a workflow that edited the frontmatter, re-ran the gates and committed. It worked; it was premature.
+
+**Why it was removed.** A platform gap analysis of this portfolio (`obot.roadmap`, 2026-07-25) found the whole review-workflow layer — review state, change-since-last-review, annotation, issue tracking, alerting — missing across every repo and present on nearly every competing platform. That makes review workflow a large cross-cutting platform build, not a feature of one report builder. The intended shape is a **study-level GitHub configuration repository** as the project-management surface for CSR tasks and decisions, which would own review across displays, prose and specs rather than only prose. Shipping a bespoke sign-off lane inside open.csr first would have committed the design to the wrong surface. The code is in git history (commit `cc85b81`) and can be retrieved when that build starts.
+
+**What remains, and is not affected.** Approval state stays exactly where it was: `approval.state` / `by` / `at` in each block's frontmatter (D8), with `provenance.model` and `provenance.prompt` on generated blocks. The **assembler gate stays** — a `generated`-tier block that is not `approved` is excluded from the assembled report and the exclusion is recorded (D8, contracts §6 gate c). Approving a block is a source edit, applied by the pipeline like any other. Status is surfaced read-only in the Demo app's Text pane: tier, state, provenance, resolved prose, resolved bindings, and which blocks are blocking assembly.
+
+Until the platform layer exists, this is the honest position: **status is tracked in the data and shown in the UX; there are no users, no roles and no in-app sign-off.**
+
 ---
 
 *This design was drafted by Claude Code using Fable 5 in an unattended ultracode session and not yet reviewed by @jwildfire.*

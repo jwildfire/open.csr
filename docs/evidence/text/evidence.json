@@ -1,6 +1,6 @@
 {
   "module": "text",
-  "generated": "2026-07-25T06:39:18.051Z",
+  "generated": "2026-07-25T13:16:41.547Z",
   "records": [
     {
       "requirementIds": [
@@ -269,6 +269,54 @@
     },
     {
       "requirementIds": [
+        "TXT-REVIEW-003"
+      ],
+      "title": "provenance TXT-REVIEW-003: a generated block shows its model, generation date and the full prompt (#2)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "issueRefs": [
+        2
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-REVIEW-003"
+      ],
+      "title": "provenance TXT-REVIEW-003: a generated block with no recorded prompt is called out as unauditable (#2)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "issueRefs": [
+        2
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-REVIEW-003"
+      ],
+      "title": "provenance TXT-REVIEW-003: a human-written block says so rather than showing an empty provenance box (#2)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "issueRefs": [
+        2
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-REVIEW-003"
+      ],
+      "title": "provenance TXT-REVIEW-003: provenance sits beside the prose, not below the fold (#2)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "issueRefs": [
+        2
+      ]
+    },
+    {
+      "requirementIds": [
         "TXT-REND-001"
       ],
       "title": "Rendering and cross-references TXT-REND-001: renderBlock substitutes every token and records the span each value occupies (#1)",
@@ -313,6 +361,66 @@
       "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-bindings.test.js",
       "issueRefs": [
         1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-REVIEW-002"
+      ],
+      "title": "resolved prose TXT-REVIEW-002: a cross-reference degrades to readable text outside the assembled document (#2)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "issueRefs": [
+        2
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-REVIEW-002"
+      ],
+      "title": "resolved prose TXT-REVIEW-002: an unresolved binding shows a marker, never a number (#2)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "issueRefs": [
+        2
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-REVIEW-002"
+      ],
+      "title": "resolved prose TXT-REVIEW-002: computed values are marked and linked to the binding row they came from (#2)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "issueRefs": [
+        2
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-REVIEW-002"
+      ],
+      "title": "resolved prose TXT-REVIEW-002: every binding is replaced by its real value from the committed ARD (#2)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "issueRefs": [
+        2
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-REVIEW-002"
+      ],
+      "title": "resolved prose TXT-REVIEW-002: the writer’s own words are left untouched around the values (#2)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "issueRefs": [
+        2
       ]
     },
     {
@@ -419,6 +527,246 @@
       "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-blocks.test.js",
       "issueRefs": [
         1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-REVIEW-004"
+      ],
+      "title": "the binding table TXT-REVIEW-004: a block with no bindings says so instead of rendering an empty table (#2)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "issueRefs": [
+        2
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-REVIEW-004"
+      ],
+      "title": "the binding table TXT-REVIEW-004: a repeated address is one row, counted, not duplicated (#2)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "issueRefs": [
+        2
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-REVIEW-004"
+      ],
+      "title": "the binding table TXT-REVIEW-004: an unresolved binding is shown with the reason, in place of a value (#2)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "issueRefs": [
+        2
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-REVIEW-004"
+      ],
+      "title": "the binding table TXT-REVIEW-004: one row per address, carrying the ARD row it selects and the value (#2)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "issueRefs": [
+        2
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-REVIEW-004"
+      ],
+      "title": "the binding table TXT-REVIEW-004: the ARD row is described by its group and level, not just its index (#2)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "issueRefs": [
+        2
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-REVIEW-004"
+      ],
+      "title": "the binding table TXT-REVIEW-004: the table value is the value the sentence shows, scale and digits included (#2)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "issueRefs": [
+        2
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-REVIEW-005"
+      ],
+      "title": "the block header TXT-REVIEW-005: every binding row links the display detail page it reads from (#2)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "issueRefs": [
+        2
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-REVIEW-005"
+      ],
+      "title": "the block header TXT-REVIEW-005: the card links the block source and every display it binds (#2)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "issueRefs": [
+        2
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-REVIEW-006"
+      ],
+      "title": "the block header TXT-REVIEW-006: tier, approval state and E3 section are on every card (#2)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "issueRefs": [
+        2
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-REVIEW-001"
+      ],
+      "title": "the block queue TXT-REVIEW-001: draft generated blocks come first — they are the ones blocking assembly (#2)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "issueRefs": [
+        2
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-REVIEW-001"
+      ],
+      "title": "the block queue TXT-REVIEW-001: only unapproved generated blocks need judgment (#2)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "issueRefs": [
+        2
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-REVIEW-001"
+      ],
+      "title": "the block queue TXT-REVIEW-001: the shipped library really does have blocks held out of the report (#2)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "issueRefs": [
+        2
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-REVIEW-001"
+      ],
+      "title": "the block queue TXT-REVIEW-001: within a group, blocks follow ICH E3 section order, not file order (#2)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "issueRefs": [
+        2
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-REVIEW-007"
+      ],
+      "title": "the surface is a status view, not a form TXT-REVIEW-007: nothing on the view offers to take, store or send a credential (#2)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "issueRefs": [
+        2
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-REVIEW-007"
+      ],
+      "title": "the surface is a status view, not a form TXT-REVIEW-007: the view carries no control a visitor could act on (#2)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "issueRefs": [
+        2
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-REVIEW-007"
+      ],
+      "title": "the surface is a status view, not a form TXT-REVIEW-007: the view says where approval lives and what enforces it (#2)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "issueRefs": [
+        2
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-REVIEW-007"
+      ],
+      "title": "the surface is a status view, not a form TXT-REVIEW-007: the whole library is readable — prose, provenance and bindings (#2)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "issueRefs": [
+        2
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-REVIEW-008"
+      ],
+      "title": "the view as built TXT-REVIEW-008: no external resource is referenced anywhere on the view (#2)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "issueRefs": [
+        2
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-REVIEW-008"
+      ],
+      "title": "the view as built TXT-REVIEW-008: source links are derived from repoUrl when no branch is configured (#2)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "issueRefs": [
+        2
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-REVIEW-008"
+      ],
+      "title": "the view as built TXT-REVIEW-008: the fixture repo — no source configuration — still renders in full (#2)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "/Users/jwildfire/Documents/obot2/open.csr/tests/unit/text-status.test.js",
+      "issueRefs": [
+        2
       ]
     },
     {

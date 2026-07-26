@@ -527,11 +527,15 @@ export function buildTraceIndex(displays) {
 // 4. Shell
 // ---------------------------------------------------------------------------
 
+// #113: the browsing surfaces fold into one Demo app, so the nav leads with it.
+// Quality and Design & Research stay separate documentation surfaces.
+//
+// /gallery/, /reader/ and /text/ are still emitted — they are the permalink for
+// a single display or block, and the destination the evidence pages and trace
+// panels link to. They are addressable, not advertised.
 const NAV = [
   { href: 'index.html', label: 'Home' },
-  { href: 'gallery/index.html', label: 'TFL Gallery' },
-  { href: 'reader/index.html', label: 'CSR Reader' },
-  { href: 'text/index.html', label: 'Text Library' },
+  { href: 'demo/index.html', label: 'Demo' },
   { href: 'quality/index.html', label: 'Quality' },
   { href: 'docs/index.html', label: 'Design & Research' }
 ];
@@ -612,11 +616,15 @@ export function renderHome({ config, displays, textBlocks, quality }) {
       `Analysis Results Dataset, rendered into a display, and <em>bound</em> — never retyped — into the ` +
       `sentence that quotes it. Change the request, regenerate the number, and the prose moves with it as ` +
       `one transaction.</p>`,
+    // #113: one URL a visitor can be handed. The Demo is the product; the
+    // evidence is the second thing you look at, not the first.
     `<p class="hero-actions">` +
-      `<a class="button" href="gallery/index.html">Browse the TFL gallery</a>` +
-      `<a class="button ghost" href="reader/index.html">Read the assembled CSR</a>` +
+      `<a class="button" href="demo/index.html">Open the demo report</a>` +
       `<a class="button ghost" href="quality/index.html">See the evidence</a>` +
+      `<a class="button ghost" href="docs/index.html">Read the design</a>` +
       `</p>`,
+    `<p class="sub">The demo is one view with four ways in — the assembled report, the table and ARD ` +
+      `behind any number, the prose that quotes it, and the ICH E3 model it all assembles into.</p>`,
     `</section>`,
 
     `<section class="stat-row">`,
@@ -1495,6 +1503,22 @@ export function renderTextLibrary({ textBlocks, ards, traceIndex }) {
     `<p>${chip('generated', 'warn')} agent-drafted, human-approved before it can assemble</p>` +
     `</div>`;
 
+  // Discovery: this page is the catalogue; the Demo's Text view is the status
+  // view, with the prompt behind each generated block and its bindings resolved.
+  const pending = textBlocks.filter(
+    (block) => block.exists && block.tier === 'generated' && block.approval?.state !== 'approved'
+  ).length;
+  const reviewLink =
+    `<p class="callout${pending ? ' warn' : ''}">` +
+    (pending
+      ? `${pending} agent-drafted block${pending === 1 ? ' is' : 's are'} still marked ` +
+        `<span class="mono">draft</span> in the block source, so the assembler leaves ` +
+        `${pending === 1 ? 'it' : 'them'} out of the report. `
+      : 'Every agent-drafted block is approved in its source and assembles. ') +
+    `Approval is recorded in each block's frontmatter and applied by the assembly gate; the ` +
+    `<a href="../demo/index.html#tab=text">Demo's Text view</a> shows where every block stands, ` +
+    `with the prompt that produced it and every binding resolved to its ARD row.</p>`;
+
   if (!textBlocks.length) return [head, legend, empty('No text blocks registered yet.')].join('\n');
 
   const cards = textBlocks
@@ -1585,6 +1609,7 @@ export function renderTextLibrary({ textBlocks, ards, traceIndex }) {
   return [
     head,
     legend,
+    reviewLink,
     gate,
     `<div class="card-grid text-grid">${cards}</div>`,
     traceStyleNote(),

@@ -1449,3 +1449,476 @@ span.xref.unresolved {
   border-bottom-style: none;
   cursor: default;
 }
+
+/* ---- 6. Text status view -------------------------------------------------- */
+/*
+   The Text pane is a reading view: wide measure for the prose, the provenance
+   beside it rather than under it. Nothing here is decorative — every rule exists
+   to separate the writer's words from the computed values, or to make the state
+   of a block legible at a glance.
+*/
+
+/* Groups ------------------------------------------------------------------ */
+
+.review-group {
+  margin: 2rem 0 0;
+}
+
+.review-group > h2 {
+  font-size: 1.35rem;
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 0.25rem;
+  margin-bottom: 0.35rem;
+}
+
+.rm-count {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--muted);
+  vertical-align: middle;
+  border: 1px solid var(--rule-strong);
+  border-radius: 999px;
+  padding: 0.05em 0.5em;
+}
+
+.review-group > .sub {
+  margin-bottom: 1rem;
+}
+
+/* One block --------------------------------------------------------------- */
+
+.review-block {
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--card);
+  padding: 1.1rem 1.25rem 1.25rem;
+  margin-bottom: 1.4rem;
+  box-shadow: var(--shadow);
+}
+
+.review-block.pending {
+  border-left: 3px solid var(--warn);
+}
+
+.rb-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+  align-items: baseline;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 0.6rem;
+}
+
+.rb-title h2 {
+  font-size: 1.15rem;
+  margin: 0;
+}
+
+.rb-title h2 .mono {
+  font-size: 0.86rem;
+  color: var(--accent);
+  margin-right: 0.35rem;
+}
+
+.rb-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0.35rem 0 0;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.rb-links {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--faint);
+}
+
+.rb-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(15rem, 1fr);
+  gap: 1.6rem;
+  margin-top: 1rem;
+}
+
+@media (max-width: 62rem) {
+  .rb-body {
+    grid-template-columns: 1fr;
+  }
+}
+
+.rb-h {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--faint);
+  margin: 0 0 0.5rem;
+}
+
+.review-prose {
+  font-family: var(--serif);
+  font-size: 1.02rem;
+  line-height: 1.65;
+}
+
+.review-prose p {
+  margin-bottom: 0.8rem;
+}
+
+/* A bound value: underlined, tabular, numbered into the binding table. The
+   reviewer must be able to see which parts of a sentence the pipeline wrote. */
+.bound {
+  font-family: var(--sans);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.95em;
+  color: var(--ink);
+  text-decoration: none;
+  background: var(--accent-soft);
+  border-bottom: 1px solid var(--accent);
+  border-radius: 3px;
+  padding: 0 0.18em;
+  white-space: nowrap;
+}
+
+.bound:hover,
+.bound:focus-visible {
+  background: color-mix(in srgb, var(--accent) 20%, transparent);
+  color: var(--ink);
+}
+
+.bound-ref {
+  font-family: var(--mono);
+  font-size: 0.62em;
+  color: var(--accent);
+  margin-left: 0.15em;
+  top: -0.5em;
+}
+
+.bound.unresolved {
+  background: var(--bad-bg);
+  border-bottom-color: var(--bad);
+  color: var(--bad);
+}
+
+/* Provenance -------------------------------------------------------------- */
+
+.provenance {
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-sm);
+  background: var(--paper-2);
+  padding: 0.85rem 0.95rem;
+  align-self: start;
+}
+
+.provenance h3 {
+  font-size: 0.95rem;
+  margin: 0 0 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.provenance h4 {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--faint);
+  margin: 0.8rem 0 0.3rem;
+}
+
+.prov-facts {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.2rem 0.7rem;
+  margin: 0;
+  font-size: 0.82rem;
+}
+
+.prov-facts dt {
+  color: var(--muted);
+}
+
+.prov-facts dd {
+  margin: 0;
+}
+
+.provenance .prompt {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.7rem;
+  margin: 0;
+  max-height: 22rem;
+  overflow: auto;
+}
+
+.provenance .sub {
+  margin: 0.6rem 0 0;
+}
+
+.provenance.not-generated {
+  background: transparent;
+  border-style: dashed;
+}
+
+/* Bindings ---------------------------------------------------------------- */
+
+.rb-bindings {
+  margin-top: 1.3rem;
+}
+
+.rb-bindings .rb-h .sub {
+  font-family: var(--sans);
+  text-transform: none;
+  letter-spacing: 0;
+  margin-left: 0.4rem;
+}
+
+.binding-table {
+  font-size: 0.8rem;
+}
+
+.binding-table td {
+  vertical-align: top;
+}
+
+.binding-table code {
+  font-size: 0.74rem;
+  word-break: break-word;
+}
+
+.binding-table tr:target {
+  background: var(--accent-soft);
+}
+
+.binding-table .unresolved-row {
+  background: var(--bad-bg);
+}
+
+.quals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin-top: 0.25rem;
+}
+
+.qual {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--muted);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding: 0.02em 0.45em;
+}
+
+.qual b {
+  color: var(--faint);
+  font-weight: 500;
+}
+
+.value-num {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.binding-table .value {
+  white-space: nowrap;
+}
+
+.binding-table .value .sub {
+  display: block;
+  white-space: normal;
+}
+
+.stat.warn .stat-value {
+  color: var(--warn);
+}
+
+.stat.warn {
+  border-color: var(--warn-rule);
+  background: var(--warn-bg);
+}
+
+/* Demo app: four panes, one selection (#113) ------------------------------- */
+
+/* The tablist is the page's primary control, so it reads as a switch between
+   views rather than as a set of sub-tabs inside one. Wider than .tab-list, with
+   a hint line, because a first-time visitor is choosing what kind of thing to
+   look at, not filtering something they already understand. */
+.app-tabs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 0.4rem;
+  margin: 0 0 1.8rem;
+  padding: 0.35rem;
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+}
+
+.app-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  text-align: left;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  padding: 0.6rem 0.8rem;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+}
+
+.app-tab:hover {
+  color: var(--ink);
+  background: color-mix(in srgb, var(--card) 70%, transparent);
+}
+
+.app-tab.current {
+  background: var(--card);
+  border-color: var(--rule-strong);
+  color: var(--ink);
+  box-shadow: 0 1px 2px rgb(16 24 35 / 6%);
+}
+
+.app-tab-label {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.app-tab.current .app-tab-label {
+  color: var(--accent);
+}
+
+.app-tab-hint {
+  font-size: 0.78rem;
+  line-height: 1.35;
+  color: var(--faint);
+}
+
+.app-tab:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+/* Each pane carries its own page-head from the surface it was rendered as, so
+   the app's own h1 is the only one that needs the extra room above it. */
+.app-head {
+  margin-bottom: 1.4rem;
+}
+
+.app-pane > .page-head h1,
+.app-pane > .page-head h2 {
+  font-size: 1.5rem;
+}
+
+/* Tables pane: the picker is a row of displays, the stage shows one. */
+.app-display-picker {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: 0.45rem;
+  margin-bottom: 1.4rem;
+}
+
+.app-display-option {
+  display: grid;
+  gap: 0.1rem;
+  text-align: left;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-sm);
+  background: var(--card);
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.app-display-option:hover {
+  border-color: var(--rule-strong);
+}
+
+.app-display-option.current {
+  border-color: var(--accent-rule);
+  background: var(--accent-soft);
+}
+
+.ado-number {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+
+.app-display-option.current .ado-number {
+  color: var(--accent);
+}
+
+.ado-title {
+  font-size: 0.9rem;
+  line-height: 1.3;
+  font-weight: 600;
+}
+
+.ado-slug {
+  font-size: 0.72rem;
+  color: var(--faint);
+}
+
+.app-display-option:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+/* Templates pane */
+.app-block {
+  margin: 2rem 0;
+}
+
+.app-block > h3 {
+  margin: 0 0 0.3rem;
+  font-size: 1.15rem;
+}
+
+.e3-table tbody tr.is-gap td {
+  color: var(--muted);
+}
+
+.e3-table tbody tr.is-gap td:nth-child(2) {
+  font-style: italic;
+}
+
+.e3-table td:first-child {
+  white-space: nowrap;
+}
+
+.muted {
+  color: var(--faint);
+}
+
+/* A block the shared selection is pointing at. The rule is on the left so it
+   survives the card's own background states (draft, approved). */
+.app-selected {
+  box-shadow: -3px 0 0 0 var(--accent);
+}
+
+@media (prefers-color-scheme: dark) {
+  .app-tab.current {
+    box-shadow: none;
+  }
+}
+
+:root[data-theme='dark'] .app-tab.current {
+  box-shadow: none;
+}

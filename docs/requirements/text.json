@@ -52,7 +52,15 @@
     "TXT-AE-003": "Section 12.2.4 points to the by-patient adverse event listing and the serious adverse event listing, and records the header and anonymisation requirements that apply to them.",
     "TXT-SAE-001": "Section 12.3.1 reports deaths, serious adverse events and severe adverse events by treatment group and states explicitly where the event count is too small to support inference.",
     "TXT-CONC-001": "Section 12.6 ranks the safety findings by importance, separates local tolerability from systemic serious toxicity, states the exposure caveat, and draws no benefit-risk conclusion in the absence of efficacy data.",
-    "TXT-DISC-001": "Section 13 integrates disposition, exposure and adverse event findings into one argument and states the limitations — exposure imbalance, missing discontinuation reasons, population composition and the absence of efficacy data — without introducing any fact absent from the referenced ARDs."
+    "TXT-DISC-001": "Section 13 integrates disposition, exposure and adverse event findings into one argument and states the limitations — exposure imbalance, missing discontinuation reasons, population composition and the absence of efficacy data — without introducing any fact absent from the referenced ARDs.",
+    "TXT-REVIEW-001": "The block list puts draft `generated`-tier blocks first — the blocks the assembly gate is holding out of the report — then every other block in ICH E3 section order.",
+    "TXT-REVIEW-002": "Each block is shown as *resolved prose*: every binding replaced by its value from the committed ARD, each value visually distinguished from the writer's words and linked to the binding row it came from. An unresolved binding renders a marker, never a number.",
+    "TXT-REVIEW-003": "A `generated`-tier block shows its provenance prominently — model, generation date and the **full** prompt — beside the prose rather than below the bindings; a human-written block says so explicitly; a generated block with no prompt is called out as unauditable.",
+    "TXT-REVIEW-004": "Every binding is resolved into a table giving the address, the ARD row it selects (analysis, statistic, group and level) and the value as the sentence shows it — scale and digits included — so a number can be checked without opening another page. A repeated address is one counted row; an unresolved one carries its reason.",
+    "TXT-REVIEW-005": "Each block links its source file on GitHub, every display it binds, and the display detail page behind each binding row.",
+    "TXT-REVIEW-006": "Each block shows its tier, its current approval state and its E3 section, and a block excluded from assembly is labelled as blocking.",
+    "TXT-REVIEW-007": "The view is a status view and nothing else: it emits no button, form, input or script, names no credential, token or API host, and states where approval is recorded and what enforces it — without describing or promising a sign-off workflow.",
+    "TXT-REVIEW-008": "The view references no external resource, derives its source links from `repoUrl` when no branch is configured, and renders in full for a repository with no source configuration at all."
   },
   "rows": [
     {
@@ -513,6 +521,78 @@
       "evidence": "",
       "link": "",
       "status": "Draft (generated tier, pending approval)"
+    },
+    {
+      "id": "TXT-REVIEW-001",
+      "area": "",
+      "text": "The block list puts draft `generated`-tier blocks first — the blocks the assembly gate is holding out of the report — then every other block in ICH E3 section order.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TXT-REVIEW-002",
+      "area": "",
+      "text": "Each block is shown as *resolved prose*: every binding replaced by its value from the committed ARD, each value visually distinguished from the writer's words and linked to the binding row it came from. An unresolved binding renders a marker, never a number.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TXT-REVIEW-003",
+      "area": "",
+      "text": "A `generated`-tier block shows its provenance prominently — model, generation date and the **full** prompt — beside the prose rather than below the bindings; a human-written block says so explicitly; a generated block with no prompt is called out as unauditable.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TXT-REVIEW-004",
+      "area": "",
+      "text": "Every binding is resolved into a table giving the address, the ARD row it selects (analysis, statistic, group and level) and the value as the sentence shows it — scale and digits included — so a number can be checked without opening another page. A repeated address is one counted row; an unresolved one carries its reason.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TXT-REVIEW-005",
+      "area": "",
+      "text": "Each block links its source file on GitHub, every display it binds, and the display detail page behind each binding row.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TXT-REVIEW-006",
+      "area": "",
+      "text": "Each block shows its tier, its current approval state and its E3 section, and a block excluded from assembly is labelled as blocking.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TXT-REVIEW-007",
+      "area": "",
+      "text": "The view is a status view and nothing else: it emits no button, form, input or script, names no credential, token or API host, and states where approval is recorded and what enforces it — without describing or promising a sign-off workflow.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TXT-REVIEW-008",
+      "area": "",
+      "text": "The view references no external resource, derives its source links from `repoUrl` when no branch is configured, and renders in full for a repository with no source configuration at all.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
     }
   ]
 }

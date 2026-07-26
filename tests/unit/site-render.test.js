@@ -22,6 +22,7 @@ import {
   renderHome,
   renderIterationTimeline,
   renderQualityIndex,
+  renderNav,
   renderShell,
   renderTextLibrary,
   rewriteDocLinks
@@ -61,8 +62,15 @@ describe('the shared shell', () => {
   test('QC-SITE-001: navigation links are relative to the page root so any mount depth works (#1)', () => {
     const atRoot = renderShell({ shell, title: 't', content: '', root: '', config });
     const nested = renderShell({ shell, title: 't', content: '', root: '../', config });
-    expect(atRoot).toContain('href="gallery/index.html"');
-    expect(nested).toContain('href="../gallery/index.html"');
+    // Asserted against the nav as rendered rather than one hard-coded entry, so
+    // changing what the site links to (as #113 did) cannot silently stop this
+    // from checking anything.
+    const entries = [...renderNav('').matchAll(/href="([^"]+)"/g)].map((match) => match[1]);
+    expect(entries.length).toBeGreaterThan(1);
+    for (const href of entries) {
+      expect(atRoot).toContain(`href="${href}"`);
+      expect(nested).toContain(`href="../${href}"`);
+    }
     expect(nested).not.toMatch(/href="\/[a-z]/);
   });
 });
