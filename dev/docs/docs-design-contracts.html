@@ -217,6 +217,7 @@ post_text:
 <p><strong>Test naming (both suites):</strong> <code>&quot;&lt;REQ-ID&gt;[, &lt;REQ-ID&gt;]: &lt;description&gt; (#&lt;issue&gt;)&quot;</code>. Guard tests in each suite enforce it.</p>
 <h2 id="9-site-build">9. Site build</h2>
 <p><code>site/config.json</code> is the registry — every display, text block, and template with <code>status</code> (<code>planned</code> | <code>built</code> | <code>evidenced</code>). <code>scripts/site.mjs</code> renders static HTML into <code>site/_build/</code> from the registry plus generated <code>docs/requirements/</code> and <code>docs/evidence/</code>. No network calls, no server, no external CDN.</p>
+<p><strong>What &quot;no network calls&quot; forbids, precisely.</strong> No external host, no API, no CDN, no analytics, no font — enforced by <code>validateNoExternalResources</code>, which fails the build on any absolute or protocol-relative resource URL. A page may <code>fetch</code> a <strong>build artifact from its own origin</strong> when loading it eagerly would be wasteful: the text-block editor pulls <code>demo/ard/&lt;slug&gt;.json</code> (published by the same build, from the same committed ARD) the first time a block that binds it is opened, rather than inlining 832 KB of ARD into every visit of the Demo page. The site still serves from any static host with nothing behind it, which is the property the rule protects.</p>
 <hr>
 <h2 id="10-conventions-the-v0-build-established">10. Conventions the v0 build established</h2>
 <p>Learned during implementation; normative from here.</p>
