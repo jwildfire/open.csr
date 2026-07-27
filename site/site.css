@@ -2310,3 +2310,329 @@ body.app-page .app-bar {
 .nav-section.current .nav-label {
   color: var(--accent);
 }
+
+/* ---- Text-block editor (#113 increment B) --------------------------------
+
+   The Text pane's blocks became editable: source on the left, the prose as it
+   will read on the right, the gates underneath, and the diff the edit produces
+   below that. The visual argument the layout is making is that the patch is the
+   product — the review view is the last thing you see before you take it away,
+   not a detail tucked behind a control.
+
+   Everything here ships `hidden` and is revealed by site/demo/editor.js, so the
+   pane with JavaScript off is the read-only status view it has always been.
+   -------------------------------------------------------------------------- */
+
+.tb-edit {
+  margin-top: 1.3rem;
+  border-top: 1px solid var(--rule);
+  padding-top: 1rem;
+}
+
+.tbe-bar {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.15rem 1rem;
+  align-items: start;
+}
+
+.tbe-bar .rb-h {
+  grid-column: 1;
+  margin: 0;
+}
+
+.tbe-bar .sub {
+  grid-column: 1;
+  margin: 0;
+  max-width: 60ch;
+}
+
+.tbe-toggle {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: center;
+  font: 600 0.8rem/1 var(--sans);
+  color: var(--accent);
+  background: var(--card);
+  border: 1px solid var(--accent-rule);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.9rem;
+  cursor: pointer;
+}
+
+.tbe-toggle:hover,
+.tbe-toggle:focus-visible {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+.tbe-panel {
+  margin-top: 0.9rem;
+}
+
+.tbe-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1rem;
+}
+
+@media (max-width: 60rem) {
+  .tbe-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.tbe-pane {
+  min-width: 0;
+}
+
+.tbe-label {
+  display: block;
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--faint);
+  margin: 0 0 0.35rem;
+}
+
+.tbe-label .sub {
+  font-family: var(--sans);
+  text-transform: none;
+  letter-spacing: 0;
+  margin-left: 0.4rem;
+}
+
+.tbe-source {
+  width: 100%;
+  min-height: 18rem;
+  resize: vertical;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  line-height: 1.65;
+  color: var(--ink);
+  background: var(--card);
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-sm);
+  padding: 0.7rem 0.8rem;
+  tab-size: 2;
+}
+
+.tbe-source:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  border-color: var(--accent);
+}
+
+.tbe-preview {
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-sm);
+  background: var(--paper-2);
+  padding: 0.75rem 0.9rem;
+  min-height: 18rem;
+  max-height: 32rem;
+  overflow: auto;
+  font-size: 0.9rem;
+}
+
+.tbe-preview p {
+  margin: 0 0 0.7rem;
+}
+
+/* The three kinds of marked text, in the same visual language the read-only
+   prose already uses for a bound value — a writer moving between the two views
+   should not have to learn a second vocabulary. */
+.tbe-bound,
+.tbe-xref {
+  font-variant-numeric: tabular-nums;
+  background: var(--accent-soft);
+  border-bottom: 1px solid var(--accent);
+  border-radius: 3px;
+  padding: 0 0.18em;
+}
+
+.tbe-xref {
+  background: transparent;
+  border-bottom-style: dotted;
+}
+
+.tbe-violation {
+  background: var(--bad-bg);
+  border-bottom: 2px solid var(--bad);
+  color: var(--bad);
+  font-weight: 600;
+  border-radius: 3px;
+  padding: 0 0.18em;
+}
+
+.tbe-gate {
+  margin-top: 0.9rem;
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--good);
+  border-radius: var(--radius-sm);
+  background: var(--card);
+  padding: 0.7rem 0.9rem;
+}
+
+.tb-edit.gates-fail .tbe-gate {
+  border-left-color: var(--bad);
+}
+
+.tbe-verdict-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.45rem 0.9rem;
+}
+
+.tbe-verdict {
+  font: 700 0.72rem/1 var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-radius: 999px;
+  padding: 0.3rem 0.6rem;
+}
+
+.tbe-verdict.good {
+  color: var(--good);
+  background: var(--good-bg);
+}
+
+.tbe-verdict.bad {
+  color: var(--bad);
+  background: var(--bad-bg);
+}
+
+.tbe-count {
+  font-size: 0.76rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.tbe-problems {
+  margin: 0.6rem 0 0;
+  padding-left: 1.1rem;
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+
+.tbe-problems li.error {
+  color: var(--bad);
+}
+
+.tbe-problems li.warn {
+  color: var(--warn);
+}
+
+.tbe-review {
+  margin-top: 1rem;
+}
+
+.tbe-diff-body {
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  line-height: 1.6;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-sm);
+  overflow: auto;
+  max-height: 24rem;
+  background: var(--card);
+}
+
+.tbe-diff-line {
+  white-space: pre-wrap;
+  word-break: break-word;
+  padding: 0 0.6rem;
+}
+
+.tbe-diff-line.file {
+  color: var(--faint);
+}
+
+.tbe-diff-line.hunk {
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.tbe-diff-line.add {
+  color: var(--good);
+  background: var(--good-bg);
+}
+
+.tbe-diff-line.remove {
+  color: var(--bad);
+  background: var(--bad-bg);
+}
+
+.tbe-diff-line.note {
+  color: var(--faint);
+  font-style: italic;
+}
+
+.tbe-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.7rem;
+}
+
+.tbe-action {
+  font: 600 0.78rem/1 var(--sans);
+  color: var(--card);
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.85rem;
+  cursor: pointer;
+}
+
+.tbe-action:hover:not(:disabled),
+.tbe-action:focus-visible:not(:disabled) {
+  background: var(--accent-hover);
+}
+
+.tbe-action:disabled {
+  opacity: 0.42;
+  cursor: default;
+}
+
+.tbe-action.tbe-quiet {
+  color: var(--muted);
+  background: transparent;
+  border-color: var(--rule-strong);
+}
+
+.tbe-action.tbe-quiet:hover:not(:disabled) {
+  background: var(--paper-2);
+  color: var(--ink);
+}
+
+.tbe-status {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+/* The pane-level bar: one patch for everything edited in this visit. It appears
+   only once something differs from the committed source. */
+.tbe-all {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem 1rem;
+  position: sticky;
+  top: 0.5rem;
+  z-index: 3;
+  border: 1px solid var(--accent-rule);
+  border-radius: var(--radius-sm);
+  background: var(--accent-soft);
+  padding: 0.6rem 0.9rem;
+  margin: 1rem 0;
+}
+
+.tbe-all-label {
+  font: 600 0.82rem/1.4 var(--sans);
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}

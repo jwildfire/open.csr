@@ -131,12 +131,19 @@ are about the surface that *shows* where every block stands: the Text pane of th
 Demo app — tier, approval state, provenance, resolved prose and resolved bindings,
 and which blocks the gate is currently holding out of the report.
 
-The view is **read-only**. In-app sign-off (a browser-dispatched decision applied by
-a workflow) was built on 2026-07-25 and removed the same day: review workflow belongs
-to the study-level GitHub configuration repos rather than to a point solution inside
-one report (see [design §12](../../docs/design/design.md)). Approval is recorded in a
-block's frontmatter and applied by the pipeline; `TXT-REVIEW-007` is the requirement
-that the surface says so rather than offering a control that does nothing.
+The view records **no decision**. In-app sign-off (a browser-dispatched approval
+applied by a workflow) was built on 2026-07-25 and removed the same day: review
+workflow belongs to the study-level GitHub configuration repos rather than to a point
+solution inside one report (see [design §12](../../docs/design/design.md)). Approval is
+recorded in a block's frontmatter and applied by the pipeline; `TXT-REVIEW-007` is the
+requirement that the surface says so rather than offering a control that does nothing.
+
+`TXT-REVIEW-007` is asserted against the view rendered **without** the editor option —
+the rendering this section describes, unchanged. The editor (`TXT-EDIT-*` below) is an
+opt-in layer the site build mounts on top of it, and `TXT-EDIT-009` carries the same
+guarantee forward to the surface as shipped: no approval control, no credential, no
+network host, no form. Editing source and approving it are different acts, and the
+markup keeps them apart.
 
 Scope: [`scripts/text-status-lib.mjs`](../../scripts/text-status-lib.mjs), rendered
 as the Demo app's Text pane by [`scripts/site.mjs`](../../scripts/site.mjs). The
@@ -154,6 +161,35 @@ is `site-lib.mjs` and is covered by [`quality.md`](quality.md) (`QC-SITE-*`).
 | TXT-REVIEW-007 | The view is a status view and nothing else: it emits no button, form, input or script, names no credential, token or API host, and states where approval is recorded and what enforces it — without describing or promising a sign-off workflow. | Functional | `text-status.test.js` | Verified |
 | TXT-REVIEW-008 | The view references no external resource, derives its source links from `repoUrl` when no branch is configured, and renders in full for a repository with no source configuration at all. | Functional | `text-status.test.js` | Verified |
 
+## Text-block editor — editing prose in the browser
+
+The Text pane's first *editing* verb (open.csr [#113](https://github.com/jwildfire/obot.roadmap/issues/113) increment B). A writer edits a block's prose in the browser; every keystroke is resolved against the committed ARD and run through the numeric-fidelity gate; the output is a **unified diff against the block's source file**.
+
+Two properties carry the whole design.
+
+**The browser runs the build's gates, not a copy of them.** Binding grammar, ARD resolution, value formatting, token substitution and all three gates live in [`site/demo/text-core.js`](../../site/demo/text-core.js) — one file, imported by `scripts/text-lib.mjs` for the build and loaded unbundled by the browser for the editor. A second implementation would let an edit pass as you type and fail in CI, which is worse than no editor. The editor must be neither more permissive **nor stricter** than the build: `TXT-EDIT-005` (undeclared displays) closes the permissive side and the xref indices of `TXT-EDIT-002` close the strict one.
+
+**The output is a patch, and nothing else happens.** No write, no commit, no endpoint, no credential. The frontmatter never reaches the browser: the editor is given the body and the line it starts at, and hunks are offset to that position, so no patch it can compose is capable of changing a block's tier, approval state or digit allowlist (`TXT-EDIT-001`). That is design **D9** — agents write source, the pipeline regenerates, humans approve — with a browser in the agent's seat.
+
+Why prose and not specs: resolving a binding is a lookup in JSON the build already publishes and the fidelity gate is string arithmetic, so a browser can be numerically faithful with no R, no webR and no server. A spec edit would have to re-run the pipeline; that round-trip is an open design question and is deliberately not attempted.
+
+Scope: [`site/demo/editor-core.js`](../../site/demo/editor-core.js) (pure logic), [`scripts/text-editor-lib.mjs`](../../scripts/text-editor-lib.mjs) (rendering and the published ARD payload), [`site/demo/editor.js`](../../site/demo/editor.js) (DOM wiring, verified in the browser rather than by these tests).
+
+| ID | Requirement | Type | Verification | Status |
+|---|---|---|---|---|
+| TXT-EDIT-001 | The editor edits a block's **body**; its frontmatter is never sent to the browser, and the patch's hunks are offset to the body's position in the file, so no edit made in a browser can change a block's tier, approval state or `allow_digits`. | Functional | `text-editor.test.js` | Verified |
+| TXT-EDIT-002 | A draft body resolves its bindings against the committed ARD with the build's own resolver: an orphaned, ambiguous or malformed address reports the build's message verbatim rather than throwing, and cross-references resolve against the published display and section indices so the editor is not stricter than CI. | Functional | `text-editor.test.js` | Verified |
+| TXT-EDIT-003 | The numeric-fidelity gate runs on the draft as it is typed: a hand-typed result is reported with its value and surrounding context, an `allow_digits` literal exempts exactly as it does in CI, and replacing the number with a resolving binding clears the gate. | Functional | `text-editor.test.js` | Verified |
+| TXT-EDIT-004 | An unresolved binding previews as a marker and never as a number — the editor cannot show a value the ARD did not produce. | Functional | `text-editor.test.js` | Verified |
+| TXT-EDIT-005 | A binding to a display the block does not declare is reported exactly as the whole-library gate run reports it, so the editor cannot show a passing gate for a body that fails the build. | Functional | `text-editor.test.js` | Verified |
+| TXT-EDIT-006 | An edit produces a unified diff with `---`/`+++` headers, `@@` hunks and three lines of context, marking a missing trailing newline as git does — and `git apply` accepts it against the real file, leaving the frontmatter byte-for-byte identical. | Functional | `text-editor.test.js` | Verified |
+| TXT-EDIT-007 | An unchanged body produces no patch at all; a change reports how many lines it adds and removes. | Functional | `text-editor.test.js` | Verified |
+| TXT-EDIT-008 | Several blocks edited in one visit compose into one patch — a file section per changed block, unchanged blocks omitted — naming each block's real repository path. | Functional | `text-editor.test.js` | Verified |
+| TXT-EDIT-009 | The pane as shipped, editor mounted, records no approval and reaches no network host: every written block gets an editor seeded with its source, and the complete set of controls is Edit / Copy patch / Download patch / Download one patch for every change / Revert — no form, no credential, no token, no API host. | Functional | `text-editor.test.js` | Verified |
+| TXT-EDIT-010 | The editor is progressive enhancement: its markup ships `hidden` and is revealed by the client, and the view rendered without the editor option is the read-only status view `TXT-REVIEW-007` describes — no button, textarea, form or script. | Functional | `text-editor.test.js` | Verified |
+| TXT-EDIT-011 | A binding rendering at full precision surfaces as a warning the writer can act on rather than a failure that blocks the edit. | Quality | `text-editor.test.js` | Verified |
+| TXT-EDIT-012 | The preview marks every computed value and every fidelity violation **in place** in the sentence, losslessly — a writer sees which words are theirs and which digit the gate is rejecting without reading a list. | Functional | `text-editor.test.js` | Verified |
+
 ## Known limitations
 
 - The numeric-fidelity gate catches **digits**. A number spelled as a word ("three
@@ -166,3 +202,15 @@ is `site-lib.mjs` and is covered by [`quality.md`](quality.md) (`QC-SITE-*`).
 - Analysis thresholds quoted in prose (30 / 90 / 180 days) are allowlisted literals
   rather than bound values, because the ARD carries the statistic but not the analysis
   label. Binding the label is roadmap.
+- The editor's preview is **not** a markdown renderer: it shows paragraphs with the
+  computed values and violations marked, which is what a writer is checking there.
+  Emphasis, lists and links render as their source text. The assembled document is
+  where markdown is rendered, by `marked`, in the pipeline.
+- The editor checks the gates a block's own body can fail. Library-wide properties —
+  duplicate ids, a block binding a display no longer in the build — are still the
+  build's to catch.
+- If a display's published ARD fails to load, bindings to it cannot be checked in the
+  browser; the gate strip says so rather than reporting them as resolved. The build
+  checks them regardless.
+- `site/demo/editor.js` is DOM wiring and is verified in the browser, not by the
+  vitest suite; everything it decides is in `editor-core.js`, which is.
