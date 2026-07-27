@@ -232,7 +232,11 @@ function attach(section, context) {
 
   section.querySelector('[data-editor-revert]')?.addEventListener('click', () => {
     source.value = committed;
-    evaluateNow();
+    // Dispatched rather than handled directly so that "the text changed" has ONE
+    // code path whoever changed it — the block re-evaluates and the pane-level
+    // patch bar refreshes off the same event. Reverting used to notify the bar on
+    // its own, and a bar that is one revert out of date is worse than no bar.
+    source.dispatchEvent(new Event('input', { bubbles: true }));
     say('Reverted to the committed source.');
   });
 
@@ -324,9 +328,6 @@ export function initEditors(root = document) {
 
   root.addEventListener('input', (event) => {
     if (event.target.matches('[data-editor-source]')) refresh();
-  });
-  root.addEventListener('click', (event) => {
-    if (event.target.closest('[data-editor-revert]')) requestAnimationFrame(refresh);
   });
 
   button?.addEventListener('click', () => {

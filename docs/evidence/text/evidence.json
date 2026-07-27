@@ -1,6 +1,6 @@
 {
   "module": "text",
-  "generated": "2026-07-27T02:44:24.942Z",
+  "generated": "2026-07-27T02:53:53.492Z",
   "records": [
     {
       "requirementIds": [
@@ -1049,6 +1049,18 @@
       "requirementIds": [
         "TXT-EDIT-006"
       ],
+      "title": "the patch TXT-EDIT-006: git applies the patch for every shape of edit a writer can make (#113)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/text-editor.test.js",
+      "issueRefs": [
+        113
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-006"
+      ],
       "title": "the patch TXT-EDIT-006: the diff carries three lines of context on each side of a hunk (#113)",
       "suite": "js-unit",
       "passed": true,
@@ -1074,6 +1086,18 @@
         "TXT-EDIT-007"
       ],
       "title": "the patch TXT-EDIT-007: an unchanged body produces no patch at all (#113)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/text-editor.test.js",
+      "issueRefs": [
+        113
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-007"
+      ],
+      "title": "the patch TXT-EDIT-007: dropping the file’s final newline is a change, not an empty patch (#113)",
       "suite": "js-unit",
       "passed": true,
       "file": "tests/unit/text-editor.test.js",
