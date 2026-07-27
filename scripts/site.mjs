@@ -23,6 +23,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
   buildQualitySummary,
+  artifactFileName,
   buildTraceIndex,
   loadCsr,
   loadDisplays,
@@ -45,6 +46,16 @@ import {
   validateSiteLinks
 } from './site-lib.mjs';
 import { renderTextStatus } from './text-status-lib.mjs';
+import { loadValueStore, valueUsage } from './values-lib.mjs';
+import {
+  ardPayload,
+  ardUrl,
+  editorContext,
+  editorDisplays,
+  editorIntro,
+  renderBlockEditor,
+  renderEditorBar
+} from './text-editor-lib.mjs';
 import {
   APP_TABS,
   GLOBAL_TABS,
@@ -53,7 +64,8 @@ import {
   renderAppPage,
   renderSidebar,
   renderTablesPane,
-  renderTemplatesPane
+  renderTemplatesPane,
+  renderValuesPane
 } from './app-lib.mjs';
 import { loadAssembly, loadSections } from './template-lib.mjs';
 
@@ -93,6 +105,14 @@ const displays = loadDisplays(rootDir, config);
 const textBlocks = loadTextBlocks(rootDir, config);
 const csr = loadCsr(rootDir);
 const traceIndex = buildTraceIndex(displays);
+// The values store and, from the last assembly, the verdict of the gate that
+// re-derived it — the pane states whether the numbers still match their sources
+// rather than implying it (#129 B).
+const valueStore = loadValueStore(rootDir);
+const valueGate = csr.json?.gates?.values || null;
+const valueUsageIndex = valueUsage(
+  textBlocks.filter((block) => block.exists !== false).map((block) => ({ id: block.id, body: block.body }))
+);
 const ards = Object.fromEntries(
   displays
     .filter((display) => display.outputs?.current?.ard)
@@ -176,6 +196,27 @@ for (const fragment of displayFragments) {
   });
 }
 
+// --- Submission artifacts ---------------------------------------------------
+// The RTF the pipeline wrote for each display's current iteration, published
+// flat so the display pages (and the Tables pane, which is the same fragment)
+// can offer it as a download without the site knowing anything about iteration
+// directories (#129 A).
+
+const artifactDir = path.join(buildDir, 'artifacts');
+let artifactCount = 0;
+for (const display of displays) {
+  for (const artifact of display.outputs?.current?.artifacts || []) {
+    const source = path.join(rootDir, artifact.file);
+    if (!existsSync(source)) {
+      warnings.push(`${artifact.file} is named in a manifest but is not on disk — not published.`);
+      continue;
+    }
+    mkdirSync(artifactDir, { recursive: true });
+    copyFileSync(source, path.join(artifactDir, artifactFileName(display.slug, artifact)));
+    artifactCount += 1;
+  }
+}
+
 // --- CSR Reader -------------------------------------------------------------
 
 if (!csr.json && !csr.html) {
@@ -204,22 +245,6 @@ page(path.join(buildDir, 'text', 'index.html'), {
   content: renderTextLibrary({ textBlocks, ards, traceIndex })
 });
 
-// --- Text status ------------------------------------------------------------
-// The Demo app's Text pane: where every prose block stands — tier, approval
-// state, provenance, resolved bindings, and which blocks the assembly gate is
-// currently holding out of the report. Read-only, and rendered only as a pane:
-// in-app sign-off was removed on 2026-07-25 (design §12), and a status view
-// needs no permalink of its own — a single block's permalink is the Text
-// Library page at /text/#<block-id>.
-
-const textStatusContent = renderTextStatus({ config, textBlocks, ards, traceIndex });
-
-// --- Demo app ---------------------------------------------------------------
-// #113 increment A: the four browsing surfaces as panes of one view, sharing a
-// selection. Every pane is the same HTML the standalone page serves; what makes
-// it an app is site/app/client.js resolving a link between panes into a
-// selection change instead of a navigation.
-
 // The template model comes from template-lib, the same tested loaders the
 // assembler uses — so the pane's numbering is the document's numbering (D6)
 // rather than a second implementation of it.
@@ -240,6 +265,58 @@ if (!template.sections?.sections?.length) {
   );
 }
 
+// --- Text status ------------------------------------------------------------
+// The Demo app's Text pane: where every prose block stands — tier, approval
+// state, provenance, resolved bindings, and which blocks the assembly gate is
+// currently holding out of the report. Read-only, and rendered only as a pane:
+// in-app sign-off was removed on 2026-07-25 (design §12), and a status view
+// needs no permalink of its own — a single block's permalink is the Text
+// Library page at /text/#<block-id>.
+
+// #113 increment B: the pane's blocks become editable. The editor resolves
+// bindings and runs the numeric-fidelity gate in the browser against the ARDs
+// published below, and its output is a patch against the block's source file —
+// it writes nothing, posts nowhere and cannot touch a block's frontmatter (see
+// scripts/text-editor-lib.mjs). Approval remains frontmatter applied by the
+// pipeline; the editor is the "agents write source" half of D9, in a browser.
+const editorSlugs = Object.keys(ards);
+const textEditor = {
+  intro: editorIntro(),
+  bar: renderEditorBar({
+    context: editorContext({ template, displays, csr, values: valueStore?.values || [] })
+  }),
+  render: (block) =>
+    renderBlockEditor(block, {
+      source: existsSync(path.join(rootDir, block.file))
+        ? readFileSync(path.join(rootDir, block.file), 'utf8')
+        : '',
+      displays: editorDisplays(block, editorSlugs)
+    })
+};
+
+const textStatusContent = renderTextStatus({
+  config,
+  textBlocks,
+  ards,
+  traceIndex,
+  editor: textEditor
+});
+
+// The ARDs the editor resolves against, published as their own files and fetched
+// only when a block that binds them is opened: the AE-by-SOC/PT ARD alone is
+// 3,048 rows, and most visitors never open an editor. Same origin, no external
+// host, no API — a build artifact served as a build artifact.
+mkdirSync(path.join(buildDir, 'demo', 'ard'), { recursive: true });
+for (const [slug, ard] of Object.entries(ards)) {
+  writeFileSync(path.join(buildDir, 'demo', ardUrl(slug)), JSON.stringify(ardPayload(ard)));
+}
+
+// --- Demo app ---------------------------------------------------------------
+// #113 increment A: the four browsing surfaces as panes of one view, sharing a
+// selection. Every pane is the same HTML the standalone page serves; what makes
+// it an app is site/app/client.js resolving a link between panes into a
+// selection change instead of a navigation.
+
 // Selection metadata for the app bar's context readout: what the chrome says you
 // are looking at (demo-layout.md §5).
 const displayContext = displays.map((display) => ({
@@ -250,10 +327,29 @@ const displayContext = displays.map((display) => ({
   ardHash: display.outputs?.current?.ardHash || null
 }));
 
+// The Documents pane is the same Reader with one addition: an Edit affordance on
+// every block the build mounted an editor for (#129 C, open.csr#15). The
+// standalone /reader/ page keeps the read-only render — there is no editor there
+// to adopt, and an affordance that opens nothing is worse than none.
+const readerAppContent = renderCsrReader({
+  config,
+  csr,
+  displays,
+  ards,
+  traceIndex,
+  textBlocks,
+  editable: new Set(textBlocks.filter((block) => block.exists !== false).map((block) => block.id))
+});
+
 const templatesContent = renderTemplatesPane({ config, template, displays });
+const valuesContent = renderValuesPane({
+  store: valueStore,
+  usage: valueUsageIndex,
+  gate: valueGate
+});
 
 const appPanes = [
-  { id: 'documents', html: readerContent },
+  { id: 'documents', html: readerAppContent },
   {
     id: 'displays',
     // No in-pane picker: the explorer lists every display, and two pickers for
@@ -267,10 +363,17 @@ const appPanes = [
     })
   },
   { id: 'text', html: textStatusContent },
+  { id: 'values', html: valuesContent },
   { id: 'templates', html: templatesContent }
 ];
 
-const navTree = buildNavTree({ config, csr: csr.json, displays, textBlocks });
+const navTree = buildNavTree({
+  config,
+  csr: csr.json,
+  displays,
+  textBlocks,
+  values: valueStore?.values || []
+});
 
 page(path.join(buildDir, 'demo', 'index.html'), {
   title: `Demo · ${config.siteTitle}`,
@@ -299,6 +402,15 @@ page(path.join(buildDir, 'demo', 'index.html'), {
 // Every view in the app bar is a real link to a real page, so the Templates view
 // needs the permalink the other three already had. That is what makes the bar
 // work with JavaScript off (demo-layout.md §5).
+page(path.join(buildDir, 'values', 'index.html'), {
+  title: `Values · ${config.siteTitle}`,
+  root: '../',
+  description:
+    'The values store: every number this report reuses by name, its display format, the ARD row ' +
+    'or declared derivation it comes from, and the prose that cites it.',
+  content: valuesContent
+});
+
 page(path.join(buildDir, 'templates', 'index.html'), {
   title: `Report template · ${config.siteTitle}`,
   root: '../',
@@ -311,7 +423,15 @@ page(path.join(buildDir, 'templates', 'index.html'), {
 // The demo client and its pure core, copied verbatim — no bundler, no external
 // anything (contracts §9). It is the only script the site loads from a file:
 // an ES module, so its pure core is the same code the test suite runs.
-for (const file of ['core.js', 'client.js']) {
+for (const file of [
+  'core.js',
+  'client.js',
+  'text-core.js',
+  'editor-core.js',
+  'editor.js',
+  'reader-edit-core.js',
+  'reader-edit.js'
+]) {
   copyFileSync(path.join(rootDir, 'site', 'demo', file), path.join(buildDir, 'demo', file));
 }
 
@@ -425,5 +545,6 @@ console.log(
     `${textBlocks.filter((b) => b.exists).length} text blocks ` +
     `(${textBlocks.filter((b) => b.exists && b.tier === 'generated' && b.approval?.state !== 'approved').length} ` +
     `draft, held out of the report), ${qualityModules.length} evidence pages, ${docs.length} documents. ` +
+    `${artifactCount} submission RTFs published. ` +
     `All internal links resolve; no external resources referenced.`
 );

@@ -1,62 +1,240 @@
-# Publish the open.csr demo site to GitHub Pages (#1).
+# Three-tier site publishing (#11, ported from safety.viz, design obot.roadmap#21):
+# writes the gh-pages branch incrementally so the three tiers coexist —
 #
-# The site is a pure function of the repo tree — no test execution, no network,
-# no CDN — so publishing is: build site/_build, upload it as a Pages artifact,
-# deploy. One-time repo setting: Settings → Pages → Source = GitHub Actions.
+#   push to main            → sync site/_build/ to the branch ROOT (preserving dev/, pr/, v*/)
+#   push to dev             → sync site/_build/ to dev/
+#   push of a v* tag        → sync site/_build/ to v{X.Y.Z}/ — the frozen demo
+#                             artifact every major/minor release links from its
+#                             notes (@jwildfire, 2026-07-27)
+#   pull_request (same-repo) → sync site/_build/ to pr/{N}/ + sticky preview comment
+#   pull_request closed      → replace pr/{N}/ pages with redirect stubs → dev/
 #
-# `concurrency: pages` with cancel-in-progress: false serialises deploys so a
-# racing push can never lose an update.
+# GitHub Pages serves the branch at https://jwildfire.github.io/open.csr/
+# (one-time repo setting: Pages source = gh-pages branch, root — replacing the
+# artifact deploy this workflow used to do). The site build uses relative URLs
+# throughout, so the same output works at every path depth.
+#
+# Deploys are serialized by the shared concurrency group; the push loop below
+# additionally re-fetches and re-applies on rejection, so a racing writer can
+# never cause a lost update to the branch.
 
 name: Pages
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+      - dev
+    tags:
+      - 'v*'
+  pull_request:
+    # ready_for_review is in the list because a PR opened as a draft gets no
+    # preview until something else fires: without it, marking a draft ready
+    # leaves the reviewer on a PR whose preview link was never built.
+    types: [opened, synchronize, reopened, closed, ready_for_review]
+  # Manual re-publish of the tier matching the branch it is run from (carried
+  # over from the artifact-deploy workflow this replaces).
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
+  pull-requests: write
 
 concurrency:
   group: pages
   cancel-in-progress: false
 
 jobs:
-  build:
-    name: Build site
+  deploy:
+    name: Publish to gh-pages
     runs-on: ubuntu-latest
+    # Fork PRs get no preview (their token cannot write); same-repo PRs, branch
+    # pushes and manual runs always deploy.
+    if: >-
+      github.event_name != 'pull_request' ||
+      github.event.pull_request.head.repo.full_name == github.repository
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # On closed PRs the merge ref may already be gone — any ref works,
+          # since the closed path only rewrites pr/{N} on gh-pages.
+          ref: ${{ github.event.action == 'closed' && github.event.pull_request.base.ref || '' }}
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node
+        if: github.event.action != 'closed'
+        uses: actions/setup-node@v4
         with:
           node-version: '22'
           cache: npm
 
       - name: Install dependencies
+        if: github.event.action != 'closed'
         run: npm ci
 
       - name: Build the demo site
+        if: github.event.action != 'closed'
         run: node scripts/site.mjs
 
-      - name: Configure Pages
-        uses: actions/configure-pages@v5
+      - name: Resolve target tier
+        id: tier
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          ACTION: ${{ github.event.action }}
+          REF: ${{ github.ref }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+          if [ "$EVENT_NAME" = "pull_request" ]; then
+            if [ "$ACTION" = "closed" ]; then
+              mode=redirect
+            else
+              mode=dir
+            fi
+            dest="pr/$PR_NUMBER"
+          elif [ "${REF#refs/tags/}" != "$REF" ]; then
+            # A release tag freezes the site it was cut from as a permanent,
+            # versioned demo artifact.
+            mode=dir
+            dest="${REF#refs/tags/}"
+          elif [ "$REF" = "refs/heads/main" ]; then
+            mode=root
+            dest="."
+          else
+            mode=dir
+            dest="dev"
+          fi
+          echo "mode=$mode" >> "$GITHUB_OUTPUT"
+          echo "dest=$dest" >> "$GITHUB_OUTPUT"
+          echo "Deploy mode=$mode dest=$dest"
 
-      - name: Upload the Pages artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Deploy to gh-pages
+        env:
+          MODE: ${{ steps.tier.outputs.mode }}
+          DEST: ${{ steps.tier.outputs.dest }}
+          SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -euo pipefail
+          WT="$RUNNER_TEMP/gh-pages"
+          MSG="Publish $DEST from ${SHA:0:7} (${{ github.event_name }}, run ${{ github.run_id }})"
+          [ "$MODE" = "redirect" ] && MSG="Redirect $DEST to dev (PR closed, run ${{ github.run_id }})"
+
+          for attempt in 1 2 3; do
+            git worktree remove --force "$WT" 2>/dev/null || true
+            git worktree prune
+            if git fetch origin gh-pages 2>/dev/null; then
+              git worktree add --force -B gh-pages "$WT" origin/gh-pages
+            else
+              # First-ever deploy: bootstrap an orphan gh-pages branch.
+              git worktree add --force --detach "$WT"
+              git -C "$WT" checkout --orphan gh-pages
+              git -C "$WT" rm -rfq . 2>/dev/null || true
+            fi
+
+            case "$MODE" in
+              root)
+                # Release tier replaces the root but preserves the other tiers.
+                rsync -a --delete \
+                  --exclude=/.git --exclude=/dev --exclude=/pr --exclude='/v[0-9]*' \
+                  site/_build/ "$WT"/
+                ;;
+              dir)
+                mkdir -p "$WT/$DEST"
+                rsync -a --delete site/_build/ "$WT/$DEST"/
+                ;;
+              redirect)
+                # Closed PRs keep their URLs alive: every page the preview had
+                # (plus its root) becomes a stub redirecting to the matching
+                # path on the dev tier.
+                list="$RUNNER_TEMP/preview-pages"
+                printf 'index.html\n' > "$list"
+                if [ -d "$WT/$DEST" ]; then
+                  (cd "$WT/$DEST" && find . -type f -name '*.html' | sed 's|^\./||') >> "$list"
+                fi
+                rm -rf "$WT/${DEST:?}"
+                sort -u "$list" | while IFS= read -r rel; do
+                  [ -n "$rel" ] || continue
+                  mkdir -p "$WT/$DEST/$(dirname "$rel")"
+                  up="../.."
+                  tail="$rel"
+                  while [ "${tail#*/}" != "$tail" ]; do
+                    up="$up/.."
+                    tail="${tail#*/}"
+                  done
+                  target="$up/dev/$rel"
+                  printf '%s\n' \
+                    '<!doctype html>' \
+                    '<meta charset="utf-8">' \
+                    '<title>Preview closed</title>' \
+                    "<meta http-equiv=\"refresh\" content=\"0; url=$target\">" \
+                    "<link rel=\"canonical\" href=\"$target\">" \
+                    "<p>This PR preview is closed — redirecting to the <a href=\"$target\">dev site</a>.</p>" \
+                    > "$WT/$DEST/$rel"
+                done
+                ;;
+            esac
+            touch "$WT/.nojekyll"
+
+            git -C "$WT" add -A
+            if git -C "$WT" diff --cached --quiet; then
+              echo "gh-pages already up to date — nothing to publish"
+              break
+            fi
+            git -C "$WT" \
+              -c user.name='github-actions[bot]' \
+              -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
+              commit -m "$MSG"
+            if git -C "$WT" push origin gh-pages; then
+              echo "Published on attempt $attempt"
+              break
+            fi
+            if [ "$attempt" = 3 ]; then
+              echo "::error::Failed to push gh-pages after 3 attempts"
+              exit 1
+            fi
+            echo "Push rejected (attempt $attempt) — re-fetching and re-applying"
+          done
+
+      - name: Sticky preview comment
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
         with:
-          path: site/_build
-
-  deploy:
-    name: Deploy to Pages
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy
-        id: deployment
-        uses: actions/deploy-pages@v4
+          script: |
+            const marker = '<!-- open.csr-pages-preview -->';
+            const pr = context.payload.pull_request;
+            const closed = context.payload.action === 'closed';
+            const url = `https://jwildfire.github.io/open.csr/pr/${pr.number}/`;
+            const devUrl = 'https://jwildfire.github.io/open.csr/dev/';
+            const body = closed
+              ? `${marker}\n### Site preview\n\nThis PR is closed — its preview pages now redirect to the [dev site](${devUrl}).`
+              : [
+                  `${marker}`,
+                  `### Site preview`,
+                  ``,
+                  `${url}`,
+                  ``,
+                  `Built from ${pr.head.sha.slice(0, 7)} · [workflow run](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}). ` +
+                    `The URL goes live a minute or so after GitHub Pages processes the update.`
+                ].join('\n');
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr.number,
+              per_page: 100
+            });
+            const existing = comments.find((c) => c.body && c.body.includes(marker));
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body
+              });
+            } else if (!closed) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr.number,
+                body
+              });
+            }

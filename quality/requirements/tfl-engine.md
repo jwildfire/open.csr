@@ -94,6 +94,41 @@ test cites appears below — both directions are enforced by `TFL-QC-002` and
 | TFL-ITER-006 | Regenerating a display whose spec id does not match its directory is an error. | Robustness | `test-regenerate.R` | Verified |
 | TFL-ITER-007 | Every display in the library has a current iteration on disk, referenced by both `current.json` and the ledger. | Quality evidence | `test-regenerate.R` | Verified |
 
+## Submission artifacts (RTF)
+
+Requirement source: [obot.roadmap #129](https://github.com/jwildfire/obot.roadmap/issues/129) part A.
+RTF is the format statisticians and regulatory reviewers exchange; a display that
+cannot leave the browser in submission form is not a filing artifact. Every RTF is
+produced by the same pipeline run — and from the same rendered cells — as the ARD
+and the HTML beside it.
+
+| ID | Requirement | Type | Verification | Status |
+|---|---|---|---|---|
+| TFL-RTF-001 | A rendered display encodes as a complete RTF document. | Functional | `test-rtf.R` | Verified |
+| TFL-RTF-002 | Every cell of the rendered display appears in the RTF, and row labels arrive without the non-breaking-space indentation the HTML renderer uses. | Correctness | `test-rtf.R` | Verified |
+| TFL-RTF-003 | The display title, population label, footnotes, source line and column headers with their subject counts travel into the RTF. | Functional | `test-rtf.R` | Verified |
+| TFL-RTF-004 | Listings and reduced in-text variants render as RTF as well as full summary tables do, each naming the variant it is. | Functional | `test-rtf.R` | Verified |
+| TFL-RTF-005 | `regenerate()` writes an RTF beside every rendered variant and records its filename and sha256 in the iteration manifest. | Traceability | `test-rtf.R` | Verified |
+| TFL-RTF-006 | Every committed display has an RTF for each variant whose hash matches the manifest, so a hand-edited artifact fails the build. | Quality evidence | `test-rtf.R` | Verified |
+
+## The values store
+
+Requirement source: [obot.roadmap #129](https://github.com/jwildfire/obot.roadmap/issues/129) part B.
+A value is a named number with provenance: declared in `library/values/values.yaml`,
+resolved by the pipeline against the committed ARDs, cited from prose by id. The
+JavaScript half of the contract — binding and the fidelity gate — is in
+[`text.md`](text.md).
+
+| ID | Requirement | Type | Verification | Status |
+|---|---|---|---|---|
+| TFL-VAL-001 | The values declaration validates: unique ids, a readable label on every value, and exactly one of an ARD source or a declared derivation. | Robustness | `test-values.R` | Verified |
+| TFL-VAL-002 | A malformed binding address or an operation outside the closed vocabulary is rejected with a message naming the value. | Robustness | `test-values.R` | Verified |
+| TFL-VAL-003 | Every ARD-sourced value equals its row in the committed ARD and carries that iteration's path and sha256. | Correctness | `test-values.R` | Verified |
+| TFL-VAL-004 | A derived value equals the arithmetic it declares over values defined before it; a forward reference is an error. | Correctness | `test-values.R` | Verified |
+| TFL-VAL-005 | A binding that resolves to no ARD row, or names a display with no committed iteration, fails the build rather than producing a blank value. | Robustness | `test-values.R` | Verified |
+| TFL-VAL-006 | Scaling and rounding are presentation only: the stored value stays the ARD's, and `formatted` carries the display format. | Correctness | `test-values.R` | Verified |
+| TFL-VAL-007 | The committed store matches a fresh build of the declaration, value for value. | Quality evidence | `test-values.R` | Verified |
+
 ## Quality framework guards
 
 | ID | Requirement | Type | Verification | Status |

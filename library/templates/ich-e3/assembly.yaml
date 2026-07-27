@@ -57,7 +57,7 @@ slots:
     text: [TXT-E3-0908]
 
   - section: "10.1"
-    text: [TXT-E3-1001]
+    text: [TXT-E3-1001, TXT-E3-1002]
     displays: [t-disposition]
 
   - section: "11.1"

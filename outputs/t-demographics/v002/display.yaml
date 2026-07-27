@@ -1,0 +1,57 @@
+id: t-demographics
+title: "Demographic and Baseline Characteristics"
+study: CDISCPILOT01
+population_label: "Safety Analysis Set"
+cutoff: "2014-07-01"
+source: "Source: adsl (pharmaverseadam), baseline vital signs from advs. Data cut-off: 2014-07-01."
+footnotes:
+  - "Percentages are based on the number of subjects in the safety analysis set for each treatment group."
+  - "Baseline weight, height and body mass index are the ADVS records flagged ABLFL = 'Y'."
+columns:
+  order: [Placebo, "Xanomeline Low Dose", "Xanomeline High Dose", Total]
+format:
+  digits:
+    p: 1
+    mean: 1
+    sd: 2
+    median: 1
+    min: 0
+    max: 0
+rows:
+  - { label: "Age (years)", section: true }
+  - { analysis: age, variable: AGE, pattern: "{N}", label: "n", indent: 1 }
+  - { analysis: age, variable: AGE, pattern: mean_sd, label: "Mean (SD)", indent: 1 }
+  - { analysis: age, variable: AGE, pattern: median, label: "Median", indent: 1 }
+  - { analysis: age, variable: AGE, pattern: range, label: "Min, Max", indent: 1 }
+  - { label: "Age group, n (%)", section: true }
+  - { analysis: agegr, variable: AGEGR1, levels: all, pattern: n_pct, indent: 1 }
+  - { label: "Sex, n (%)", section: true }
+  - { analysis: sex, variable: SEX, levels: all, pattern: n_pct, indent: 1,
+      level_order: [F, M] }
+  - { label: "Race, n (%)", section: true }
+  - { analysis: race, variable: RACE, levels: all, pattern: n_pct, indent: 1,
+      level_order: ["WHITE", "BLACK OR AFRICAN AMERICAN", "ASIAN", "AMERICAN INDIAN OR ALASKA NATIVE"] }
+  - { label: "Ethnicity, n (%)", section: true }
+  - { analysis: ethnic, variable: ETHNIC, levels: all, pattern: n_pct, indent: 1 }
+  - { label: "Baseline weight (kg)", section: true }
+  - { analysis: baseline, variable: BLWT, pattern: "{N}", label: "n", indent: 1 }
+  - { analysis: baseline, variable: BLWT, pattern: mean_sd, label: "Mean (SD)", indent: 1,
+      digits: { mean: 2, sd: 2 } }
+  - { analysis: baseline, variable: BLWT, pattern: median, label: "Median", indent: 1,
+      digits: { median: 2 } }
+  - { analysis: baseline, variable: BLWT, pattern: range, label: "Min, Max", indent: 1,
+      digits: { min: 2, max: 2 } }
+  - { label: "Baseline height (cm)", section: true }
+  - { analysis: baseline, variable: BLHT, pattern: mean_sd, label: "Mean (SD)", indent: 1,
+      digits: { mean: 1, sd: 2 } }
+  - { analysis: baseline, variable: BLHT, pattern: range, label: "Min, Max", indent: 1,
+      digits: { min: 1, max: 1 } }
+  - { label: "Baseline BMI (kg/m2)", section: true }
+  - { analysis: baseline, variable: BLBMI, pattern: mean_sd, label: "Mean (SD)", indent: 1,
+      digits: { mean: 2, sd: 2 } }
+  - { analysis: baseline, variable: BLBMI, pattern: range, label: "Min, Max", indent: 1,
+      digits: { min: 2, max: 2 } }
+variants:
+  post_text: {}
+  in_text:
+    title: "Demographic Characteristics (Summary)"

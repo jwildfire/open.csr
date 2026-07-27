@@ -1,6 +1,6 @@
 {
   "name": "open.csr",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Open-source Clinical Study Report builder: ARD-based TFLs + text library + report templates with end-to-end traceability",
   "type": "module",
   "license": "Apache-2.0",

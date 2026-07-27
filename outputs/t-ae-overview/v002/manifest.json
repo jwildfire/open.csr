@@ -1,0 +1,63 @@
+{
+  "display": "t-ae-overview",
+  "version": "v002",
+  "created": "2026-07-27T03:23:34Z",
+  "actor": "@obotclaw",
+  "change_request": "Add submission-format RTF artifacts to every variant (obot.roadmap #129 A).",
+  "regulatory_id": "AET01",
+  "git_commit": null,
+  "spec_hash": "sha256:6b0ba696f8cb4abffc3741982f36bb3bc4a47a68d84e0da1cb5cbf210c19a90a",
+  "display_hash": "sha256:04520444415a62c1f632d67d37a67e33c3f2a9dd4c9b7006cae32eb21bcdf2bb",
+  "ard_hash": "sha256:96f9dbfd9a826be61b5edbdd269eede08c59dc8f9b5748b66fa5bfdb72ded7a3",
+  "ard_rows": 88,
+  "ard_warnings": 0,
+  "ard_errors": 0,
+  "datasets": ["adsl", "adae"],
+  "data": [
+    {
+      "dataset": "adsl",
+      "hash": "sha256:f9a1c3605cb277363fba0add4c4228df6a288685586575be159718696c582107",
+      "n_row": 254,
+      "n_col": 60,
+      "source_pkg": "pharmaverseadam",
+      "source_version": "1.1.0"
+    },
+    {
+      "dataset": "adae",
+      "hash": "sha256:7d4237afdbf934742091e6b7e0a756fcba6a0e79fc9f35b578f86574baf8f7d4",
+      "n_row": 1191,
+      "n_col": 105,
+      "source_pkg": "pharmaverseadam",
+      "source_version": "1.1.0"
+    }
+  ],
+  "environment": {
+    "r": "4.3.3",
+    "os": "Darwin 23.6.0",
+    "packages": {
+      "cards": "0.6.1",
+      "cardx": "0.2.5",
+      "gtsummary": "2.3.0",
+      "gt": "1.0.0",
+      "dplyr": "1.1.4",
+      "pharmaverseadam": "1.1.0",
+      "jsonlite": "2.0.0",
+      "yaml": "2.3.10",
+      "digest": "0.6.37"
+    }
+  },
+  "variants": {
+    "post_text": {
+      "file": "table.html",
+      "rtf": "table.rtf",
+      "rtf_hash": "sha256:43dd7af23220306ce79644178f9d77694bfd1fe34d2cefbe83e055777e82dcef",
+      "n_rows": 10
+    },
+    "in_text": {
+      "file": "table-in-text.html",
+      "rtf": "table-in-text.rtf",
+      "rtf_hash": "sha256:ffb2e65f6f6914bff1921877877952d3cbae1c3e9b9263421266a9593ad5a0dd",
+      "n_rows": 10
+    }
+  }
+}

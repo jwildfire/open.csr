@@ -1,0 +1,102 @@
+# Named values for CDISCPILOT01 (obot.roadmap #129 B).
+#
+# A value is a number the report reuses by NAME. Prose already binds numbers by
+# ARD address; the unit a writer actually reuses is "randomized N", "median age",
+# "the high-dose AE rate" — named once, cited everywhere, and gated everywhere.
+#
+# This file is SOURCE (design D9): humans and agents edit it, the pipeline
+# regenerates `outputs/values/values.json`. Never edit the generated store.
+#
+# Two kinds of value:
+#   source:  a binding address into a committed ARD — <display>:<analysis>:<stat>
+#            with the contract §5 qualifiers. Exactly one ARD row must match.
+#   derived: a declared arithmetic over other values (sum, difference, ratio,
+#            percent). Structural rather than a free-text expression, so the R
+#            builder and the JavaScript fidelity gate can each evaluate it and
+#            agree without either of them running the other's code.
+#
+# `format` is presentation only: `scale` multiplies (proportions are stored in
+# [0,1], contract §5) and `digits` fixes the decimals. It never changes the
+# stored value.
+
+study: CDISCPILOT01
+
+values:
+  - id: randomised-n
+    label: "Subjects randomised"
+    source: t-disposition:randomised:n;group=Total
+    format: { digits: 0 }
+    notes: "The denominator for every disposition percentage in section 10.1."
+
+  - id: treated-n
+    label: "Subjects treated (safety analysis set)"
+    source: t-disposition:treated:n;group=Total
+    format: { digits: 0 }
+
+  - id: completed-n
+    label: "Subjects who completed the study"
+    source: t-disposition:completed:n;group=Total
+    format: { digits: 0 }
+
+  - id: discontinued-n
+    label: "Subjects who discontinued"
+    source: t-disposition:discontinued:n;group=Total
+    format: { digits: 0 }
+
+  - id: completed-pct
+    label: "Percentage of randomised subjects who completed"
+    source: t-disposition:completed:p;group=Total
+    format: { scale: 100, digits: 1 }
+
+  - id: age-median-total
+    label: "Median age (years), all subjects"
+    source: t-demographics:age:median;group=Total
+    format: { digits: 1 }
+
+  - id: female-n-total
+    label: "Female subjects"
+    source: t-demographics:sex:n;group=Total;variable_level=F
+    format: { digits: 0 }
+
+  - id: ae-any-n-total
+    label: "Subjects with at least one adverse event"
+    source: t-ae-overview:any_ae:n;group=Total
+    format: { digits: 0 }
+
+  - id: ae-any-n-placebo
+    label: "Subjects with at least one adverse event (Placebo)"
+    source: t-ae-overview:any_ae:n;group=Placebo
+    format: { digits: 0 }
+
+  - id: ae-any-n-low
+    label: "Subjects with at least one adverse event (Xanomeline Low Dose)"
+    source: t-ae-overview:any_ae:n;group=Xanomeline Low Dose
+    format: { digits: 0 }
+
+  - id: ae-any-n-high
+    label: "Subjects with at least one adverse event (Xanomeline High Dose)"
+    source: t-ae-overview:any_ae:n;group=Xanomeline High Dose
+    format: { digits: 0 }
+
+  - id: ae-any-pct-high
+    label: "Percentage of high-dose subjects with at least one adverse event"
+    source: t-ae-overview:any_ae:p;group=Xanomeline High Dose
+    format: { scale: 100, digits: 1 }
+
+  - id: safety-n-high
+    label: "Subjects in the safety analysis set (Xanomeline High Dose)"
+    source: t-ae-overview:any_ae:N;group=Xanomeline High Dose
+    format: { digits: 0 }
+
+  # Derived values: arithmetic the report states in prose, computed once here
+  # rather than in a sentence. Every input is itself a named value, so the chain
+  # back to an ARD row stays unbroken.
+  - id: ae-any-n-xanomeline
+    label: "Subjects with at least one adverse event, both xanomeline arms"
+    derived: { op: sum, inputs: [ae-any-n-low, ae-any-n-high] }
+    format: { digits: 0 }
+
+  - id: ae-excess-high-vs-placebo
+    label: "Additional subjects with an adverse event, high dose versus placebo"
+    derived: { op: difference, inputs: [ae-any-n-high, ae-any-n-placebo] }
+    format: { digits: 0 }
