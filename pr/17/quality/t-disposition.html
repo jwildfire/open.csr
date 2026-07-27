@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Requirement-traced test evidence for the Subject Disposition component of open.csr." />
+    <title>Subject Disposition evidence · open.csr</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23111a24'/%3E%3Crect x='3' y='3' width='7' height='1.4' fill='%23e7edf5'/%3E%3Crect x='3' y='6' width='10' height='1.4' fill='%235aa9e6'/%3E%3Crect x='3' y='9' width='6' height='1.4' fill='%23e7edf5'/%3E%3Crect x='3' y='12' width='9' height='1.4' fill='%235aa9e6'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="../site.css" />
+    <script>
+      // Theme is resolved before first paint so the page never flashes the
+      // wrong surface. No storage available (private mode) simply falls back to
+      // the OS preference.
+      (function () {
+        try {
+          var saved = localStorage.getItem('opencsr-theme');
+          if (saved) document.documentElement.setAttribute('data-theme', saved);
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body class="">
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <a class="site-name" href="../index.html">
+        <span class="mark" aria-hidden="true"></span>
+        <span>
+          <strong>open.csr</strong>
+          <em>Versioned numbers, versioned words, one traceable loop.</em>
+        </span>
+      </a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="../index.html">Home</a><a href="../demo/index.html">Demo</a><a href="../quality/index.html">Quality</a><a href="../docs/index.html">Design &amp; Research</a>
+        <button
+          type="button"
+          class="theme-toggle"
+          aria-label="Switch between light and dark"
+          title="Switch between light and dark"
+        >
+          <span aria-hidden="true">◐</span>
+        </button>
+        <a class="icon-link" href="https://github.com/jwildfire/open.csr" aria-label="Source on GitHub" title="Source on GitHub">
+          <svg viewBox="0 0 16 16" width="17" height="17" fill="currentColor" aria-hidden="true">
+            <path
+              d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
+            />
+          </svg>
+        </a>
+      </nav>
+    </header>
+    
+    <main class="site-main" id="main"><p class="crumb"><a href="index.html">Quality</a> / <span class="mono">t-disposition</span></p>
+<header class="page-head"><p class="eyebrow">Display</p><h1>Subject Disposition — evidence</h1><p class="lede">Screened, randomised, treated, completed and discontinued counts with reasons for discontinuation, over the ITT set.</p></header>
+<p class="sub"><a href="../gallery/t-disposition.html">Open the display →</a></p>
+<section class="stat-row">
+<div class="stat"><span class="stat-value">14</span><span class="stat-label">reviewed requirements</span><span class="stat-sub">displays.md</span></div>
+<div class="stat"><span class="stat-value">4</span><span class="stat-label">test records</span><span class="stat-sub">r-unit</span></div>
+<div class="stat"><span class="stat-value">0</span><span class="stat-label">failing</span><span class="stat-sub">4 passing</span></div>
+<div class="stat"><span class="stat-value">29%</span><span class="stat-label">requirement coverage</span><span class="stat-sub">4/14 evidenced</span></div>
+</section>
+<section class="panel"><h2>Requirements</h2>
+<div class="scroll"><table class="data"><thead><tr><th>ID</th><th>Area</th><th>Requirement</th><th>Evidence type</th><th>Result</th></tr></thead><tbody><tr><td class="mono">DSP-DEMO-001</td><td></td><td>The age summary (n, mean, SD, median, min, max) by treatment arm equals the value computed directly from ADSL, at the display&#39;s declared precision.</td><td></td><td><span class="chip chip-muted">no test</span></td></tr><tr><td class="mono">DSP-DEMO-002</td><td></td><td>Sex, race and age-group counts and percentages by treatment arm and overall equal the values computed directly from ADSL.</td><td></td><td><span class="chip chip-muted">no test</span></td></tr><tr><td class="mono">DSP-DISP-001</td><td></td><td>Randomised, treated, completed and discontinued counts reproduce <code>EOSSTT</code> by treatment arm, with percentages based on randomised subjects.</td><td></td><td><span class="chip chip-good">1 passing</span></td></tr><tr><td class="mono">DSP-DISP-002</td><td></td><td>The derived discontinuation reasons partition the discontinued subjects exactly, in every column including Total, and the death count matches <code>DTHFL</code>.</td><td></td><td><span class="chip chip-good">1 passing</span></td></tr><tr><td class="mono">DSP-EXP-001</td><td></td><td>Duration-of-exposure statistics equal those computed directly from the ADEX <code>TDURD</code> parameter for each treatment arm.</td><td></td><td><span class="chip chip-muted">no test</span></td></tr><tr><td class="mono">DSP-EXP-002</td><td></td><td>Cumulative exposure categories are monotone non-increasing and each equals the number of subjects reaching that duration threshold.</td><td></td><td><span class="chip chip-muted">no test</span></td></tr><tr><td class="mono">DSP-AE-001</td><td></td><td>Any-AE and serious-AE subject counts and percentages equal the values computed directly from ADAE over the safety analysis set.</td><td></td><td><span class="chip chip-muted">no test</span></td></tr><tr><td class="mono">DSP-AE-002</td><td></td><td>Severity, seriousness and relatedness rows never exceed the any-AE row in any column — a subject counted in a subset must be counted in the whole.</td><td></td><td><span class="chip chip-muted">no test</span></td></tr><tr><td class="mono">DSP-AE-003</td><td></td><td>The event-count row supplied by <code>custom.R</code> counts ADAE records, not subjects, and exceeds the number of subjects reporting them.</td><td></td><td><span class="chip chip-muted">no test</span></td></tr><tr><td class="mono">DSP-AE-004</td><td></td><td>System organ class and preferred term subject counts equal the values computed directly from ADAE, with each subject counted once per term.</td><td></td><td><span class="chip chip-muted">no test</span></td></tr><tr><td class="mono">DSP-AE-005</td><td></td><td>The in-text variant of AET02 applies the 5% threshold declared in its spec: terms reaching 5% in any treatment group are shown, terms below it in every group are not, and the full display is unaffected.</td><td></td><td><span class="chip chip-muted">no test</span></td></tr><tr><td class="mono">DSP-SAE-001</td><td></td><td>The serious-AE listing has exactly one row per <code>AESER == &quot;Y&quot;</code> record, reports the recorded preferred terms and subjects, and is sorted as its spec declares.</td><td></td><td><span class="chip chip-muted">no test</span></td></tr><tr><td class="mono">DSP-ALL-001</td><td></td><td>Every display in the library renders a table containing real numbers — no shells, no placeholder output.</td><td></td><td><span class="chip chip-good">1 passing</span></td></tr><tr><td class="mono">DSP-ALL-002</td><td></td><td>Every display declares a regulatory identifier, a source line naming the data cut-off, and at least one footnote.</td><td></td><td><span class="chip chip-good">1 passing</span></td></tr></tbody></table></div>
+</section>
+<section class="panel"><h2>Test records</h2>
+<div class="scroll"><table class="data"><thead><tr><th>Result</th><th>Suite</th><th>Test</th><th>Requirements</th><th>File</th></tr></thead><tbody><tr><td><span class="chip chip-good">pass</span></td><td class="mono">r-unit</td><td>DSP-ALL-001: every display renders a table that actually contains numbers (#1)</td><td class="mono">DSP-ALL-001</td><td class="mono trunc">test-displays.R</td></tr><tr><td><span class="chip chip-good">pass</span></td><td class="mono">r-unit</td><td>DSP-ALL-002: every display declares a regulatory identifier and a source line (#1)</td><td class="mono">DSP-ALL-002</td><td class="mono trunc">test-displays.R</td></tr><tr><td><span class="chip chip-good">pass</span></td><td class="mono">r-unit</td><td>DSP-DISP-001: disposition counts reproduce EOSSTT (#1)</td><td class="mono">DSP-DISP-001</td><td class="mono trunc">test-displays.R</td></tr><tr><td><span class="chip chip-good">pass</span></td><td class="mono">r-unit</td><td>DSP-DISP-002: the derived discontinuation reasons partition the discontinuations (#1)</td><td class="mono">DSP-DISP-002</td><td class="mono trunc">test-displays.R</td></tr></tbody></table></div>
+</section>
+<section class="panel"><h2>Traceability</h2><dl class="facts wide"><div><dt>ADaM datasets</dt><dd class="mono">adsl</dd></div><div><dt>ARD</dt><dd class="mono">outputs/t-disposition/v002/ard.json</dd></div><div><dt>ARD hash</dt><dd class="mono">sha256:26f56529e5e4b993c332b35a296957e7fcb8dcd3a8cf19ed6a3802c19bd42f89</dd></div><div><dt>Display spec</dt><dd class="mono">library/tfl/t-disposition/display.yaml</dd></div><div><dt>Spec hash</dt><dd class="mono">sha256:8c432e510cf8fe58349f0315cb25c51231c261a2276707cfd7168cd064a3d62d</dd></div><div><dt>Iteration</dt><dd class="mono">v002</dd></div></dl></section>
+<section class="panel"><h2>Provenance</h2><dl class="facts wide"><div><dt>Generated</dt><dd class="mono">2026-07-27T04:40:10.692Z</dd></div><div><dt>Environment</dt><dd class="mono">os Darwin 23.6.0 · node v24.14.0 · vitest 2.1.9 · r 4.3.3</dd></div><div><dt>CI run</dt><dd><span class="sub">Not recorded for this evidence set</span></dd></div></dl></section></main>
+    <footer class="site-footer">
+      <p>
+        <strong>open.csr</strong> — an open-source Clinical Study Report builder. Numbers are
+        computed by versioned specs, serialized as ARDs, and bound into prose that never restates
+        them.
+      </p>
+      <p>
+        Demo data is CDISC Pilot 01 via
+        <a href="https://github.com/pharmaverse/pharmaverseadam">pharmaverseadam</a> · everything on
+        this site is precomputed and static ·
+        <a href="https://github.com/jwildfire/open.csr">source on GitHub</a> ·
+        <a href="https://jwildfire.github.io/obot.roadmap/">obot roadmap</a>.
+      </p>
+    </footer>
+    <script>
+      // Mark the nav link for this page; works at any mount depth.
+      (function () {
+        var here = location.pathname.replace(/\/$/, '/index.html');
+        var links = document.querySelectorAll('.site-nav a[href]');
+        for (var i = 0; i < links.length; i += 1) {
+          var href = links[i].getAttribute('href');
+          if (!href || href.indexOf('http') === 0) continue;
+          if (new URL(href, location.href).pathname === here) {
+            links[i].classList.add('current');
+            links[i].setAttribute('aria-current', 'page');
+          }
+        }
+      })();
+
+      // Theme toggle: OS preference by default, explicit choice remembered.
+      (function () {
+        var button = document.querySelector('.theme-toggle');
+        if (!button) return;
+        button.addEventListener('click', function () {
+          var root = document.documentElement;
+          var current =
+            root.getAttribute('data-theme') ||
+            (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+          var next = current === 'dark' ? 'light' : 'dark';
+          root.setAttribute('data-theme', next);
+          try {
+            localStorage.setItem('opencsr-theme', next);
+          } catch (e) {}
+        });
+      })();
+
+      // Tabs on the display detail pages.
+      (function () {
+        var groups = document.querySelectorAll('.tabs');
+        for (var g = 0; g < groups.length; g += 1) {
+          (function (group) {
+            var tabs = group.querySelectorAll('.tab');
+            var panels = group.querySelectorAll('.tab-panel');
+            group.addEventListener('click', function (event) {
+              var tab = event.target.closest('.tab');
+              if (!tab) return;
+              for (var i = 0; i < tabs.length; i += 1) {
+                var on = tabs[i] === tab;
+                tabs[i].classList.toggle('current', on);
+                tabs[i].setAttribute('aria-selected', on ? 'true' : 'false');
+                if (panels[i]) {
+                  panels[i].classList.toggle('current', on);
+                  panels[i].hidden = !on;
+                }
+              }
+            });
+          })(groups[g]);
+        }
+      })();
+
+      // ARD row filter.
+      (function () {
+        var inputs = document.querySelectorAll('.ard-filter');
+        for (var i = 0; i < inputs.length; i += 1) {
+          (function (input) {
+            input.addEventListener('input', function () {
+              var needle = input.value.toLowerCase();
+              var table = input.closest('.tab-panel, main').querySelector('.ard-table tbody');
+              if (!table) return;
+              var rows = table.rows;
+              for (var r = 0; r < rows.length; r += 1) {
+                rows[r].hidden = needle && rows[r].textContent.toLowerCase().indexOf(needle) === -1;
+              }
+            });
+          })(inputs[i]);
+        }
+      })();
+    </script>
+  </body>
+</html>

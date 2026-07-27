@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="The values store: every number this report reuses by name, its display format, the ARD row or declared derivation it comes from, and the prose that cites it." />
+    <title>Values · open.csr</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23111a24'/%3E%3Crect x='3' y='3' width='7' height='1.4' fill='%23e7edf5'/%3E%3Crect x='3' y='6' width='10' height='1.4' fill='%235aa9e6'/%3E%3Crect x='3' y='9' width='6' height='1.4' fill='%23e7edf5'/%3E%3Crect x='3' y='12' width='9' height='1.4' fill='%235aa9e6'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="../site.css" />
+    <script>
+      // Theme is resolved before first paint so the page never flashes the
+      // wrong surface. No storage available (private mode) simply falls back to
+      // the OS preference.
+      (function () {
+        try {
+          var saved = localStorage.getItem('opencsr-theme');
+          if (saved) document.documentElement.setAttribute('data-theme', saved);
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body class="">
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <a class="site-name" href="../index.html">
+        <span class="mark" aria-hidden="true"></span>
+        <span>
+          <strong>open.csr</strong>
+          <em>Versioned numbers, versioned words, one traceable loop.</em>
+        </span>
+      </a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="../index.html">Home</a><a href="../demo/index.html">Demo</a><a href="../quality/index.html">Quality</a><a href="../docs/index.html">Design &amp; Research</a>
+        <button
+          type="button"
+          class="theme-toggle"
+          aria-label="Switch between light and dark"
+          title="Switch between light and dark"
+        >
+          <span aria-hidden="true">◐</span>
+        </button>
+        <a class="icon-link" href="https://github.com/jwildfire/open.csr" aria-label="Source on GitHub" title="Source on GitHub">
+          <svg viewBox="0 0 16 16" width="17" height="17" fill="currentColor" aria-hidden="true">
+            <path
+              d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
+            />
+          </svg>
+        </a>
+      </nav>
+    </header>
+    
+    <main class="site-main" id="main"><header class="page-head"><p class="eyebrow">Values</p><h2>Named numbers</h2><p class="lede">Prose binds numbers by address today; the unit a writer reuses is a <em>name</em>. A value is declared once in <span class="mono">library/values/values.yaml</span>, resolved by the pipeline against the committed Analysis Results Data, and cited from prose as <span class="mono">{{value:id}}</span>. The build re-derives every one of them from the same ARDs the report is built from, so a value that has drifted from its source fails exactly the way a typed number does.</p></header>
+<div class="stat-row"><div class="stat"><span class="stat-value">15</span><span class="stat-label">values declared</span><span class="stat-sub">each one named, formatted and traced</span></div><div class="stat"><span class="stat-value">13</span><span class="stat-label">bound to an ARD row</span><span class="stat-sub">exactly one row, or the build fails</span></div><div class="stat"><span class="stat-value">2</span><span class="stat-label">derived from other values</span><span class="stat-sub">declared arithmetic, re-evaluated at build</span></div><div class="stat"><span class="stat-value">7</span><span class="stat-label">cited in prose</span><span class="stat-sub">by name rather than by address</span></div></div>
+<p class="callout">All 15 values were re-derived from the committed ARDs at the last assembly and matched.</p>
+<section class="app-block"><h3>The values store</h3><p class="sub">Generated from <span class="mono">library/values/values.yaml</span> into <span class="mono">outputs/values/values.json</span>. Source is edited; the pipeline regenerates (design D9).</p><div class="scroll"><table class="data values-table"><thead><tr><th>Id</th><th>Label</th><th>Value</th><th>Kind</th><th>Provenance</th><th>Cited by</th></tr></thead><tbody><tr id="randomised-n" data-app-value="randomised-n"><td class="mono">randomised-n</td><td>Subjects randomised</td><td class="num mono">254</td><td><span class="chip chip-good">ARD</span></td><td><span class="mono">t-disposition:randomised:n;group=Total</span><br><span class="sub mono">outputs/t-disposition/v002/ard.json · 26f5652</span></td><td><a class="mono" href="../text/index.html#TXT-E3-1002">TXT-E3-1002</a></td></tr><tr id="treated-n" data-app-value="treated-n"><td class="mono">treated-n</td><td>Subjects treated (safety analysis set)</td><td class="num mono">254</td><td><span class="chip chip-good">ARD</span></td><td><span class="mono">t-disposition:treated:n;group=Total</span><br><span class="sub mono">outputs/t-disposition/v002/ard.json · 26f5652</span></td><td><a class="mono" href="../text/index.html#TXT-E3-1002">TXT-E3-1002</a></td></tr><tr id="completed-n" data-app-value="completed-n"><td class="mono">completed-n</td><td>Subjects who completed the study</td><td class="num mono">110</td><td><span class="chip chip-good">ARD</span></td><td><span class="mono">t-disposition:completed:n;group=Total</span><br><span class="sub mono">outputs/t-disposition/v002/ard.json · 26f5652</span></td><td><a class="mono" href="../text/index.html#TXT-E3-1002">TXT-E3-1002</a></td></tr><tr id="discontinued-n" data-app-value="discontinued-n"><td class="mono">discontinued-n</td><td>Subjects who discontinued</td><td class="num mono">144</td><td><span class="chip chip-good">ARD</span></td><td><span class="mono">t-disposition:discontinued:n;group=Total</span><br><span class="sub mono">outputs/t-disposition/v002/ard.json · 26f5652</span></td><td><a class="mono" href="../text/index.html#TXT-E3-1002">TXT-E3-1002</a></td></tr><tr id="completed-pct" data-app-value="completed-pct"><td class="mono">completed-pct</td><td>Percentage of randomised subjects who completed</td><td class="num mono">43.3</td><td><span class="chip chip-good">ARD</span></td><td><span class="mono">t-disposition:completed:p;group=Total</span><br><span class="sub mono">outputs/t-disposition/v002/ard.json · 26f5652</span></td><td><a class="mono" href="../text/index.html#TXT-E3-1002">TXT-E3-1002</a></td></tr><tr id="age-median-total" data-app-value="age-median-total"><td class="mono">age-median-total</td><td>Median age (years), all subjects</td><td class="num mono">77.0</td><td><span class="chip chip-good">ARD</span></td><td><span class="mono">t-demographics:age:median;group=Total</span><br><span class="sub mono">outputs/t-demographics/v002/ard.json · e03ca47</span></td><td><span class="muted">—</span></td></tr><tr id="female-n-total" data-app-value="female-n-total"><td class="mono">female-n-total</td><td>Female subjects</td><td class="num mono">143</td><td><span class="chip chip-good">ARD</span></td><td><span class="mono">t-demographics:sex:n;group=Total;variable_level=F</span><br><span class="sub mono">outputs/t-demographics/v002/ard.json · e03ca47</span></td><td><span class="muted">—</span></td></tr><tr id="ae-any-n-total" data-app-value="ae-any-n-total"><td class="mono">ae-any-n-total</td><td>Subjects with at least one adverse event</td><td class="num mono">217</td><td><span class="chip chip-good">ARD</span></td><td><span class="mono">t-ae-overview:any_ae:n;group=Total</span><br><span class="sub mono">outputs/t-ae-overview/v002/ard.json · 96f9dbf</span></td><td><a class="mono" href="../text/index.html#TXT-E3-1002">TXT-E3-1002</a></td></tr><tr id="ae-any-n-placebo" data-app-value="ae-any-n-placebo"><td class="mono">ae-any-n-placebo</td><td>Subjects with at least one adverse event (Placebo)</td><td class="num mono">65</td><td><span class="chip chip-good">ARD</span></td><td><span class="mono">t-ae-overview:any_ae:n;group=Placebo</span><br><span class="sub mono">outputs/t-ae-overview/v002/ard.json · 96f9dbf</span></td><td><span class="muted">—</span></td></tr><tr id="ae-any-n-low" data-app-value="ae-any-n-low"><td class="mono">ae-any-n-low</td><td>Subjects with at least one adverse event (Xanomeline Low Dose)</td><td class="num mono">84</td><td><span class="chip chip-good">ARD</span></td><td><span class="mono">t-ae-overview:any_ae:n;group=Xanomeline Low Dose</span><br><span class="sub mono">outputs/t-ae-overview/v002/ard.json · 96f9dbf</span></td><td><span class="muted">—</span></td></tr><tr id="ae-any-n-high" data-app-value="ae-any-n-high"><td class="mono">ae-any-n-high</td><td>Subjects with at least one adverse event (Xanomeline High Dose)</td><td class="num mono">68</td><td><span class="chip chip-good">ARD</span></td><td><span class="mono">t-ae-overview:any_ae:n;group=Xanomeline High Dose</span><br><span class="sub mono">outputs/t-ae-overview/v002/ard.json · 96f9dbf</span></td><td><span class="muted">—</span></td></tr><tr id="ae-any-pct-high" data-app-value="ae-any-pct-high"><td class="mono">ae-any-pct-high</td><td>Percentage of high-dose subjects with at least one adverse event</td><td class="num mono">94.4</td><td><span class="chip chip-good">ARD</span></td><td><span class="mono">t-ae-overview:any_ae:p;group=Xanomeline High Dose</span><br><span class="sub mono">outputs/t-ae-overview/v002/ard.json · 96f9dbf</span></td><td><span class="muted">—</span></td></tr><tr id="safety-n-high" data-app-value="safety-n-high"><td class="mono">safety-n-high</td><td>Subjects in the safety analysis set (Xanomeline High Dose)</td><td class="num mono">72</td><td><span class="chip chip-good">ARD</span></td><td><span class="mono">t-ae-overview:any_ae:N;group=Xanomeline High Dose</span><br><span class="sub mono">outputs/t-ae-overview/v002/ard.json · 96f9dbf</span></td><td><span class="muted">—</span></td></tr><tr id="ae-any-n-xanomeline" data-app-value="ae-any-n-xanomeline"><td class="mono">ae-any-n-xanomeline</td><td>Subjects with at least one adverse event, both xanomeline arms</td><td class="num mono">152</td><td><span class="chip chip-info">derived</span></td><td><span class="mono">sum(ae-any-n-low, ae-any-n-high)</span></td><td><span class="muted">—</span></td></tr><tr id="ae-excess-high-vs-placebo" data-app-value="ae-excess-high-vs-placebo"><td class="mono">ae-excess-high-vs-placebo</td><td>Additional subjects with an adverse event, high dose versus placebo</td><td class="num mono">3</td><td><span class="chip chip-info">derived</span></td><td><span class="mono">difference(ae-any-n-high, ae-any-n-placebo)</span></td><td><a class="mono" href="../text/index.html#TXT-E3-1002">TXT-E3-1002</a></td></tr></tbody></table></div></section></main>
+    <footer class="site-footer">
+      <p>
+        <strong>open.csr</strong> — an open-source Clinical Study Report builder. Numbers are
+        computed by versioned specs, serialized as ARDs, and bound into prose that never restates
+        them.
+      </p>
+      <p>
+        Demo data is CDISC Pilot 01 via
+        <a href="https://github.com/pharmaverse/pharmaverseadam">pharmaverseadam</a> · everything on
+        this site is precomputed and static ·
+        <a href="https://github.com/jwildfire/open.csr">source on GitHub</a> ·
+        <a href="https://jwildfire.github.io/obot.roadmap/">obot roadmap</a>.
+      </p>
+    </footer>
+    <script>
+      // Mark the nav link for this page; works at any mount depth.
+      (function () {
+        var here = location.pathname.replace(/\/$/, '/index.html');
+        var links = document.querySelectorAll('.site-nav a[href]');
+        for (var i = 0; i < links.length; i += 1) {
+          var href = links[i].getAttribute('href');
+          if (!href || href.indexOf('http') === 0) continue;
+          if (new URL(href, location.href).pathname === here) {
+            links[i].classList.add('current');
+            links[i].setAttribute('aria-current', 'page');
+          }
+        }
+      })();
+
+      // Theme toggle: OS preference by default, explicit choice remembered.
+      (function () {
+        var button = document.querySelector('.theme-toggle');
+        if (!button) return;
+        button.addEventListener('click', function () {
+          var root = document.documentElement;
+          var current =
+            root.getAttribute('data-theme') ||
+            (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+          var next = current === 'dark' ? 'light' : 'dark';
+          root.setAttribute('data-theme', next);
+          try {
+            localStorage.setItem('opencsr-theme', next);
+          } catch (e) {}
+        });
+      })();
+
+      // Tabs on the display detail pages.
+      (function () {
+        var groups = document.querySelectorAll('.tabs');
+        for (var g = 0; g < groups.length; g += 1) {
+          (function (group) {
+            var tabs = group.querySelectorAll('.tab');
+            var panels = group.querySelectorAll('.tab-panel');
+            group.addEventListener('click', function (event) {
+              var tab = event.target.closest('.tab');
+              if (!tab) return;
+              for (var i = 0; i < tabs.length; i += 1) {
+                var on = tabs[i] === tab;
+                tabs[i].classList.toggle('current', on);
+                tabs[i].setAttribute('aria-selected', on ? 'true' : 'false');
+                if (panels[i]) {
+                  panels[i].classList.toggle('current', on);
+                  panels[i].hidden = !on;
+                }
+              }
+            });
+          })(groups[g]);
+        }
+      })();
+
+      // ARD row filter.
+      (function () {
+        var inputs = document.querySelectorAll('.ard-filter');
+        for (var i = 0; i < inputs.length; i += 1) {
+          (function (input) {
+            input.addEventListener('input', function () {
+              var needle = input.value.toLowerCase();
+              var table = input.closest('.tab-panel, main').querySelector('.ard-table tbody');
+              if (!table) return;
+              var rows = table.rows;
+              for (var r = 0; r < rows.length; r += 1) {
+                rows[r].hidden = needle && rows[r].textContent.toLowerCase().indexOf(needle) === -1;
+              }
+            });
+          })(inputs[i]);
+        }
+      })();
+    </script>
+  </body>
+</html>
