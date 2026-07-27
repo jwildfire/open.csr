@@ -63,7 +63,8 @@
     "QC-DEMO-026": "Sections the report does not populate are dimmed as a whole row and keep the tooltip that explains why, while populated sections stay at full contrast; a group with no items renders as a heading rather than an empty folder.",
     "QC-DEMO-027": "The Values pane shows every value's name, number and provenance — an ARD address with its iteration and hash, or the declared arithmetic for a derived value — and the text blocks that cite it.",
     "QC-DEMO-028": "The Values pane states the verdict of the gate that re-derived the store against the committed ARDs, and renders a documented empty state when no store exists.",
-    "QC-DEMO-029": "Values are a collection of the study in the navigation tree, listed with their formatted numbers, and selecting one focuses it in the pane rather than introducing a fourth selection key."
+    "QC-DEMO-029": "Values are a collection of the study in the navigation tree, listed with their formatted numbers, and selecting one focuses it in the pane rather than introducing a fourth selection key.",
+    "QC-SITE-008": "`site/site.css` parses as a whole: every block is closed, no block is closed that was never opened, and no declaration sits outside a rule — so no rule in the file can be silently dead in the browser."
   },
   "rows": [
     {
@@ -622,6 +623,15 @@
       "source": "#129",
       "evidence": "js-unit",
       "link": "site-demo.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-SITE-008",
+      "area": "Site",
+      "text": "`site/site.css` parses as a whole: every block is closed, no block is closed that was never opened, and no declaration sits outside a rule — so no rule in the file can be silently dead in the browser.",
+      "source": "open.csr#16",
+      "evidence": "js-unit",
+      "link": "site-css.test.js",
       "status": "draft"
     }
   ]

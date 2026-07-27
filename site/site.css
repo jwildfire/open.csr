@@ -2642,6 +2642,8 @@ body.app-page .app-bar {
   font: 600 0.82rem/1.4 var(--sans);
   color: var(--ink);
   font-variant-numeric: tabular-nums;
+}
+
 /* --- Expand and collapse (open.csr #10) ---------------------------------- */
 
 /* Screen-reader-only text: the twisty is a chevron to the eye and a named
@@ -2728,4 +2730,113 @@ body.app-page .app-bar {
 
 .nav-section.is-empty:hover {
   opacity: 1;
+}
+
+/* --- Editing from the reading view (#129 C, open.csr#15) ------------------
+   The Reader gains one control per block and an empty drawer beneath it. The
+   editor itself is not duplicated here: site/demo/reader-edit.js MOVES the
+   block's editor out of the Text pane into this drawer and puts it back when the
+   drawer closes, so there is one editor, one draft and one set of DOM ids per
+   block however the writer got to it.
+
+   While a draft differs from the committed source the block says so — a reading
+   view that silently shows uncommitted prose would be lying about the report.
+   -------------------------------------------------------------------------- */
+
+.rdr-edit {
+  margin-left: 0.6rem;
+  font: 600 0.7rem/1 var(--sans);
+  color: var(--accent);
+  background: var(--card);
+  border: 1px solid var(--accent-rule);
+  border-radius: var(--radius-sm);
+  padding: 0.2rem 0.55rem;
+  cursor: pointer;
+}
+
+.rdr-edit:hover,
+.rdr-edit:focus-visible {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+.rdr-edit[disabled] {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.rdr-drawer {
+  margin: 0.6rem 0 1.2rem;
+  border-left: 2px solid var(--accent);
+  padding-left: 1rem;
+  background: var(--paper-2);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+/* The editor, once adopted: no top rule (the drawer already frames it), no
+   preview column — the block above the drawer IS the preview, and the same words
+   twice is not a second opinion, it is noise — and no bar of its own, because the
+   block's Edit control is the one that opened this and the one that closes it. */
+.tb-edit.in-reader {
+  margin-top: 0;
+  border-top: 0;
+  padding: 0.8rem 0.8rem 0.8rem 0;
+}
+
+.tb-edit.in-reader .tbe-bar {
+  display: none;
+}
+
+.tb-edit.in-reader .tbe-panel {
+  margin-top: 0;
+}
+
+.tb-edit.in-reader .tbe-grid {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.tb-edit.in-reader .tbe-preview,
+.tb-edit.in-reader .tbe-preview + .sub,
+.tb-edit.in-reader .tbe-grid .tbe-pane:last-child {
+  display: none;
+}
+
+/* The block being edited, and what it is showing. */
+.csr-text.is-editing {
+  scroll-margin-top: 5rem;
+}
+
+.csr-text[data-reader-state='draft'] .csr-prose,
+.csr-text[data-reader-state='failing'] .csr-prose {
+  border-left: 2px solid var(--warn, #b45309);
+  padding-left: 0.9rem;
+}
+
+.rdr-draft-note {
+  font: 600 0.72rem/1.4 var(--sans);
+  color: var(--warn, #b45309);
+  margin: 0.5rem 0 0.2rem;
+}
+
+/* The block reference normally tucks up under the prose; with a draft notice
+   between them it must not climb over it. */
+.rdr-draft-note:not([hidden]) + .block-ref {
+  margin-top: 0;
+}
+
+.csr-text[data-reader-state='failing'] .rdr-draft-note {
+  color: var(--bad, #b91c1c);
+}
+
+/* A draft's computed values are marked as the document marks them, minus the
+   trace affordance: the trace panel answers questions about the committed
+   report, and a draft is not in it. */
+.binding.is-draft {
+  border-bottom-style: dashed;
+  cursor: default;
+}
+
+.csr-prose .fidelity-violation {
+  background: var(--bad-soft, rgba(185, 28, 28, 0.12));
+  border-bottom: 2px solid var(--bad, #b91c1c);
 }

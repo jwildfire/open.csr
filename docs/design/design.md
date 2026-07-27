@@ -219,6 +219,20 @@ The Text pane is no longer read-only, and the distinction against §12 is exact:
 
 **Requirements:** `TXT-EDIT-001` … `TXT-EDIT-012` in [`quality/requirements/text.md`](../../quality/requirements/text.md).
 
+## 14. Editing from the reading view (2026-07-27)
+
+§13 put editing in the Text pane. Reading happens in the Documents pane, so a writer who noticed a sentence while reading the report had to leave the report to change it. This closes that seam — **Option C** of [obot.roadmap#129](https://github.com/jwildfire/obot.roadmap/issues/129) part C, chosen by @jwildfire over three alternatives.
+
+**What it does.** Every text block in the reading view carries an Edit control. It opens a drawer directly beneath that block, hosting the editor from §13 — the same component, the same gate code, the same patch. The Reader stays on screen, and the block above the drawer re-renders as the prose changes: computed values marked, fidelity violations marked in the sentence. The reading view is the preview, which is why the editor's own preview column is hidden while it is in the drawer.
+
+**One editor, moved — not two editors.** The Reader renders an *empty* drawer. The client relocates the block's existing editor node into it and returns it to a marker left in its place when the drawer closes. Two editors for one block would mean two drafts, two textareas carrying the same DOM ids, and a patch that depends on which surface the writer happened to use last. Moving the node makes single-instance structural rather than a rule the UI is trusted to follow: a sentence started in the Reader is waiting in the Text pane, and the pane-level patch bar counts it either way.
+
+**A draft is never allowed to look like the report.** The assembled document on screen is what the pipeline built from committed source. While the rendered prose differs from that source the block says so — and says something stronger when the gates fail — because a reading view that silently shows uncommitted text is lying about what the report says. Draft values carry no trace hooks either: the trace panel answers questions about the committed report, and a draft is not in it. Closing the drawer restores the document's own HTML rather than a re-render of it.
+
+**Why not the more ambitious options.** Option A — contenteditable in the assembled prose — needs a source map from rendered output back to Markdown that does not exist yet, and would have to solve editing binding tokens the Reader replaces with numbers. Option B — routing to the Text pane with a breadcrumb — is cheaper still but keeps the pane switch, which is the thing being removed. C is the step that reaches the goal without inventing the map; A remains the target once one exists, and D — the Reader *is* the editor — remains the direction.
+
+**Requirements:** `TXT-EDIT-013` … `TXT-EDIT-018` in [`quality/requirements/text.md`](../../quality/requirements/text.md).
+
 ---
 
-*This design was drafted by Claude Code using Fable 5 in an unattended ultracode session and not yet reviewed by @jwildfire.*
+*This design was drafted by Claude Code using Fable 5 in an unattended ultracode session and not yet reviewed by @jwildfire. Section 14 was drafted by Claude Code using Opus 5 in an unattended `--auto` session, also not yet reviewed.*

@@ -1,6 +1,6 @@
 {
   "module": "text",
-  "generated": "2026-07-27T03:50:20.851Z",
+  "generated": "2026-07-27T04:44:02.378Z",
   "records": [
     {
       "requirementIds": [
@@ -1467,6 +1467,42 @@
     },
     {
       "requirementIds": [
+        "TXT-EDIT-018"
+      ],
+      "title": "the wiring the reading view depends on TXT-EDIT-018: closing the drawer restores the committed rendering (#15)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/reader-editor.test.js",
+      "issueRefs": [
+        15
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-018"
+      ],
+      "title": "the wiring the reading view depends on TXT-EDIT-018: the Reader moves the one editor rather than creating another (#15)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/reader-editor.test.js",
+      "issueRefs": [
+        15
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-018"
+      ],
+      "title": "the wiring the reading view depends on TXT-EDIT-018: the Reader writes nothing and posts nowhere (#15)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/reader-editor.test.js",
+      "issueRefs": [
+        15
+      ]
+    },
+    {
+      "requirementIds": [
         "TXT-FMT-001"
       ],
       "title": "Value formatting TXT-FMT-001: rounding is half-up, not R half-to-even (#1)",
@@ -1499,6 +1535,138 @@
       "file": "tests/unit/text-bindings.test.js",
       "issueRefs": [
         1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-016"
+      ],
+      "title": "what a draft looks like in the reading view TXT-EDIT-016: a computed value is marked in the prose, as the document marks it (#15)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/reader-editor.test.js",
+      "issueRefs": [
+        15
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-016"
+      ],
+      "title": "what a draft looks like in the reading view TXT-EDIT-016: a number that came from no binding is marked as the failure it is (#15)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/reader-editor.test.js",
+      "issueRefs": [
+        15
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-016"
+      ],
+      "title": "what a draft looks like in the reading view TXT-EDIT-016: paragraphs survive, and the escaper is the caller's (#15)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/reader-editor.test.js",
+      "issueRefs": [
+        15
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-017"
+      ],
+      "title": "what a draft looks like in the reading view TXT-EDIT-017: an untouched block claims nothing at all (#15)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/reader-editor.test.js",
+      "issueRefs": [
+        15
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-017"
+      ],
+      "title": "what a draft looks like in the reading view TXT-EDIT-017: the block always says whether it is showing the report or a draft (#15)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/reader-editor.test.js",
+      "issueRefs": [
+        15
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-013"
+      ],
+      "title": "where the reading view offers to edit TXT-EDIT-013: a block with an editor gets an affordance and a drawer bound to it (#15)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/reader-editor.test.js",
+      "issueRefs": [
+        15
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-013"
+      ],
+      "title": "where the reading view offers to edit TXT-EDIT-013: the drawer ships empty — the Reader renders no second editor (#15)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/reader-editor.test.js",
+      "issueRefs": [
+        15
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-014"
+      ],
+      "title": "where the reading view offers to edit TXT-EDIT-014: a block held out of the report is not editable from the report (#15)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/reader-editor.test.js",
+      "issueRefs": [
+        15
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-014"
+      ],
+      "title": "where the reading view offers to edit TXT-EDIT-014: the editable rule is one function, and it says why (#15)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/reader-editor.test.js",
+      "issueRefs": [
+        15
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-014"
+      ],
+      "title": "where the reading view offers to edit TXT-EDIT-014: with no editors mounted the Reader renders exactly as before (#15)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/reader-editor.test.js",
+      "issueRefs": [
+        15
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-015"
+      ],
+      "title": "where the reading view offers to edit TXT-EDIT-015: drawer and home ids are derived, never authored, and collision-free (#15)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/reader-editor.test.js",
+      "issueRefs": [
+        15
       ]
     },
     {
