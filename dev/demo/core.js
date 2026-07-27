@@ -12,7 +12,7 @@
 // That is why `resolveAppLink` is the centre of this file — cross-pane
 // behaviour is a link-rewriting rule, not a rewrite of every renderer.
 
-export const TAB_IDS = ['documents', 'displays', 'text', 'templates'];
+export const TAB_IDS = ['documents', 'displays', 'text', 'values', 'templates'];
 
 export const DEFAULT_TAB = 'documents';
 
@@ -107,6 +107,12 @@ export function resolveAppLink(href) {
   }
   if (clean === 'text/index.html' || clean === 'text/') {
     return { tab: 'text', block: blockFromFragment(fragment), focus };
+  }
+  // The values surface (#129 B). A value is selected by its own anchor rather
+  // than by a fourth selection key: the pane is one list, and `focus` already
+  // means "the thing in this pane I am looking at".
+  if (clean === 'values/index.html' || clean === 'values/') {
+    return { tab: 'values', focus };
   }
   return null;
 }

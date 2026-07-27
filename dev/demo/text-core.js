@@ -54,7 +54,7 @@ export const APPROVAL_STATES = ['draft', 'in_review', 'approved'];
 export const QUALIFIER_KEYS = ['group', 'group2', 'variable', 'variable_level', 'digits', 'scale'];
 
 /** Matches both token kinds; a fresh instance per call keeps `lastIndex` clean. */
-export const tokenRe = () => /\{\{(ard|xref):[^}]+\}\}/g;
+export const tokenRe = () => /\{\{(ard|xref|value):[^}]+\}\}/g;
 
 // ---------------------------------------------------------------------------
 // Block validation
@@ -227,9 +227,12 @@ export function renderBlock(block, ards, context = {}) {
   const spans = [];
   const bindings = [];
   const xrefs = [];
+  const values = [];
   const errors = [];
   const xrefErrors = [];
+  const valueErrors = [];
   const warnings = [];
+  const valueIndex = context.values ?? null;
 
   let out = '';
   let cursor = 0;
@@ -284,6 +287,35 @@ export function renderBlock(block, ards, context = {}) {
         error: resolved.ok ? null : resolved.error,
         start,
       });
+    } else if (match[1] === 'value') {
+      // A named value (#129 B): an ARD binding given a name and a provenance
+      // record once, centrally, instead of being re-addressed per sentence. It
+      // substitutes through this same span-tracking path, so its digits are
+      // exempt from the fidelity gate for exactly the reason an {{ard:…}}
+      // substitution's are — and the store itself is re-derived from the
+      // committed ARDs at assembly, so the name never loosens the check.
+      const id = match[0].slice('{{value:'.length, -2).trim();
+      const entry = valueIndex?.get?.(id) ?? valueIndex?.[id] ?? null;
+      if (entry) {
+        text = entry.formatted ?? String(entry.value ?? '');
+      } else {
+        text = `[UNRESOLVED VALUE ${id}]`;
+        valueErrors.push(
+          `${block.id}: unknown value "${id}"` +
+            (valueIndex
+              ? ' — declare it in library/values/values.yaml and regenerate'
+              : ' — no values store loaded')
+        );
+      }
+      values.push({
+        id,
+        resolved: !!entry,
+        value: entry ? entry.value : null,
+        formatted: text,
+        kind: entry?.kind ?? null,
+        address: entry?.source?.address ?? null,
+        start,
+      });
     } else {
       const kind = match[1] === 'xref' ? match[0].slice('{{xref:'.length, -2) : null;
       const [refType, refTarget] = splitOnce(kind, ':');
@@ -298,7 +330,7 @@ export function renderBlock(block, ards, context = {}) {
   }
   out += body.slice(cursor);
 
-  return { text: out, spans, bindings, xrefs, errors, xrefErrors, warnings };
+  return { text: out, spans, bindings, xrefs, values, errors, xrefErrors, valueErrors, warnings };
 }
 
 function splitOnce(s, sep) {
@@ -450,6 +482,7 @@ export function runGates(blocks, ards, context = {}) {
   const structural = [];
   const resolutionErrors = [];
   const crossReferenceErrors = [];
+  const valueBindingErrors = [];
   const fidelityViolations = [];
   const excluded = [];
   const warnings = [];
@@ -464,6 +497,7 @@ export function runGates(blocks, ards, context = {}) {
 
     resolutionErrors.push(...rendered.errors);
     crossReferenceErrors.push(...rendered.xrefErrors);
+    valueBindingErrors.push(...(rendered.valueErrors ?? []));
     warnings.push(...rendered.warnings);
     if (approval.warning) warnings.push(`${block.id}: ${approval.warning}`);
     fidelityViolations.push(...fidelity.violations);
@@ -495,6 +529,8 @@ export function runGates(blocks, ards, context = {}) {
       unresolvedBindings: rendered.bindings.filter((b) => !b.resolved).length,
       crossReferences: rendered.xrefs.length,
       unresolvedCrossReferences: rendered.xrefs.filter((x) => !x.resolved).length,
+      valueBindings: rendered.values.length,
+      unresolvedValueBindings: rendered.values.filter((v) => !v.resolved).length,
       numericFidelity: fidelity.ok,
       violations: fidelity.violations,
       exemptionsUsed: fidelity.exemptionsUsed,
@@ -507,6 +543,7 @@ export function runGates(blocks, ards, context = {}) {
     structure: { ok: structural.length === 0, errors: structural },
     bindingResolution: { ok: resolutionErrors.length === 0, errors: resolutionErrors },
     crossReferences: { ok: crossReferenceErrors.length === 0, errors: crossReferenceErrors },
+    valueBindings: { ok: valueBindingErrors.length === 0, errors: valueBindingErrors },
     numericFidelity: { ok: fidelityViolations.length === 0, violations: fidelityViolations },
     approval: { ok: true, excluded },
     warnings,
@@ -515,6 +552,7 @@ export function runGates(blocks, ards, context = {}) {
       structural.length === 0 &&
       resolutionErrors.length === 0 &&
       crossReferenceErrors.length === 0 &&
+      valueBindingErrors.length === 0 &&
       fidelityViolations.length === 0,
   };
 }
