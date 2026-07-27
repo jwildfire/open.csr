@@ -47,6 +47,7 @@ import {
 import { renderTextStatus } from './text-status-lib.mjs';
 import {
   ardPayload,
+  ardUrl,
   editorContext,
   editorDisplays,
   editorIntro,
@@ -273,10 +274,7 @@ const textStatusContent = renderTextStatus({
 // host, no API — a build artifact served as a build artifact.
 mkdirSync(path.join(buildDir, 'demo', 'ard'), { recursive: true });
 for (const [slug, ard] of Object.entries(ards)) {
-  writeFileSync(
-    path.join(buildDir, 'demo', 'ard', `${slug}.json`),
-    JSON.stringify(ardPayload(ard))
-  );
+  writeFileSync(path.join(buildDir, 'demo', ardUrl(slug)), JSON.stringify(ardPayload(ard)));
 }
 
 // --- Demo app ---------------------------------------------------------------

@@ -68,7 +68,13 @@ export function ardPayload(ard = {}) {
   };
 }
 
-/** Where the editor fetches a display's ARD from, relative to the Demo page. */
+/**
+ * Where a display's ARD is published, relative to the Demo page.
+ *
+ * The build writes to this path and site/demo/editor.js fetches from it; keeping
+ * the convention named here means the two are one edit apart rather than two
+ * string literals that drift.
+ */
 export function ardUrl(slug) {
   return `ard/${slug}.json`;
 }
