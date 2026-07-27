@@ -2310,3 +2310,533 @@ body.app-page .app-bar {
 .nav-section.current .nav-label {
   color: var(--accent);
 }
+
+/* ---- Text-block editor (#113 increment B) --------------------------------
+
+   The Text pane's blocks became editable: source on the left, the prose as it
+   will read on the right, the gates underneath, and the diff the edit produces
+   below that. The visual argument the layout is making is that the patch is the
+   product — the review view is the last thing you see before you take it away,
+   not a detail tucked behind a control.
+
+   Everything here ships `hidden` and is revealed by site/demo/editor.js, so the
+   pane with JavaScript off is the read-only status view it has always been.
+   -------------------------------------------------------------------------- */
+
+.tb-edit {
+  margin-top: 1.3rem;
+  border-top: 1px solid var(--rule);
+  padding-top: 1rem;
+}
+
+.tbe-bar {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.15rem 1rem;
+  align-items: start;
+}
+
+.tbe-bar .rb-h {
+  grid-column: 1;
+  margin: 0;
+}
+
+.tbe-bar .sub {
+  grid-column: 1;
+  margin: 0;
+  max-width: 60ch;
+}
+
+.tbe-toggle {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: center;
+  font: 600 0.8rem/1 var(--sans);
+  color: var(--accent);
+  background: var(--card);
+  border: 1px solid var(--accent-rule);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.9rem;
+  cursor: pointer;
+}
+
+.tbe-toggle:hover,
+.tbe-toggle:focus-visible {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+.tbe-panel {
+  margin-top: 0.9rem;
+}
+
+.tbe-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1rem;
+}
+
+@media (max-width: 60rem) {
+  .tbe-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.tbe-pane {
+  min-width: 0;
+}
+
+.tbe-label {
+  display: block;
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--faint);
+  margin: 0 0 0.35rem;
+}
+
+.tbe-label .sub {
+  font-family: var(--sans);
+  text-transform: none;
+  letter-spacing: 0;
+  margin-left: 0.4rem;
+}
+
+.tbe-source {
+  width: 100%;
+  min-height: 18rem;
+  resize: vertical;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  line-height: 1.65;
+  color: var(--ink);
+  background: var(--card);
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-sm);
+  padding: 0.7rem 0.8rem;
+  tab-size: 2;
+}
+
+.tbe-source:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  border-color: var(--accent);
+}
+
+.tbe-preview {
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-sm);
+  background: var(--paper-2);
+  padding: 0.75rem 0.9rem;
+  min-height: 18rem;
+  max-height: 32rem;
+  overflow: auto;
+  font-size: 0.9rem;
+}
+
+.tbe-preview p {
+  margin: 0 0 0.7rem;
+}
+
+/* The three kinds of marked text, in the same visual language the read-only
+   prose already uses for a bound value — a writer moving between the two views
+   should not have to learn a second vocabulary. */
+.tbe-bound,
+.tbe-xref {
+  font-variant-numeric: tabular-nums;
+  background: var(--accent-soft);
+  border-bottom: 1px solid var(--accent);
+  border-radius: 3px;
+  padding: 0 0.18em;
+}
+
+.tbe-xref {
+  background: transparent;
+  border-bottom-style: dotted;
+}
+
+.tbe-violation {
+  background: var(--bad-bg);
+  border-bottom: 2px solid var(--bad);
+  color: var(--bad);
+  font-weight: 600;
+  border-radius: 3px;
+  padding: 0 0.18em;
+}
+
+.tbe-gate {
+  margin-top: 0.9rem;
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--good);
+  border-radius: var(--radius-sm);
+  background: var(--card);
+  padding: 0.7rem 0.9rem;
+}
+
+.tb-edit.gates-fail .tbe-gate {
+  border-left-color: var(--bad);
+}
+
+.tbe-verdict-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.45rem 0.9rem;
+}
+
+.tbe-verdict {
+  font: 700 0.72rem/1 var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-radius: 999px;
+  padding: 0.3rem 0.6rem;
+}
+
+.tbe-verdict.good {
+  color: var(--good);
+  background: var(--good-bg);
+}
+
+.tbe-verdict.bad {
+  color: var(--bad);
+  background: var(--bad-bg);
+}
+
+.tbe-count {
+  font-size: 0.76rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.tbe-problems {
+  margin: 0.6rem 0 0;
+  padding-left: 1.1rem;
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+
+.tbe-problems li.error {
+  color: var(--bad);
+}
+
+.tbe-problems li.warn {
+  color: var(--warn);
+}
+
+.tbe-review {
+  margin-top: 1rem;
+}
+
+.tbe-diff-body {
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  line-height: 1.6;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-sm);
+  overflow: auto;
+  max-height: 24rem;
+  background: var(--card);
+}
+
+.tbe-diff-line {
+  white-space: pre-wrap;
+  word-break: break-word;
+  padding: 0 0.6rem;
+}
+
+.tbe-diff-line.file {
+  color: var(--faint);
+}
+
+.tbe-diff-line.hunk {
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.tbe-diff-line.add {
+  color: var(--good);
+  background: var(--good-bg);
+}
+
+.tbe-diff-line.remove {
+  color: var(--bad);
+  background: var(--bad-bg);
+}
+
+.tbe-diff-line.note {
+  color: var(--faint);
+  font-style: italic;
+}
+
+.tbe-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.7rem;
+}
+
+.tbe-action {
+  font: 600 0.78rem/1 var(--sans);
+  color: var(--card);
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.85rem;
+  cursor: pointer;
+}
+
+.tbe-action:hover:not(:disabled),
+.tbe-action:focus-visible:not(:disabled) {
+  background: var(--accent-hover);
+}
+
+.tbe-action:disabled {
+  opacity: 0.42;
+  cursor: default;
+}
+
+.tbe-action.tbe-quiet {
+  color: var(--muted);
+  background: transparent;
+  border-color: var(--rule-strong);
+}
+
+.tbe-action.tbe-quiet:hover:not(:disabled) {
+  background: var(--paper-2);
+  color: var(--ink);
+}
+
+.tbe-status {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+/* The pane-level bar: one patch for everything edited in this visit. It appears
+   only once something differs from the committed source. */
+.tbe-all {
+  display: flex;
+  /* An author `display` beats the UA stylesheet's `[hidden] { display: none }`,
+     so a flex/grid component that is toggled by the hidden attribute has to say
+     so itself — otherwise it is visible with nothing to show. */
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem 1rem;
+  position: sticky;
+  top: 0.5rem;
+  z-index: 3;
+  border: 1px solid var(--accent-rule);
+  border-radius: var(--radius-sm);
+  background: var(--accent-soft);
+  padding: 0.6rem 0.9rem;
+  margin: 1rem 0;
+}
+
+.tbe-all[hidden] {
+  display: none;
+}
+
+.tbe-all-label {
+  font: 600 0.82rem/1.4 var(--sans);
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Expand and collapse (open.csr #10) ---------------------------------- */
+
+/* Screen-reader-only text: the twisty is a chevron to the eye and a named
+   control to everything else. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Only nodes that HAVE children carry a control; the rest are flat rows, which
+   is what makes the chevron mean something when it appears. */
+.nav-node.has-children {
+  position: relative;
+}
+
+.nav-twisty {
+  position: absolute;
+  left: 0;
+  top: 0.28rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1.05rem;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: none;
+  color: var(--faint);
+  cursor: pointer;
+}
+
+.nav-twisty:hover {
+  color: var(--ink);
+  background: var(--paper-2);
+}
+
+.nav-twisty:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.nav-twisty .nav-caret {
+  transform: rotate(90deg);
+}
+
+.nav-node.is-collapsed .nav-twisty .nav-caret {
+  transform: rotate(0deg);
+}
+
+.nav-node.is-collapsed .nav-sections {
+  display: none;
+}
+
+/* A group with nothing in it is a heading: no control, no hover affordance. */
+.nav-group.is-empty .nav-group-head {
+  cursor: default;
+  opacity: 0.55;
+}
+
+.nav-group.is-empty .nav-group-head:hover {
+  background: none;
+  color: var(--muted);
+}
+
+/* Modelled but not populated: dimmed as a whole row rather than by its label
+   alone, so a glance down the tree separates what this report fills from what it
+   only models. Still navigable, still tooltipped (#10). */
+.nav-section.is-empty {
+  opacity: 0.62;
+}
+
+.nav-section.is-empty .nav-num,
+.nav-section.is-empty .nav-label {
+  color: var(--faint);
+}
+
+.nav-section.is-empty:hover {
+  opacity: 1;
+}
+
+/* --- Editing from the reading view (#129 C, open.csr#15) ------------------
+   The Reader gains one control per block and an empty drawer beneath it. The
+   editor itself is not duplicated here: site/demo/reader-edit.js MOVES the
+   block's editor out of the Text pane into this drawer and puts it back when the
+   drawer closes, so there is one editor, one draft and one set of DOM ids per
+   block however the writer got to it.
+
+   While a draft differs from the committed source the block says so — a reading
+   view that silently shows uncommitted prose would be lying about the report.
+   -------------------------------------------------------------------------- */
+
+.rdr-edit {
+  margin-left: 0.6rem;
+  font: 600 0.7rem/1 var(--sans);
+  color: var(--accent);
+  background: var(--card);
+  border: 1px solid var(--accent-rule);
+  border-radius: var(--radius-sm);
+  padding: 0.2rem 0.55rem;
+  cursor: pointer;
+}
+
+.rdr-edit:hover,
+.rdr-edit:focus-visible {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+.rdr-edit[disabled] {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.rdr-drawer {
+  margin: 0.6rem 0 1.2rem;
+  border-left: 2px solid var(--accent);
+  padding-left: 1rem;
+  background: var(--paper-2);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+/* The editor, once adopted: no top rule (the drawer already frames it), no
+   preview column — the block above the drawer IS the preview, and the same words
+   twice is not a second opinion, it is noise — and no bar of its own, because the
+   block's Edit control is the one that opened this and the one that closes it. */
+.tb-edit.in-reader {
+  margin-top: 0;
+  border-top: 0;
+  padding: 0.8rem 0.8rem 0.8rem 0;
+}
+
+.tb-edit.in-reader .tbe-bar {
+  display: none;
+}
+
+.tb-edit.in-reader .tbe-panel {
+  margin-top: 0;
+}
+
+.tb-edit.in-reader .tbe-grid {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.tb-edit.in-reader .tbe-preview,
+.tb-edit.in-reader .tbe-preview + .sub,
+.tb-edit.in-reader .tbe-grid .tbe-pane:last-child {
+  display: none;
+}
+
+/* The block being edited, and what it is showing. */
+.csr-text.is-editing {
+  scroll-margin-top: 5rem;
+}
+
+.csr-text[data-reader-state='draft'] .csr-prose,
+.csr-text[data-reader-state='failing'] .csr-prose {
+  border-left: 2px solid var(--warn, #b45309);
+  padding-left: 0.9rem;
+}
+
+.rdr-draft-note {
+  font: 600 0.72rem/1.4 var(--sans);
+  color: var(--warn, #b45309);
+  margin: 0.5rem 0 0.2rem;
+}
+
+/* The block reference normally tucks up under the prose; with a draft notice
+   between them it must not climb over it. */
+.rdr-draft-note:not([hidden]) + .block-ref {
+  margin-top: 0;
+}
+
+.csr-text[data-reader-state='failing'] .rdr-draft-note {
+  color: var(--bad, #b91c1c);
+}
+
+/* A draft's computed values are marked as the document marks them, minus the
+   trace affordance: the trace panel answers questions about the committed
+   report, and a draft is not in it. */
+.binding.is-draft {
+  border-bottom-style: dashed;
+  cursor: default;
+}
+
+.csr-prose .fidelity-violation {
+  background: var(--bad-soft, rgba(185, 28, 28, 0.12));
+  border-bottom: 2px solid var(--bad, #b91c1c);
+}

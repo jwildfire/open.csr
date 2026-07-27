@@ -53,7 +53,7 @@
     </header>
     
     <main class="site-main" id="main"><p class="crumb"><a href="index.html">Design &amp; Research</a> / <span class="mono">docs/design/contracts.md</span></p>
-<div class="doc-layout"><nav class="doc-toc" aria-label="On this page"><h2>On this page</h2><ol><li><a href="#1-repository-layout">1. Repository layout</a></li><li><a href="#2-analysis-yaml-what-to-compute">2. analysis.yaml — what to compute</a></li><li><a href="#3-display-yaml-how-to-show-it">3. display.yaml — how to show it</a></li><li><a href="#4-prepared-datasets-data-prep-layer">4. Prepared datasets (data-prep layer)</a></li><li><a href="#5-ard-json-the-ard-serialization-owned-schema-d5">5. ard.json — the ARD serialization (owned schema, D5)</a></li><li><a href="#6-text-blocks-library-text-lt-id-gt-md">6. Text blocks — library/text/&amp;lt;ID&amp;gt;.md</a></li><li><a href="#7-template-model-library-templates-ich-e3">7. Template model — library/templates/ich-e3/</a></li><li><a href="#8-evidence-contract">8. Evidence contract</a></li><li><a href="#9-site-build">9. Site build</a></li><li><a href="#10-conventions-the-v0-build-established">10. Conventions the v0 build established</a></li></ol></nav><article class="prose doc"><h1>open.csr — Interface Contracts (v0)</h1>
+<div class="doc-layout"><nav class="doc-toc" aria-label="On this page"><h2>On this page</h2><ol><li><a href="#1-repository-layout">1. Repository layout</a></li><li><a href="#2-analysis-yaml-what-to-compute">2. analysis.yaml — what to compute</a></li><li><a href="#3-display-yaml-how-to-show-it">3. display.yaml — how to show it</a></li><li><a href="#4-prepared-datasets-data-prep-layer">4. Prepared datasets (data-prep layer)</a></li><li><a href="#5-ard-json-the-ard-serialization-owned-schema-d5">5. ard.json — the ARD serialization (owned schema, D5)</a></li><li><a href="#6-text-blocks-library-text-lt-id-gt-md">6. Text blocks — library/text/&amp;lt;ID&amp;gt;.md</a></li><li><a href="#7-template-model-library-templates-ich-e3">7. Template model — library/templates/ich-e3/</a></li><li><a href="#8-evidence-contract">8. Evidence contract</a></li><li><a href="#9-site-build">9. Site build</a></li><li><a href="#10-submission-artifacts-rtf">10. Submission artifacts (RTF)</a></li><li><a href="#11-the-values-store">11. The values store</a></li><li><a href="#12-conventions-the-v0-build-established">12. Conventions the v0 build established</a></li></ol></nav><article class="prose doc"><h1>open.csr — Interface Contracts (v0)</h1>
 <p>Normative file formats and function signatures. Every component builds against this document; changing a contract is a design change, not an implementation detail.</p>
 <p><em>Reconciled with the shipped v0 implementation on 2026-07-25 — where the build learned something the first draft got wrong, this document follows the code.</em></p>
 <hr>
@@ -61,9 +61,11 @@
 <pre><code>pipeline/                 R package `opencsr` (DESCRIPTION, NAMESPACE, R/, tests/testthat/)
 library/tfl/&lt;slug&gt;/       analysis.yaml, display.yaml, [custom.R], iterations.yaml
 library/text/&lt;ID&gt;.md      text blocks (YAML frontmatter + prose)
+library/values/values.yaml named-value declarations (§11)
 library/templates/ich-e3/ sections.yaml, assembly.yaml
-outputs/&lt;slug&gt;/vNNN/      spec snapshots, ard.json, table.html, table-in-text.html, manifest.json
+outputs/&lt;slug&gt;/vNNN/      spec snapshots, ard.json, table.html + table.rtf (per variant), manifest.json
 outputs/&lt;slug&gt;/current.json
+outputs/values/values.json generated values store (§11)
 quality/requirements/     requirement matrices (*.md)
 qc/run-tests.R            testthat -&gt; qc/testthat-results.json
 scripts/*.mjs             requirements, evidence, assemble, site builders
@@ -179,6 +181,7 @@ Overall, {{ard:t-ae-overview:any_ae:n;group=Xanomeline High Dose}} subjects
 reported at least one adverse event.
 </code></pre>
 <p>Binding syntax: <code>{{ard:&lt;binding address&gt;}}</code> (§5). Rendering resolves against <code>outputs/&lt;display&gt;/current</code> ARD.</p>
+<p><strong>Named values</strong> (§11): <code>{{value:&lt;id&gt;}}</code> resolves against the generated values store. It is an ARD binding that has been named once, centrally, rather than re-addressed per sentence; its substitution is span-tracked exactly like an <code>{{ard:…}}</code> one, so its digits are exempt from the fidelity gate — and the store itself is re-derived from the committed ARDs at assembly, so naming a number never loosens the check on it.</p>
 <p><strong>Cross-reference tokens</strong> keep prose from typing numbers the assembler owns (D6): <code>{{xref:display:&lt;slug&gt;}}</code> resolves to the display&#39;s assigned 14.x number and title, <code>{{xref:section:&lt;number&gt;}}</code> to a section link. Both fail the build when unresolvable, and their output is span-tracked so the digits they emit are exempt from the fidelity gate.</p>
 <p><strong>CI gates (D7):</strong> (a) every binding resolves to exactly one ARD row; (b) every digit run in <em>rendered</em> prose traces to a resolved binding — except inside inline code, markdown links, and an explicit <code>allow_digits</code> frontmatter list (E3 section numbers, citations, protocol IDs); (c) <code>generated</code>-tier blocks with <code>approval.state != approved</code> are excluded from assembly and reported.</p>
 <h2 id="7-template-model-library-templates-ich-e3">7. Template model — <code>library/templates/ich-e3/</code></h2>
@@ -217,8 +220,45 @@ post_text:
 <p><strong>Test naming (both suites):</strong> <code>&quot;&lt;REQ-ID&gt;[, &lt;REQ-ID&gt;]: &lt;description&gt; (#&lt;issue&gt;)&quot;</code>. Guard tests in each suite enforce it.</p>
 <h2 id="9-site-build">9. Site build</h2>
 <p><code>site/config.json</code> is the registry — every display, text block, and template with <code>status</code> (<code>planned</code> | <code>built</code> | <code>evidenced</code>). <code>scripts/site.mjs</code> renders static HTML into <code>site/_build/</code> from the registry plus generated <code>docs/requirements/</code> and <code>docs/evidence/</code>. No network calls, no server, no external CDN.</p>
+<p><strong>What &quot;no network calls&quot; forbids, precisely.</strong> No external host, no API, no CDN, no analytics, no font — enforced by <code>validateNoExternalResources</code>, which fails the build on any absolute or protocol-relative resource URL. A page may <code>fetch</code> a <strong>build artifact from its own origin</strong> when loading it eagerly would be wasteful: the text-block editor pulls <code>demo/ard/&lt;slug&gt;.json</code> (published by the same build, from the same committed ARD) the first time a block that binds it is opened, rather than inlining 832 KB of ARD into every visit of the Demo page. The site still serves from any static host with nothing behind it, which is the property the rule protects.</p>
+<h2 id="10-submission-artifacts-rtf">10. Submission artifacts (RTF)</h2>
+<p>Every rendered variant of a display is written twice: <code>table.html</code> (or <code>table-&lt;variant&gt;.html</code>) and <code>table.rtf</code> (or <code>table-&lt;variant&gt;.rtf</code>), both from the same rendered cell table, in the same <code>regenerate()</code> loop. RTF is produced with <code>{r2rtf}</code> via <code>opencsr::render_rtf()</code>.</p>
+<p>The iteration manifest records each variant&#39;s artifacts:</p>
+<pre><code class="language-json">&quot;variants&quot;: { &quot;post_text&quot;: { &quot;file&quot;: &quot;table.html&quot;, &quot;rtf&quot;: &quot;table.rtf&quot;,
+                             &quot;rtf_hash&quot;: &quot;sha256:…&quot;, &quot;n_rows&quot;: 22 } }
+</code></pre>
+<p><code>rtf_hash</code> is the sha256 of the file as written, which is what allows a committed RTF to be proved to be the pipeline&#39;s output rather than a hand-edited copy — a testthat guard (<code>TFL-RTF-006</code>) re-hashes every committed RTF against its manifest. The site build republishes each current-iteration RTF flat as <code>artifacts/&lt;slug&gt;[-&lt;variant&gt;].rtf</code> and offers it for download beside the rendered display.</p>
+<p>RTF is a 7-bit format: <code>\</code>, <code>{</code> and <code>}</code> are escaped and non-ASCII code points travel as <code>\uc1\uNNNN?</code>. <code>_</code> is subscript markup in <code>{r2rtf}</code> and never reaches a document as a literal.</p>
+<h2 id="11-the-values-store">11. The values store</h2>
+<p>A <strong>value</strong> is a named scalar with provenance — the unit a writer reuses (&quot;randomized N&quot;, &quot;median age&quot;) as opposed to the address a binding uses.</p>
+<p><code>library/values/values.yaml</code> is source (D9):</p>
+<pre><code class="language-yaml">study: CDISCPILOT01
+values:
+  - id: randomised-n                       # kebab-case, unique, the citation key
+    label: &quot;Subjects randomised&quot;           # required: a name has to read
+    source: t-disposition:randomised:n;group=Total   # §5 binding address, display included
+    format: { scale: 1, digits: 0 }        # presentation only
+    notes: &quot;…&quot;                             # optional
+  - id: ae-any-n-xanomeline
+    label: &quot;…&quot;
+    derived: { op: sum, inputs: [ae-any-n-low, ae-any-n-high] }
+</code></pre>
+<p>Exactly one of <code>source:</code> or <code>derived:</code> per value. Derivation operators are a <strong>closed vocabulary</strong> — <code>sum</code> (≥2 inputs), <code>difference</code>, <code>ratio</code>, <code>percent</code> (exactly 2, in order) — precisely so the R builder and the JavaScript gate can each evaluate them and agree. Inputs must be declared before use.</p>
+<p><code>opencsr::regenerate_values()</code> writes <code>outputs/values/values.json</code>:</p>
+<pre><code class="language-json">{ &quot;schema&quot;: &quot;opencsr/values/v1&quot;, &quot;study&quot;: &quot;CDISCPILOT01&quot;, &quot;created&quot;: &quot;…&quot;,
+  &quot;provenance&quot;: { &quot;source_file&quot;: &quot;library/values/values.yaml&quot;, &quot;source_hash&quot;: &quot;sha256:…&quot;,
+                  &quot;git_commit&quot;: &quot;…&quot;, &quot;environment&quot;: { … } },
+  &quot;values&quot;: [ { &quot;id&quot;: &quot;randomised-n&quot;, &quot;label&quot;: &quot;…&quot;, &quot;kind&quot;: &quot;ard&quot;,
+                &quot;value&quot;: 254, &quot;formatted&quot;: &quot;254&quot;,
+                &quot;format&quot;: { &quot;scale&quot;: 1, &quot;digits&quot;: 0 },
+                &quot;source&quot;: { &quot;address&quot;: &quot;…&quot;, &quot;display&quot;: &quot;t-disposition&quot;, &quot;analysis&quot;: &quot;randomised&quot;,
+                            &quot;iteration&quot;: &quot;v002&quot;, &quot;ard_file&quot;: &quot;outputs/…/ard.json&quot;,
+                            &quot;ard_hash&quot;: &quot;sha256:…&quot; } } ] }
+</code></pre>
+<p><code>value</code> is the ARD&#39;s number unscaled — proportions stay in [0, 1] as in §5 — and <code>formatted</code> carries scaling and half-up rounding, so the store stays directly comparable to the ARD.</p>
+<p><strong>Gate (d), the values gate.</strong> At assembly every value is re-derived from the same committed ARDs the report is built from. A value fails when its address resolves to zero or several rows, when the ARD row no longer equals the stored value, when the cited ARD hash is not the committed one, when <code>formatted</code> does not match the declared format, or when a derived value no longer equals its own arithmetic. Any of these fails the build exactly as a typed number in prose does.</p>
 <hr>
-<h2 id="10-conventions-the-v0-build-established">10. Conventions the v0 build established</h2>
+<h2 id="12-conventions-the-v0-build-established">12. Conventions the v0 build established</h2>
 <p>Learned during implementation; normative from here.</p>
 <ul>
 <li><strong>Evidence routing is data, not code.</strong> <code>site/config.json</code> carries <code>testPrefixes</code> (test filename → component), <code>prefixes</code> (requirement-ID prefix → module), and <code>suites</code> (whole suite → component). Registering a new display is a registry edit; no script changes. R test files are organized by engine topic rather than by display, so display attribution comes from the requirement-ID prefix (<code>DSP-&lt;AREA&gt;-*</code>).</li>
