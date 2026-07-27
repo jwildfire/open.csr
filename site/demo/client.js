@@ -17,6 +17,7 @@ import {
   resolveAppLink,
   resolveDisplay
 } from './core.js';
+import { initEditors } from './editor.js';
 
 const app = document.querySelector('[data-app]');
 if (app) {
@@ -361,4 +362,10 @@ if (app) {
   };
   app.classList.add('app-live');
   render({ push: false });
+
+  // --- the Text pane's editors (#113 increment B) -------------------------
+  // Mounted last, and only by this script: the editor markup ships hidden, so a
+  // visitor with JavaScript off gets the read-only status view the pane has
+  // always been rather than a textarea that cannot do anything.
+  initEditors(app);
 }

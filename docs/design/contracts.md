@@ -219,6 +219,8 @@ Numbering (D6): the assembler assigns `14.x` positions from `post_text` order an
 
 `site/config.json` is the registry — every display, text block, and template with `status` (`planned` | `built` | `evidenced`). `scripts/site.mjs` renders static HTML into `site/_build/` from the registry plus generated `docs/requirements/` and `docs/evidence/`. No network calls, no server, no external CDN.
 
+**What "no network calls" forbids, precisely.** No external host, no API, no CDN, no analytics, no font — enforced by `validateNoExternalResources`, which fails the build on any absolute or protocol-relative resource URL. A page may `fetch` a **build artifact from its own origin** when loading it eagerly would be wasteful: the text-block editor pulls `demo/ard/<slug>.json` (published by the same build, from the same committed ARD) the first time a block that binds it is opened, rather than inlining 832 KB of ARD into every visit of the Demo page. The site still serves from any static host with nothing behind it, which is the property the rule protects.
+
 ## 10. Submission artifacts (RTF)
 
 Every rendered variant of a display is written twice: `table.html` (or `table-<variant>.html`) and `table.rtf` (or `table-<variant>.rtf`), both from the same rendered cell table, in the same `regenerate()` loop. RTF is produced with `{r2rtf}` via `opencsr::render_rtf()`.

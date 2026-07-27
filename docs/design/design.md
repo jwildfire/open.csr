@@ -205,6 +205,20 @@ In-app text review and sign-off was built and then removed on the same day. The 
 
 Until the platform layer exists, this is the honest position: **status is tracked in the data and shown in the UX; there are no users, no roles and no in-app sign-off.**
 
+## 13. Editing prose in the browser (2026-07-26)
+
+The Text pane is no longer read-only, and the distinction against §12 is exact: the pane now lets a writer **edit source**, and still lets nobody **approve** anything.
+
+**What it does.** Open a block's editor and its prose is editable in place. Every `{{ard:…}}` resolves live against the committed ARD, every `{{xref:…}}` against the published display and section indices, and the numeric-fidelity gate runs on each keystroke — a digit that came from no binding is marked red *in the sentence*, not described in a list. The output is a unified diff against the block's source file, to copy or download and apply with `git apply`. Several blocks edited in one visit compose into one patch.
+
+**Why this is safe where sign-off was not.** The editor's product is a patch; applying it is a human act in a repository, under review, and the pipeline regenerates from the committed source afterwards. Nothing is written, posted or stored: no endpoint, no token, no credential, no dispatch. The frontmatter never reaches the browser at all — the editor is handed the body and the line it begins on, and hunks are offset to that position, so no patch the browser can compose is *capable* of changing a block's tier, approval state or `allow_digits`. That is D9 with a browser in the agent's seat: agents write source, the pipeline regenerates, humans approve.
+
+**Why the browser can be trusted about the numbers.** It runs the build's gate code, not a copy of it. Binding grammar, ARD resolution, formatting, substitution and all three gates were moved into one dependency-free module (`site/demo/text-core.js`) imported by `scripts/text-lib.mjs` for the build and loaded unbundled by the editor. A second implementation would let an edit pass as you type and fail in CI, and an editor that lies about the gates is worse than no editor. The rule cuts both ways: the editor must be neither more permissive than the build (hence the undeclared-display check) nor stricter than it (hence shipping the xref indices).
+
+**Why prose first.** Resolving a binding is a lookup in JSON the build already publishes and the fidelity gate is string arithmetic, so the browser can be numerically faithful with no R, no webR and no server. Editing an `analysis.yaml` would require the pipeline to re-run before anything could be previewed; that regeneration round-trip is an open design question and is deliberately not attempted here.
+
+**Requirements:** `TXT-EDIT-001` … `TXT-EDIT-012` in [`quality/requirements/text.md`](../../quality/requirements/text.md).
+
 ---
 
 *This design was drafted by Claude Code using Fable 5 in an unattended ultracode session and not yet reviewed by @jwildfire.*

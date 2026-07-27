@@ -1,6 +1,6 @@
 {
   "module": "text",
-  "generated": "2026-07-27T03:39:42.556Z",
+  "generated": "2026-07-27T03:50:20.851Z",
   "records": [
     {
       "requirementIds": [
@@ -313,6 +313,138 @@
       "file": "tests/unit/text-gates.test.js",
       "issueRefs": [
         1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-010"
+      ],
+      "title": "hiding actually hides TXT-EDIT-010: no class the editor hides is forced visible by a display rule (#113)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/text-editor.test.js",
+      "issueRefs": [
+        113
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-007"
+      ],
+      "title": "line diffing TXT-EDIT-007: a changed line reads as one removal and one addition (#113)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/text-editor.test.js",
+      "issueRefs": [
+        113
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-007"
+      ],
+      "title": "line diffing TXT-EDIT-007: identical text produces no changed lines at all (#113)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/text-editor.test.js",
+      "issueRefs": [
+        113
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-007"
+      ],
+      "title": "line diffing TXT-EDIT-007: unchanged lines around an insertion stay context, not churn (#113)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/text-editor.test.js",
+      "issueRefs": [
+        113
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-002"
+      ],
+      "title": "live binding resolution TXT-EDIT-002: a draft body resolves its bindings against the committed ARD (#113)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/text-editor.test.js",
+      "issueRefs": [
+        113
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-002"
+      ],
+      "title": "live binding resolution TXT-EDIT-002: a malformed address is reported, not thrown, so typing never breaks the editor (#113)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/text-editor.test.js",
+      "issueRefs": [
+        113
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-002"
+      ],
+      "title": "live binding resolution TXT-EDIT-002: an ambiguous address reports its match count rather than taking a row (#113)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/text-editor.test.js",
+      "issueRefs": [
+        113
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-002"
+      ],
+      "title": "live binding resolution TXT-EDIT-002: an orphaned binding reports the build message verbatim (#113)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/text-editor.test.js",
+      "issueRefs": [
+        113
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-004"
+      ],
+      "title": "live binding resolution TXT-EDIT-004: an unresolved binding previews as a marker, never as a number (#113)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/text-editor.test.js",
+      "issueRefs": [
+        113
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-005"
+      ],
+      "title": "live binding resolution TXT-EDIT-005: binding a display the block does not declare is reported as the build reports it (#113)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/text-editor.test.js",
+      "issueRefs": [
+        113
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-005"
+      ],
+      "title": "live binding resolution TXT-EDIT-005: declaring the display in the block clears the report (#113)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/text-editor.test.js",
+      "issueRefs": [
+        113
       ]
     },
     {
@@ -755,6 +887,378 @@
       "file": "tests/unit/values-store.test.js",
       "issueRefs": [
         1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-001"
+      ],
+      "title": "the edited region TXT-EDIT-001: a body edit rewrites the body and leaves the frontmatter byte-for-byte (#113)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/text-editor.test.js",
+      "issueRefs": [
+        113
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-001"
+      ],
+      "title": "the edited region TXT-EDIT-001: a file with no frontmatter is all body, and round-trips unchanged (#113)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/text-editor.test.js",
+      "issueRefs": [
+        113
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-001"
+      ],
+      "title": "the edited region TXT-EDIT-001: the editor splits a block into its frontmatter and its body (#113)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/text-editor.test.js",
+      "issueRefs": [
+        113
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-001"
+      ],
+      "title": "the editor as rendered into the Text pane TXT-EDIT-001: each editor carries its body start line, never its frontmatter (#113)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/text-editor.test.js",
+      "issueRefs": [
+        113
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-002"
+      ],
+      "title": "the editor as rendered into the Text pane TXT-EDIT-002: each editor declares the ARDs its block binds, so the browser fetches those (#113)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/text-editor.test.js",
+      "issueRefs": [
+        113
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-009"
+      ],
+      "title": "the editor as rendered into the Text pane TXT-EDIT-009: every written block in the library gets an editor, seeded with its source (#113)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/text-editor.test.js",
+      "issueRefs": [
+        113
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-009"
+      ],
+      "title": "the editor as rendered into the Text pane TXT-EDIT-009: the editor records approval nowhere and reaches no network host (#113)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/text-editor.test.js",
+      "issueRefs": [
+        113
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-010"
+      ],
+      "title": "the editor as rendered into the Text pane TXT-EDIT-010: the editor ships hidden, so the pane without JavaScript is the status view (#113)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/text-editor.test.js",
+      "issueRefs": [
+        113
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-010"
+      ],
+      "title": "the editor as rendered into the Text pane TXT-EDIT-010: without the editor option the view renders exactly what it always did (#113)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/text-editor.test.js",
+      "issueRefs": [
+        113
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-012"
+      ],
+      "title": "the live preview TXT-EDIT-012: a fidelity violation is marked in the sentence, not just listed (#113)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/text-editor.test.js",
+      "issueRefs": [
+        113
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-012"
+      ],
+      "title": "the live preview TXT-EDIT-012: computed values are marked in place, the writer’s words are not (#113)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/text-editor.test.js",
+      "issueRefs": [
+        113
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-012"
+      ],
+      "title": "the live preview TXT-EDIT-012: segmenting is lossless — the preview says exactly what the gate read (#113)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/text-editor.test.js",
+      "issueRefs": [
+        113
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-003"
+      ],
+      "title": "the numeric-fidelity gate, as you type TXT-EDIT-003: a hand-typed result is a violation carrying its value and context (#113)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/text-editor.test.js",
+      "issueRefs": [
+        113
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-003"
+      ],
+      "title": "the numeric-fidelity gate, as you type TXT-EDIT-003: an allow_digits literal from the frontmatter still exempts as it does in CI (#113)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/text-editor.test.js",
+      "issueRefs": [
+        113
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-003"
+      ],
+      "title": "the numeric-fidelity gate, as you type TXT-EDIT-003: replacing the typed number with a resolving binding clears the gate (#113)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/text-editor.test.js",
+      "issueRefs": [
+        113
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-003"
+      ],
+      "title": "the numeric-fidelity gate, as you type TXT-EDIT-003: the gate reads the rendered prose, so a substituted value is not a violation (#113)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/text-editor.test.js",
+      "issueRefs": [
+        113
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-011"
+      ],
+      "title": "the numeric-fidelity gate, as you type TXT-EDIT-011: full-precision output is a warning the writer can see, not a failure (#113)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/text-editor.test.js",
+      "issueRefs": [
+        113
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-001"
+      ],
+      "title": "the patch TXT-EDIT-001: the patch diffs the body region and offsets its hunks past the frontmatter (#113)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/text-editor.test.js",
+      "issueRefs": [
+        113
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-006"
+      ],
+      "title": "the patch TXT-EDIT-006: a patch of a file with no trailing newline says so, as git does (#113)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/text-editor.test.js",
+      "issueRefs": [
+        113
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-006"
+      ],
+      "title": "the patch TXT-EDIT-006: an edit produces a unified diff with git headers and hunks (#113)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/text-editor.test.js",
+      "issueRefs": [
+        113
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-006"
+      ],
+      "title": "the patch TXT-EDIT-006: git applies the patch for every shape of edit a writer can make (#113)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/text-editor.test.js",
+      "issueRefs": [
+        113
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-006"
+      ],
+      "title": "the patch TXT-EDIT-006: the diff carries three lines of context on each side of a hunk (#113)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/text-editor.test.js",
+      "issueRefs": [
+        113
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-006"
+      ],
+      "title": "the patch TXT-EDIT-006: the patch is one git apply accepts against the real file (#113)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/text-editor.test.js",
+      "issueRefs": [
+        113
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-007"
+      ],
+      "title": "the patch TXT-EDIT-007: an unchanged body produces no patch at all (#113)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/text-editor.test.js",
+      "issueRefs": [
+        113
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-007"
+      ],
+      "title": "the patch TXT-EDIT-007: dropping the file’s final newline is a change, not an empty patch (#113)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/text-editor.test.js",
+      "issueRefs": [
+        113
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-007"
+      ],
+      "title": "the patch TXT-EDIT-007: the patch reports how many lines it adds and removes (#113)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/text-editor.test.js",
+      "issueRefs": [
+        113
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-008"
+      ],
+      "title": "the patch TXT-EDIT-008: a patch over several blocks is one file section per changed block (#113)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/text-editor.test.js",
+      "issueRefs": [
+        113
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-008"
+      ],
+      "title": "the patch TXT-EDIT-008: the patch names the block’s real repository path (#113)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/text-editor.test.js",
+      "issueRefs": [
+        113
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-002"
+      ],
+      "title": "the published ARD payload TXT-EDIT-002: a binding resolves identically against the payload and the ARD on disk (#113)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/text-editor.test.js",
+      "issueRefs": [
+        113
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-002"
+      ],
+      "title": "the published ARD payload TXT-EDIT-002: the payload drops the columns resolution never reads (#113)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/text-editor.test.js",
+      "issueRefs": [
+        113
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-002"
+      ],
+      "title": "the published ARD payload TXT-EDIT-002: the payload keeps every row, so the browser counts matches as CI does (#113)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/text-editor.test.js",
+      "issueRefs": [
+        113
       ]
     },
     {
