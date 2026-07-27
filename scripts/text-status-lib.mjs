@@ -14,10 +14,18 @@
 //   every binding resolved into a table so a number can be checked without
 //   opening another page.
 //
-// There is no action here. In-app sign-off was built and deferred on
+// There is no APPROVAL action here. In-app sign-off was built and deferred on
 // 2026-07-25 (design §12): review workflow belongs to the study-level GitHub
-// configuration repos, not to a point solution inside one report. The surface
-// is a status view, and the markup carries no control that pretends otherwise.
+// configuration repos, not to a point solution inside one report. Nothing this
+// module renders records a decision, names a credential or posts anywhere.
+//
+// Since #113 increment B the view does take one action — editing. Passing an
+// `editor` option mounts the text-block editor (scripts/text-editor-lib.mjs) into
+// each card: edit the prose, watch the gates run against the committed ARD, take
+// away a patch. That is not a weakening of the rule above but an instance of it —
+// the editor writes SOURCE, which is exactly what design D9 says agents and
+// browsers may do, and approval stays in frontmatter where the pipeline reads it.
+// Without the option this module renders precisely what it always rendered.
 
 import {
   BINDING_RE,
@@ -301,7 +309,7 @@ function stateChip(block, state) {
   );
 }
 
-export function renderReviewCard(entry, { ards, cfg, xrefs }) {
+export function renderReviewCard(entry, { ards, cfg, xrefs, editor = null }) {
   const { block, state } = entry;
   const rows = bindingRows(block, ards);
   const unresolved = rows.filter((row) => !row.resolved).length;
@@ -352,6 +360,10 @@ export function renderReviewCard(entry, { ards, cfg, xrefs }) {
         `This block cannot assemble, approved or not.</p>`
       : '') +
     `</section>` +
+    // The editor, when the build supplies one (#113 increment B). It is an
+    // OPTION rather than part of the card: the view's read-only rendering is
+    // still the default and is still what TXT-REVIEW-007 is asserted against.
+    (editor?.render ? editor.render(block) : '') +
     `</article>`
   );
 }
@@ -374,7 +386,13 @@ function tile(value, label, sub = '', kind = '') {
 // visitor can act on. Approval lives in the block's frontmatter and is applied
 // by the assembly gate, so the honest surface is a status view — no controls,
 // no placeholders for controls.
-export function renderTextStatus({ config = {}, textBlocks = [], ards = {}, traceIndex = {} } = {}) {
+export function renderTextStatus({
+  config = {},
+  textBlocks = [],
+  ards = {},
+  traceIndex = {},
+  editor = null
+} = {}) {
   const cfg = sourceConfig(config);
   const queue = buildReviewQueue(textBlocks);
   const pending = queue.filter((entry) => entry.needsJudgment);
@@ -389,7 +407,7 @@ export function renderTextStatus({ config = {}, textBlocks = [], ards = {}, trac
       Object.entries(traceIndex).map(([slug, entry]) => [slug, { number: null, title: entry.title }])
     )
   };
-  const cardOptions = { ards, cfg, xrefs };
+  const cardOptions = { ards, cfg, xrefs, editor };
 
   const head =
     `<header class="page-head">` +
@@ -437,5 +455,7 @@ export function renderTextStatus({ config = {}, textBlocks = [], ards = {}, trac
       `</section>`
     : '';
 
-  return [head, stats, how, pendingSection, restSection].filter(Boolean).join('\n');
+  return [head, stats, editor?.intro || '', how, editor?.bar || '', pendingSection, restSection]
+    .filter(Boolean)
+    .join('\n');
 }

@@ -60,7 +60,19 @@
     "TXT-REVIEW-005": "Each block links its source file on GitHub, every display it binds, and the display detail page behind each binding row.",
     "TXT-REVIEW-006": "Each block shows its tier, its current approval state and its E3 section, and a block excluded from assembly is labelled as blocking.",
     "TXT-REVIEW-007": "The view is a status view and nothing else: it emits no button, form, input or script, names no credential, token or API host, and states where approval is recorded and what enforces it — without describing or promising a sign-off workflow.",
-    "TXT-REVIEW-008": "The view references no external resource, derives its source links from `repoUrl` when no branch is configured, and renders in full for a repository with no source configuration at all."
+    "TXT-REVIEW-008": "The view references no external resource, derives its source links from `repoUrl` when no branch is configured, and renders in full for a repository with no source configuration at all.",
+    "TXT-EDIT-001": "The editor edits a block's **body**; its frontmatter is never sent to the browser, and the patch's hunks are offset to the body's position in the file, so no edit made in a browser can change a block's tier, approval state or `allow_digits`.",
+    "TXT-EDIT-002": "A draft body resolves its bindings against the committed ARD with the build's own resolver: an orphaned, ambiguous or malformed address reports the build's message verbatim rather than throwing, and cross-references resolve against the published display and section indices so the editor is not stricter than CI.",
+    "TXT-EDIT-003": "The numeric-fidelity gate runs on the draft as it is typed: a hand-typed result is reported with its value and surrounding context, an `allow_digits` literal exempts exactly as it does in CI, and replacing the number with a resolving binding clears the gate.",
+    "TXT-EDIT-004": "An unresolved binding previews as a marker and never as a number — the editor cannot show a value the ARD did not produce.",
+    "TXT-EDIT-005": "A binding to a display the block does not declare is reported exactly as the whole-library gate run reports it, so the editor cannot show a passing gate for a body that fails the build.",
+    "TXT-EDIT-006": "An edit produces a unified diff with `---`/`+++` headers, `@@` hunks and three lines of context, marking a missing trailing newline as git does — and `git apply` accepts it against the real file, leaving the frontmatter byte-for-byte identical.",
+    "TXT-EDIT-007": "An unchanged body produces no patch at all; a change reports how many lines it adds and removes.",
+    "TXT-EDIT-008": "Several blocks edited in one visit compose into one patch — a file section per changed block, unchanged blocks omitted — naming each block's real repository path.",
+    "TXT-EDIT-009": "The pane as shipped, editor mounted, records no approval and reaches no network host: every written block gets an editor seeded with its source, and the complete set of controls is Edit / Copy patch / Download patch / Download one patch for every change / Revert — no form, no credential, no token, no API host.",
+    "TXT-EDIT-010": "The editor is progressive enhancement: its markup ships `hidden` and is revealed by the client, and the view rendered without the editor option is the read-only status view `TXT-REVIEW-007` describes — no button, textarea, form or script.",
+    "TXT-EDIT-011": "A binding rendering at full precision surfaces as a warning the writer can act on rather than a failure that blocks the edit.",
+    "TXT-EDIT-012": "The preview marks every computed value and every fidelity violation **in place** in the sentence, losslessly — a writer sees which words are theirs and which digit the gate is rejecting without reading a list."
   },
   "rows": [
     {
@@ -589,6 +601,114 @@
       "id": "TXT-REVIEW-008",
       "area": "",
       "text": "The view references no external resource, derives its source links from `repoUrl` when no branch is configured, and renders in full for a repository with no source configuration at all.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TXT-EDIT-001",
+      "area": "",
+      "text": "The editor edits a block's **body**; its frontmatter is never sent to the browser, and the patch's hunks are offset to the body's position in the file, so no edit made in a browser can change a block's tier, approval state or `allow_digits`.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TXT-EDIT-002",
+      "area": "",
+      "text": "A draft body resolves its bindings against the committed ARD with the build's own resolver: an orphaned, ambiguous or malformed address reports the build's message verbatim rather than throwing, and cross-references resolve against the published display and section indices so the editor is not stricter than CI.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TXT-EDIT-003",
+      "area": "",
+      "text": "The numeric-fidelity gate runs on the draft as it is typed: a hand-typed result is reported with its value and surrounding context, an `allow_digits` literal exempts exactly as it does in CI, and replacing the number with a resolving binding clears the gate.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TXT-EDIT-004",
+      "area": "",
+      "text": "An unresolved binding previews as a marker and never as a number — the editor cannot show a value the ARD did not produce.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TXT-EDIT-005",
+      "area": "",
+      "text": "A binding to a display the block does not declare is reported exactly as the whole-library gate run reports it, so the editor cannot show a passing gate for a body that fails the build.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TXT-EDIT-006",
+      "area": "",
+      "text": "An edit produces a unified diff with `---`/`+++` headers, `@@` hunks and three lines of context, marking a missing trailing newline as git does — and `git apply` accepts it against the real file, leaving the frontmatter byte-for-byte identical.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TXT-EDIT-007",
+      "area": "",
+      "text": "An unchanged body produces no patch at all; a change reports how many lines it adds and removes.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TXT-EDIT-008",
+      "area": "",
+      "text": "Several blocks edited in one visit compose into one patch — a file section per changed block, unchanged blocks omitted — naming each block's real repository path.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TXT-EDIT-009",
+      "area": "",
+      "text": "The pane as shipped, editor mounted, records no approval and reaches no network host: every written block gets an editor seeded with its source, and the complete set of controls is Edit / Copy patch / Download patch / Download one patch for every change / Revert — no form, no credential, no token, no API host.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TXT-EDIT-010",
+      "area": "",
+      "text": "The editor is progressive enhancement: its markup ships `hidden` and is revealed by the client, and the view rendered without the editor option is the read-only status view `TXT-REVIEW-007` describes — no button, textarea, form or script.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TXT-EDIT-011",
+      "area": "",
+      "text": "A binding rendering at full precision surfaces as a warning the writer can act on rather than a failure that blocks the edit.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TXT-EDIT-012",
+      "area": "",
+      "text": "The preview marks every computed value and every fidelity violation **in place** in the sentence, losslessly — a writer sees which words are theirs and which digit the gate is rejecting without reading a list.",
       "source": "",
       "evidence": "",
       "link": "",
