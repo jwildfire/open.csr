@@ -60,7 +60,15 @@
     "TXT-REVIEW-005": "Each block links its source file on GitHub, every display it binds, and the display detail page behind each binding row.",
     "TXT-REVIEW-006": "Each block shows its tier, its current approval state and its E3 section, and a block excluded from assembly is labelled as blocking.",
     "TXT-REVIEW-007": "The view is a status view and nothing else: it emits no button, form, input or script, names no credential, token or API host, and states where approval is recorded and what enforces it — without describing or promising a sign-off workflow.",
-    "TXT-REVIEW-008": "The view references no external resource, derives its source links from `repoUrl` when no branch is configured, and renders in full for a repository with no source configuration at all."
+    "TXT-REVIEW-008": "The view references no external resource, derives its source links from `repoUrl` when no branch is configured, and renders in full for a repository with no source configuration at all.",
+    "TXT-VAL-001": "A values store whose values match their ARD rows passes; one that no longer matches fails and names the value, the stored number and the number the ARD now gives.",
+    "TXT-VAL-002": "A value whose address resolves to no ARD row, to more than one, or to a display absent from the build is reported rather than silently dropped.",
+    "TXT-VAL-003": "Derived values are recomputed from their inputs at build time, and a derivation naming a value defined after it is reported.",
+    "TXT-VAL-004": "Presentation is checked too: a value whose `formatted` does not match its declared scale and half-up rounding fails.",
+    "TXT-VAL-005": "A value citing an ARD the repository no longer holds is reported; a store with an unknown schema is refused; a repository with no store is not a failure.",
+    "TXT-VAL-006": "A `{{value:id}}` token renders the stored value, is span-tracked so the numeric-fidelity gate accepts its digits, and fails the build when the id is unknown.",
+    "TXT-VAL-007": "The store knows which text blocks cite each value, so \"what breaks if this changes\" is answerable before it changes.",
+    "TXT-VAL-008": "The committed store is in the agreed schema and every value in it cites an ARD file that exists with a matching hash."
   },
   "rows": [
     {
@@ -589,6 +597,78 @@
       "id": "TXT-REVIEW-008",
       "area": "",
       "text": "The view references no external resource, derives its source links from `repoUrl` when no branch is configured, and renders in full for a repository with no source configuration at all.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TXT-VAL-001",
+      "area": "",
+      "text": "A values store whose values match their ARD rows passes; one that no longer matches fails and names the value, the stored number and the number the ARD now gives.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TXT-VAL-002",
+      "area": "",
+      "text": "A value whose address resolves to no ARD row, to more than one, or to a display absent from the build is reported rather than silently dropped.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TXT-VAL-003",
+      "area": "",
+      "text": "Derived values are recomputed from their inputs at build time, and a derivation naming a value defined after it is reported.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TXT-VAL-004",
+      "area": "",
+      "text": "Presentation is checked too: a value whose `formatted` does not match its declared scale and half-up rounding fails.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TXT-VAL-005",
+      "area": "",
+      "text": "A value citing an ARD the repository no longer holds is reported; a store with an unknown schema is refused; a repository with no store is not a failure.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TXT-VAL-006",
+      "area": "",
+      "text": "A `{{value:id}}` token renders the stored value, is span-tracked so the numeric-fidelity gate accepts its digits, and fails the build when the id is unknown.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TXT-VAL-007",
+      "area": "",
+      "text": "The store knows which text blocks cite each value, so \"what breaks if this changes\" is answerable before it changes.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TXT-VAL-008",
+      "area": "",
+      "text": "The committed store is in the agreed schema and every value in it cites an ARD file that exists with a matching hash.",
       "source": "",
       "evidence": "",
       "link": "",

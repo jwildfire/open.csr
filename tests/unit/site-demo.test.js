@@ -33,8 +33,10 @@ import {
   renderAppBar,
   renderAppPage,
   renderSidebar,
+  navChildrenId,
   renderTablesPane,
-  renderTemplatesPane
+  renderTemplatesPane,
+  renderValuesPane
 } from '../../scripts/app-lib.mjs';
 import { loadAssembly, loadSections } from '../../scripts/template-lib.mjs';
 
@@ -62,8 +64,9 @@ describe('the shared selection', () => {
     expect(formatAppHash({ tab: 'nonsense' })).toBe(`#tab=${DEFAULT_TAB}`);
   });
 
-  test('QC-DEMO-002: the four tabs the requirement names are the tabs the app knows (#1)', () => {
-    expect(TAB_IDS).toEqual(['documents', 'displays', 'text', 'templates']);
+  test('QC-DEMO-002: the tabs the requirements name are the tabs the app knows (#1)', () => {
+    // Four in #113 A; Values joined them with the values store (#129 B).
+    expect(TAB_IDS).toEqual(['documents', 'displays', 'text', 'values', 'templates']);
     expect(APP_TABS.map((tab) => tab.id)).toEqual(TAB_IDS);
     expect(TAB_IDS.every(isTab)).toBe(true);
     expect(isTab('gallery')).toBe(false);
@@ -225,7 +228,7 @@ describe('the application strip', () => {
       expect(html).not.toContain(`data-app-tab="${id}"`);
     }
     expect(GLOBAL_TABS.map((tab) => tab.id)).toEqual(['templates']);
-    expect(STUDY_TABS.map((tab) => tab.id)).toEqual(['documents', 'displays', 'text']);
+    expect(STUDY_TABS.map((tab) => tab.id)).toEqual(['documents', 'displays', 'text', 'values']);
   });
 
   test('QC-DEMO-016: a view in the bar is a real link, marked as navigation not as a control (#1)', () => {
@@ -419,10 +422,15 @@ describe('the navigation tree', () => {
   ];
   const csr = { displayIndex: [{ slug: 't-ae-overview', number: '14.3.1.2', label: 'Table' }] };
 
-  test('QC-DEMO-018: the study is the root, and documents, displays and text hang off it (#1)', () => {
+  test('QC-DEMO-018: the study is the root, and documents, displays, text and values hang off it (#1)', () => {
     const tree = buildNavTree({ config, csr, displays, textBlocks });
     expect(tree.study).toMatchObject({ id: 'CDISCPILOT01', cutoff: '2014-07-01' });
-    expect(tree.groups.map((group) => group.id)).toEqual(['documents', 'displays', 'text']);
+    expect(tree.groups.map((group) => group.id)).toEqual([
+      'documents',
+      'displays',
+      'text',
+      'values'
+    ]);
   });
 
   test('QC-DEMO-018: more than one document is listed, and an unbuilt one says so (#1)', () => {
@@ -564,5 +572,151 @@ describe('a document contents in the tree', () => {
     const html = renderSidebar({ tree, active: 'documents', selected: { doc: 'csr' } });
     // The planned document has none, so exactly one section list exists.
     expect((html.match(/class="nav-sections"/g) || []).length).toBe(1);
+  });
+
+  // --- expand / collapse (open.csr #10) ------------------------------------
+
+  test('QC-DEMO-025: a node with children carries a keyboard-reachable disclosure control (#1)', () => {
+    const tree = buildNavTree({ config, csr, displays: [], textBlocks: [] });
+    const html = renderSidebar({ tree, active: 'documents', selected: { doc: 'csr' } });
+    // A real button, not a styled span: it has to be reachable by Tab and
+    // operable by Enter and Space without the app implementing key handling.
+    expect(html).toContain('<button type="button" class="nav-twisty" data-nav-toggle="csr"');
+    expect(html).toContain(`aria-controls="${navChildrenId('documents', 'csr')}"`);
+    expect(html).toContain(`<ul class="nav-sections" id="${navChildrenId('documents', 'csr')}">`);
+    // Named for a screen reader; the chevron itself is decorative.
+    expect(html).toContain('Show or hide the contents of Clinical Study Report');
+    expect(html).toMatch(/data-nav-toggle="csr"[^>]*aria-expanded="true"/);
+  });
+
+  test('QC-DEMO-025: a node with nothing beneath it gets no chevron at all (#1)', () => {
+    const tree = buildNavTree({
+      config,
+      csr,
+      displays: [{ slug: 't-ae-overview', title: 'AE Overview', status: 'built' }],
+      textBlocks: []
+    });
+    const html = renderSidebar({ tree, active: 'displays', selected: { display: 't-ae-overview' } });
+    // The display has no children, so it is a flat row: an affordance that
+    // expands nothing is worse than no affordance.
+    expect(html).toContain('data-nav-item="t-ae-overview"');
+    expect(html).not.toContain('data-nav-toggle="t-ae-overview"');
+    // The unbuilt document likewise contributes no sections and no control.
+    expect(html).not.toContain('data-nav-toggle="sap"');
+  });
+
+  test('QC-DEMO-026: an unpopulated section is dimmed and keeps its explanatory tooltip (#1)', () => {
+    const tree = buildNavTree({ config, csr, displays: [], textBlocks: [] });
+    const html = renderSidebar({ tree, active: 'documents', selected: { doc: 'csr' } });
+    expect(html).toContain('class="nav-section is-empty"');
+    expect(html).toContain('data-nav-empty="true"');
+    expect(html).toContain('title="Modelled but not populated in this demonstration"');
+    // A populated section is a plain link at full contrast, with no dimming
+    // class and no tooltip explaining an absence that is not there.
+    expect(html).toMatch(/class="nav-section" [^>]*data-nav-section="discussion"/);
+  });
+
+  test('QC-DEMO-026: a group with no items is a heading rather than an empty folder (#1)', () => {
+    const tree = buildNavTree({ config: {}, csr: null, displays: [], textBlocks: [] });
+    const html = renderSidebar({ tree });
+    expect(html).toContain('nav-group is-empty');
+    expect(html).toMatch(/data-nav-group-toggle="displays"[^>]*aria-expanded="false"/);
+    // No caret on a group that opens onto nothing.
+    const displaysGroup = html.slice(html.indexOf('data-nav-group-root="displays"'));
+    expect(displaysGroup.slice(0, displaysGroup.indexOf('</button>'))).not.toContain('nav-caret');
+  });
+});
+
+// ---------------------------------------------------------------------------
+// The Values pane (obot.roadmap #129 B)
+// ---------------------------------------------------------------------------
+
+describe('the Values pane', () => {
+  const store = {
+    schema: 'opencsr/values/v1',
+    created: '2026-07-26T00:00:00Z',
+    values: [
+      {
+        id: 'randomised-n',
+        label: 'Subjects randomised',
+        kind: 'ard',
+        value: 254,
+        formatted: '254',
+        format: { scale: 1, digits: 0 },
+        source: {
+          address: 't-disposition:randomised:n;group=Total',
+          display: 't-disposition',
+          iteration: 'v002',
+          ard_file: 'outputs/t-disposition/v002/ard.json',
+          ard_hash: 'sha256:abcdef1234567890'
+        }
+      },
+      {
+        id: 'ae-excess',
+        label: 'Additional subjects with an AE',
+        kind: 'derived',
+        value: 22,
+        formatted: '22',
+        format: { scale: 1, digits: 0 },
+        derivation: { op: 'difference', inputs: ['ae-any-n-high', 'ae-any-n-placebo'] }
+      }
+    ]
+  };
+  const usage = new Map([['randomised-n', ['TXT-E3-1002']]]);
+
+  test('QC-DEMO-027: every value shows its name, its number and where it came from (#1)', () => {
+    const html = renderValuesPane({ store, usage });
+    expect(html).toContain('randomised-n');
+    expect(html).toContain('Subjects randomised');
+    expect(html).toContain('t-disposition:randomised:n;group=Total');
+    expect(html).toContain('outputs/t-disposition/v002/ard.json');
+    // A derived value shows the arithmetic instead of an address — it has no ARD
+    // row of its own, and pretending otherwise would be the lie the store exists
+    // to prevent.
+    expect(html).toContain('difference(ae-any-n-high, ae-any-n-placebo)');
+  });
+
+  test('QC-DEMO-027: the blocks that cite a value are listed against it (#1)', () => {
+    const html = renderValuesPane({ store, usage });
+    expect(html).toContain('href="../text/index.html#TXT-E3-1002"');
+    // A value nothing cites is shown as uncited rather than hidden: an unused
+    // name is a fact about the report, not an error.
+    expect(html).toContain('—');
+  });
+
+  test('QC-DEMO-028: the pane states the verdict of the gate that re-derived the store (#1)', () => {
+    const passing = renderValuesPane({ store, usage, gate: { ok: true, checked: 15, violations: [] } });
+    expect(passing).toContain('15 values were re-derived');
+    const failing = renderValuesPane({
+      store,
+      usage,
+      gate: { ok: false, checked: 15, violations: [{ id: 'randomised-n', message: 'stored value 999' }] }
+    });
+    expect(failing).toContain('callout warn');
+    expect(failing).toContain('randomised-n — stored value 999');
+  });
+
+  test('QC-DEMO-028: a repository with no values store renders the documented empty state (#1)', () => {
+    expect(renderValuesPane({ store: null })).toContain('library/values/values.yaml');
+    expect(renderValuesPane({ store: { values: [] } })).toContain('No values are declared yet');
+  });
+
+  test('QC-DEMO-029: values are a collection of the study, listed in the tree with their numbers (#1)', () => {
+    const tree = buildNavTree({
+      config: { study: { id: 'CDISCPILOT01' } },
+      csr: null,
+      displays: [],
+      textBlocks: [],
+      values: store.values
+    });
+    const group = tree.groups.find((entry) => entry.id === 'values');
+    expect(group.items.map((item) => item.id)).toEqual(['randomised-n', 'ae-excess']);
+    expect(group.items[0]).toMatchObject({ label: 'Subjects randomised', number: '254' });
+    expect(group.items[1].status).toBe('derived');
+
+    const html = renderSidebar({ tree, active: 'values' });
+    // Selecting a value focuses it in the pane rather than introducing a fourth
+    // selection key: the pane is one list, and `focus` already means that.
+    expect(html).toContain('href="#tab=values&amp;focus=randomised-n"');
   });
 });

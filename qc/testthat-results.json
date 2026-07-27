@@ -1,14 +1,14 @@
 {
   "suite": "r-unit",
   "package": "opencsr",
-  "generated": "2026-07-25T13:21:32Z",
+  "generated": "2026-07-27T03:39:29Z",
   "environment": {
     "r": "4.3.3",
     "os": "Darwin 23.6.0"
   },
   "summary": {
-    "total": 70,
-    "passed": 70,
+    "total": 90,
+    "passed": 90,
     "failed": 0,
     "errored": 0,
     "skipped": 0
@@ -330,6 +330,56 @@
       "status": "pass"
     },
     {
+      "file": "test-rtf.R",
+      "test": "TFL-RTF-001: a rendered display encodes as a complete RTF document (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-rtf.R",
+      "test": "TFL-RTF-002: every cell of the rendered display survives into the RTF (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-rtf.R",
+      "test": "TFL-RTF-002: row labels arrive without the HTML indentation trick (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-rtf.R",
+      "test": "TFL-RTF-003: the title, population, footnotes and source line travel with the table (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-rtf.R",
+      "test": "TFL-RTF-003: column headers carry the treatment arms and their subject counts (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-rtf.R",
+      "test": "TFL-RTF-004: a listing renders as RTF as well as a summary table does (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-rtf.R",
+      "test": "TFL-RTF-004: the in-text variant renders its own, smaller RTF (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-rtf.R",
+      "test": "TFL-RTF-005: regenerate writes an RTF beside every rendered variant (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-rtf.R",
+      "test": "TFL-RTF-005: the manifest records each variant's RTF and its hash (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-rtf.R",
+      "test": "TFL-RTF-006: every committed display has an RTF whose hash matches its manifest (#1)",
+      "status": "pass"
+    },
+    {
       "file": "test-spec-validation.R",
       "test": "TFL-SPEC-001: an unknown analysis method is rejected by name (#1)",
       "status": "pass"
@@ -362,6 +412,56 @@
     {
       "file": "test-spec-validation.R",
       "test": "TFL-SPEC-006: every committed display in the library validates (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-values.R",
+      "test": "TFL-VAL-001: the committed declaration validates and every value is uniquely named (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-values.R",
+      "test": "TFL-VAL-001: a declaration missing a label, an id or a source is rejected (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-values.R",
+      "test": "TFL-VAL-002: a malformed binding address or unknown operation is rejected (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-values.R",
+      "test": "TFL-VAL-003: every ARD-sourced value equals its row in the committed ARD (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-values.R",
+      "test": "TFL-VAL-003: every value carries the iteration and hash of the ARD it came from (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-values.R",
+      "test": "TFL-VAL-004: a derived value equals the arithmetic it declares (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-values.R",
+      "test": "TFL-VAL-004: a derivation naming a value declared after it is an error (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-values.R",
+      "test": "TFL-VAL-005: an unresolvable binding fails the build rather than producing a blank value (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-values.R",
+      "test": "TFL-VAL-006: percentages are scaled and rounded at presentation, never in the store (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-values.R",
+      "test": "TFL-VAL-007: the committed store matches a fresh build of the declaration (#1)",
       "status": "pass"
     }
   ]

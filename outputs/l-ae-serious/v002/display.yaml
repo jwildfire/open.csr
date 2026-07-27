@@ -1,0 +1,38 @@
+id: l-ae-serious
+title: "Listing of Serious Adverse Events"
+study: CDISCPILOT01
+population_label: "Safety Analysis Set"
+cutoff: "2014-07-01"
+source: "Source: adae (pharmaverseadam). Data cut-off: 2014-07-01."
+footnotes:
+  - "One row per serious adverse event record (AESER = 'Y')."
+  - "Study day is relative to the first dose of study drug."
+columns:
+  order:
+    - USUBJID
+    - TRT01A
+    - AGE
+    - SEX
+    - AEBODSYS
+    - AEDECOD
+    - AESEV
+    - AEREL
+    - ASTDY
+    - AENDY
+    - AEOUT
+  labels:
+    USUBJID: "Subject"
+    TRT01A: "Treatment"
+    AGE: "Age"
+    SEX: "Sex"
+    AEBODSYS: "System organ class"
+    AEDECOD: "Preferred term"
+    AESEV: "Severity"
+    AEREL: "Relationship"
+    ASTDY: "Start day"
+    AENDY: "End day"
+    AEOUT: "Outcome"
+format:
+  digits: {}
+variants:
+  post_text: {}

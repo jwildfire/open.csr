@@ -1,6 +1,6 @@
 {
   "module": "quality",
-  "generated": "2026-07-26T02:07:59.323Z",
+  "generated": "2026-07-27T03:39:42.556Z",
   "records": [
     {
       "requirementIds": [
@@ -55,6 +55,54 @@
         "QC-DEMO-024"
       ],
       "title": "a document contents in the tree QC-DEMO-024: the sections belong to their document, so a second document has its own (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-025"
+      ],
+      "title": "a document contents in the tree QC-DEMO-025: a node with children carries a keyboard-reachable disclosure control (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-025"
+      ],
+      "title": "a document contents in the tree QC-DEMO-025: a node with nothing beneath it gets no chevron at all (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-026"
+      ],
+      "title": "a document contents in the tree QC-DEMO-026: a group with no items is a heading rather than an empty folder (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-026"
+      ],
+      "title": "a document contents in the tree QC-DEMO-026: an unpopulated section is dimmed and keeps its explanatory tooltip (#1)",
       "suite": "js-unit",
       "passed": true,
       "file": "tests/unit/site-demo.test.js",
@@ -1266,7 +1314,7 @@
       "requirementIds": [
         "QC-DEMO-018"
       ],
-      "title": "the navigation tree QC-DEMO-018: the study is the root, and documents, displays and text hang off it (#1)",
+      "title": "the navigation tree QC-DEMO-018: the study is the root, and documents, displays, text and values hang off it (#1)",
       "suite": "js-unit",
       "passed": true,
       "file": "tests/unit/site-demo.test.js",
@@ -1410,7 +1458,7 @@
       "requirementIds": [
         "QC-DEMO-002"
       ],
-      "title": "the shared selection QC-DEMO-002: the four tabs the requirement names are the tabs the app knows (#1)",
+      "title": "the shared selection QC-DEMO-002: the tabs the requirements name are the tabs the app knows (#1)",
       "suite": "js-unit",
       "passed": true,
       "file": "tests/unit/site-demo.test.js",
@@ -1594,6 +1642,66 @@
       "suite": "js-unit",
       "passed": true,
       "file": "tests/unit/site-render.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-027"
+      ],
+      "title": "the Values pane QC-DEMO-027: every value shows its name, its number and where it came from (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-027"
+      ],
+      "title": "the Values pane QC-DEMO-027: the blocks that cite a value are listed against it (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-028"
+      ],
+      "title": "the Values pane QC-DEMO-028: a repository with no values store renders the documented empty state (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-028"
+      ],
+      "title": "the Values pane QC-DEMO-028: the pane states the verdict of the gate that re-derived the store (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-029"
+      ],
+      "title": "the Values pane QC-DEMO-029: values are a collection of the study, listed in the tree with their numbers (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
       "issueRefs": [
         1
       ]

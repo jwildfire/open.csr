@@ -12,13 +12,14 @@ A change request becomes a spec edit (`analysis.yaml` / `display.yaml` / `custom
 
 - **Test names carry requirement IDs:** `"<REQ-ID>: <description> (#<issue>)"`, ID matching `^[A-Z]{2,4}-[A-Z]+-\d+[A-D]?$`. Prefixes: `TFL-` engine, `DSP-` displays, `TXT-` text, `RPT-` templates, `TRC-` traceability, `QC-` framework. Guard tests fail the build otherwise.
 - **Every requirement ID a test references must exist in a matrix** under `quality/requirements/`.
-- **Prose never states a number.** Text blocks bind values with `{{ard:<display>:<analysis>:<stat>[;group=…]}}`. The numeric-fidelity gate fails any digit in rendered prose that didn't come from a binding.
+- **Prose never states a number.** Text blocks bind values with `{{ard:<display>:<analysis>:<stat>[;group=…]}}`, or by name with `{{value:<id>}}` against the values store (`library/values/values.yaml` → `outputs/values/values.json`). The numeric-fidelity gate fails any digit in rendered prose that didn't come from a binding, and the values gate re-derives every named value from the committed ARDs.
 - **Display identity is the slug**, not the 14.x number — numbering is assigned at assembly time.
 
 ## Commands
 
 ```bash
-Rscript -e 'pkgload::load_all("pipeline"); regenerate("t-ae-overview")'   # rebuild one display
+Rscript -e 'pkgload::load_all("pipeline"); regenerate("t-ae-overview")'   # rebuild one display (ARD + HTML + RTF)
+Rscript -e 'pkgload::load_all("pipeline"); regenerate_values()'           # rebuild outputs/values/values.json
 Rscript qc/run-tests.R          # R tests -> qc/testthat-results.json
 npx vitest run                  # JS tests
 node scripts/assemble.mjs       # text + templates + displays -> docs/assembled/

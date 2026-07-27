@@ -17,6 +17,13 @@
  * Extension beyond contracts.md, used by the shipped library and flagged as such:
  *   {{xref:display:<slug>}}   -> "Table 14.3.1.2" (number assigned at build time)
  *   {{xref:section:<number>}} -> "Section 12.2.1" / "Appendix 16.2.1"
+ *   {{value:<id>}}            -> a named value from the values store (#129 B)
+ * A value binding is an ARD binding that has been given a name and a provenance
+ * record once, centrally, instead of being re-addressed in every sentence that
+ * needs it. It resolves through the same span-tracking path, so the digits it
+ * emits are exempt from gate (b) exactly as an {{ard:…}} substitution is — and
+ * the store itself is re-derived from the committed ARDs by values-lib's gate, so
+ * naming a number never loosens the check on it.
  * Cross-references exist so prose never types a 14.x number that the assembler
  * owns (design decision D6). They resolve against the template model and the
  * assembler's display index; an unresolvable xref fails the build exactly like an
@@ -39,8 +46,8 @@ export const APPROVAL_STATES = ['draft', 'in_review', 'approved'];
  */
 export const QUALIFIER_KEYS = ['group', 'group2', 'variable', 'variable_level', 'digits', 'scale'];
 
-/** Matches both token kinds; a fresh instance per call keeps `lastIndex` clean. */
-const tokenRe = () => /\{\{(ard|xref):[^}]+\}\}/g;
+/** Matches every token kind; a fresh instance per call keeps `lastIndex` clean. */
+const tokenRe = () => /\{\{(ard|xref|value):[^}]+\}\}/g;
 
 // ---------------------------------------------------------------------------
 // Block parsing
@@ -257,9 +264,12 @@ export function renderBlock(block, ards, context = {}) {
   const spans = [];
   const bindings = [];
   const xrefs = [];
+  const values = [];
   const errors = [];
   const xrefErrors = [];
+  const valueErrors = [];
   const warnings = [];
+  const valueIndex = context.values ?? null;
 
   let out = '';
   let cursor = 0;
@@ -314,6 +324,27 @@ export function renderBlock(block, ards, context = {}) {
         error: resolved.ok ? null : resolved.error,
         start,
       });
+    } else if (match[1] === 'value') {
+      const id = match[0].slice('{{value:'.length, -2).trim();
+      const entry = valueIndex?.get?.(id) ?? valueIndex?.[id] ?? null;
+      if (entry) {
+        text = entry.formatted ?? String(entry.value ?? '');
+      } else {
+        text = `[UNRESOLVED VALUE ${id}]`;
+        valueErrors.push(
+          `${block.id}: unknown value "${id}"` +
+            (valueIndex ? ' — declare it in library/values/values.yaml and regenerate' : ' — no values store loaded')
+        );
+      }
+      values.push({
+        id,
+        resolved: !!entry,
+        value: entry ? entry.value : null,
+        formatted: text,
+        kind: entry?.kind ?? null,
+        address: entry?.source?.address ?? null,
+        start
+      });
     } else {
       const kind = match[1] === 'xref' ? match[0].slice('{{xref:'.length, -2) : null;
       const [refType, refTarget] = splitOnce(kind, ':');
@@ -328,7 +359,7 @@ export function renderBlock(block, ards, context = {}) {
   }
   out += body.slice(cursor);
 
-  return { text: out, spans, bindings, xrefs, errors, xrefErrors, warnings };
+  return { text: out, spans, bindings, xrefs, values, errors, xrefErrors, valueErrors, warnings };
 }
 
 function splitOnce(s, sep) {
@@ -480,6 +511,7 @@ export function runGates(blocks, ards, context = {}) {
   const structural = [];
   const resolutionErrors = [];
   const crossReferenceErrors = [];
+  const valueBindingErrors = [];
   const fidelityViolations = [];
   const excluded = [];
   const warnings = [];
@@ -494,6 +526,7 @@ export function runGates(blocks, ards, context = {}) {
 
     resolutionErrors.push(...rendered.errors);
     crossReferenceErrors.push(...rendered.xrefErrors);
+    valueBindingErrors.push(...(rendered.valueErrors ?? []));
     warnings.push(...rendered.warnings);
     if (approval.warning) warnings.push(`${block.id}: ${approval.warning}`);
     fidelityViolations.push(...fidelity.violations);
@@ -525,6 +558,8 @@ export function runGates(blocks, ards, context = {}) {
       unresolvedBindings: rendered.bindings.filter((b) => !b.resolved).length,
       crossReferences: rendered.xrefs.length,
       unresolvedCrossReferences: rendered.xrefs.filter((x) => !x.resolved).length,
+      valueBindings: rendered.values.length,
+      unresolvedValueBindings: rendered.values.filter((v) => !v.resolved).length,
       numericFidelity: fidelity.ok,
       violations: fidelity.violations,
       exemptionsUsed: fidelity.exemptionsUsed,
@@ -537,6 +572,7 @@ export function runGates(blocks, ards, context = {}) {
     structure: { ok: structural.length === 0, errors: structural },
     bindingResolution: { ok: resolutionErrors.length === 0, errors: resolutionErrors },
     crossReferences: { ok: crossReferenceErrors.length === 0, errors: crossReferenceErrors },
+    valueBindings: { ok: valueBindingErrors.length === 0, errors: valueBindingErrors },
     numericFidelity: { ok: fidelityViolations.length === 0, violations: fidelityViolations },
     approval: { ok: true, excluded },
     warnings,
@@ -545,6 +581,7 @@ export function runGates(blocks, ards, context = {}) {
       structural.length === 0 &&
       resolutionErrors.length === 0 &&
       crossReferenceErrors.length === 0 &&
+      valueBindingErrors.length === 0 &&
       fidelityViolations.length === 0,
   };
 }

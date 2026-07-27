@@ -140,9 +140,20 @@ regenerate <- function(slug, root = csr_root(), change_request = "Initial genera
   rendered <- list()
   for (variant in names(display_spec$variants)) {
     disp <- render_display(rows, display_spec, variant = variant)
-    file <- if (variant == "post_text") "table.html" else paste0("table-", gsub("_", "-", variant), ".html")
-    writeLines(disp$html, file.path(dir, file))
-    rendered[[variant]] <- list(file = file, n_rows = nrow(disp$table))
+    stem <- if (variant == "post_text") "table" else paste0("table-", gsub("_", "-", variant))
+    writeLines(disp$html, file.path(dir, paste0(stem, ".html")))
+    # The submission artifact (#129 A). Written by the same loop, from the same
+    # rendered cells, so the RTF a reviewer receives and the HTML the app shows
+    # cannot disagree — and the hash lets CI prove the committed file is this
+    # run's output rather than a hand-edited copy.
+    rtf_path <- file.path(dir, paste0(stem, ".rtf"))
+    write_rtf_display(disp, display_spec, rtf_path)
+    rendered[[variant]] <- list(
+      file = paste0(stem, ".html"),
+      rtf = paste0(stem, ".rtf"),
+      rtf_hash = hash_file(rtf_path),
+      n_rows = nrow(disp$table)
+    )
   }
 
   manifest <- list(

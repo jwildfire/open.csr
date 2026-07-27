@@ -55,6 +55,7 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import yaml from 'js-yaml';
 
+import { checkValueStore, hashFile, loadValueStore, valueIndex } from './values-lib.mjs';
 import {
   loadTextLibrary,
   loadArd,
@@ -379,8 +380,31 @@ export function assemble({ write = true } = {}) {
     });
   }
 
-  const context = { displayIndex, sectionIndex: sectionIndex(sectionModel) };
+  // The values store: named numbers with provenance (#129 B). Prose binds them
+  // by id, so they enter the gate context beside the display and section indices.
+  // The store is a committed artifact, so it is re-derived here against the same
+  // ARDs the report is built from — a value that has drifted fails the build in
+  // the same breath as a typed number would.
+  const valueStore = loadValueStore(ROOT);
+  const ardHashes = new Map(
+    [...ardMeta.entries()]
+      .filter(([, meta]) => meta.source === 'outputs')
+      .map(([slug, meta]) => [slug, hashFile(join(ROOT, meta.path))])
+  );
+  const valueReport = checkValueStore(valueStore, ards, ardHashes);
+
+  const context = {
+    displayIndex,
+    sectionIndex: sectionIndex(sectionModel),
+    values: valueIndex(valueStore)
+  };
   const gates = runGates([...library.values()], ards, context);
+  gates.values = {
+    ok: valueReport.ok,
+    checked: valueReport.checked,
+    violations: valueReport.violations
+  };
+  gates.ok = gates.ok && valueReport.ok;
 
   // --- place content into sections -----------------------------------------
   const slotBySection = new Map(assembly.slots.map((s) => [s.section, s]));
@@ -500,6 +524,14 @@ export function assemble({ write = true } = {}) {
       included: checkApproval(b).included,
       file: relative(b.file),
     })),
+    values: valueStore
+      ? {
+          schema: valueStore.schema,
+          created: valueStore.created,
+          provenance: valueStore.provenance ?? null,
+          values: valueStore.values
+        }
+      : null,
     provenanceAppendix: {
       section: assembly.provenanceSection,
       displays: buildProvenanceAppendix(displayIndex, ards, ardMeta).displays,
@@ -881,6 +913,18 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     gates.numericFidelity.violations.map((v) => `${v.block}:"${v.value}"`).join('; ')
   );
   line('cross-references', gates.crossReferences.ok, gates.crossReferences.errors.join('; '));
+  line(
+    'value bindings',
+    gates.valueBindings.ok,
+    gates.valueBindings.errors.join('; ')
+  );
+  line(
+    'values',
+    gates.values.ok,
+    gates.values.violations.length
+      ? gates.values.violations.map((v) => `${v.id ?? 'store'}: ${v.message}`).join('; ')
+      : `${gates.values.checked} value(s) re-derived from the committed ARDs`
+  );
   line(
     'approval',
     true,

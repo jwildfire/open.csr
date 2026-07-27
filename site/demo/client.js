@@ -42,6 +42,37 @@ if (app) {
   const nav = document.querySelector('[data-app-nav]');
   let state = { tab: DEFAULT_TAB, doc: null, display: null, block: null, focus: null };
 
+  // Which nodes the visitor has collapsed (open.csr #10). Held for the browser
+  // session rather than forever: a tree shape is a working state, not a
+  // preference, and it should not outlive the visit that produced it. Keys are
+  // `group:<id>` and `node:<group>/<id>` so a document and a group can never
+  // collide.
+  const COLLAPSE_KEY = 'opencsr.nav.collapsed';
+  const collapsed = new Set(readCollapsed());
+
+  function readCollapsed() {
+    try {
+      const raw = sessionStorage.getItem(COLLAPSE_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch (e) {
+      return []; // private mode, or a value from an older shape — start open
+    }
+  }
+
+  function saveCollapsed() {
+    try {
+      sessionStorage.setItem(COLLAPSE_KEY, JSON.stringify([...collapsed]));
+    } catch (e) {
+      /* storage unavailable: the state still holds for this page */
+    }
+  }
+
+  function setCollapsed(key, isCollapsed) {
+    if (isCollapsed) collapsed.add(key);
+    else collapsed.delete(key);
+    saveCollapsed();
+  }
+
   function showTab(id) {
     for (const tab of tabs) {
       const on = tab.getAttribute('data-app-tab') === id;
@@ -61,16 +92,28 @@ if (app) {
   // them at — collapsing them on every switch would fight the person using it.
   function showNav() {
     if (!nav) return;
-    const key = { documents: 'doc', displays: 'display', text: 'block' }[state.tab] || null;
+    const key = { documents: 'doc', displays: 'display', text: 'block', values: 'focus' }[state.tab] || null;
     const current = key ? state[key] : null;
     for (const root of nav.querySelectorAll('[data-nav-group-root]')) {
       const id = root.getAttribute('data-nav-group-root');
-      if (id === state.tab) {
+      // Moving to a view opens its group — unless the visitor collapsed it, in
+      // which case re-opening it on every navigation would be the app arguing
+      // with them (#10).
+      if (id === state.tab && !collapsed.has(`group:${id}`) && !root.classList.contains('is-empty')) {
         root.classList.add('open');
         const head = root.querySelector('[data-nav-group-toggle]');
         if (head) head.setAttribute('aria-expanded', 'true');
       }
       root.classList.toggle('is-active', id === state.tab);
+    }
+    // Node-level collapse survives navigation the same way.
+    for (const node of nav.querySelectorAll('[data-nav-node]')) {
+      const group = node.querySelector('[data-nav-toggle]')?.getAttribute('data-nav-group') || '';
+      const key = `node:${group}/${node.getAttribute('data-nav-node')}`;
+      const isCollapsed = collapsed.has(key);
+      node.classList.toggle('is-collapsed', isCollapsed);
+      const toggle = node.querySelector('[data-nav-toggle]');
+      if (toggle) toggle.setAttribute('aria-expanded', isCollapsed ? 'false' : 'true');
     }
     for (const item of nav.querySelectorAll('[data-nav-item]')) {
       const on =
@@ -222,11 +265,28 @@ if (app) {
   // --- the explorer ------------------------------------------------------
   if (nav) {
     nav.addEventListener('click', (event) => {
+      // A node's own disclosure control: expand or collapse, and nothing else.
+      // It sits beside the item rather than inside it precisely so that this
+      // click is not also a selection (#10).
+      const nodeToggle = event.target.closest('[data-nav-toggle]');
+      if (nodeToggle) {
+        event.preventDefault();
+        const node = nodeToggle.closest('[data-nav-node]');
+        const isCollapsed = node.classList.toggle('is-collapsed');
+        nodeToggle.setAttribute('aria-expanded', isCollapsed ? 'false' : 'true');
+        setCollapsed(
+          `node:${nodeToggle.getAttribute('data-nav-group')}/${node.getAttribute('data-nav-node')}`,
+          isCollapsed
+        );
+        return;
+      }
       const toggle = event.target.closest('[data-nav-group-toggle]');
       if (toggle) {
         const root = toggle.closest('[data-nav-group-root]');
+        if (root.classList.contains('is-empty')) return;
         const open = root.classList.toggle('open');
         toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        setCollapsed(`group:${toggle.getAttribute('data-nav-group-toggle')}`, !open);
         // Opening a group also moves to that view: in an explorer the folder and
         // the place are the same thing.
         if (open) goto({ tab: toggle.getAttribute('data-nav-group-toggle'), focus: null });
@@ -251,8 +311,8 @@ if (app) {
       event.preventDefault();
       const group = item.getAttribute('data-nav-group');
       const id = item.getAttribute('data-nav-item');
-      const key = { documents: 'doc', displays: 'display', text: 'block' }[group];
-      goto({ tab: group, [key]: id, focus: group === 'text' ? id : null });
+      const key = { documents: 'doc', displays: 'display', text: 'block', values: 'focus' }[group];
+      goto({ tab: group, [key]: id, focus: group === 'text' || group === 'values' ? id : null });
     });
   }
 
