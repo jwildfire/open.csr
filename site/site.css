@@ -2642,6 +2642,8 @@ body.app-page .app-bar {
   font: 600 0.82rem/1.4 var(--sans);
   color: var(--ink);
   font-variant-numeric: tabular-nums;
+}
+
 /* --- Expand and collapse (open.csr #10) ---------------------------------- */
 
 /* Screen-reader-only text: the twisty is a chevron to the eye and a named
