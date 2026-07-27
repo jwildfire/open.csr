@@ -18,6 +18,7 @@ import {
   resolveDisplay
 } from './core.js';
 import { initEditors } from './editor.js';
+import { initReaderEditors } from './reader-edit.js';
 
 const app = document.querySelector('[data-app]');
 if (app) {
@@ -368,4 +369,10 @@ if (app) {
   // visitor with JavaScript off gets the read-only status view the pane has
   // always been rather than a textarea that cannot do anything.
   initEditors(app);
+
+  // --- editing from the reading view (#129 C, open.csr#15) ----------------
+  // Mounted after the editors exist, because the Reader does not create one: it
+  // borrows the block's editor from the Text pane and gives it back. One editor
+  // per block, one draft, whichever surface the writer is looking at.
+  initReaderEditors(app);
 }

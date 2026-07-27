@@ -20,6 +20,7 @@ import path from 'node:path';
 import matter from 'gray-matter';
 import yaml from 'js-yaml';
 import { marked } from 'marked';
+import { isReaderEditable, readerDrawerId } from '../site/demo/reader-edit-core.js';
 import { summarizeEvidence } from './evidence-lib.mjs';
 import { resolveRequirementCoverage } from './requirements-lib.mjs';
 
@@ -1246,7 +1247,15 @@ export function renderBoundProse({ markdown, html, bindings, ards, xrefs = null 
   return withXrefs(replace(renderMarkdown(markdown || '')));
 }
 
-export function renderCsrReader({ config, csr, displays, ards, traceIndex, textBlocks = [] }) {
+export function renderCsrReader({
+  config,
+  csr,
+  displays,
+  ards,
+  traceIndex,
+  textBlocks = [],
+  editable = null
+}) {
   const normalized = normalizeCsr(csr.json);
   const bySlug = Object.fromEntries(displays.map((display) => [display.slug, display]));
 
@@ -1318,7 +1327,11 @@ export function renderCsrReader({ config, csr, displays, ards, traceIndex, textB
     // Text blocks are rendered from their LIBRARY SOURCE where one exists, so
     // the bindings stay live and clickable on this page (contracts §6, TRC-DOC-002)
     // rather than arriving as already-flattened prose.
-    textById: Object.fromEntries((textBlocks || []).map((block) => [block.id, block]))
+    textById: Object.fromEntries((textBlocks || []).map((block) => [block.id, block])),
+    // Which blocks may be edited from the reading view (#129 C). Absent — as on
+    // the standalone /reader/ page, where there is no editor to adopt — and the
+    // Reader renders exactly the read-only document it rendered before.
+    editable: editable instanceof Set ? editable : new Set(editable || [])
   };
   const body = normalized.sections.map((section) => renderCsrSection(section, context)).join('');
 
@@ -1381,12 +1394,34 @@ function renderCsrText(block, context) {
     ards: context.ards,
     xrefs: context.xrefs
   });
+  // Editing from the reading view (#129 C, open.csr#15). The Reader renders the
+  // affordance and an EMPTY drawer; the client moves the block's existing editor
+  // into it. Rendering a second editor here would mean two drafts of one block.
+  const editable = isReaderEditable(block, context.editable);
+  const drawer = editable
+    ? `<div class="rdr-drawer" id="${escapeHtml(readerDrawerId(block.id))}" ` +
+      `data-reader-drawer="${escapeHtml(block.id)}" hidden></div>`
+    : '';
+  const control = editable
+    ? `<button type="button" class="rdr-edit" data-reader-edit="${escapeHtml(block.id)}" ` +
+      `aria-expanded="false" aria-controls="${escapeHtml(readerDrawerId(block.id))}">Edit</button>`
+    : '';
+  const draftNote = editable
+    ? `<p class="rdr-draft-note" data-reader-draft-note role="status" aria-live="polite" hidden></p>`
+    : '';
+
   return (
-    `<div class="csr-text"${block.id ? ` data-block="${escapeHtml(block.id)}"` : ''}>${prose}` +
+    `<div class="csr-text${editable ? ' is-editable' : ''}"` +
+    `${block.id ? ` data-block="${escapeHtml(block.id)}"` : ''}` +
+    `${editable ? ` data-reader-block="${escapeHtml(block.id)}"` : ''}>` +
+    (editable ? `<div class="csr-prose" data-reader-prose>${prose}</div>` : prose) +
+    draftNote +
     (block.id
       ? `<p class="block-ref"><a href="../text/index.html#${escapeHtml(block.id)}">` +
-        `${escapeHtml(block.id)}</a>${block.tier ? ` · ${escapeHtml(block.tier)}` : ''}</p>`
+        `${escapeHtml(block.id)}</a>${block.tier ? ` · ${escapeHtml(block.tier)}` : ''}` +
+        `${control}</p>`
       : '') +
+    drawer +
     `</div>`
   );
 }

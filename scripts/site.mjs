@@ -327,6 +327,20 @@ const displayContext = displays.map((display) => ({
   ardHash: display.outputs?.current?.ardHash || null
 }));
 
+// The Documents pane is the same Reader with one addition: an Edit affordance on
+// every block the build mounted an editor for (#129 C, open.csr#15). The
+// standalone /reader/ page keeps the read-only render — there is no editor there
+// to adopt, and an affordance that opens nothing is worse than none.
+const readerAppContent = renderCsrReader({
+  config,
+  csr,
+  displays,
+  ards,
+  traceIndex,
+  textBlocks,
+  editable: new Set(textBlocks.filter((block) => block.exists !== false).map((block) => block.id))
+});
+
 const templatesContent = renderTemplatesPane({ config, template, displays });
 const valuesContent = renderValuesPane({
   store: valueStore,
@@ -335,7 +349,7 @@ const valuesContent = renderValuesPane({
 });
 
 const appPanes = [
-  { id: 'documents', html: readerContent },
+  { id: 'documents', html: readerAppContent },
   {
     id: 'displays',
     // No in-pane picker: the explorer lists every display, and two pickers for
@@ -409,7 +423,15 @@ page(path.join(buildDir, 'templates', 'index.html'), {
 // The demo client and its pure core, copied verbatim — no bundler, no external
 // anything (contracts §9). It is the only script the site loads from a file:
 // an ES module, so its pure core is the same code the test suite runs.
-for (const file of ['core.js', 'client.js', 'text-core.js', 'editor-core.js', 'editor.js']) {
+for (const file of [
+  'core.js',
+  'client.js',
+  'text-core.js',
+  'editor-core.js',
+  'editor.js',
+  'reader-edit-core.js',
+  'reader-edit.js'
+]) {
   copyFileSync(path.join(rootDir, 'site', 'demo', file), path.join(buildDir, 'demo', file));
 }
 
