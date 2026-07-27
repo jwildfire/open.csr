@@ -219,8 +219,10 @@ function toLines(text) {
  * trimmed first, which is what keeps a one-word edit in a long block cheap.
  */
 export function diffLines(before, after) {
-  const a = toLines(before).lines;
-  const b = toLines(after).lines;
+  const beforeLines = toLines(before);
+  const afterLines = toLines(after);
+  const a = beforeLines.lines;
+  const b = afterLines.lines;
 
   let head = 0;
   while (head < a.length && head < b.length && a[head] === b[head]) head += 1;
@@ -286,6 +288,19 @@ export function diffLines(before, after) {
   }
 
   for (let k = 0; k < tail; k += 1) push('context', a[ai]);
+
+  // Adding or removing the file's final newline changes no LINE, so the script
+  // above sees nothing while the two texts genuinely differ — and an empty script
+  // means an empty patch, which would tell the writer "no change yet" about an
+  // edit they really made. Git models this as the last line being rewritten, with
+  // the "\ No newline at end of file" marker on whichever side lacks it. Do the
+  // same.
+  const lastEntry = script[script.length - 1];
+  if (beforeLines.newlineAtEof !== afterLines.newlineAtEof && lastEntry?.kind === 'context') {
+    script.pop();
+    script.push({ kind: 'remove', text: lastEntry.text, a: lastEntry.a, b: null });
+    script.push({ kind: 'add', text: lastEntry.text, a: null, b: lastEntry.b });
+  }
 
   return script;
 }

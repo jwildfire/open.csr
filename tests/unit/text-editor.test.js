@@ -359,6 +359,61 @@ describe('the patch', () => {
     const patch = unifiedDiff('f.md', 'one\ntwo', 'one\nthree');
     expect(patch).toContain('\\ No newline at end of file');
   });
+
+  test('TXT-EDIT-007: dropping the file’s final newline is a change, not an empty patch (#113)', () => {
+    // Nothing on any LINE changed, so a naive line diff sees nothing and reports
+    // "no change yet" for an edit the writer really made. Git rewrites the last
+    // line and marks the side that lost its newline; so does this.
+    const patch = unifiedDiff('f.md', 'a\nb\n', 'a\nb');
+    expect(patch).not.toBe('');
+    expect(patch).toContain('-b\n+b\n\\ No newline at end of file');
+    expect(unifiedDiff('f.md', 'a\nb', 'a\nb\n')).toContain('-b\n\\ No newline at end of file\n+b');
+  });
+
+  test('TXT-EDIT-006: git applies the patch for every shape of edit a writer can make (#113)', () => {
+    // Deletions, insertions, edits that merge into one hunk and edits that must
+    // not, and the trailing-newline case that a line diff cannot see. Each is
+    // applied for real and the result compared to the source with the draft body
+    // substituted — the editor's promise, checked by the tool that has to keep it.
+    const file = 'library/text/TXT-E3-1300.md';
+    const source = readFileSync(path.join(rootDir, file), 'utf8');
+    const body = splitFrontmatter(source).body;
+    const start = bodyStartLine(source);
+    const lines = body.split('\n');
+
+    const drafts = {
+      'the whole body deleted': '',
+      'all but one line deleted': `${lines[3]}\n`,
+      'two edits far apart': lines
+        .map((line, i) => (i === 2 || i === lines.length - 4 ? `${line} CHANGED` : line))
+        .join('\n'),
+      'two edits that merge into one hunk': lines
+        .map((line, i) => (i === 5 || i === 6 ? `X${line}` : line))
+        .join('\n'),
+      'an insertion at the top': `New opening line.\n\n${body}`,
+      'an append at the end': `${body}\nA trailing sentence.\n`,
+      'the trailing newline stripped': body.replace(/\n+$/, ''),
+      'paragraphs reordered': body.split(/\n{2,}/).reverse().join('\n\n'),
+      'non-ASCII punctuation introduced': body.replace(/\./, ' — “quoted” ∑.'),
+      'an interior run blanked out': lines.map((line, i) => (i > 4 && i < 9 ? '' : line)).join('\n')
+    };
+
+    const dir = mkdtempSync(path.join(tmpdir(), 'open-csr-shapes-'));
+    try {
+      execFileSync('git', ['init', '--quiet'], { cwd: dir });
+      mkdirSync(path.join(dir, 'library', 'text'), { recursive: true });
+      for (const [shape, draft] of Object.entries(drafts)) {
+        writeFileSync(path.join(dir, file), source);
+        writeFileSync(path.join(dir, 'change.patch'), unifiedDiff(file, body, draft, { startLine: start }));
+        execFileSync('git', ['apply', 'change.patch'], { cwd: dir });
+        expect(readFileSync(path.join(dir, file), 'utf8'), shape).toBe(
+          applyBodyToSource(source, draft)
+        );
+      }
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  });
 });
 
 // ---------------------------------------------------------------------------
