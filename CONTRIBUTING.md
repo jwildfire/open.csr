@@ -47,3 +47,15 @@ Demo data is [`{pharmaverseadam}`](https://pharmaverse.github.io/pharmaverseadam
 ## Pull requests
 
 Keep changes scoped, include the tests, and make sure `npx vitest run`, `Rscript qc/run-tests.R`, and the site build all pass. If your change alters an interface in `docs/design/contracts.md`, say so explicitly — that's a design change and needs discussion first.
+
+## Site previews
+
+The demo site is published from the `gh-pages` branch in three tiers, so what a change looks like is reviewable before it merges:
+
+| Tier | URL | Built from |
+| --- | --- | --- |
+| Release | https://jwildfire.github.io/open.csr/ | pushes to `main` |
+| Development | https://jwildfire.github.io/open.csr/dev/ | pushes to `dev` |
+| Preview | `https://jwildfire.github.io/open.csr/pr/{N}/` | same-repo pull requests |
+
+Every same-repo PR gets a preview at its own path plus a sticky comment linking it; the link is refreshed on each push and the preview pages become redirects to the dev site when the PR closes. PRs from forks get no preview — their token cannot write to `gh-pages`. Because previews are served from a nested path, the site build must stay relative-URL only; `node scripts/site.mjs` fails on a broken internal link or any external resource reference, which keeps that property honest.
