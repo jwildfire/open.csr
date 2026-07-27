@@ -2773,13 +2773,22 @@ body.app-page .app-bar {
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
 }
 
-/* The editor, once adopted: no top rule (the drawer already frames it) and no
+/* The editor, once adopted: no top rule (the drawer already frames it), no
    preview column — the block above the drawer IS the preview, and the same words
-   twice is not a second opinion, it is noise. */
+   twice is not a second opinion, it is noise — and no bar of its own, because the
+   block's Edit control is the one that opened this and the one that closes it. */
 .tb-edit.in-reader {
   margin-top: 0;
   border-top: 0;
   padding: 0.8rem 0.8rem 0.8rem 0;
+}
+
+.tb-edit.in-reader .tbe-bar {
+  display: none;
+}
+
+.tb-edit.in-reader .tbe-panel {
+  margin-top: 0;
 }
 
 .tb-edit.in-reader .tbe-grid {
@@ -2806,7 +2815,13 @@ body.app-page .app-bar {
 .rdr-draft-note {
   font: 600 0.72rem/1.4 var(--sans);
   color: var(--warn, #b45309);
-  margin: 0.2rem 0 0;
+  margin: 0.5rem 0 0.2rem;
+}
+
+/* The block reference normally tucks up under the prose; with a draft notice
+   between them it must not climb over it. */
+.rdr-draft-note:not([hidden]) + .block-ref {
+  margin-top: 0;
 }
 
 .csr-text[data-reader-state='failing'] .rdr-draft-note {

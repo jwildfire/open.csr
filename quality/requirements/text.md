@@ -234,3 +234,16 @@ the store is [`tfl-engine.md`](tfl-engine.md).
 | TXT-VAL-006 | A `{{value:id}}` token renders the stored value, is span-tracked so the numeric-fidelity gate accepts its digits, and fails the build when the id is unknown. | Functional | `values-store.test.js` | Verified |
 | TXT-VAL-007 | The store knows which text blocks cite each value, so "what breaks if this changes" is answerable before it changes. | Traceability | `values-store.test.js` | Verified |
 | TXT-VAL-008 | The committed store is in the agreed schema and every value in it cites an ARD file that exists with a matching hash. | Quality evidence | `values-store.test.js` | Verified |
+
+## Editing from the reading view (`#129` part C, Option C)
+
+Requirement source: [obot.roadmap#129](https://github.com/jwildfire/obot.roadmap/issues/129) part C, chosen by @jwildfire on 2026-07-27; tracked as [open.csr#15](https://github.com/jwildfire/open.csr/issues/15). The editor above, opened where the reading happens. Design: [`design.md` §14](../../docs/design/design.md).
+
+| ID | Requirement | Type | Verification | Status |
+|---|---|---|---|---|
+| TXT-EDIT-013 | Each editable block in the reading view carries a keyboard-reachable Edit button with `aria-expanded` and `aria-controls`, and an empty drawer for the editor to be moved into — the Reader renders no second editor. | Functional | `reader-editor.test.js` | Verified |
+| TXT-EDIT-014 | The affordance appears only where an editor exists to adopt: never on the standalone reader page, and never on a block the approval gate holds out of the report. | Functional | `reader-editor.test.js` | Verified |
+| TXT-EDIT-015 | The drawer and the editor's home marker share one id convention, derived from the block id, so the editor can always be put back where it came from. | Robustness | `reader-editor.test.js` | Verified |
+| TXT-EDIT-016 | A draft renders in the reading view as the document renders — computed values and fidelity violations marked in the sentence — but without the trace hooks that would claim it is part of the committed report. | Functional | `reader-editor.test.js` | Verified |
+| TXT-EDIT-017 | The block states which it is showing: the committed report, an editor open on unchanged prose, an unsaved draft, or an unsaved draft that fails the gates. | Traceability | `reader-editor.test.js` | Verified |
+| TXT-EDIT-018 | The reading view moves the one editor rather than creating another, restores the document's own committed HTML when the drawer closes, and writes, posts and stores nothing. | Quality evidence | `reader-editor.test.js` | Verified |

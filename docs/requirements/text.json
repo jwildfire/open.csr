@@ -80,7 +80,13 @@
     "TXT-VAL-005": "A value citing an ARD the repository no longer holds is reported; a store with an unknown schema is refused; a repository with no store is not a failure.",
     "TXT-VAL-006": "A `{{value:id}}` token renders the stored value, is span-tracked so the numeric-fidelity gate accepts its digits, and fails the build when the id is unknown.",
     "TXT-VAL-007": "The store knows which text blocks cite each value, so \"what breaks if this changes\" is answerable before it changes.",
-    "TXT-VAL-008": "The committed store is in the agreed schema and every value in it cites an ARD file that exists with a matching hash."
+    "TXT-VAL-008": "The committed store is in the agreed schema and every value in it cites an ARD file that exists with a matching hash.",
+    "TXT-EDIT-013": "Each editable block in the reading view carries a keyboard-reachable Edit button with `aria-expanded` and `aria-controls`, and an empty drawer for the editor to be moved into — the Reader renders no second editor.",
+    "TXT-EDIT-014": "The affordance appears only where an editor exists to adopt: never on the standalone reader page, and never on a block the approval gate holds out of the report.",
+    "TXT-EDIT-015": "The drawer and the editor's home marker share one id convention, derived from the block id, so the editor can always be put back where it came from.",
+    "TXT-EDIT-016": "A draft renders in the reading view as the document renders — computed values and fidelity violations marked in the sentence — but without the trace hooks that would claim it is part of the committed report.",
+    "TXT-EDIT-017": "The block states which it is showing: the committed report, an editor open on unchanged prose, an unsaved draft, or an unsaved draft that fails the gates.",
+    "TXT-EDIT-018": "The reading view moves the one editor rather than creating another, restores the document's own committed HTML when the drawer closes, and writes, posts and stores nothing."
   },
   "rows": [
     {
@@ -789,6 +795,60 @@
       "id": "TXT-VAL-008",
       "area": "",
       "text": "The committed store is in the agreed schema and every value in it cites an ARD file that exists with a matching hash.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TXT-EDIT-013",
+      "area": "",
+      "text": "Each editable block in the reading view carries a keyboard-reachable Edit button with `aria-expanded` and `aria-controls`, and an empty drawer for the editor to be moved into — the Reader renders no second editor.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TXT-EDIT-014",
+      "area": "",
+      "text": "The affordance appears only where an editor exists to adopt: never on the standalone reader page, and never on a block the approval gate holds out of the report.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TXT-EDIT-015",
+      "area": "",
+      "text": "The drawer and the editor's home marker share one id convention, derived from the block id, so the editor can always be put back where it came from.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TXT-EDIT-016",
+      "area": "",
+      "text": "A draft renders in the reading view as the document renders — computed values and fidelity violations marked in the sentence — but without the trace hooks that would claim it is part of the committed report.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TXT-EDIT-017",
+      "area": "",
+      "text": "The block states which it is showing: the committed report, an editor open on unchanged prose, an unsaved draft, or an unsaved draft that fails the gates.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TXT-EDIT-018",
+      "area": "",
+      "text": "The reading view moves the one editor rather than creating another, restores the document's own committed HTML when the drawer closes, and writes, posts and stores nothing.",
       "source": "",
       "evidence": "",
       "link": "",
