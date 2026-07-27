@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Requirement-traced test evidence for the Traceability component of open.csr." />
+    <title>Traceability evidence · open.csr</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23111a24'/%3E%3Crect x='3' y='3' width='7' height='1.4' fill='%23e7edf5'/%3E%3Crect x='3' y='6' width='10' height='1.4' fill='%235aa9e6'/%3E%3Crect x='3' y='9' width='6' height='1.4' fill='%23e7edf5'/%3E%3Crect x='3' y='12' width='9' height='1.4' fill='%235aa9e6'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="../site.css" />
+    <script>
+      // Theme is resolved before first paint so the page never flashes the
+      // wrong surface. No storage available (private mode) simply falls back to
+      // the OS preference.
+      (function () {
+        try {
+          var saved = localStorage.getItem('opencsr-theme');
+          if (saved) document.documentElement.setAttribute('data-theme', saved);
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body class="">
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <a class="site-name" href="../index.html">
+        <span class="mark" aria-hidden="true"></span>
+        <span>
+          <strong>open.csr</strong>
+          <em>Versioned numbers, versioned words, one traceable loop.</em>
+        </span>
+      </a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="../index.html">Home</a><a href="../demo/index.html">Demo</a><a href="../quality/index.html">Quality</a><a href="../docs/index.html">Design &amp; Research</a>
+        <button
+          type="button"
+          class="theme-toggle"
+          aria-label="Switch between light and dark"
+          title="Switch between light and dark"
+        >
+          <span aria-hidden="true">◐</span>
+        </button>
+        <a class="icon-link" href="https://github.com/jwildfire/open.csr" aria-label="Source on GitHub" title="Source on GitHub">
+          <svg viewBox="0 0 16 16" width="17" height="17" fill="currentColor" aria-hidden="true">
+            <path
+              d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
+            />
+          </svg>
+        </a>
+      </nav>
+    </header>
+    
+    <main class="site-main" id="main"><p class="crumb"><a href="index.html">Quality</a> / <span class="mono">traceability</span></p>
+<header class="page-head"><p class="eyebrow">Framework</p><h1>Traceability — evidence</h1><p class="lede">The data to ARD to display to sentence chain: provenance envelopes, iteration ledgers, and the trace panel that answers all five questions about any number on the site.</p></header>
+<section class="stat-row">
+<div class="stat"><span class="stat-value">16</span><span class="stat-label">reviewed requirements</span><span class="stat-sub">traceability.md</span></div>
+<div class="stat"><span class="stat-value">23</span><span class="stat-label">test records</span><span class="stat-sub">js-unit · r-unit</span></div>
+<div class="stat"><span class="stat-value">0</span><span class="stat-label">failing</span><span class="stat-sub">23 passing</span></div>
+<div class="stat"><span class="stat-value">56%</span><span class="stat-label">requirement coverage</span><span class="stat-sub">9/16 evidenced</span></div>
+</section>
+<section class="panel"><h2>Requirements</h2>
+<div class="scroll"><table class="data"><thead><tr><th>ID</th><th>Area</th><th>Requirement</th><th>Evidence type</th><th>Result</th></tr></thead><tbody><tr><td class="mono">TRC-ARD-001</td><td>Provenance</td><td>The evidence set&#39;s <code>traceability</code> object is assembled from the display&#39;s current output manifest and the ARD&#39;s provenance envelope, carrying ADaM datasets, ARD file and hash, display spec, spec hash, iteration and source commit.</td><td>js-unit</td><td><span class="chip chip-good">2 passing</span></td></tr><tr><td class="mono">TRC-ARD-002</td><td>Provenance</td><td>A missing manifest, a missing ARD, or an ARD with no provenance yields a traceability object of nulls and empty lists rather than an exception.</td><td>js-unit</td><td><span class="chip chip-good">2 passing</span></td></tr><tr><td class="mono">TRC-ARD-003</td><td>Provenance</td><td>Every ADaM dataset named in the ARD provenance is surfaced with its content hash, so the data behind a number is identifiable.</td><td>js-unit</td><td><span class="chip chip-good">1 passing</span></td></tr><tr><td class="mono">TRC-ARD-004</td><td>Provenance</td><td>When the output manifest records no ARD hash, one is computed from the committed <code>ard.json</code> so the chain is never hash-less.</td><td>js-unit</td><td><span class="chip chip-muted">no test</span></td></tr><tr><td class="mono">TRC-ITER-001</td><td>Iterations</td><td>The iteration timeline merges <code>iterations.yaml</code> entries with the manifests found under <code>outputs/&lt;slug&gt;/</code>, so it renders from either source alone.</td><td>js-unit</td><td><span class="chip chip-muted">no test</span></td></tr><tr><td class="mono">TRC-ITER-002</td><td>Iterations</td><td>The live iteration is the one named by <code>outputs/&lt;slug&gt;/current.json</code>; with no pointer, or a pointer to a version that does not exist, the highest <code>vNNN</code> present is used.</td><td>js-unit</td><td><span class="chip chip-muted">no test</span></td></tr><tr><td class="mono">TRC-ITER-003</td><td>Iterations</td><td>A ledger entry with no corresponding output directory is rendered and flagged rather than dropped.</td><td>js-unit</td><td><span class="chip chip-muted">no test</span></td></tr><tr><td class="mono">TRC-BIND-001</td><td>Bindings</td><td>A binding address parses into display, analysis, statistic name and qualifiers per contracts §5, including <code>group=</code> and <code>variable_level=</code>.</td><td>js-unit</td><td><span class="chip chip-good">2 passing</span></td></tr><tr><td class="mono">TRC-BIND-002</td><td>Bindings</td><td>A binding resolves only when exactly one ARD row matches; zero matches and multiple matches are both unresolved, with the reason recorded.</td><td>js-unit</td><td><span class="chip chip-good">4 passing</span></td></tr><tr><td class="mono">TRC-BIND-003</td><td>Bindings</td><td>An unresolved binding renders as a visibly marked, non-numeric placeholder carrying its reason — a stale number is never displayed in its place.</td><td>js-unit</td><td><span class="chip chip-good">1 passing</span></td></tr><tr><td class="mono">TRC-BIND-004</td><td>Bindings</td><td>A resolved binding renders as a clickable element carrying its display, address, analysis and statistic, so the trace panel needs no lookup service.</td><td>js-unit</td><td><span class="chip chip-good">3 passing</span></td></tr><tr><td class="mono">TRC-CHAIN-001</td><td>Trace</td><td>The build emits a trace index keyed by display slug carrying datasets, dataset hashes, both spec files, the ARD file and hash, the iteration, and the source commit.</td><td>js-unit</td><td><span class="chip chip-muted">no test</span></td></tr><tr><td class="mono">TRC-CHAIN-002</td><td>Trace</td><td>Every trace index entry links to that display&#39;s gallery page and its evidence page, closing the loop from a sentence back to the requirement.</td><td>js-unit</td><td><span class="chip chip-muted">no test</span></td></tr><tr><td class="mono">TRC-DOC-001</td><td>Document</td><td>The CSR reader normalizes the assembled document tolerantly — sections, nested sections, text blocks and display placements — and renders a documented empty state when no assembly exists.</td><td>js-unit</td><td><span class="chip chip-muted">no test</span></td></tr><tr><td class="mono">TRC-DOC-003</td><td>Document</td><td>A <code>{{xref:section:…}}</code> reference resolves to an in-page link and a <code>{{xref:display:…}}</code> reference to a trace handle carrying the display&#39;s assigned number; an unresolved reference degrades to readable text and never leaks the marker.</td><td>js-unit</td><td><span class="chip chip-good">4 passing</span></td></tr><tr><td class="mono">TRC-DOC-002</td><td>Document</td><td>Prose that still carries <code>{{ard:…}}</code> markers at render time is resolved against the committed ARDs, so the trace panel works whether or not the assembler pre-resolved the bindings.</td><td>js-unit</td><td><span class="chip chip-good">2 passing</span></td></tr></tbody></table></div>
+</section>
+<section class="panel"><h2>Test records</h2>
+<div class="scroll"><table class="data"><thead><tr><th>Result</th><th>Suite</th><th>Test</th><th>Requirements</th><th>File</th></tr></thead><tbody><tr><td><span class="chip chip-good">pass</span></td><td class="mono">js-unit</td><td>binding addresses TRC-BIND-001: an address parses into display, analysis, statistic and qualifiers (#1)</td><td class="mono">TRC-BIND-001</td><td class="mono trunc">tests/unit/site-binding.test.js</td></tr><tr><td><span class="chip chip-good">pass</span></td><td class="mono">js-unit</td><td>binding addresses TRC-BIND-001: an address with no qualifiers parses with an empty filter set (#1)</td><td class="mono">TRC-BIND-001</td><td class="mono trunc">tests/unit/site-binding.test.js</td></tr><tr><td><span class="chip chip-good">pass</span></td><td class="mono">js-unit</td><td>binding resolution TRC-BIND-002: a binding matching exactly one ARD row resolves to its value (#1)</td><td class="mono">TRC-BIND-002</td><td class="mono trunc">tests/unit/site-binding.test.js</td></tr><tr><td><span class="chip chip-good">pass</span></td><td class="mono">js-unit</td><td>binding resolution TRC-BIND-002: a binding matching no ARD row is unresolved (#1)</td><td class="mono">TRC-BIND-002</td><td class="mono trunc">tests/unit/site-binding.test.js</td></tr><tr><td><span class="chip chip-good">pass</span></td><td class="mono">js-unit</td><td>binding resolution TRC-BIND-002: a binding matching several ARD rows is unresolved with a reason (#1)</td><td class="mono">TRC-BIND-002</td><td class="mono trunc">tests/unit/site-binding.test.js</td></tr><tr><td><span class="chip chip-good">pass</span></td><td class="mono">js-unit</td><td>binding resolution TRC-BIND-002: a binding naming a display with no generated ARD is unresolved (#1)</td><td class="mono">TRC-BIND-002</td><td class="mono trunc">tests/unit/site-binding.test.js</td></tr><tr><td><span class="chip chip-good">pass</span></td><td class="mono">js-unit</td><td>bound prose TRC-BIND-003: an unresolved binding renders a marked placeholder, never a number (#1)</td><td class="mono">TRC-BIND-003</td><td class="mono trunc">tests/unit/site-binding.test.js</td></tr><tr><td><span class="chip chip-good">pass</span></td><td class="mono">js-unit</td><td>bound prose TRC-BIND-004: a resolved binding renders as a clickable element carrying its address (#1)</td><td class="mono">TRC-BIND-004</td><td class="mono trunc">tests/unit/site-binding.test.js</td></tr><tr><td><span class="chip chip-good">pass</span></td><td class="mono">js-unit</td><td>bound prose TRC-BIND-004: scale and digits qualifiers turn a stored proportion into a percentage (#1)</td><td class="mono">TRC-BIND-004</td><td class="mono trunc">tests/unit/site-binding.test.js</td></tr><tr><td><span class="chip chip-good">pass</span></td><td class="mono">js-unit</td><td>bound prose TRC-BIND-004: statistics format for display without losing list values (#1)</td><td class="mono">TRC-BIND-004</td><td class="mono trunc">tests/unit/site-binding.test.js</td></tr><tr><td><span class="chip chip-good">pass</span></td><td class="mono">js-unit</td><td>bound prose TRC-DOC-002: a value the assembler already resolved is used even without an ARD (#1)</td><td class="mono">TRC-DOC-002</td><td class="mono trunc">tests/unit/site-binding.test.js</td></tr><tr><td><span class="chip chip-good">pass</span></td><td class="mono">js-unit</td><td>bound prose TRC-DOC-002: markers left in the assembled document are resolved at render time (#1)</td><td class="mono">TRC-DOC-002</td><td class="mono trunc">tests/unit/site-binding.test.js</td></tr><tr><td><span class="chip chip-good">pass</span></td><td class="mono">js-unit</td><td>cross-references TRC-DOC-003: a display reference becomes a trace handle with its assigned number (#1)</td><td class="mono">TRC-DOC-003</td><td class="mono trunc">tests/unit/site-binding.test.js</td></tr><tr><td><span class="chip chip-good">pass</span></td><td class="mono">js-unit</td><td>cross-references TRC-DOC-003: a section reference becomes an in-page link (#1)</td><td class="mono">TRC-DOC-003</td><td class="mono trunc">tests/unit/site-binding.test.js</td></tr><tr><td><span class="chip chip-good">pass</span></td><td class="mono">js-unit</td><td>cross-references TRC-DOC-003: an unresolved reference degrades to text and never leaks the marker (#1)</td><td class="mono">TRC-DOC-003</td><td class="mono trunc">tests/unit/site-binding.test.js</td></tr><tr><td><span class="chip chip-good">pass</span></td><td class="mono">js-unit</td><td>cross-references TRC-DOC-003: prose rendering resolves bindings and cross-references together (#1)</td><td class="mono">TRC-DOC-003</td><td class="mono trunc">tests/unit/site-binding.test.js</td></tr><tr><td><span class="chip chip-good">pass</span></td><td class="mono">js-unit</td><td>the traceability object TRC-ARD-001: the chain is assembled from the manifest and the ARD provenance envelope (#1)</td><td class="mono">TRC-ARD-001</td><td class="mono trunc">tests/unit/evidence-traceability.test.js</td></tr><tr><td><span class="chip chip-good">pass</span></td><td class="mono">js-unit</td><td>the traceability object TRC-ARD-001: the git commit falls back to the ARD envelope when the manifest omits it (#1)</td><td class="mono">TRC-ARD-001</td><td class="mono trunc">tests/unit/evidence-traceability.test.js</td></tr><tr><td><span class="chip chip-good">pass</span></td><td class="mono">js-unit</td><td>the traceability object TRC-ARD-002: a display with no manifest and no ARD yields nulls, not an exception (#1)</td><td class="mono">TRC-ARD-002</td><td class="mono trunc">tests/unit/evidence-traceability.test.js</td></tr><tr><td><span class="chip chip-good">pass</span></td><td class="mono">js-unit</td><td>the traceability object TRC-ARD-002: an ARD with an empty provenance envelope still produces a usable object (#1)</td><td class="mono">TRC-ARD-002</td><td class="mono trunc">tests/unit/evidence-traceability.test.js</td></tr><tr><td><span class="chip chip-good">pass</span></td><td class="mono">js-unit</td><td>the traceability object TRC-ARD-003: every ADaM dataset in the envelope carries its content hash (#1)</td><td class="mono">TRC-ARD-003</td><td class="mono trunc">tests/unit/evidence-traceability.test.js</td></tr><tr><td><span class="chip chip-good">pass</span></td><td class="mono">r-unit</td><td>DSP-ALL-001: every display renders a table that actually contains numbers (#1)</td><td class="mono">DSP-ALL-001</td><td class="mono trunc">test-displays.R</td></tr><tr><td><span class="chip chip-good">pass</span></td><td class="mono">r-unit</td><td>DSP-ALL-002: every display declares a regulatory identifier and a source line (#1)</td><td class="mono">DSP-ALL-002</td><td class="mono trunc">test-displays.R</td></tr></tbody></table></div>
+</section>
+<section class="panel"><h2>Traceability</h2><p class="empty">No generated output yet, so the data → ARD → display chain is empty.</p></section>
+<section class="panel"><h2>Provenance</h2><dl class="facts wide"><div><dt>Generated</dt><dd class="mono">2026-07-27T04:44:02.378Z</dd></div><div><dt>Environment</dt><dd class="mono">os Darwin 23.6.0 · node v24.14.0 · vitest 2.1.9 · r 4.3.3</dd></div><div><dt>CI run</dt><dd><span class="sub">Not recorded for this evidence set</span></dd></div></dl></section></main>
+    <footer class="site-footer">
+      <p>
+        <strong>open.csr</strong> — an open-source Clinical Study Report builder. Numbers are
+        computed by versioned specs, serialized as ARDs, and bound into prose that never restates
+        them.
+      </p>
+      <p>
+        Demo data is CDISC Pilot 01 via
+        <a href="https://github.com/pharmaverse/pharmaverseadam">pharmaverseadam</a> · everything on
+        this site is precomputed and static ·
+        <a href="https://github.com/jwildfire/open.csr">source on GitHub</a> ·
+        <a href="https://jwildfire.github.io/obot.roadmap/">obot roadmap</a>.
+      </p>
+    </footer>
+    <script>
+      // Mark the nav link for this page; works at any mount depth.
+      (function () {
+        var here = location.pathname.replace(/\/$/, '/index.html');
+        var links = document.querySelectorAll('.site-nav a[href]');
+        for (var i = 0; i < links.length; i += 1) {
+          var href = links[i].getAttribute('href');
+          if (!href || href.indexOf('http') === 0) continue;
+          if (new URL(href, location.href).pathname === here) {
+            links[i].classList.add('current');
+            links[i].setAttribute('aria-current', 'page');
+          }
+        }
+      })();
+
+      // Theme toggle: OS preference by default, explicit choice remembered.
+      (function () {
+        var button = document.querySelector('.theme-toggle');
+        if (!button) return;
+        button.addEventListener('click', function () {
+          var root = document.documentElement;
+          var current =
+            root.getAttribute('data-theme') ||
+            (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+          var next = current === 'dark' ? 'light' : 'dark';
+          root.setAttribute('data-theme', next);
+          try {
+            localStorage.setItem('opencsr-theme', next);
+          } catch (e) {}
+        });
+      })();
+
+      // Tabs on the display detail pages.
+      (function () {
+        var groups = document.querySelectorAll('.tabs');
+        for (var g = 0; g < groups.length; g += 1) {
+          (function (group) {
+            var tabs = group.querySelectorAll('.tab');
+            var panels = group.querySelectorAll('.tab-panel');
+            group.addEventListener('click', function (event) {
+              var tab = event.target.closest('.tab');
+              if (!tab) return;
+              for (var i = 0; i < tabs.length; i += 1) {
+                var on = tabs[i] === tab;
+                tabs[i].classList.toggle('current', on);
+                tabs[i].setAttribute('aria-selected', on ? 'true' : 'false');
+                if (panels[i]) {
+                  panels[i].classList.toggle('current', on);
+                  panels[i].hidden = !on;
+                }
+              }
+            });
+          })(groups[g]);
+        }
+      })();
+
+      // ARD row filter.
+      (function () {
+        var inputs = document.querySelectorAll('.ard-filter');
+        for (var i = 0; i < inputs.length; i += 1) {
+          (function (input) {
+            input.addEventListener('input', function () {
+              var needle = input.value.toLowerCase();
+              var table = input.closest('.tab-panel, main').querySelector('.ard-table tbody');
+              if (!table) return;
+              var rows = table.rows;
+              for (var r = 0; r < rows.length; r += 1) {
+                rows[r].hidden = needle && rows[r].textContent.toLowerCase().indexOf(needle) === -1;
+              }
+            });
+          })(inputs[i]);
+        }
+      })();
+    </script>
+  </body>
+</html>
