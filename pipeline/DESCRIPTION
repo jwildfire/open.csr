@@ -20,6 +20,7 @@ Imports:
     dplyr,
     gt,
     jsonlite,
+    r2rtf,
     rlang,
     tibble,
     yaml

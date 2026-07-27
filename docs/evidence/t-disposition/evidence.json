@@ -1,6 +1,6 @@
 {
   "module": "t-disposition",
-  "generated": "2026-07-26T02:07:59.323Z",
+  "generated": "2026-07-27T03:50:20.851Z",
   "records": [
     {
       "requirementIds": [
@@ -58,11 +58,11 @@
     "adamHashes": {
       "adsl": "sha256:f9a1c3605cb277363fba0add4c4228df6a288685586575be159718696c582107"
     },
-    "ardFile": "outputs/t-disposition/v001/ard.json",
-    "ardHash": "sha256:1f4596be244faafa87bcfc37534ad2f83447ff0520ed746606ff4be33c5839a2",
+    "ardFile": "outputs/t-disposition/v002/ard.json",
+    "ardHash": "sha256:26f56529e5e4b993c332b35a296957e7fcb8dcd3a8cf19ed6a3802c19bd42f89",
     "displayFile": "library/tfl/t-disposition/display.yaml",
     "specHash": "sha256:8c432e510cf8fe58349f0315cb25c51231c261a2276707cfd7168cd064a3d62d",
-    "iteration": "v001",
+    "iteration": "v002",
     "sourceCommit": null
   },
   "environment": {

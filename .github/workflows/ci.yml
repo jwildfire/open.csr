@@ -92,6 +92,7 @@ jobs:
             any::pkgload
             any::pharmaverseadam
             any::cardx
+            any::r2rtf
 
       - name: Run the testthat suite
         run: Rscript qc/run-tests.R

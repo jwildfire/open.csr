@@ -72,7 +72,15 @@
     "TXT-EDIT-009": "The pane as shipped, editor mounted, records no approval and reaches no network host: every written block gets an editor seeded with its source, and the complete set of controls is Edit / Copy patch / Download patch / Download one patch for every change / Revert — no form, no credential, no token, no API host.",
     "TXT-EDIT-010": "The editor is progressive enhancement: its markup ships `hidden` and is revealed by the client, and the view rendered without the editor option is the read-only status view `TXT-REVIEW-007` describes — no button, textarea, form or script.",
     "TXT-EDIT-011": "A binding rendering at full precision surfaces as a warning the writer can act on rather than a failure that blocks the edit.",
-    "TXT-EDIT-012": "The preview marks every computed value and every fidelity violation **in place** in the sentence, losslessly — a writer sees which words are theirs and which digit the gate is rejecting without reading a list."
+    "TXT-EDIT-012": "The preview marks every computed value and every fidelity violation **in place** in the sentence, losslessly — a writer sees which words are theirs and which digit the gate is rejecting without reading a list.",
+    "TXT-VAL-001": "A values store whose values match their ARD rows passes; one that no longer matches fails and names the value, the stored number and the number the ARD now gives.",
+    "TXT-VAL-002": "A value whose address resolves to no ARD row, to more than one, or to a display absent from the build is reported rather than silently dropped.",
+    "TXT-VAL-003": "Derived values are recomputed from their inputs at build time, and a derivation naming a value defined after it is reported.",
+    "TXT-VAL-004": "Presentation is checked too: a value whose `formatted` does not match its declared scale and half-up rounding fails.",
+    "TXT-VAL-005": "A value citing an ARD the repository no longer holds is reported; a store with an unknown schema is refused; a repository with no store is not a failure.",
+    "TXT-VAL-006": "A `{{value:id}}` token renders the stored value, is span-tracked so the numeric-fidelity gate accepts its digits, and fails the build when the id is unknown.",
+    "TXT-VAL-007": "The store knows which text blocks cite each value, so \"what breaks if this changes\" is answerable before it changes.",
+    "TXT-VAL-008": "The committed store is in the agreed schema and every value in it cites an ARD file that exists with a matching hash."
   },
   "rows": [
     {
@@ -709,6 +717,78 @@
       "id": "TXT-EDIT-012",
       "area": "",
       "text": "The preview marks every computed value and every fidelity violation **in place** in the sentence, losslessly — a writer sees which words are theirs and which digit the gate is rejecting without reading a list.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TXT-VAL-001",
+      "area": "",
+      "text": "A values store whose values match their ARD rows passes; one that no longer matches fails and names the value, the stored number and the number the ARD now gives.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TXT-VAL-002",
+      "area": "",
+      "text": "A value whose address resolves to no ARD row, to more than one, or to a display absent from the build is reported rather than silently dropped.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TXT-VAL-003",
+      "area": "",
+      "text": "Derived values are recomputed from their inputs at build time, and a derivation naming a value defined after it is reported.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TXT-VAL-004",
+      "area": "",
+      "text": "Presentation is checked too: a value whose `formatted` does not match its declared scale and half-up rounding fails.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TXT-VAL-005",
+      "area": "",
+      "text": "A value citing an ARD the repository no longer holds is reported; a store with an unknown schema is refused; a repository with no store is not a failure.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TXT-VAL-006",
+      "area": "",
+      "text": "A `{{value:id}}` token renders the stored value, is span-tracked so the numeric-fidelity gate accepts its digits, and fails the build when the id is unknown.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TXT-VAL-007",
+      "area": "",
+      "text": "The store knows which text blocks cite each value, so \"what breaks if this changes\" is answerable before it changes.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TXT-VAL-008",
+      "area": "",
+      "text": "The committed store is in the agreed schema and every value in it cites an ARD file that exists with a matching hash.",
       "source": "",
       "evidence": "",
       "link": "",

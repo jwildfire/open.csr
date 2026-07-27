@@ -47,6 +47,19 @@
     "TFL-ITER-005": "The committed `t-ae-common` ledger records a real two-iteration change-request story: differing spec and ARD hashes, a recorded request and actor, and unchanged values for the numbers the change did not touch.",
     "TFL-ITER-006": "Regenerating a display whose spec id does not match its directory is an error.",
     "TFL-ITER-007": "Every display in the library has a current iteration on disk, referenced by both `current.json` and the ledger.",
+    "TFL-RTF-001": "A rendered display encodes as a complete RTF document.",
+    "TFL-RTF-002": "Every cell of the rendered display appears in the RTF, and row labels arrive without the non-breaking-space indentation the HTML renderer uses.",
+    "TFL-RTF-003": "The display title, population label, footnotes, source line and column headers with their subject counts travel into the RTF.",
+    "TFL-RTF-004": "Listings and reduced in-text variants render as RTF as well as full summary tables do, each naming the variant it is.",
+    "TFL-RTF-005": "`regenerate()` writes an RTF beside every rendered variant and records its filename and sha256 in the iteration manifest.",
+    "TFL-RTF-006": "Every committed display has an RTF for each variant whose hash matches the manifest, so a hand-edited artifact fails the build.",
+    "TFL-VAL-001": "The values declaration validates: unique ids, a readable label on every value, and exactly one of an ARD source or a declared derivation.",
+    "TFL-VAL-002": "A malformed binding address or an operation outside the closed vocabulary is rejected with a message naming the value.",
+    "TFL-VAL-003": "Every ARD-sourced value equals its row in the committed ARD and carries that iteration's path and sha256.",
+    "TFL-VAL-004": "A derived value equals the arithmetic it declares over values defined before it; a forward reference is an error.",
+    "TFL-VAL-005": "A binding that resolves to no ARD row, or names a display with no committed iteration, fails the build rather than producing a blank value.",
+    "TFL-VAL-006": "Scaling and rounding are presentation only: the stored value stays the ARD's, and `formatted` carries the display format.",
+    "TFL-VAL-007": "The committed store matches a fresh build of the declaration, value for value.",
     "TFL-QC-001": "Every `testthat` test name matches `<REQ-ID>[, <REQ-ID>]: <description> (#<issue>)`.",
     "TFL-QC-002": "Every requirement ID cited by a test exists in a matrix under `quality/requirements/`.",
     "TFL-QC-003": "Every requirement in a matrix is cited by at least one test — no untested claims.",
@@ -453,6 +466,123 @@
       "id": "TFL-ITER-007",
       "area": "",
       "text": "Every display in the library has a current iteration on disk, referenced by both `current.json` and the ledger.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-RTF-001",
+      "area": "",
+      "text": "A rendered display encodes as a complete RTF document.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-RTF-002",
+      "area": "",
+      "text": "Every cell of the rendered display appears in the RTF, and row labels arrive without the non-breaking-space indentation the HTML renderer uses.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-RTF-003",
+      "area": "",
+      "text": "The display title, population label, footnotes, source line and column headers with their subject counts travel into the RTF.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-RTF-004",
+      "area": "",
+      "text": "Listings and reduced in-text variants render as RTF as well as full summary tables do, each naming the variant it is.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-RTF-005",
+      "area": "",
+      "text": "`regenerate()` writes an RTF beside every rendered variant and records its filename and sha256 in the iteration manifest.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-RTF-006",
+      "area": "",
+      "text": "Every committed display has an RTF for each variant whose hash matches the manifest, so a hand-edited artifact fails the build.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-VAL-001",
+      "area": "",
+      "text": "The values declaration validates: unique ids, a readable label on every value, and exactly one of an ARD source or a declared derivation.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-VAL-002",
+      "area": "",
+      "text": "A malformed binding address or an operation outside the closed vocabulary is rejected with a message naming the value.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-VAL-003",
+      "area": "",
+      "text": "Every ARD-sourced value equals its row in the committed ARD and carries that iteration's path and sha256.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-VAL-004",
+      "area": "",
+      "text": "A derived value equals the arithmetic it declares over values defined before it; a forward reference is an error.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-VAL-005",
+      "area": "",
+      "text": "A binding that resolves to no ARD row, or names a display with no committed iteration, fails the build rather than producing a blank value.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-VAL-006",
+      "area": "",
+      "text": "Scaling and rounding are presentation only: the stored value stays the ARD's, and `formatted` carries the display format.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-VAL-007",
+      "area": "",
+      "text": "The committed store matches a fresh build of the declaration, value for value.",
       "source": "",
       "evidence": "",
       "link": "",

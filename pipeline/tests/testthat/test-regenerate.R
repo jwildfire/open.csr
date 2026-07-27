@@ -7,7 +7,12 @@ test_that("TFL-ITER-001: regenerate writes a complete, self-describing iteration
   dir <- file.path(root, "outputs", "t-disposition", "v001")
   expect_setequal(
     list.files(dir),
-    c("analysis.yaml", "display.yaml", "ard.json", "table.html", "table-in-text.html", "manifest.json")
+    c(
+      "analysis.yaml", "display.yaml", "ard.json", "manifest.json",
+      "table.html", "table-in-text.html",
+      # The submission artifacts, written by the same loop (#129 A).
+      "table.rtf", "table-in-text.rtf"
+    )
   )
   # the spec snapshot is byte-identical to the spec that was read
   expect_identical(

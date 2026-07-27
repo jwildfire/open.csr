@@ -1,0 +1,319 @@
+{
+  "schema": "opencsr/values/v1",
+  "study": "CDISCPILOT01",
+  "created": "2026-07-27T03:26:37Z",
+  "provenance": {
+    "source_file": "library/values/values.yaml",
+    "source_hash": "sha256:36d11e4f5ca874ce784c46f13996aa0108bb88fbb4ae1c54d8ba024cd8309374",
+    "git_commit": null,
+    "environment": {
+      "r": "4.3.3",
+      "os": "Darwin 23.6.0",
+      "packages": {
+        "cards": "0.6.1",
+        "cardx": "0.2.5",
+        "gtsummary": "2.3.0",
+        "gt": "1.0.0",
+        "dplyr": "1.1.4",
+        "pharmaverseadam": "1.1.0",
+        "jsonlite": "2.0.0",
+        "yaml": "2.3.10",
+        "digest": "0.6.37"
+      }
+    }
+  },
+  "values": [
+    {
+      "id": "randomised-n",
+      "label": "Subjects randomised",
+      "kind": "ard",
+      "value": 254,
+      "formatted": "254",
+      "format": {
+        "scale": 1,
+        "digits": 0
+      },
+      "source": {
+        "address": "t-disposition:randomised:n;group=Total",
+        "display": "t-disposition",
+        "analysis": "randomised",
+        "iteration": "v002",
+        "ard_file": "outputs/t-disposition/v002/ard.json",
+        "ard_hash": "sha256:26f56529e5e4b993c332b35a296957e7fcb8dcd3a8cf19ed6a3802c19bd42f89"
+      },
+      "notes": "The denominator for every disposition percentage in section 10.1."
+    },
+    {
+      "id": "treated-n",
+      "label": "Subjects treated (safety analysis set)",
+      "kind": "ard",
+      "value": 254,
+      "formatted": "254",
+      "format": {
+        "scale": 1,
+        "digits": 0
+      },
+      "source": {
+        "address": "t-disposition:treated:n;group=Total",
+        "display": "t-disposition",
+        "analysis": "treated",
+        "iteration": "v002",
+        "ard_file": "outputs/t-disposition/v002/ard.json",
+        "ard_hash": "sha256:26f56529e5e4b993c332b35a296957e7fcb8dcd3a8cf19ed6a3802c19bd42f89"
+      },
+      "notes": null
+    },
+    {
+      "id": "completed-n",
+      "label": "Subjects who completed the study",
+      "kind": "ard",
+      "value": 110,
+      "formatted": "110",
+      "format": {
+        "scale": 1,
+        "digits": 0
+      },
+      "source": {
+        "address": "t-disposition:completed:n;group=Total",
+        "display": "t-disposition",
+        "analysis": "completed",
+        "iteration": "v002",
+        "ard_file": "outputs/t-disposition/v002/ard.json",
+        "ard_hash": "sha256:26f56529e5e4b993c332b35a296957e7fcb8dcd3a8cf19ed6a3802c19bd42f89"
+      },
+      "notes": null
+    },
+    {
+      "id": "discontinued-n",
+      "label": "Subjects who discontinued",
+      "kind": "ard",
+      "value": 144,
+      "formatted": "144",
+      "format": {
+        "scale": 1,
+        "digits": 0
+      },
+      "source": {
+        "address": "t-disposition:discontinued:n;group=Total",
+        "display": "t-disposition",
+        "analysis": "discontinued",
+        "iteration": "v002",
+        "ard_file": "outputs/t-disposition/v002/ard.json",
+        "ard_hash": "sha256:26f56529e5e4b993c332b35a296957e7fcb8dcd3a8cf19ed6a3802c19bd42f89"
+      },
+      "notes": null
+    },
+    {
+      "id": "completed-pct",
+      "label": "Percentage of randomised subjects who completed",
+      "kind": "ard",
+      "value": 0.433070866141732,
+      "formatted": "43.3",
+      "format": {
+        "scale": 100,
+        "digits": 1
+      },
+      "source": {
+        "address": "t-disposition:completed:p;group=Total",
+        "display": "t-disposition",
+        "analysis": "completed",
+        "iteration": "v002",
+        "ard_file": "outputs/t-disposition/v002/ard.json",
+        "ard_hash": "sha256:26f56529e5e4b993c332b35a296957e7fcb8dcd3a8cf19ed6a3802c19bd42f89"
+      },
+      "notes": null
+    },
+    {
+      "id": "age-median-total",
+      "label": "Median age (years), all subjects",
+      "kind": "ard",
+      "value": 77,
+      "formatted": "77.0",
+      "format": {
+        "scale": 1,
+        "digits": 1
+      },
+      "source": {
+        "address": "t-demographics:age:median;group=Total",
+        "display": "t-demographics",
+        "analysis": "age",
+        "iteration": "v002",
+        "ard_file": "outputs/t-demographics/v002/ard.json",
+        "ard_hash": "sha256:e03ca473fd5d976fa5732f0881bea51715104a90494eb4a8ffa5104186299f6c"
+      },
+      "notes": null
+    },
+    {
+      "id": "female-n-total",
+      "label": "Female subjects",
+      "kind": "ard",
+      "value": 143,
+      "formatted": "143",
+      "format": {
+        "scale": 1,
+        "digits": 0
+      },
+      "source": {
+        "address": "t-demographics:sex:n;group=Total;variable_level=F",
+        "display": "t-demographics",
+        "analysis": "sex",
+        "iteration": "v002",
+        "ard_file": "outputs/t-demographics/v002/ard.json",
+        "ard_hash": "sha256:e03ca473fd5d976fa5732f0881bea51715104a90494eb4a8ffa5104186299f6c"
+      },
+      "notes": null
+    },
+    {
+      "id": "ae-any-n-total",
+      "label": "Subjects with at least one adverse event",
+      "kind": "ard",
+      "value": 217,
+      "formatted": "217",
+      "format": {
+        "scale": 1,
+        "digits": 0
+      },
+      "source": {
+        "address": "t-ae-overview:any_ae:n;group=Total",
+        "display": "t-ae-overview",
+        "analysis": "any_ae",
+        "iteration": "v002",
+        "ard_file": "outputs/t-ae-overview/v002/ard.json",
+        "ard_hash": "sha256:96f9dbfd9a826be61b5edbdd269eede08c59dc8f9b5748b66fa5bfdb72ded7a3"
+      },
+      "notes": null
+    },
+    {
+      "id": "ae-any-n-placebo",
+      "label": "Subjects with at least one adverse event (Placebo)",
+      "kind": "ard",
+      "value": 65,
+      "formatted": "65",
+      "format": {
+        "scale": 1,
+        "digits": 0
+      },
+      "source": {
+        "address": "t-ae-overview:any_ae:n;group=Placebo",
+        "display": "t-ae-overview",
+        "analysis": "any_ae",
+        "iteration": "v002",
+        "ard_file": "outputs/t-ae-overview/v002/ard.json",
+        "ard_hash": "sha256:96f9dbfd9a826be61b5edbdd269eede08c59dc8f9b5748b66fa5bfdb72ded7a3"
+      },
+      "notes": null
+    },
+    {
+      "id": "ae-any-n-low",
+      "label": "Subjects with at least one adverse event (Xanomeline Low Dose)",
+      "kind": "ard",
+      "value": 84,
+      "formatted": "84",
+      "format": {
+        "scale": 1,
+        "digits": 0
+      },
+      "source": {
+        "address": "t-ae-overview:any_ae:n;group=Xanomeline Low Dose",
+        "display": "t-ae-overview",
+        "analysis": "any_ae",
+        "iteration": "v002",
+        "ard_file": "outputs/t-ae-overview/v002/ard.json",
+        "ard_hash": "sha256:96f9dbfd9a826be61b5edbdd269eede08c59dc8f9b5748b66fa5bfdb72ded7a3"
+      },
+      "notes": null
+    },
+    {
+      "id": "ae-any-n-high",
+      "label": "Subjects with at least one adverse event (Xanomeline High Dose)",
+      "kind": "ard",
+      "value": 68,
+      "formatted": "68",
+      "format": {
+        "scale": 1,
+        "digits": 0
+      },
+      "source": {
+        "address": "t-ae-overview:any_ae:n;group=Xanomeline High Dose",
+        "display": "t-ae-overview",
+        "analysis": "any_ae",
+        "iteration": "v002",
+        "ard_file": "outputs/t-ae-overview/v002/ard.json",
+        "ard_hash": "sha256:96f9dbfd9a826be61b5edbdd269eede08c59dc8f9b5748b66fa5bfdb72ded7a3"
+      },
+      "notes": null
+    },
+    {
+      "id": "ae-any-pct-high",
+      "label": "Percentage of high-dose subjects with at least one adverse event",
+      "kind": "ard",
+      "value": 0.944444444444444,
+      "formatted": "94.4",
+      "format": {
+        "scale": 100,
+        "digits": 1
+      },
+      "source": {
+        "address": "t-ae-overview:any_ae:p;group=Xanomeline High Dose",
+        "display": "t-ae-overview",
+        "analysis": "any_ae",
+        "iteration": "v002",
+        "ard_file": "outputs/t-ae-overview/v002/ard.json",
+        "ard_hash": "sha256:96f9dbfd9a826be61b5edbdd269eede08c59dc8f9b5748b66fa5bfdb72ded7a3"
+      },
+      "notes": null
+    },
+    {
+      "id": "safety-n-high",
+      "label": "Subjects in the safety analysis set (Xanomeline High Dose)",
+      "kind": "ard",
+      "value": 72,
+      "formatted": "72",
+      "format": {
+        "scale": 1,
+        "digits": 0
+      },
+      "source": {
+        "address": "t-ae-overview:any_ae:N;group=Xanomeline High Dose",
+        "display": "t-ae-overview",
+        "analysis": "any_ae",
+        "iteration": "v002",
+        "ard_file": "outputs/t-ae-overview/v002/ard.json",
+        "ard_hash": "sha256:96f9dbfd9a826be61b5edbdd269eede08c59dc8f9b5748b66fa5bfdb72ded7a3"
+      },
+      "notes": null
+    },
+    {
+      "id": "ae-any-n-xanomeline",
+      "label": "Subjects with at least one adverse event, both xanomeline arms",
+      "kind": "derived",
+      "value": 152,
+      "formatted": "152",
+      "format": {
+        "scale": 1,
+        "digits": 0
+      },
+      "derivation": {
+        "op": "sum",
+        "inputs": ["ae-any-n-low", "ae-any-n-high"]
+      },
+      "notes": null
+    },
+    {
+      "id": "ae-excess-high-vs-placebo",
+      "label": "Additional subjects with an adverse event, high dose versus placebo",
+      "kind": "derived",
+      "value": 3,
+      "formatted": "3",
+      "format": {
+        "scale": 1,
+        "digits": 0
+      },
+      "derivation": {
+        "op": "difference",
+        "inputs": ["ae-any-n-high", "ae-any-n-placebo"]
+      },
+      "notes": null
+    }
+  ]
+}

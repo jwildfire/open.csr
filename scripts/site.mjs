@@ -23,6 +23,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
   buildQualitySummary,
+  artifactFileName,
   buildTraceIndex,
   loadCsr,
   loadDisplays,
@@ -45,6 +46,7 @@ import {
   validateSiteLinks
 } from './site-lib.mjs';
 import { renderTextStatus } from './text-status-lib.mjs';
+import { loadValueStore, valueUsage } from './values-lib.mjs';
 import {
   ardPayload,
   ardUrl,
@@ -62,7 +64,8 @@ import {
   renderAppPage,
   renderSidebar,
   renderTablesPane,
-  renderTemplatesPane
+  renderTemplatesPane,
+  renderValuesPane
 } from './app-lib.mjs';
 import { loadAssembly, loadSections } from './template-lib.mjs';
 
@@ -102,6 +105,14 @@ const displays = loadDisplays(rootDir, config);
 const textBlocks = loadTextBlocks(rootDir, config);
 const csr = loadCsr(rootDir);
 const traceIndex = buildTraceIndex(displays);
+// The values store and, from the last assembly, the verdict of the gate that
+// re-derived it — the pane states whether the numbers still match their sources
+// rather than implying it (#129 B).
+const valueStore = loadValueStore(rootDir);
+const valueGate = csr.json?.gates?.values || null;
+const valueUsageIndex = valueUsage(
+  textBlocks.filter((block) => block.exists !== false).map((block) => ({ id: block.id, body: block.body }))
+);
 const ards = Object.fromEntries(
   displays
     .filter((display) => display.outputs?.current?.ard)
@@ -185,6 +196,27 @@ for (const fragment of displayFragments) {
   });
 }
 
+// --- Submission artifacts ---------------------------------------------------
+// The RTF the pipeline wrote for each display's current iteration, published
+// flat so the display pages (and the Tables pane, which is the same fragment)
+// can offer it as a download without the site knowing anything about iteration
+// directories (#129 A).
+
+const artifactDir = path.join(buildDir, 'artifacts');
+let artifactCount = 0;
+for (const display of displays) {
+  for (const artifact of display.outputs?.current?.artifacts || []) {
+    const source = path.join(rootDir, artifact.file);
+    if (!existsSync(source)) {
+      warnings.push(`${artifact.file} is named in a manifest but is not on disk — not published.`);
+      continue;
+    }
+    mkdirSync(artifactDir, { recursive: true });
+    copyFileSync(source, path.join(artifactDir, artifactFileName(display.slug, artifact)));
+    artifactCount += 1;
+  }
+}
+
 // --- CSR Reader -------------------------------------------------------------
 
 if (!csr.json && !csr.html) {
@@ -250,7 +282,9 @@ if (!template.sections?.sections?.length) {
 const editorSlugs = Object.keys(ards);
 const textEditor = {
   intro: editorIntro(),
-  bar: renderEditorBar({ context: editorContext({ template, displays, csr }) }),
+  bar: renderEditorBar({
+    context: editorContext({ template, displays, csr, values: valueStore?.values || [] })
+  }),
   render: (block) =>
     renderBlockEditor(block, {
       source: existsSync(path.join(rootDir, block.file))
@@ -294,6 +328,11 @@ const displayContext = displays.map((display) => ({
 }));
 
 const templatesContent = renderTemplatesPane({ config, template, displays });
+const valuesContent = renderValuesPane({
+  store: valueStore,
+  usage: valueUsageIndex,
+  gate: valueGate
+});
 
 const appPanes = [
   { id: 'documents', html: readerContent },
@@ -310,10 +349,17 @@ const appPanes = [
     })
   },
   { id: 'text', html: textStatusContent },
+  { id: 'values', html: valuesContent },
   { id: 'templates', html: templatesContent }
 ];
 
-const navTree = buildNavTree({ config, csr: csr.json, displays, textBlocks });
+const navTree = buildNavTree({
+  config,
+  csr: csr.json,
+  displays,
+  textBlocks,
+  values: valueStore?.values || []
+});
 
 page(path.join(buildDir, 'demo', 'index.html'), {
   title: `Demo · ${config.siteTitle}`,
@@ -342,6 +388,15 @@ page(path.join(buildDir, 'demo', 'index.html'), {
 // Every view in the app bar is a real link to a real page, so the Templates view
 // needs the permalink the other three already had. That is what makes the bar
 // work with JavaScript off (demo-layout.md §5).
+page(path.join(buildDir, 'values', 'index.html'), {
+  title: `Values · ${config.siteTitle}`,
+  root: '../',
+  description:
+    'The values store: every number this report reuses by name, its display format, the ARD row ' +
+    'or declared derivation it comes from, and the prose that cites it.',
+  content: valuesContent
+});
+
 page(path.join(buildDir, 'templates', 'index.html'), {
   title: `Report template · ${config.siteTitle}`,
   root: '../',
@@ -468,5 +523,6 @@ console.log(
     `${textBlocks.filter((b) => b.exists).length} text blocks ` +
     `(${textBlocks.filter((b) => b.exists && b.tier === 'generated' && b.approval?.state !== 'approved').length} ` +
     `draft, held out of the report), ${qualityModules.length} evidence pages, ${docs.length} documents. ` +
+    `${artifactCount} submission RTFs published. ` +
     `All internal links resolve; no external resources referenced.`
 );

@@ -1,6 +1,6 @@
 {
   "module": "t-exposure",
-  "generated": "2026-07-26T02:07:59.323Z",
+  "generated": "2026-07-27T03:50:20.851Z",
   "records": [
     {
       "requirementIds": [
@@ -60,11 +60,11 @@
       "adsl": "sha256:f9a1c3605cb277363fba0add4c4228df6a288685586575be159718696c582107",
       "adex": "sha256:e89d24c9364ba5a20a49a86de8428a8e4d8b35899b4d154ff83f89645c733f5f"
     },
-    "ardFile": "outputs/t-exposure/v001/ard.json",
-    "ardHash": "sha256:f6624be3da3d7343345ba139c4213486d414e8eecce6382a38fa2e64c0b70159",
+    "ardFile": "outputs/t-exposure/v002/ard.json",
+    "ardHash": "sha256:f14f5e37bcd2a6ddbbc146d05fbbf599b1362fd28d2f1c13895e0d61dadcfb4c",
     "displayFile": "library/tfl/t-exposure/display.yaml",
     "specHash": "sha256:dcb569bb84c890fe5d3322fbb111cdaeabd917ad388c89d10b2e754b8d322dd8",
-    "iteration": "v001",
+    "iteration": "v002",
     "sourceCommit": null
   },
   "environment": {

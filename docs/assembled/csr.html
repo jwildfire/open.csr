@@ -88,7 +88,7 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9em;}
     <div><dt>Analysis set</dt><dd>Safety Analysis Set</dd></div>
     <div><dt>Data source</dt><dd>pharmaverseadam (CDISCPILOT01 ADaM)</dd></div>
   </dl>
-  <p class="assembled">Assembled 2026-07-26T02:07:59.580Z from
+  <p class="assembled">Assembled 2026-07-27T03:50:21.056Z from
   <code>ich-e3</code> v1.0.0
   (119 sections) by <code>scripts/assemble.mjs</code>.</p>
   <p class="scope">Safety-focused demonstration. No efficacy ADaM exists for CDISCPILOT01 in pharmaverseadam, so Sections 11.4 and 14.2 are intentionally unpopulated (design decision D12); deriving an ADQSADAS-class dataset is roadmap v0.3.</p>
@@ -463,11 +463,24 @@ for the imbalance is described in Section 12.2.</p>
 discontinued patients, with the date and the recorded reason for discontinuation, are
 listed in Appendix 16.2.1.</p>
 </div>
+<div class="block excluded"><p class="excluded-note"><strong>Excluded from the assembled report.</strong> generated-tier block is draft; excluded from assembly pending human approval The draft is shown for review; it is not part of the report until approved.</p><p class="block-meta"><code>TXT-E3-1002</code> <span class="tier tier-generated">generated</span> <span class="approval approval-draft">draft</span> · 0 bound values</p><p>In summary, 254 patients were randomised and
+254 were treated. 110 patients
+(43.3%) completed the study and 144
+discontinued prematurely. Of those treated, 217 reported at
+least one adverse event, 3 more in the high dose
+group than in the placebo group.</p>
+<p>Every number in this paragraph is a <em>named</em> value: it is declared once in
+<code>library/values/values.yaml</code>, resolved by the pipeline against the committed
+Analysis Results Data, and cited here by name. The name is the unit of reuse — the
+same value can be quoted in the disposition narrative, the safety conclusions and a
+summary slide without any of them re-addressing the underlying ARD row, and the
+build fails if any of them drifts from it.</p>
+</div>
 <figure class="display-block" id="d-t-disposition-in_text">
   <figcaption>
     <span class="kind">In-text display</span>
     <strong>Table 14.1.1</strong> Subject Disposition
-    <span class="slug">slug <code>t-disposition</code> · variant <code>in_text</code> · ARD <code>outputs/t-disposition/v001/ard.json</code></span>
+    <span class="slug">slug <code>t-disposition</code> · variant <code>in_text</code> · ARD <code>outputs/t-disposition/v002/ard.json</code></span>
   </figcaption>
   <div class="table-wrap"><!doctype html>
 <html lang="en">
@@ -480,7 +493,7 @@ listed in Appendix 16.2.1.</p>
 <body>
 <main>
 <p class="meta">t-disposition &middot; in_text variant &middot; study CDISCPILOT01 &middot; data cut-off 2014-07-01</p>
-<div id="tdjclhqtuo" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="jxrjvdphhu" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   <table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3;" bgcolor="#FFFFFF">
   <thead style="border-style: none;">
@@ -652,7 +665,7 @@ Appendix 16.2.4.</p>
   <figcaption>
     <span class="kind">In-text display</span>
     <strong>Table 14.1.2</strong> Demographic and Baseline Characteristics
-    <span class="slug">slug <code>t-demographics</code> · variant <code>in_text</code> · ARD <code>outputs/t-demographics/v001/ard.json</code></span>
+    <span class="slug">slug <code>t-demographics</code> · variant <code>in_text</code> · ARD <code>outputs/t-demographics/v002/ard.json</code></span>
   </figcaption>
   <div class="table-wrap"><!doctype html>
 <html lang="en">
@@ -665,7 +678,7 @@ Appendix 16.2.4.</p>
 <body>
 <main>
 <p class="meta">t-demographics &middot; in_text variant &middot; study CDISCPILOT01 &middot; data cut-off 2014-07-01</p>
-<div id="veruhkqebn" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="oytnkqxukj" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   <table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3;" bgcolor="#FFFFFF">
   <thead style="border-style: none;">
@@ -977,7 +990,7 @@ Table 14.3.1.1.</p>
   <figcaption>
     <span class="kind">In-text display</span>
     <strong>Table 14.3.1.1</strong> Extent of Exposure to Study Drug
-    <span class="slug">slug <code>t-exposure</code> · variant <code>in_text</code> · ARD <code>outputs/t-exposure/v001/ard.json</code></span>
+    <span class="slug">slug <code>t-exposure</code> · variant <code>in_text</code> · ARD <code>outputs/t-exposure/v002/ard.json</code></span>
   </figcaption>
   <div class="table-wrap"><!doctype html>
 <html lang="en">
@@ -990,7 +1003,7 @@ Table 14.3.1.1.</p>
 <body>
 <main>
 <p class="meta">t-exposure &middot; in_text variant &middot; study CDISCPILOT01 &middot; data cut-off 2014-07-01</p>
-<div id="yoakvezklp" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="rivrwchdqp" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   <table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3;" bgcolor="#FFFFFF">
   <thead style="border-style: none;">
@@ -1215,7 +1228,7 @@ the exposure summary.</p>
   <figcaption>
     <span class="kind">In-text display</span>
     <strong>Table 14.3.1.2</strong> Overview of Treatment-Emergent Adverse Events
-    <span class="slug">slug <code>t-ae-overview</code> · variant <code>in_text</code> · ARD <code>outputs/t-ae-overview/v001/ard.json</code></span>
+    <span class="slug">slug <code>t-ae-overview</code> · variant <code>in_text</code> · ARD <code>outputs/t-ae-overview/v002/ard.json</code></span>
   </figcaption>
   <div class="table-wrap"><!doctype html>
 <html lang="en">
@@ -1228,7 +1241,7 @@ the exposure summary.</p>
 <body>
 <main>
 <p class="meta">t-ae-overview &middot; in_text variant &middot; study CDISCPILOT01 &middot; data cut-off 2014-07-01</p>
-<div id="mijksgpowv" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="jhqdpskzuv" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   <table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3;" bgcolor="#FFFFFF">
   <thead style="border-style: none;">
@@ -1397,7 +1410,7 @@ patients).</p>
   <figcaption>
     <span class="kind">In-text display</span>
     <strong>Table 14.3.1.3</strong> Treatment-Emergent Adverse Events by System Organ Class and Preferred Term
-    <span class="slug">slug <code>t-ae-common</code> · variant <code>in_text</code> · ARD <code>outputs/t-ae-common/v002/ard.json</code></span>
+    <span class="slug">slug <code>t-ae-common</code> · variant <code>in_text</code> · ARD <code>outputs/t-ae-common/v003/ard.json</code></span>
   </figcaption>
   <div class="table-wrap"><!doctype html>
 <html lang="en">
@@ -1410,7 +1423,7 @@ patients).</p>
 <body>
 <main>
 <p class="meta">t-ae-common &middot; in_text variant &middot; study CDISCPILOT01 &middot; data cut-off 2014-07-01</p>
-<div id="ssavztttea" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="isqsmlflpn" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   <table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3;" bgcolor="#FFFFFF">
   <thead style="border-style: none;">
@@ -1695,7 +1708,7 @@ these patients are provided in Section 12.3.2.</p>
   <figcaption>
     <span class="kind">In-text display</span>
     <strong>Listing 14.3.2.1</strong> Listing of Serious Adverse Events
-    <span class="slug">slug <code>l-ae-serious</code> · variant <code>in_text</code> · ARD <code>outputs/l-ae-serious/v001/ard.json</code></span>
+    <span class="slug">slug <code>l-ae-serious</code> · variant <code>in_text</code> · ARD <code>outputs/l-ae-serious/v002/ard.json</code></span>
   </figcaption>
   <div class="table-wrap"><table class="display listing"><thead><tr><th scope="col">USUBJID</th><th scope="col">TRT01A</th><th scope="col">AGE</th><th scope="col">SEX</th><th scope="col">AEBODSYS</th><th scope="col">AEDECOD</th><th scope="col">AESEV</th><th scope="col">AEREL</th><th scope="col">ASTDY</th><th scope="col">AENDY</th><th scope="col">AEOUT</th></tr></thead><tbody><tr><td>01-709-1424</td><td>Xanomeline Low Dose</td><td>77</td><td>M</td><td>NERVOUS SYSTEM DISORDERS</td><td>SYNCOPE</td><td>MODERATE</td><td>POSSIBLE</td><td>5</td><td>5</td><td>RECOVERED/RESOLVED</td></tr>
 <tr><td>01-718-1170</td><td>Xanomeline Low Dose</td><td>80</td><td>F</td><td>NERVOUS SYSTEM DISORDERS</td><td>SYNCOPE</td><td>SEVERE</td><td>PROBABLE</td><td>27</td><td>28</td><td>RECOVERED/RESOLVED</td></tr>
@@ -1887,7 +1900,7 @@ population.</p>
   <figcaption>
     <span class="kind">Post-text display</span>
     <strong>Table 14.1.1</strong> Subject Disposition
-    <span class="slug">slug <code>t-disposition</code> · variant <code>post_text</code> · ARD <code>outputs/t-disposition/v001/ard.json</code></span>
+    <span class="slug">slug <code>t-disposition</code> · variant <code>post_text</code> · ARD <code>outputs/t-disposition/v002/ard.json</code></span>
   </figcaption>
   <div class="table-wrap"><!doctype html>
 <html lang="en">
@@ -1900,7 +1913,7 @@ population.</p>
 <body>
 <main>
 <p class="meta">t-disposition &middot; post_text variant &middot; study CDISCPILOT01 &middot; data cut-off 2014-07-01</p>
-<div id="xxajholsof" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="bchmiqcwls" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   <table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3;" bgcolor="#FFFFFF">
   <thead style="border-style: none;">
@@ -2006,7 +2019,7 @@ population.</p>
   <figcaption>
     <span class="kind">Post-text display</span>
     <strong>Table 14.1.2</strong> Demographic and Baseline Characteristics
-    <span class="slug">slug <code>t-demographics</code> · variant <code>post_text</code> · ARD <code>outputs/t-demographics/v001/ard.json</code></span>
+    <span class="slug">slug <code>t-demographics</code> · variant <code>post_text</code> · ARD <code>outputs/t-demographics/v002/ard.json</code></span>
   </figcaption>
   <div class="table-wrap"><!doctype html>
 <html lang="en">
@@ -2019,7 +2032,7 @@ population.</p>
 <body>
 <main>
 <p class="meta">t-demographics &middot; post_text variant &middot; study CDISCPILOT01 &middot; data cut-off 2014-07-01</p>
-<div id="rythtknkai" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="wihqmuhfek" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   <table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3;" bgcolor="#FFFFFF">
   <thead style="border-style: none;">
@@ -2228,7 +2241,7 @@ population.</p>
   <figcaption>
     <span class="kind">Post-text display</span>
     <strong>Table 14.3.1.1</strong> Extent of Exposure to Study Drug
-    <span class="slug">slug <code>t-exposure</code> · variant <code>post_text</code> · ARD <code>outputs/t-exposure/v001/ard.json</code></span>
+    <span class="slug">slug <code>t-exposure</code> · variant <code>post_text</code> · ARD <code>outputs/t-exposure/v002/ard.json</code></span>
   </figcaption>
   <div class="table-wrap"><!doctype html>
 <html lang="en">
@@ -2241,7 +2254,7 @@ population.</p>
 <body>
 <main>
 <p class="meta">t-exposure &middot; post_text variant &middot; study CDISCPILOT01 &middot; data cut-off 2014-07-01</p>
-<div id="mevhczfcmq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="sugjywhmma" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   <table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3;" bgcolor="#FFFFFF">
   <thead style="border-style: none;">
@@ -2413,7 +2426,7 @@ population.</p>
   <figcaption>
     <span class="kind">Post-text display</span>
     <strong>Table 14.3.1.2</strong> Overview of Treatment-Emergent Adverse Events
-    <span class="slug">slug <code>t-ae-overview</code> · variant <code>post_text</code> · ARD <code>outputs/t-ae-overview/v001/ard.json</code></span>
+    <span class="slug">slug <code>t-ae-overview</code> · variant <code>post_text</code> · ARD <code>outputs/t-ae-overview/v002/ard.json</code></span>
   </figcaption>
   <div class="table-wrap"><!doctype html>
 <html lang="en">
@@ -2426,7 +2439,7 @@ population.</p>
 <body>
 <main>
 <p class="meta">t-ae-overview &middot; post_text variant &middot; study CDISCPILOT01 &middot; data cut-off 2014-07-01</p>
-<div id="ogwitrjgxg" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="cxdyctixmv" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   <table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3;" bgcolor="#FFFFFF">
   <thead style="border-style: none;">
@@ -2532,7 +2545,7 @@ population.</p>
   <figcaption>
     <span class="kind">Post-text display</span>
     <strong>Table 14.3.1.3</strong> Treatment-Emergent Adverse Events by System Organ Class and Preferred Term
-    <span class="slug">slug <code>t-ae-common</code> · variant <code>post_text</code> · ARD <code>outputs/t-ae-common/v002/ard.json</code></span>
+    <span class="slug">slug <code>t-ae-common</code> · variant <code>post_text</code> · ARD <code>outputs/t-ae-common/v003/ard.json</code></span>
   </figcaption>
   <div class="table-wrap"><!doctype html>
 <html lang="en">
@@ -2545,7 +2558,7 @@ population.</p>
 <body>
 <main>
 <p class="meta">t-ae-common &middot; post_text variant &middot; study CDISCPILOT01 &middot; data cut-off 2014-07-01</p>
-<div id="drguqvgfgj" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="cwspgbtavh" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   <table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3;" bgcolor="#FFFFFF">
   <thead style="border-style: none;">
@@ -3872,7 +3885,7 @@ population.</p>
   <figcaption>
     <span class="kind">Post-text display</span>
     <strong>Listing 14.3.2.1</strong> Listing of Serious Adverse Events
-    <span class="slug">slug <code>l-ae-serious</code> · variant <code>post_text</code> · ARD <code>outputs/l-ae-serious/v001/ard.json</code></span>
+    <span class="slug">slug <code>l-ae-serious</code> · variant <code>post_text</code> · ARD <code>outputs/l-ae-serious/v002/ard.json</code></span>
   </figcaption>
   <div class="table-wrap"><!doctype html>
 <html lang="en">
@@ -3885,7 +3898,7 @@ population.</p>
 <body>
 <main>
 <p class="meta">l-ae-serious &middot; post_text variant &middot; study CDISCPILOT01 &middot; data cut-off 2014-07-01</p>
-<div id="ouilzstgsc" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="nilomqocgc" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   <table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3;" bgcolor="#FFFFFF">
   <thead style="border-style: none;">
@@ -4042,7 +4055,7 @@ number in the document.</p>
   <td><code>sha256:8c432e510cf8fe58349f0315cb25c51231c261a2276707cfd7168cd064a3d62d</code><br><code>sha256:18ca5acb502028c38848124b04a9db836b79b9072640bf54883c4ca98350a71d</code></td>
   <td>adsl (n=254, pharmaverseadam 1.1.0)<br><code>sha256:f9a1c3605cb277363fba0add4c4228df6a288685586575be159718696c582107</code></td>
   <td>R 4.3.3<br>cards 0.6.1<br>cardx 0.2.5<br>gtsummary 2.3.0<br>gt 1.0.0<br>dplyr 1.1.4<br>pharmaverseadam 1.1.0<br>jsonlite 2.0.0<br>yaml 2.3.10<br>digest 0.6.37</td>
-  <td><code>uncommitted</code><br><span class="muted">2026-07-25T06:39:07Z</span></td>
+  <td><code>uncommitted</code><br><span class="muted">2026-07-27T03:23:35Z</span></td>
 </tr>
 <tr>
   <td><code>t-demographics</code><br><span class="muted">14.1.2</span></td>
@@ -4050,7 +4063,7 @@ number in the document.</p>
   <td><code>sha256:0f1e9b9029b61b70bfa00f93c9f0c52050859ff26cacb67ee2fed50c39392854</code><br><code>sha256:47d64c3c97e9a311b8b5bfdd7ae6d2a3cb1ff5a6442ad77664da993634c629bd</code></td>
   <td>adsl (n=254, pharmaverseadam 1.1.0)<br><code>sha256:f9a1c3605cb277363fba0add4c4228df6a288685586575be159718696c582107</code></td>
   <td>R 4.3.3<br>cards 0.6.1<br>cardx 0.2.5<br>gtsummary 2.3.0<br>gt 1.0.0<br>dplyr 1.1.4<br>pharmaverseadam 1.1.0<br>jsonlite 2.0.0<br>yaml 2.3.10<br>digest 0.6.37</td>
-  <td><code>uncommitted</code><br><span class="muted">2026-07-25T06:39:06Z</span></td>
+  <td><code>uncommitted</code><br><span class="muted">2026-07-27T03:23:35Z</span></td>
 </tr>
 <tr>
   <td><code>t-exposure</code><br><span class="muted">14.3.1.1</span></td>
@@ -4058,7 +4071,7 @@ number in the document.</p>
   <td><code>sha256:dcb569bb84c890fe5d3322fbb111cdaeabd917ad388c89d10b2e754b8d322dd8</code><br><code>sha256:5cf918ab32731b85dcf031052e201c763ba0972d98f2badb1c8d7a216b812c44</code></td>
   <td>adsl (n=254, pharmaverseadam 1.1.0)<br><code>sha256:f9a1c3605cb277363fba0add4c4228df6a288685586575be159718696c582107</code><br>adex (n=6315, pharmaverseadam 1.1.0)<br><code>sha256:e89d24c9364ba5a20a49a86de8428a8e4d8b35899b4d154ff83f89645c733f5f</code></td>
   <td>R 4.3.3<br>cards 0.6.1<br>cardx 0.2.5<br>gtsummary 2.3.0<br>gt 1.0.0<br>dplyr 1.1.4<br>pharmaverseadam 1.1.0<br>jsonlite 2.0.0<br>yaml 2.3.10<br>digest 0.6.37</td>
-  <td><code>uncommitted</code><br><span class="muted">2026-07-25T06:39:07Z</span></td>
+  <td><code>uncommitted</code><br><span class="muted">2026-07-27T03:23:36Z</span></td>
 </tr>
 <tr>
   <td><code>t-ae-overview</code><br><span class="muted">14.3.1.2</span></td>
@@ -4066,7 +4079,7 @@ number in the document.</p>
   <td><code>sha256:6b0ba696f8cb4abffc3741982f36bb3bc4a47a68d84e0da1cb5cbf210c19a90a</code><br><code>sha256:04520444415a62c1f632d67d37a67e33c3f2a9dd4c9b7006cae32eb21bcdf2bb</code></td>
   <td>adsl (n=254, pharmaverseadam 1.1.0)<br><code>sha256:f9a1c3605cb277363fba0add4c4228df6a288685586575be159718696c582107</code><br>adae (n=1191, pharmaverseadam 1.1.0)<br><code>sha256:7d4237afdbf934742091e6b7e0a756fcba6a0e79fc9f35b578f86574baf8f7d4</code></td>
   <td>R 4.3.3<br>cards 0.6.1<br>cardx 0.2.5<br>gtsummary 2.3.0<br>gt 1.0.0<br>dplyr 1.1.4<br>pharmaverseadam 1.1.0<br>jsonlite 2.0.0<br>yaml 2.3.10<br>digest 0.6.37</td>
-  <td><code>uncommitted</code><br><span class="muted">2026-07-25T06:39:08Z</span></td>
+  <td><code>uncommitted</code><br><span class="muted">2026-07-27T03:23:34Z</span></td>
 </tr>
 <tr>
   <td><code>t-ae-common</code><br><span class="muted">14.3.1.3</span></td>
@@ -4074,7 +4087,7 @@ number in the document.</p>
   <td><code>sha256:a45e3a1f2586dd0bffa2e2f660162d958e9ae20f6eb87df9511b7d49b5c74203</code><br><code>sha256:c749510c8b10f6e4f45381eacb9d85aca93d56e62e9b5f2b71f41d050d112433</code></td>
   <td>adsl (n=254, pharmaverseadam 1.1.0)<br><code>sha256:f9a1c3605cb277363fba0add4c4228df6a288685586575be159718696c582107</code><br>adae (n=1191, pharmaverseadam 1.1.0)<br><code>sha256:7d4237afdbf934742091e6b7e0a756fcba6a0e79fc9f35b578f86574baf8f7d4</code></td>
   <td>R 4.3.3<br>cards 0.6.1<br>cardx 0.2.5<br>gtsummary 2.3.0<br>gt 1.0.0<br>dplyr 1.1.4<br>pharmaverseadam 1.1.0<br>jsonlite 2.0.0<br>yaml 2.3.10<br>digest 0.6.37</td>
-  <td><code>uncommitted</code><br><span class="muted">2026-07-25T06:39:10Z</span></td>
+  <td><code>uncommitted</code><br><span class="muted">2026-07-27T03:23:32Z</span></td>
 </tr>
 <tr>
   <td><code>l-ae-serious</code><br><span class="muted">14.3.2.1</span></td>
@@ -4082,7 +4095,7 @@ number in the document.</p>
   <td><code>sha256:a046fb1cdc11ed10d586284efeb97e30ab743f4ad394869bd83ae1bfb401d140</code><br><code>sha256:b865356eb33a50fb5cabae395251d60df06c7607485231ce1ae9516804af6523</code></td>
   <td>adsl (n=254, pharmaverseadam 1.1.0)<br><code>sha256:f9a1c3605cb277363fba0add4c4228df6a288685586575be159718696c582107</code><br>adae (n=1191, pharmaverseadam 1.1.0)<br><code>sha256:7d4237afdbf934742091e6b7e0a756fcba6a0e79fc9f35b578f86574baf8f7d4</code></td>
   <td>R 4.3.3<br>cards 0.6.1<br>cardx 0.2.5<br>gtsummary 2.3.0<br>gt 1.0.0<br>dplyr 1.1.4<br>pharmaverseadam 1.1.0<br>jsonlite 2.0.0<br>yaml 2.3.10<br>digest 0.6.37</td>
-  <td><code>uncommitted</code><br><span class="muted">2026-07-25T06:39:08Z</span></td>
+  <td><code>uncommitted</code><br><span class="muted">2026-07-27T03:23:31Z</span></td>
 </tr></tbody>
 </table></div>
 <p class="muted">Template: <code>ich-e3</code> v1.0.0 — ICH E3 (1995), Step 4; E3 Q&amp;A (R1)</p>
@@ -4169,6 +4182,7 @@ number in the document.</p>
 <tr><td><code>TXT-E3-0901</code></td><td>9.1</td><td>parameterized</td><td>approved</td><td>4</td><td><span class="ok">pass</span></td><td><span class="ok">pass</span></td><td><span class="ok">included</span></td></tr>
 <tr><td><code>TXT-E3-0908</code></td><td>9.8</td><td>boilerplate</td><td>approved</td><td>0</td><td><span class="ok">pass</span></td><td><span class="ok">pass</span></td><td><span class="ok">included</span></td></tr>
 <tr><td><code>TXT-E3-1001</code></td><td>10.1</td><td>parameterized</td><td>approved</td><td>19</td><td><span class="ok">pass</span></td><td><span class="ok">pass</span></td><td><span class="ok">included</span></td></tr>
+<tr><td><code>TXT-E3-1002</code></td><td>10.1</td><td>generated</td><td>draft</td><td>0</td><td><span class="ok">pass</span></td><td><span class="ok">pass</span></td><td><span class="warn">excluded</span></td></tr>
 <tr><td><code>TXT-E3-1101</code></td><td>11.1</td><td>parameterized</td><td>approved</td><td>4</td><td><span class="ok">pass</span></td><td><span class="ok">pass</span></td><td><span class="ok">included</span></td></tr>
 <tr><td><code>TXT-E3-1102</code></td><td>11.2</td><td>parameterized</td><td>approved</td><td>16</td><td><span class="ok">pass</span></td><td><span class="ok">pass</span></td><td><span class="ok">included</span></td></tr>
 <tr><td><code>TXT-E3-1201</code></td><td>12.1</td><td>parameterized</td><td>approved</td><td>23</td><td><span class="ok">pass</span></td><td><span class="ok">pass</span></td><td><span class="ok">included</span></td></tr>

@@ -12,9 +12,11 @@ Normative file formats and function signatures. Every component builds against t
 pipeline/                 R package `opencsr` (DESCRIPTION, NAMESPACE, R/, tests/testthat/)
 library/tfl/<slug>/       analysis.yaml, display.yaml, [custom.R], iterations.yaml
 library/text/<ID>.md      text blocks (YAML frontmatter + prose)
+library/values/values.yaml named-value declarations (§11)
 library/templates/ich-e3/ sections.yaml, assembly.yaml
-outputs/<slug>/vNNN/      spec snapshots, ard.json, table.html, table-in-text.html, manifest.json
+outputs/<slug>/vNNN/      spec snapshots, ard.json, table.html + table.rtf (per variant), manifest.json
 outputs/<slug>/current.json
+outputs/values/values.json generated values store (§11)
 quality/requirements/     requirement matrices (*.md)
 qc/run-tests.R            testthat -> qc/testthat-results.json
 scripts/*.mjs             requirements, evidence, assemble, site builders
@@ -156,6 +158,8 @@ reported at least one adverse event.
 
 Binding syntax: `{{ard:<binding address>}}` (§5). Rendering resolves against `outputs/<display>/current` ARD.
 
+**Named values** (§11): `{{value:<id>}}` resolves against the generated values store. It is an ARD binding that has been named once, centrally, rather than re-addressed per sentence; its substitution is span-tracked exactly like an `{{ard:…}}` one, so its digits are exempt from the fidelity gate — and the store itself is re-derived from the committed ARDs at assembly, so naming a number never loosens the check on it.
+
 **Cross-reference tokens** keep prose from typing numbers the assembler owns (D6): `{{xref:display:<slug>}}` resolves to the display's assigned 14.x number and title, `{{xref:section:<number>}}` to a section link. Both fail the build when unresolvable, and their output is span-tracked so the digits they emit are exempt from the fidelity gate.
 
 **CI gates (D7):** (a) every binding resolves to exactly one ARD row; (b) every digit run in *rendered* prose traces to a resolved binding — except inside inline code, markdown links, and an explicit `allow_digits` frontmatter list (E3 section numbers, citations, protocol IDs); (c) `generated`-tier blocks with `approval.state != approved` are excluded from assembly and reported.
@@ -217,9 +221,63 @@ Numbering (D6): the assembler assigns `14.x` positions from `post_text` order an
 
 **What "no network calls" forbids, precisely.** No external host, no API, no CDN, no analytics, no font — enforced by `validateNoExternalResources`, which fails the build on any absolute or protocol-relative resource URL. A page may `fetch` a **build artifact from its own origin** when loading it eagerly would be wasteful: the text-block editor pulls `demo/ard/<slug>.json` (published by the same build, from the same committed ARD) the first time a block that binds it is opened, rather than inlining 832 KB of ARD into every visit of the Demo page. The site still serves from any static host with nothing behind it, which is the property the rule protects.
 
+## 10. Submission artifacts (RTF)
+
+Every rendered variant of a display is written twice: `table.html` (or `table-<variant>.html`) and `table.rtf` (or `table-<variant>.rtf`), both from the same rendered cell table, in the same `regenerate()` loop. RTF is produced with `{r2rtf}` via `opencsr::render_rtf()`.
+
+The iteration manifest records each variant's artifacts:
+
+```json
+"variants": { "post_text": { "file": "table.html", "rtf": "table.rtf",
+                             "rtf_hash": "sha256:…", "n_rows": 22 } }
+```
+
+`rtf_hash` is the sha256 of the file as written, which is what allows a committed RTF to be proved to be the pipeline's output rather than a hand-edited copy — a testthat guard (`TFL-RTF-006`) re-hashes every committed RTF against its manifest. The site build republishes each current-iteration RTF flat as `artifacts/<slug>[-<variant>].rtf` and offers it for download beside the rendered display.
+
+RTF is a 7-bit format: `\`, `{` and `}` are escaped and non-ASCII code points travel as `\uc1\uNNNN?`. `_` is subscript markup in `{r2rtf}` and never reaches a document as a literal.
+
+## 11. The values store
+
+A **value** is a named scalar with provenance — the unit a writer reuses ("randomized N", "median age") as opposed to the address a binding uses.
+
+`library/values/values.yaml` is source (D9):
+
+```yaml
+study: CDISCPILOT01
+values:
+  - id: randomised-n                       # kebab-case, unique, the citation key
+    label: "Subjects randomised"           # required: a name has to read
+    source: t-disposition:randomised:n;group=Total   # §5 binding address, display included
+    format: { scale: 1, digits: 0 }        # presentation only
+    notes: "…"                             # optional
+  - id: ae-any-n-xanomeline
+    label: "…"
+    derived: { op: sum, inputs: [ae-any-n-low, ae-any-n-high] }
+```
+
+Exactly one of `source:` or `derived:` per value. Derivation operators are a **closed vocabulary** — `sum` (≥2 inputs), `difference`, `ratio`, `percent` (exactly 2, in order) — precisely so the R builder and the JavaScript gate can each evaluate them and agree. Inputs must be declared before use.
+
+`opencsr::regenerate_values()` writes `outputs/values/values.json`:
+
+```json
+{ "schema": "opencsr/values/v1", "study": "CDISCPILOT01", "created": "…",
+  "provenance": { "source_file": "library/values/values.yaml", "source_hash": "sha256:…",
+                  "git_commit": "…", "environment": { … } },
+  "values": [ { "id": "randomised-n", "label": "…", "kind": "ard",
+                "value": 254, "formatted": "254",
+                "format": { "scale": 1, "digits": 0 },
+                "source": { "address": "…", "display": "t-disposition", "analysis": "randomised",
+                            "iteration": "v002", "ard_file": "outputs/…/ard.json",
+                            "ard_hash": "sha256:…" } } ] }
+```
+
+`value` is the ARD's number unscaled — proportions stay in [0, 1] as in §5 — and `formatted` carries scaling and half-up rounding, so the store stays directly comparable to the ARD.
+
+**Gate (d), the values gate.** At assembly every value is re-derived from the same committed ARDs the report is built from. A value fails when its address resolves to zero or several rows, when the ARD row no longer equals the stored value, when the cited ARD hash is not the committed one, when `formatted` does not match the declared format, or when a derived value no longer equals its own arithmetic. Any of these fails the build exactly as a typed number in prose does.
+
 ---
 
-## 10. Conventions the v0 build established
+## 12. Conventions the v0 build established
 
 Learned during implementation; normative from here.
 

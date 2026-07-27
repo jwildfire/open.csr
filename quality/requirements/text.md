@@ -214,3 +214,23 @@ Scope: [`site/demo/editor-core.js`](../../site/demo/editor-core.js) (pure logic)
   checks them regardless.
 - `site/demo/editor.js` is DOM wiring and is verified in the browser, not by the
   vitest suite; everything it decides is in `editor-core.js`, which is.
+
+## Named values (`{{value:…}}`)
+
+Requirement source: [obot.roadmap #129](https://github.com/jwildfire/obot.roadmap/issues/129) part B.
+The values store gives a number a name once, centrally, instead of re-addressing
+it in every sentence. Naming must not loosen D7: the store is a committed artifact,
+so the build re-derives every value from the same ARDs the report is built from and
+a value that has drifted fails exactly the way a typed number does. Production of
+the store is [`tfl-engine.md`](tfl-engine.md).
+
+| ID | Requirement | Type | Verification | Status |
+|---|---|---|---|---|
+| TXT-VAL-001 | A values store whose values match their ARD rows passes; one that no longer matches fails and names the value, the stored number and the number the ARD now gives. | Functional | `values-store.test.js` | Verified |
+| TXT-VAL-002 | A value whose address resolves to no ARD row, to more than one, or to a display absent from the build is reported rather than silently dropped. | Robustness | `values-store.test.js` | Verified |
+| TXT-VAL-003 | Derived values are recomputed from their inputs at build time, and a derivation naming a value defined after it is reported. | Correctness | `values-store.test.js` | Verified |
+| TXT-VAL-004 | Presentation is checked too: a value whose `formatted` does not match its declared scale and half-up rounding fails. | Correctness | `values-store.test.js` | Verified |
+| TXT-VAL-005 | A value citing an ARD the repository no longer holds is reported; a store with an unknown schema is refused; a repository with no store is not a failure. | Robustness | `values-store.test.js` | Verified |
+| TXT-VAL-006 | A `{{value:id}}` token renders the stored value, is span-tracked so the numeric-fidelity gate accepts its digits, and fails the build when the id is unknown. | Functional | `values-store.test.js` | Verified |
+| TXT-VAL-007 | The store knows which text blocks cite each value, so "what breaks if this changes" is answerable before it changes. | Traceability | `values-store.test.js` | Verified |
+| TXT-VAL-008 | The committed store is in the agreed schema and every value in it cites an ARD file that exists with a matching hash. | Quality evidence | `values-store.test.js` | Verified |

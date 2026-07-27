@@ -9,4 +9,14 @@ iterations:
   display_hash: sha256:18ca5acb502028c38848124b04a9db836b79b9072640bf54883c4ca98350a71d
   ard_hash: sha256:1f4596be244faafa87bcfc37534ad2f83447ff0520ed746606ff4be33c5839a2
   ard_rows: 84
+- version: v002
+  created: '2026-07-27T03:23:35Z'
+  actor: '@obotclaw'
+  change_request: 'Add submission-format RTF artifacts to every variant (obot.roadmap
+    #129 A).'
+  git_commit: ''
+  spec_hash: sha256:8c432e510cf8fe58349f0315cb25c51231c261a2276707cfd7168cd064a3d62d
+  display_hash: sha256:18ca5acb502028c38848124b04a9db836b79b9072640bf54883c4ca98350a71d
+  ard_hash: sha256:26f56529e5e4b993c332b35a296957e7fcb8dcd3a8cf19ed6a3802c19bd42f89
+  ard_rows: 84
 

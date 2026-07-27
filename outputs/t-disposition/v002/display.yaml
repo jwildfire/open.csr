@@ -1,0 +1,30 @@
+id: t-disposition
+title: "Subject Disposition"
+study: CDISCPILOT01
+population_label: "Intent-to-Treat Analysis Set"
+cutoff: "2014-07-01"
+source: "Source: adsl (pharmaverseadam). Data cut-off: 2014-07-01."
+footnotes:
+  - "Percentages are based on the number of randomised subjects in each treatment group."
+  - "The ADSL shipped in pharmaverseadam carries no DCSREAS/DCDECOD, so the reason for discontinuation is derived: 'Death' where DTHFL = 'Y', otherwise 'Other / not specified'."
+  - "52 screen failures are excluded from every analysis dataset."
+columns:
+  order: [Placebo, "Xanomeline Low Dose", "Xanomeline High Dose", Total]
+format:
+  digits:
+    p: 1
+rows:
+  - { label: "Disposition, n (%)", section: true }
+  - { analysis: randomised, label: "Subjects randomised", pattern: n_pct, indent: 1 }
+  - { analysis: treated, label: "Subjects treated", pattern: n_pct, indent: 1 }
+  - { analysis: completed, label: "Completed the study", pattern: n_pct, indent: 1 }
+  - { analysis: discontinued, label: "Discontinued the study", pattern: n_pct, indent: 1 }
+  - { label: "Reason for discontinuation, n (%)", section: true }
+  - { analysis: disc_death, label: "Death", pattern: n_pct, indent: 1 }
+  - { analysis: disc_other, label: "Other / not specified", pattern: n_pct, indent: 1 }
+  - { label: "Deaths, n (%)", section: true }
+  - { analysis: died, label: "Died on study", pattern: n_pct, indent: 1 }
+variants:
+  post_text: {}
+  in_text:
+    title: "Subject Disposition (Summary)"

@@ -58,7 +58,12 @@
     "QC-DEMO-021": "Every selectable item in the explorer is a real link carrying its own deep link, and an unbuilt item is not a link at all.",
     "QC-DEMO-022": "The header carries a Read/Edit mode control in which Read is current and Edit is genuinely disabled, and the explorer renders without throwing on an empty registry.",
     "QC-DEMO-023": "A built document contributes its own top-level sections to the tree, and a section counts as populated when it or anything beneath it is; an unbuilt document contributes none.",
-    "QC-DEMO-024": "Sections render beneath their own document, each a deep link to its heading, with unpopulated sections still navigable and labelled as modelled-but-not-populated."
+    "QC-DEMO-024": "Sections render beneath their own document, each a deep link to its heading, with unpopulated sections still navigable and labelled as modelled-but-not-populated.",
+    "QC-DEMO-025": "Every explorer node with children carries a real disclosure button — keyboard-reachable, named for a screen reader, with `aria-expanded` and `aria-controls` — and a node with nothing beneath it carries none.",
+    "QC-DEMO-026": "Sections the report does not populate are dimmed as a whole row and keep the tooltip that explains why, while populated sections stay at full contrast; a group with no items renders as a heading rather than an empty folder.",
+    "QC-DEMO-027": "The Values pane shows every value's name, number and provenance — an ARD address with its iteration and hash, or the declared arithmetic for a derived value — and the text blocks that cite it.",
+    "QC-DEMO-028": "The Values pane states the verdict of the gate that re-derived the store against the committed ARDs, and renders a documented empty state when no store exists.",
+    "QC-DEMO-029": "Values are a collection of the study in the navigation tree, listed with their formatted numbers, and selecting one focuses it in the pane rather than introducing a fourth selection key."
   },
   "rows": [
     {
@@ -570,6 +575,51 @@
       "area": "Demo",
       "text": "Sections render beneath their own document, each a deep link to its heading, with unpopulated sections still navigable and labelled as modelled-but-not-populated.",
       "source": "#113",
+      "evidence": "js-unit",
+      "link": "site-demo.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-DEMO-025",
+      "area": "Demo",
+      "text": "Every explorer node with children carries a real disclosure button — keyboard-reachable, named for a screen reader, with `aria-expanded` and `aria-controls` — and a node with nothing beneath it carries none.",
+      "source": "open.csr#10",
+      "evidence": "js-unit",
+      "link": "site-demo.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-DEMO-026",
+      "area": "Demo",
+      "text": "Sections the report does not populate are dimmed as a whole row and keep the tooltip that explains why, while populated sections stay at full contrast; a group with no items renders as a heading rather than an empty folder.",
+      "source": "open.csr#10",
+      "evidence": "js-unit",
+      "link": "site-demo.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-DEMO-027",
+      "area": "Demo",
+      "text": "The Values pane shows every value's name, number and provenance — an ARD address with its iteration and hash, or the declared arithmetic for a derived value — and the text blocks that cite it.",
+      "source": "#129",
+      "evidence": "js-unit",
+      "link": "site-demo.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-DEMO-028",
+      "area": "Demo",
+      "text": "The Values pane states the verdict of the gate that re-derived the store against the committed ARDs, and renders a documented empty state when no store exists.",
+      "source": "#129",
+      "evidence": "js-unit",
+      "link": "site-demo.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-DEMO-029",
+      "area": "Demo",
+      "text": "Values are a collection of the study in the navigation tree, listed with their formatted numbers, and selecting one focuses it in the pane rather than introducing a fourth selection key.",
+      "source": "#129",
       "evidence": "js-unit",
       "link": "site-demo.test.js",
       "status": "draft"

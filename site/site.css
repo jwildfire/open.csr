@@ -2642,4 +2642,90 @@ body.app-page .app-bar {
   font: 600 0.82rem/1.4 var(--sans);
   color: var(--ink);
   font-variant-numeric: tabular-nums;
+/* --- Expand and collapse (open.csr #10) ---------------------------------- */
+
+/* Screen-reader-only text: the twisty is a chevron to the eye and a named
+   control to everything else. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Only nodes that HAVE children carry a control; the rest are flat rows, which
+   is what makes the chevron mean something when it appears. */
+.nav-node.has-children {
+  position: relative;
+}
+
+.nav-twisty {
+  position: absolute;
+  left: 0;
+  top: 0.28rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1.05rem;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: none;
+  color: var(--faint);
+  cursor: pointer;
+}
+
+.nav-twisty:hover {
+  color: var(--ink);
+  background: var(--paper-2);
+}
+
+.nav-twisty:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.nav-twisty .nav-caret {
+  transform: rotate(90deg);
+}
+
+.nav-node.is-collapsed .nav-twisty .nav-caret {
+  transform: rotate(0deg);
+}
+
+.nav-node.is-collapsed .nav-sections {
+  display: none;
+}
+
+/* A group with nothing in it is a heading: no control, no hover affordance. */
+.nav-group.is-empty .nav-group-head {
+  cursor: default;
+  opacity: 0.55;
+}
+
+.nav-group.is-empty .nav-group-head:hover {
+  background: none;
+  color: var(--muted);
+}
+
+/* Modelled but not populated: dimmed as a whole row rather than by its label
+   alone, so a glance down the tree separates what this report fills from what it
+   only models. Still navigable, still tooltipped (#10). */
+.nav-section.is-empty {
+  opacity: 0.62;
+}
+
+.nav-section.is-empty .nav-num,
+.nav-section.is-empty .nav-label {
+  color: var(--faint);
+}
+
+.nav-section.is-empty:hover {
+  opacity: 1;
 }

@@ -1,7 +1,55 @@
 {
   "module": "text",
-  "generated": "2026-07-27T03:04:27.748Z",
+  "generated": "2026-07-27T03:50:20.851Z",
   "records": [
+    {
+      "requirementIds": [
+        "TXT-VAL-006"
+      ],
+      "title": "binding a value from prose TXT-VAL-006: a {{value:id}} token renders the stored value and is span-tracked (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/values-store.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-VAL-006"
+      ],
+      "title": "binding a value from prose TXT-VAL-006: an unknown value id fails the build rather than rendering blank (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/values-store.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-VAL-006"
+      ],
+      "title": "binding a value from prose TXT-VAL-006: value bindings are counted per block alongside ARD bindings (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/values-store.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-VAL-007"
+      ],
+      "title": "binding a value from prose TXT-VAL-007: the store knows which blocks bind each value (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/values-store.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
     {
       "requirementIds": [
         "TXT-BIND-001"
@@ -819,6 +867,30 @@
     },
     {
       "requirementIds": [
+        "TXT-VAL-008"
+      ],
+      "title": "the committed store TXT-VAL-008: every committed value cites an ARD file that exists, with a matching hash (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/values-store.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-VAL-008"
+      ],
+      "title": "the committed store TXT-VAL-008: the repository ships a values store in the agreed schema (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/values-store.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
         "TXT-EDIT-001"
       ],
       "title": "the edited region TXT-EDIT-001: a body edit rewrites the body and leaves the frontmatter byte-for-byte (#113)",
@@ -1239,6 +1311,126 @@
     },
     {
       "requirementIds": [
+        "TXT-VAL-001"
+      ],
+      "title": "the values store TXT-VAL-001: a store whose values match their ARD rows passes the gate (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/values-store.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-VAL-001"
+      ],
+      "title": "the values store TXT-VAL-001: a value that no longer matches its ARD row fails like a stale number (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/values-store.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-VAL-002"
+      ],
+      "title": "the values store TXT-VAL-002: a value citing a display with no ARD in the build is reported (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/values-store.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-VAL-002"
+      ],
+      "title": "the values store TXT-VAL-002: an orphaned or ambiguous address is reported, not silently dropped (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/values-store.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-VAL-003"
+      ],
+      "title": "the values store TXT-VAL-003: a derivation naming a value defined after it is reported (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/values-store.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-VAL-003"
+      ],
+      "title": "the values store TXT-VAL-003: a derived value is recomputed from its inputs, and drift fails (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/values-store.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-VAL-004"
+      ],
+      "title": "the values store TXT-VAL-004: presentation is checked too — a mis-formatted value fails (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/values-store.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-VAL-005"
+      ],
+      "title": "the values store TXT-VAL-005: a store with the wrong schema is refused outright (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/values-store.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-VAL-005"
+      ],
+      "title": "the values store TXT-VAL-005: a value citing an ARD the repository no longer holds is reported (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/values-store.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-VAL-005"
+      ],
+      "title": "the values store TXT-VAL-005: no store at all is not a failure — it is a repository without values (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/values-store.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
         "TXT-REVIEW-008"
       ],
       "title": "the view as built TXT-REVIEW-008: no external resource is referenced anywhere on the view (#2)",
@@ -1439,6 +1631,21 @@
       "suite": "text-review",
       "passed": false,
       "file": "library/text/TXT-E3-1300.md",
+      "issueRefs": [
+        1
+      ],
+      "reviewedBy": null,
+      "reviewedAt": null
+    },
+    {
+      "requirementIds": [
+        "TXT-DISP-001",
+        "TXT-VAL-006"
+      ],
+      "title": "TXT-DISP-001, TXT-VAL-006: TXT-E3-1002 generated block reviewed (#1)",
+      "suite": "text-review",
+      "passed": false,
+      "file": "library/text/TXT-E3-1002.md",
       "issueRefs": [
         1
       ],

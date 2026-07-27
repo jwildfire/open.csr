@@ -187,7 +187,7 @@ export function renderBlockEditor(block, { source = '', displays = [] } = {}) {
  * sections come from the E3 model. Both are small — sixteen sections and six
  * displays — so they ride in the page rather than being fetched.
  */
-export function editorContext({ template = null, displays = [], csr = null } = {}) {
+export function editorContext({ template = null, displays = [], csr = null, values = [] } = {}) {
   const numbers = new Map(
     (csr?.json?.displayIndex || []).map((entry) => [entry.slug, entry.number])
   );
@@ -206,6 +206,17 @@ export function editorContext({ template = null, displays = [], csr = null } = {
       (template?.sections?.sections || []).map((section) => [
         String(section.number),
         { title: section.title || '' }
+      ])
+    ),
+    // Named values (#129 B), for the same reason: a block that cites
+    // {{value:randomised-n}} passes CI, so an editor without the store would
+    // report the gates failing on prose the build accepts. Fifteen scalars ride
+    // in the page; the ARDs behind them stay fetched on demand.
+    values: Object.fromEntries(
+      values.map((value) => [
+        value.id,
+        { formatted: value.formatted ?? String(value.value ?? ''), value: value.value ?? null,
+          kind: value.kind || 'ard', label: value.label || value.id }
       ])
     )
   };
