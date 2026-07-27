@@ -1,6 +1,6 @@
 {
   "module": "quality",
-  "generated": "2026-07-27T03:50:20.851Z",
+  "generated": "2026-07-27T04:40:10.692Z",
   "records": [
     {
       "requirementIds": [
@@ -1488,6 +1488,42 @@
       "file": "tests/unit/site-render.test.js",
       "issueRefs": [
         1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-SITE-008"
+      ],
+      "title": "the stylesheet parses QC-SITE-008: declarations live inside a block, never between two of them (#16)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-css.test.js",
+      "issueRefs": [
+        16
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-SITE-008"
+      ],
+      "title": "the stylesheet parses QC-SITE-008: every block in site.css is closed, so no rule is silently dropped (#16)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-css.test.js",
+      "issueRefs": [
+        16
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-SITE-008"
+      ],
+      "title": "the stylesheet parses QC-SITE-008: the last rule in the file is as reachable as the first (#16)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-css.test.js",
+      "issueRefs": [
+        16
       ]
     },
     {
