@@ -1,8 +1,11 @@
 # Three-tier site publishing (#11, ported from safety.viz, design obot.roadmap#21):
 # writes the gh-pages branch incrementally so the three tiers coexist —
 #
-#   push to main            → sync site/_build/ to the branch ROOT (preserving dev/, pr/)
+#   push to main            → sync site/_build/ to the branch ROOT (preserving dev/, pr/, v*/)
 #   push to dev             → sync site/_build/ to dev/
+#   push of a v* tag        → sync site/_build/ to v{X.Y.Z}/ — the frozen demo
+#                             artifact every major/minor release links from its
+#                             notes (@jwildfire, 2026-07-27)
 #   pull_request (same-repo) → sync site/_build/ to pr/{N}/ + sticky preview comment
 #   pull_request closed      → replace pr/{N}/ pages with redirect stubs → dev/
 #
@@ -22,6 +25,8 @@ on:
     branches:
       - main
       - dev
+    tags:
+      - 'v*'
   pull_request:
     # ready_for_review is in the list because a PR opened as a draft gets no
     # preview until something else fires: without it, marking a draft ready
@@ -87,6 +92,11 @@ jobs:
               mode=dir
             fi
             dest="pr/$PR_NUMBER"
+          elif [ "${REF#refs/tags/}" != "$REF" ]; then
+            # A release tag freezes the site it was cut from as a permanent,
+            # versioned demo artifact.
+            mode=dir
+            dest="${REF#refs/tags/}"
           elif [ "$REF" = "refs/heads/main" ]; then
             mode=root
             dest="."
@@ -125,7 +135,7 @@ jobs:
               root)
                 # Release tier replaces the root but preserves the other tiers.
                 rsync -a --delete \
-                  --exclude=/.git --exclude=/dev --exclude=/pr \
+                  --exclude=/.git --exclude=/dev --exclude=/pr --exclude='/v[0-9]*' \
                   site/_build/ "$WT"/
                 ;;
               dir)
