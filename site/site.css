@@ -2617,6 +2617,9 @@ body.app-page .app-bar {
    only once something differs from the committed source. */
 .tbe-all {
   display: flex;
+  /* An author `display` beats the UA stylesheet's `[hidden] { display: none }`,
+     so a flex/grid component that is toggled by the hidden attribute has to say
+     so itself — otherwise it is visible with nothing to show. */
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
@@ -2629,6 +2632,10 @@ body.app-page .app-bar {
   background: var(--accent-soft);
   padding: 0.6rem 0.9rem;
   margin: 1rem 0;
+}
+
+.tbe-all[hidden] {
+  display: none;
 }
 
 .tbe-all-label {

@@ -1,6 +1,6 @@
 {
   "module": "text",
-  "generated": "2026-07-27T02:53:53.492Z",
+  "generated": "2026-07-27T03:04:27.748Z",
   "records": [
     {
       "requirementIds": [
@@ -265,6 +265,18 @@
       "file": "tests/unit/text-gates.test.js",
       "issueRefs": [
         1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TXT-EDIT-010"
+      ],
+      "title": "hiding actually hides TXT-EDIT-010: no class the editor hides is forced visible by a display rule (#113)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/text-editor.test.js",
+      "issueRefs": [
+        113
       ]
     },
     {

@@ -542,3 +542,45 @@ describe('the published ARD payload', () => {
     expect(payload.rows[0].stat).toBe(1);
   });
 });
+
+describe('hiding actually hides', () => {
+  // A UA stylesheet's `[hidden] { display: none }` is beaten by any author rule
+  // that sets `display` on a class — so a flex or grid component toggled by the
+  // hidden attribute stays on screen with nothing in it. That is exactly what
+  // happened to the pane-level patch bar: `.tbe-all { display: flex }` kept it
+  // visible on a page with no edits, while `element.hidden` read true and every
+  // markup assertion passed. Only looking at the page caught it, so the check
+  // below is the one that would have.
+  const css = readFileSync(path.join(rootDir, 'site', 'site.css'), 'utf8');
+  const config = JSON.parse(readFileSync(path.join(rootDir, 'site', 'config.json'), 'utf8'));
+  const block = loadTextBlocks(rootDir, config).find((entry) => entry.exists);
+  const markup =
+    renderBlockEditor(block, {
+      source: readFileSync(path.join(rootDir, block.file), 'utf8'),
+      displays: []
+    }) + renderEditorBar();
+
+  // Every class on an element the editor renders with a `hidden` attribute.
+  const hiddenClasses = [
+    ...new Set(
+      [...markup.matchAll(/<[a-z]+[^>]*\bclass="([^"]+)"[^>]*\shidden[\s>]/g)].flatMap((match) =>
+        match[1].split(/\s+/)
+      )
+    )
+  ];
+
+  test('TXT-EDIT-010: no class the editor hides is forced visible by a display rule (#113)', () => {
+    expect(hiddenClasses.length).toBeGreaterThan(0);
+    const broken = hiddenClasses.filter((name) => {
+      const rule = css.match(new RegExp(`\\.${name}\\s*\\{[^}]*\\}`, 'g')) || [];
+      const setsDisplay = rule.some((body) => /display:/.test(body));
+      if (!setsDisplay) return false;
+      return !new RegExp(`\\.${name}\\[hidden\\]\\s*\\{[^}]*display:\\s*none`).test(css);
+    });
+    expect(
+      broken,
+      `These classes set display and are toggled by [hidden]; each needs a ` +
+        `.<class>[hidden] { display: none } rule or it shows when hidden:\n${broken.join('\n')}`
+    ).toEqual([]);
+  });
+});
