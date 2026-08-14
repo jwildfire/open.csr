@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="webR spike — regenerating in the browser — rendered from docs/design/webr-spike.md." />
+    <title>webR spike — regenerating in the browser · open.csr</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23111a24'/%3E%3Crect x='3' y='3' width='7' height='1.4' fill='%23e7edf5'/%3E%3Crect x='3' y='6' width='10' height='1.4' fill='%235aa9e6'/%3E%3Crect x='3' y='9' width='6' height='1.4' fill='%23e7edf5'/%3E%3Crect x='3' y='12' width='9' height='1.4' fill='%235aa9e6'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="../site.css" />
+    <script>
+      // Theme is resolved before first paint so the page never flashes the
+      // wrong surface. No storage available (private mode) simply falls back to
+      // the OS preference.
+      (function () {
+        try {
+          var saved = localStorage.getItem('opencsr-theme');
+          if (saved) document.documentElement.setAttribute('data-theme', saved);
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body class="">
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <a class="site-name" href="../index.html">
+        <span class="mark" aria-hidden="true"></span>
+        <span>
+          <strong>open.csr</strong>
+          <em>Versioned numbers, versioned words, one traceable loop.</em>
+        </span>
+      </a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="../index.html">Home</a><a href="../demo/index.html">Demo</a><a href="../quality/index.html">Quality</a><a href="../docs/index.html">Design &amp; Research</a>
+        <button
+          type="button"
+          class="theme-toggle"
+          aria-label="Switch between light and dark"
+          title="Switch between light and dark"
+        >
+          <span aria-hidden="true">◐</span>
+        </button>
+        <a class="icon-link" href="https://github.com/jwildfire/open.csr" aria-label="Source on GitHub" title="Source on GitHub">
+          <svg viewBox="0 0 16 16" width="17" height="17" fill="currentColor" aria-hidden="true">
+            <path
+              d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
+            />
+          </svg>
+        </a>
+      </nav>
+    </header>
+    
+    <main class="site-main" id="main"><p class="crumb"><a href="index.html">Design &amp; Research</a> / <span class="mono">docs/design/webr-spike.md</span></p>
+<div class="doc-layout"><nav class="doc-toc" aria-label="On this page"><h2>On this page</h2><ol><li><a href="#1-what-was-tested">1. What was tested</a></li><li><a href="#2-dependency-availability-no-gaps">2. Dependency availability — no gaps</a></li><li><a href="#3-does-the-pipeline-actually-run-yes-all-of-it">3. Does the pipeline actually run? Yes, all of it</a></li><li><a href="#4-cost-measured-in-a-real-browser">4. Cost, measured in a real browser</a></li><li><a href="#5-what-breaks">5. What breaks</a></li><li><a href="#6-recommendation">6. Recommendation</a></li><li><a href="#7-reproducing-this">7. Reproducing this</a></li></ol></nav><article class="prose doc"><h1>webR spike — can the real pipeline regenerate a display in the browser?</h1>
+<p>Run 2026-07-25 against <code>dev</code> @ <code>fa51269</code>. Requirement: <a href="https://github.com/jwildfire/obot.roadmap/issues/113">obot.roadmap#113</a>, task <em>&quot;webR spike: can the real pipeline regenerate a display in the browser?&quot;</em>. Goal: <a href="https://github.com/jwildfire/obot.roadmap/issues/112">#112</a>.</p>
+<p><strong>Answer: yes — and it is numerically faithful. But it must not be the authority.</strong></p>
+<p>The spike selects a <strong>hybrid</strong>: webR regenerates in the browser for <em>preview</em>, GitHub Actions regenerates in the pinned environment for the <em>committed iteration</em>. Neither of the two candidates in #113 wins outright; the reason is provenance, not capability, and it is set out in §5.</p>
+<hr>
+<h2 id="1-what-was-tested">1. What was tested</h2>
+<p>The question was deliberately narrow: <strong>can webR run the real <code>opencsr</code> pipeline — <code>{cards}</code> on <code>{pharmaverseadam}</code> — well enough to regenerate a display from an edited <code>analysis.yaml</code>?</strong> Not &quot;does webR work&quot;, which is already known, but &quot;does <em>our</em> pipeline work, on <em>our</em> data, producing <em>our</em> numbers&quot;.</p>
+<p>Four harnesses, all reproducible:</p>
+<table>
+<thead>
+<tr>
+<th>Harness</th>
+<th>Environment</th>
+<th>What it answered</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>spike.mjs</code></td>
+<td>webR 0.6.0 under Node 24</td>
+<td>availability, install cost, first breakages</td>
+</tr>
+<tr>
+<td><code>spike3.mjs</code></td>
+<td>same</td>
+<td>all six displays&#39; ARDs, exported and diffed against the committed ARDs</td>
+</tr>
+<tr>
+<td><code>spike4.mjs</code></td>
+<td>same</td>
+<td><code>render_display()</code> and full <code>regenerate()</code> end to end</td>
+</tr>
+<tr>
+<td><code>local.html</code> / <code>persist.html</code></td>
+<td>Chrome, local HTTP server with <strong>no COOP/COEP headers</strong></td>
+<td>real browser boot time, exact bytes over the wire, package persistence</td>
+</tr>
+</tbody></table>
+<p>The browser harness deliberately served the runtime from a plain static server sending no cross-origin-isolation headers — that is the GitHub Pages condition, and it constrains which webR channel is usable (§4).</p>
+<h2 id="2-dependency-availability-no-gaps">2. Dependency availability — no gaps</h2>
+<p><code>repo.r-wasm.org</code> serves <strong>22,741</strong> WebAssembly package builds for R 4.6. Every <code>opencsr</code> dependency is present, and so is the full transitive closure:</p>
+<ul>
+<li>Direct <code>Imports</code>: <code>cards</code>, <code>cardx</code>, <code>dplyr</code>, <code>digest</code>, <code>gt</code>, <code>jsonlite</code>, <code>rlang</code>, <code>tibble</code>, <code>yaml</code> — all present.</li>
+<li><code>Suggests</code> that matter: <code>pharmaverseadam</code>, <code>gtsummary</code>, <code>testthat</code> — all present.</li>
+<li>Transitive closure of the nine runtime deps: <strong>58 packages, 56.0 MB</strong> of tarballs.</li>
+</ul>
+<p>There is no missing-package blocker. <code>{pharmaverseadam}</code> — the one that could plausibly have been absent, being a data package — ships a wasm build.</p>
+<h2 id="3-does-the-pipeline-actually-run-yes-all-of-it">3. Does the pipeline actually run? Yes, all of it</h2>
+<p>Mounting <code>pipeline/R/*.R</code> plus <code>library/tfl/&lt;slug&gt;/*</code> into the webR virtual filesystem and sourcing the package:</p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Result</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>prepare_data()</code></td>
+<td><code>adsl</code> 254 rows, <code>adae</code> 1191 rows — matches the committed manifest</td>
+<td>4.4 s</td>
+</tr>
+<tr>
+<td><code>build_ard()</code> × 6 displays</td>
+<td>88 / 236 / 84 / 176 / 3048 / 33 rows — <strong>every count matches the committed ARDs</strong></td>
+<td>1.7–3.7 s each</td>
+</tr>
+<tr>
+<td><code>render_display()</code>, both variants</td>
+<td>valid <code>gt</code> HTML, real values (AE event counts 281 / 427 / 414 / 1122)</td>
+<td>1.0–2.2 s</td>
+</tr>
+<tr>
+<td><code>regenerate(&quot;t-ae-overview&quot;)</code></td>
+<td>wrote <code>v002/</code> with <code>analysis.yaml</code>, <code>display.yaml</code>, <code>ard.json</code>, <code>manifest.json</code>, <code>table.html</code>, <code>table-in-text.html</code></td>
+<td>1.9 s</td>
+</tr>
+<tr>
+<td><strong>spec edit → rebuild</strong></td>
+<td><code>t-ae-common</code> 3048 rows → 504 rows after adding <code>filter: AESEV == &#39;SEVERE&#39;</code></td>
+<td>2.2 s</td>
+</tr>
+</tbody></table>
+<p>The last row is the product question, and it passes: a real change request applied to <code>analysis.yaml</code> in the browser produced a different, correct ARD. <strong>A warm spec-edit round trip is ~2–4 seconds.</strong> That is interactive.</p>
+<h3 id="3-1-numeric-fidelity-the-decisive-result">3.1 Numeric fidelity — the decisive result</h3>
+<p>Each display&#39;s ARD was built in webR, serialised through the repo&#39;s own <code>write_ard()</code>, exported, and diffed row-by-row against the committed ARD that local R 4.3.3 produced.</p>
+<p><strong>3,665 statistics across six displays. Zero value differences. Zero missing rows. Zero extra rows.</strong></p>
+<pre><code>t-ae-overview   (v001)   88 rows   shared 88     value diffs 0
+t-demographics  (v001)  236 rows   shared 236    value diffs 0
+t-disposition   (v001)   84 rows   shared 84     value diffs 0
+t-exposure      (v001)  176 rows   shared 176    value diffs 0
+t-ae-common     (v002) 3048 rows   shared 3048   value diffs 0
+l-ae-serious    (v001)   33 rows   shared 33     value diffs 0
+</code></pre>
+<p>This held <strong>despite a materially different package set</strong>:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>committed (local)</th>
+<th>webR</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>R</td>
+<td>4.3.3</td>
+<td>4.6.0</td>
+</tr>
+<tr>
+<td><code>cards</code></td>
+<td>0.6.1</td>
+<td>0.8.0</td>
+</tr>
+<tr>
+<td><code>dplyr</code></td>
+<td>1.1.4</td>
+<td>1.2.1</td>
+</tr>
+<tr>
+<td><code>gt</code></td>
+<td>1.0.0</td>
+<td>0.11.1</td>
+</tr>
+<tr>
+<td><code>pharmaverseadam</code></td>
+<td>1.1.0</td>
+<td>1.3.0</td>
+</tr>
+</tbody></table>
+<p>Two minor-version jumps in the statistical engine and a data-package jump, and not one number moved. That is a strong signal both for webR <em>and</em> for the pipeline&#39;s determinism — and it is the reason a browser preview can be trusted to show the truth.</p>
+<h2 id="4-cost-measured-in-a-real-browser">4. Cost, measured in a real browser</h2>
+<p>Chrome, PostMessage channel, runtime served from a header-less static server (the Pages condition):</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>webR runtime download</td>
+<td><strong>12.66 MB gzipped, 5 files</strong> (<code>R.wasm</code> alone 11.75 MB)</td>
+</tr>
+<tr>
+<td>Boot to R prompt</td>
+<td><strong>1.5 – 2.9 s</strong></td>
+</tr>
+<tr>
+<td>Install the 58-package closure</td>
+<td><strong>7.7 – 12.8 s</strong> (56.0 MB; ~13 s cold)</td>
+</tr>
+<tr>
+<td>First rendered table</td>
+<td><strong>18 s warm, 24 s cold</strong></td>
+</tr>
+<tr>
+<td>R heap after the six-display pipeline</td>
+<td>~200 MB</td>
+</tr>
+</tbody></table>
+<p>Two things worth knowing:</p>
+<ul>
+<li><strong>The base R library is embedded in <code>R.wasm</code></strong> — only five files are fetched at boot, not a 26 MB virtual-filesystem tree. Boot is cheaper than the on-disk distribution size suggests.</li>
+<li><strong>Package install repeats on every page load.</strong> Attempting to fix this with an IndexedDB-backed library (<code>FS.mount(&#39;IDBFS&#39;)</code> + <code>syncfs</code>) mounted cleanly and reported all 57 packages installed — but after a reload <strong>only 1 of 57 survived</strong>. Persistence is <em>available in principle and not working in practice</em>; the HTTP cache still shortens the reinstall to ~8 s, but &quot;load once, use forever&quot; is not on the table today without more work.</li>
+</ul>
+<p><strong>Deployment consequence:</strong> 12.66 MB + 56 MB cannot be loaded eagerly. webR has to be lazy — fetched only when a visitor opens the spec editor, behind an explicit &quot;start the R engine&quot; affordance that names the cost.</p>
+<h2 id="5-what-breaks">5. What breaks</h2>
+<p>Four findings, in ascending seriousness.</p>
+<p><strong>(a) <code>gt::as_raw_html(inline_css = TRUE)</code> is hard-unsupported under webR.</strong> It is the <em>only</em> call in the pipeline that fails, at <code>pipeline/R/render.R:473</code> in <code>standalone_html()</code>. <code>inline_css = FALSE</code> works and produces valid HTML. In-browser, inline CSS is unwanted anyway — the fragment renders into the app&#39;s own styled DOM. One argument, and the browser wants the other value.</p>
+<p><strong>(b) <code>Sys.which()</code> does not exist in webR.</strong> The git-commit probe warns and <code>git_commit</code> degrades to <code>null</code> — which contracts §10 already permits by design (&quot;an artifact that cannot name its commit says so instead of guessing&quot;). No fix needed; the contract anticipated this.</p>
+<p><strong>(c) GitHub Pages cannot send COOP/COEP headers</strong>, so <code>SharedArrayBuffer</code> is unavailable (<code>crossOriginIsolated: false</code>, verified). The SharedArrayBuffer channel is therefore out; the <strong>PostMessage channel works</strong> and was used for every browser measurement above. The cost is <code>webr::interrupt()</code> and stdin — neither of which a regenerate-on-click app needs.</p>
+<p><strong>(d) The wasm repo is a rolling snapshot with no version pinning — this is the real problem.</strong> <code>repo.r-wasm.org</code> serves one version per package per R release, and it moves. The consequence is not wrong numbers (§3.1 settles that) but a <strong>divergent provenance envelope</strong>:</p>
+<pre><code>committed:  adsl 254 × 60 cols  sha256:f9a1c360…  pharmaverseadam 1.1.0
+webR:       adsl 254 × 61 cols  sha256:31c804e9…  pharmaverseadam 1.3.0
+</code></pre>
+<p>Row counts agree; column counts and therefore data hashes do not. So <strong>ARD <em>value</em> equality holds while ARD <em>snapshot</em> equality (D4) breaks.</strong> A browser-generated <code>ard.json</code> is not byte-identical to a CI-generated one, and its <code>provenance.environment</code> records a package set that no CI run will ever reproduce. D5&#39;s envelope stops being an audit record and becomes a description of one visitor&#39;s browser.</p>
+<p><strong>Mitigation found:</strong> old tarballs stay served after the index moves on — <code>pharmaverseadam_1.1.0.tgz</code> still returns 200 from the R 4.4 and 4.5 trees even though both indexes now list 1.3.0. A <strong>pinned, self-hosted wasm repo is feasible</strong>: mirror the exact 58 tarballs (~56 MB) as a release asset and point <code>webr::install(repos = …)</code> at it. That is real work and a real hosting cost, and it should not be done speculatively — see §6.</p>
+<h2 id="6-recommendation">6. Recommendation</h2>
+<p>Not option (a) or option (b) from #113, but both, with a clean division of authority:</p>
+<blockquote>
+<p><strong>The browser previews. CI commits.</strong></p>
+</blockquote>
+<ul>
+<li><strong>webR is a preview engine.</strong> It regenerates faithfully and fast enough to feel live (~2–4 s warm). It renders the edited display next to the current one so a visitor sees their change take effect, on a static Pages site, with no server. This is what makes the spec editor real rather than a mock, and it is the honest answer to &quot;what makes an edit live&quot;.</li>
+<li><strong>webR is not a provenance authority.</strong> It must not write to <code>iterations.yaml</code> or <code>outputs/&lt;slug&gt;/vNNN/</code>. Its output is labelled a preview and carries no hash claim.</li>
+<li><strong>The commit path is the GitHub Actions round trip.</strong> &quot;Propose this change&quot; dispatches the workflow; the pipeline regenerates in the pinned environment; a PR opens with the ARD diff. D4, D5, D9 and D10 stay intact, and the audit trail remains the version history.</li>
+</ul>
+<p>Sequencing that follows:</p>
+<ol>
+<li>Change <code>render.R:473</code> to take <code>inline_css</code> from an argument defaulting to <code>TRUE</code>, so the browser can ask for <code>FALSE</code>. One-line change, no behaviour change for CI.</li>
+<li>Build the spec editor against the round trip <strong>first</strong> — it is the path that satisfies the invariant, and it needs no new runtime.</li>
+<li>Add the webR preview behind a lazy &quot;start the R engine&quot; affordance once the round trip works. It is an enhancement to a correct loop, not the loop itself.</li>
+<li>Pin the wasm repo only if the preview proves it earns its 69 MB. Do not pay for pinning to make a preview auditable — the preview is not the audit record.</li>
+</ol>
+<p><strong>Option (c) from #113 — precomputed variants — is rejected</strong>, as #113 anticipated. It is unnecessary: genuine regeneration in the browser is demonstrated above.</p>
+<h2 id="7-reproducing-this">7. Reproducing this</h2>
+<p>The harnesses are not committed (they carry a 47 MB <code>node_modules</code>). To rebuild:</p>
+<pre><code class="language-bash">mkdir webr-spike &amp;&amp; cd webr-spike &amp;&amp; npm init -y &amp;&amp; npm i webr
+# then the four harnesses from this session; each mounts pipeline/R/*.R and
+# library/tfl/&lt;slug&gt;/* into the webR VFS and sources the package by hand,
+# because webR has no compiler and cannot R CMD INSTALL a source package.
+</code></pre>
+<p>The load shim that made it work, and which any future webR integration needs:</p>
+<pre><code class="language-r">e &lt;- new.env(parent = globalenv())
+for (f in sort(list.files(&quot;/csr/pipeline/R&quot;, full.names = TRUE))) {
+  src &lt;- readLines(f, warn = FALSE)
+  src &lt;- gsub(&quot;inline_css = TRUE&quot;, &quot;inline_css = FALSE&quot;, src, fixed = TRUE)
+  eval(parse(text = src), envir = e)
+}
+e$csr_root &lt;- function(path = NULL) &quot;/csr&quot;
+for (nm in ls(e, all.names = TRUE)) if (is.function(e[[nm]])) environment(e[[nm]]) &lt;- e
+attach(e, name = &quot;opencsr&quot;, warn.conflicts = FALSE)
+</code></pre>
+<p><code>build_ard()</code> needs <code>custom_env = &quot;/csr/library/tfl/&lt;slug&gt;&quot;</code> — the display&#39;s <code>custom.R</code> is not found otherwise, which is what produced the first harness&#39;s misleading failure.</p>
+<hr>
+<p><em>This spike was run and written by Claude Code using Opus 5 in an unattended session and not yet reviewed by @jwildfire.</em></p>
+</article></div></main>
+    <footer class="site-footer">
+      <p>
+        <strong>open.csr</strong> — an open-source Clinical Study Report builder. Numbers are
+        computed by versioned specs, serialized as ARDs, and bound into prose that never restates
+        them.
+      </p>
+      <p>
+        Demo data is CDISC Pilot 01 via
+        <a href="https://github.com/pharmaverse/pharmaverseadam">pharmaverseadam</a> · everything on
+        this site is precomputed and static ·
+        <a href="https://github.com/jwildfire/open.csr">source on GitHub</a> ·
+        <a href="https://jwildfire.github.io/obot.roadmap/">obot roadmap</a>.
+      </p>
+    </footer>
+    <script>
+      // Mark the nav link for this page; works at any mount depth.
+      (function () {
+        var here = location.pathname.replace(/\/$/, '/index.html');
+        var links = document.querySelectorAll('.site-nav a[href]');
+        for (var i = 0; i < links.length; i += 1) {
+          var href = links[i].getAttribute('href');
+          if (!href || href.indexOf('http') === 0) continue;
+          if (new URL(href, location.href).pathname === here) {
+            links[i].classList.add('current');
+            links[i].setAttribute('aria-current', 'page');
+          }
+        }
+      })();
+
+      // Theme toggle: OS preference by default, explicit choice remembered.
+      (function () {
+        var button = document.querySelector('.theme-toggle');
+        if (!button) return;
+        button.addEventListener('click', function () {
+          var root = document.documentElement;
+          var current =
+            root.getAttribute('data-theme') ||
+            (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+          var next = current === 'dark' ? 'light' : 'dark';
+          root.setAttribute('data-theme', next);
+          try {
+            localStorage.setItem('opencsr-theme', next);
+          } catch (e) {}
+        });
+      })();
+
+      // Tabs on the display detail pages.
+      (function () {
+        var groups = document.querySelectorAll('.tabs');
+        for (var g = 0; g < groups.length; g += 1) {
+          (function (group) {
+            var tabs = group.querySelectorAll('.tab');
+            var panels = group.querySelectorAll('.tab-panel');
+            group.addEventListener('click', function (event) {
+              var tab = event.target.closest('.tab');
+              if (!tab) return;
+              for (var i = 0; i < tabs.length; i += 1) {
+                var on = tabs[i] === tab;
+                tabs[i].classList.toggle('current', on);
+                tabs[i].setAttribute('aria-selected', on ? 'true' : 'false');
+                if (panels[i]) {
+                  panels[i].classList.toggle('current', on);
+                  panels[i].hidden = !on;
+                }
+              }
+            });
+          })(groups[g]);
+        }
+      })();
+
+      // ARD row filter.
+      (function () {
+        var inputs = document.querySelectorAll('.ard-filter');
+        for (var i = 0; i < inputs.length; i += 1) {
+          (function (input) {
+            input.addEventListener('input', function () {
+              var needle = input.value.toLowerCase();
+              var table = input.closest('.tab-panel, main').querySelector('.ard-table tbody');
+              if (!table) return;
+              var rows = table.rows;
+              for (var r = 0; r < rows.length; r += 1) {
+                rows[r].hidden = needle && rows[r].textContent.toLowerCase().indexOf(needle) === -1;
+              }
+            });
+          })(inputs[i]);
+        }
+      })();
+    </script>
+  </body>
+</html>
