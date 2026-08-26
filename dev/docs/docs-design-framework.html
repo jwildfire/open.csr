@@ -95,8 +95,8 @@ directories.</p>
 </tr>
 <tr>
 <td>Templates</td>
-<td><code>library/templates/ich-e3/</code></td>
-<td>What an E3 report is, and what this report puts in it</td>
+<td><code>library/templates/&lt;id&gt;/</code></td>
+<td>What a document of this kind is, and what this study puts in it. Two objects today: the full ICH E3 report and its Annex I synopsis</td>
 </tr>
 </tbody></table>
 <p>Everything else in the repository is either the machinery that reads them (<code>pipeline/</code>,
@@ -123,13 +123,14 @@ directories.</p>
         │                             │                               │
         ▼                             ▼                               ▼
  ┌────────────────────────────────────────────────────────────────────────────────┐
- │ 4 · TEMPLATE   library/templates/ich-e3/                                        │
- │    sections.yaml   what an ICH E3 report IS — 119 sections and their content    │
- │    assembly.yaml   what THIS report puts in them — prose, displays, 14.x slots  │
+ │ 4 · TEMPLATE OBJECTS   library/templates/&lt;id&gt;/                                  │
+ │    sections.yaml   what a document of this kind IS — sections and their content │
+ │    assembly.yaml   what THIS study puts in them — prose, displays, number slots │
+ │    ich-e3 (119 sections) · e3-synopsis (25) — one display library, both numbered │
  └────────────────────────────────────┬───────────────────────────────────────────┘
-                                      │ assemble.mjs
+                                      │ assemble.mjs --all
                                       ▼
-                        docs/assembled/csr.html · the site
+              docs/assembled/csr.html · e3-synopsis.html · the site
 </code></pre>
 <p>The R pipeline owns the top band, from study data to a rendered table. The Node build owns
 everything from the first binding down. They meet at one file per display, <code>ard.json</code>, and
@@ -398,16 +399,55 @@ pending review. In the current demo, 10 of 15 blocks are in the report and 5 gen
 drafts are held out, each named with the reason.</p>
 <hr>
 <h2 id="4-templates">4 · Templates</h2>
-<p>Two files, and the division between them is the useful part.</p>
+<p>A <strong>template object</strong> is a directory under <code>library/templates/</code> holding two files, and the
+division between them is the useful part.</p>
 <ul>
-<li><a href="https://github.com/jwildfire/open.csr/blob/main/library/templates/ich-e3/sections.yaml"><code>sections.yaml</code></a> — what an ICH E3 report
-<em>is</em>. 119 sections, each with a number, a title, a stable slug, and the kind of content it
-may hold. Written once for the standard, reusable by any study, encoded from E3 itself.</li>
-<li><a href="https://github.com/jwildfire/open.csr/blob/main/library/templates/ich-e3/assembly.yaml"><code>assembly.yaml</code></a> — what <em>this</em> report puts
-in them. The study&#39;s own facts, the narrative slots (which text blocks and in-text
-displays fill which section), and the Section 14 slots (which displays sit under which
-post-text heading, in order).</li>
+<li><code>sections.yaml</code> — what a document of this kind <em>is</em>. Sections with a number, a title, a
+stable slug, and the kind of content each may hold. Written once for the standard,
+reusable by any study.</li>
+<li><code>assembly.yaml</code> — what <em>this</em> document puts in them. The study&#39;s own facts, the narrative
+slots (which text blocks and in-text displays fill which section), and the post-text slots
+(which displays sit under which heading, in order).</li>
 </ul>
+<p>The library holds two template objects today:</p>
+<table>
+<thead>
+<tr>
+<th>Object</th>
+<th>Document</th>
+<th>Sections</th>
+<th>Assembles to</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="https://github.com/jwildfire/open.csr/blob/main/library/templates/ich-e3/"><code>ich-e3</code></a></td>
+<td>Full ICH E3 Clinical Study Report</td>
+<td>119</td>
+<td><code>docs/assembled/csr.{json,html}</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/jwildfire/open.csr/blob/main/library/templates/e3-synopsis/"><code>e3-synopsis</code></a></td>
+<td>ICH E3 Annex I synopsis of the same study</td>
+<td>25</td>
+<td><code>docs/assembled/e3-synopsis.{json,html}</code></td>
+</tr>
+</tbody></table>
+<p><code>node scripts/assemble.mjs --template &lt;id&gt;</code> assembles one; <code>--all</code> assembles every object in
+the library, which is what CI runs. Two properties of that pair are the reason a second
+object exists at all:</p>
+<ul>
+<li><strong>The same display specification serves both.</strong> <code>t-disposition</code> is Table 14.1.1 in the
+report and Table 13.1 in the synopsis, from one unchanged spec, because a display&#39;s
+identity is its slug and its number is assigned per document at build time.</li>
+<li><strong>The two documents cannot quote the same quantity differently.</strong> Where both state a
+number they state it through the same named value, so a disagreement is a build failure
+rather than a review finding. This is the values store earning its keep.</li>
+</ul>
+<p>Gates judge the document being assembled, not the whole Text Library — an E3 block
+legitimately cross-references Section 16.2.1 and must not fail against a synopsis model with
+no Section 16. Blocks the library holds but this build did not assemble are reported as
+warnings, so &quot;not gated&quot; cannot read as &quot;gated and clean&quot;.</p>
+<p>The rest of this section walks <code>ich-e3</code>.</p>
 <p>A section declares its content model from a four-word vocabulary: <code>text</code>,
 <code>in_text_display</code>, <code>post_text_index</code>, <code>generated_provenance</code>. An empty list is a structural
 heading. Across the 119 sections that is 62 text-only, 20 text plus an in-text display, 15
@@ -449,8 +489,8 @@ section number is a build failure.</p>
 <p>The assembler also writes a provenance appendix into Section 16.1.9 with no human
 involvement: per display, its number, both spec hashes, the input datasets with versions and
 hashes, the R environment, and the commit.</p>
-<p><code>node scripts/assemble.mjs</code> does all of it and exits non-zero on any gate failure. CI runs
-it on every pull request.</p>
+<p><code>node scripts/assemble.mjs --all</code> does all of it, for every template object, and exits
+non-zero on any gate failure in any document. CI runs it on every pull request.</p>
 <hr>
 <h2 id="what-ci-enforces">What CI enforces</h2>
 <table>
@@ -500,9 +540,15 @@ README&#39;s &quot;reproducible from its commit&quot; is true as a design proper
 the files. One regeneration from a clean tree would close it. Separately, the ARD and
 manifest write <code>null</code> where the ledger writes <code>&quot;&quot;</code> — two spellings of the same absence,
 neither documented.</li>
-<li><strong>The named-value store reaches no approved sentence.</strong> 15 values declared, 7 cited, all
-7 in a single generated-tier draft that is correctly excluded from assembly. The gate runs
-and passes; the assembled report contains no resolved <code>{{value:}}</code> token.</li>
+<li><strong>Named values reach the synopsis, not the report.</strong> 15 values are declared. The Annex I
+synopsis cites 11 of them across two blocks — including both derived values, where
+<code>ae-any-n-xanomeline</code> resolves to 152 and <code>ae-excess-high-vs-placebo</code> to 3 — so the
+feature is visible in an assembled document. The full ICH E3 report still resolves none:
+its only <code>{{value:}}</code> citations are in <code>TXT-E3-1002</code>, a generated-tier draft correctly
+excluded from assembly. Approving or retiring that block is what would close the gap on
+the report side.
+(Recorded 2026-08-26 as &quot;reaches no approved sentence&quot;; corrected the same evening after
+the synopsis template object landed in <a href="https://github.com/jwildfire/open.csr/pull/29">#29</a>.)</li>
 <li><strong><code>iterations.yaml</code> has no schema section in <code>contracts.md</code></strong> — it appears only as a
 filename in the layout listing, though it is one of the three files that define a display.</li>
 <li><strong>Three smaller contract gaps.</strong> The <code>pattern</code> vocabulary is referenced but never
@@ -510,6 +556,11 @@ enumerated (there are eleven built-ins); variant configuration documents <code>f
 while the renderer also honours <code>title</code> and <code>footnotes</code> (five of six displays use
 <code>title</code>); and the assembler&#39;s header comment lists five gates on <code>csr.json</code> where the code
 emits six, omitting the values gate.</li>
+<li><strong>A named-value citation leaves no entry in a block&#39;s <code>bindings</code> array.</strong> That array
+indexes ARD bindings only. <code>TXT-SYN-1102</code> resolves six named values and reports
+<code>bindings: []</code>, so anything counting bindings from <code>csr.json</code> undercounts what the
+sentence actually cites. The substitution is still span-tracked, so the fidelity gate is
+unaffected — this is an index gap, not a gate gap.</li>
 </ol>
 <hr>
 <p>Drafted by Claude Code using Opus 5 (worker <code>W0130</code>).</p>
