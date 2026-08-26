@@ -53,6 +53,7 @@
     "TXT-SAE-001": "Section 12.3.1 reports deaths, serious adverse events and severe adverse events by treatment group and states explicitly where the event count is too small to support inference.",
     "TXT-CONC-001": "Section 12.6 ranks the safety findings by importance, separates local tolerability from systemic serious toxicity, states the exposure caveat, and draws no benefit-risk conclusion in the absence of efficacy data.",
     "TXT-DISC-001": "Section 13 integrates disposition, exposure and adverse event findings into one argument and states the limitations — exposure imbalance, missing discontinuation reasons, population composition and the absence of efficacy data — without introducing any fact absent from the referenced ARDs.",
+    "TXT-SYN-001": "The ICH E3 Annex I synopsis fields are filled by their own `TXT-SYN-*` blocks, which quote the study through the same named values the full report quotes, state plainly which Annex I fields the ADaM extract cannot supply rather than inventing them, and draw no clinical conclusion.",
     "TXT-REVIEW-001": "The block list puts draft `generated`-tier blocks first — the blocks the assembly gate is holding out of the report — then every other block in ICH E3 section order.",
     "TXT-REVIEW-002": "Each block is shown as *resolved prose*: every binding replaced by its value from the committed ARD, each value visually distinguished from the writer's words and linked to the binding row it came from. An unresolved binding renders a marker, never a number.",
     "TXT-REVIEW-003": "A `generated`-tier block shows its provenance prominently — model, generation date and the **full** prompt — beside the prose rather than below the bindings; a human-written block says so explicitly; a generated block with no prompt is called out as unauditable.",
@@ -547,6 +548,15 @@
       "evidence": "",
       "link": "",
       "status": "Draft (generated tier, pending approval)"
+    },
+    {
+      "id": "TXT-SYN-001",
+      "area": "",
+      "text": "The ICH E3 Annex I synopsis fields are filled by their own `TXT-SYN-*` blocks, which quote the study through the same named values the full report quotes, state plainly which Annex I fields the ADaM extract cannot supply rather than inventing them, and draw no clinical conclusion.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Draft (awaiting review)"
     },
     {
       "id": "TXT-REVIEW-001",

@@ -3,8 +3,11 @@
 Requirements for the machine-readable ICH E3 document model, the per-CSR assembly
 configuration, and the Node assembler that walks them to produce the report.
 
-Scope: [`library/templates/ich-e3/`](../../library/templates/ich-e3) (`sections.yaml`,
-`assembly.yaml`), [`scripts/template-lib.mjs`](../../scripts/template-lib.mjs) and
+Scope: [`library/templates/`](../../library/templates) — one directory per template
+object, each a document model (`sections.yaml`) plus a per-report assembly
+(`assembly.yaml`): [`ich-e3`](../../library/templates/ich-e3) (the full clinical study
+report) and [`e3-synopsis`](../../library/templates/e3-synopsis) (the ICH E3 Annex I
+synopsis) — together with [`scripts/template-lib.mjs`](../../scripts/template-lib.mjs) and
 [`scripts/assemble.mjs`](../../scripts/assemble.mjs). Prose content and the text gates
 are [`text.md`](text.md); ARD production is [`tfl-engine.md`](tfl-engine.md); the site
 that renders `csr.json` is [`quality.md`](quality.md).
@@ -18,6 +21,18 @@ that renders `csr.json` is [`quality.md`](quality.md).
   (Step 4, Nov 2025) did this for protocols; there is no M11 analogue for the CSR.
   `sections.yaml` is open.csr's attempt at one, so its fidelity to E3's own numbering and
   headings is a requirement in its own right, not an implementation detail.
+- **Plural by construction** ([#28](https://github.com/jwildfire/open.csr/issues/28)) — the
+  model/assembly pair is generic, but the library held one instance until a second was
+  added, so nothing distinguished a framework from an ICH E3 file with two names. The
+  synopsis is the smallest document that exercises sections, assembly, text blocks, named
+  values, in-text displays, a post-text index and the generated provenance appendix at
+  once, against the same study and the same ARDs as the full report.
+- **Licence position** — no template object in this library is derived from the R
+  Consortium Submissions Working Group pilot repositories. Pilots 1, 2 and 3 are GPL-3.0,
+  which is one-way incompatible with this Apache-2.0 project in the direction reuse would
+  need; pilots 4, 5-dev and 6, the ADRG automation pipeline and most of the eCTD
+  `-to-fda` packages carry no licence at all. Both models are encoded from ICH E3, a
+  public guideline. See the design report published with #28.
 - [Contracts §7](../../docs/design/contracts.md) fixes the template model and the
   assembly configuration formats.
 
@@ -68,6 +83,27 @@ that renders `csr.json` is [`quality.md`](quality.md).
 | RPT-OUT-006 | `csr.html` is self-contained: no external host, no script, no external stylesheet, no font or image fetched at view time. | Non-functional | `assemble-document.test.js` | Verified |
 | RPT-OUT-007 | The rendered document shows the assigned display numbering, the per-block gate report and the generated provenance appendix, so a reader can see the evidence for the numbers beside them. | Traceability | `assemble-document.test.js` | Verified |
 
+## Template library — plural template objects
+
+| ID | Requirement | Type | Verification | Status |
+|---|---|---|---|---|
+| RPT-LIB-001 | The library holds more than one template object, discovered from disk rather than enumerated in code: a directory under `library/templates/` containing a `sections.yaml` is a template object. | Functional | `assemble-templates-plural.test.js` | Verified |
+| RPT-LIB-002 | A template id resolves to its own document model, its own assembly and its own output basename. `ich-e3` keeps writing `docs/assembled/csr.{json,html}`, so the site build and every published link are unchanged by the library becoming plural. | Interface | `assemble-templates-plural.test.js` | Verified |
+| RPT-LIB-003 | An unknown template id fails loudly and names the ids the library actually holds, rather than falling back to the default and assembling the wrong document under the right name. | Functional | `assemble-templates-plural.test.js` | Verified |
+| RPT-LIB-004 | Gates judge the document being assembled, not the whole Text Library: a block written for the full E3 report may cross-reference Section 16.2.1 without failing a synopsis model that has no Section 16. A library block that this build did not assemble is reported as a warning, so "not gated" can never pass for "gated and clean". | Functional | `assemble-templates-plural.test.js` | Verified |
+
+## Second template object — ICH E3 Annex I synopsis
+
+| ID | Requirement | Type | Verification | Status |
+|---|---|---|---|---|
+| RPT-SYN-001 | `library/templates/e3-synopsis/sections.yaml` is a structurally valid document model under the same schema and the same validator as the CSR model. | Functional | `assemble-templates-plural.test.js` | Verified |
+| RPT-SYN-002 | The model carries ICH E3 Annex I's own synopsis fields, numbered 1 to 12 in E3's order, with E3's field names. | Functional | `assemble-templates-plural.test.js` | Verified |
+| RPT-SYN-003 | The generated provenance appendix is declared on the synopsis model's own section rather than borrowed from E3 Section 16.1.9, because a synopsis has no Section 16. Sections 13 and 14 are open.csr's additions and are marked as such in the model. | Traceability | `assemble-templates-plural.test.js` | Verified |
+| RPT-SYN-004 | Efficacy fields are declared in the model and left unclaimed by the assembly, so they appear as headings marked unpopulated rather than being dropped (design D12). | Traceability | `assemble-templates-plural.test.js` | Verified |
+| RPT-SYN-005 | The synopsis assembles green against CDISCPILOT01 — every gate passes, no build error, and at least twenty of its sections are populated. | Functional | `assemble-templates-plural.test.js` | Verified |
+| RPT-SYN-006 | The same display carries a different number in each document from one unchanged specification: `Table 14.1.1` in the report and `Table 13.1` in the synopsis, because identity is the slug and the number is a build-time assignment (design D6). | Functional | `assemble-templates-plural.test.js` | Verified |
+| RPT-SYN-007 | Both documents resolve the same named values, from the same store, to the same numbers, and both re-derive every value against the committed ARDs. Two documents about one study cannot disagree about a quantity. | Traceability | `assemble-templates-plural.test.js` | Verified |
+
 ## Known limitations
 
 - Display titles fall back to a built-in map when the TFL Library supplies no
@@ -79,3 +115,10 @@ that renders `csr.json` is [`quality.md`](quality.md).
   explicitly with the `scale` qualifier.
 - Whole-document RTF/DOCX assembly (`r2rtf::assemble_rtf` / `assemble_docx`) is the
   roadmap submission path; v0 emits JSON and HTML only.
+- The demo site is still single-template: it reads `docs/assembled/csr.json` and one
+  template directory, so the synopsis assembles and is committed but is not yet reachable
+  from the Reader or the Templates page.
+- The two template objects share one flat Text Library. A block's `e3_section` is metadata
+  only, so a synopsis block and a report block sit side by side with nothing but their id
+  prefix distinguishing them; if a third document model is added, the library will want a
+  per-model index.

@@ -1,0 +1,125 @@
+# ------------------------------------------------------------------------------
+# assembly.yaml — the per-report configuration for the open.csr E3 Annex I
+# synopsis of the CDISC pilot study.
+# ------------------------------------------------------------------------------
+# sections.yaml in this directory says what an ICH E3 Annex I synopsis IS. This
+# file says what THIS synopsis puts in it: which Text Library blocks populate
+# which fields, which displays are rendered in-text, and which displays are
+# attached as supporting displays.
+#
+# The `study` block below is deliberately identical to the one in
+# library/templates/ich-e3/assembly.yaml. The two documents describe the same
+# study from the same analysis results datasets; where they quote the same
+# quantity they quote it through the same named value, so the build fails if they
+# would disagree. That is the property the second template object exists to
+# demonstrate.
+#
+# Efficacy is unpopulated ON PURPOSE, not by omission. No efficacy ADaM exists for
+# CDISCPILOT01 in pharmaverseadam (design decision D12), so sections 9.1 (Criteria
+# for Evaluation: Efficacy) and 11.1 (Efficacy Results) claim no text block and
+# appear in the assembled synopsis as headings marked not populated. The reference
+# clinical study report for this dataset devotes thirteen tables to efficacy; this
+# framework can produce none of them today, and a synopsis that quietly dropped
+# the headings would hide that.
+# ------------------------------------------------------------------------------
+template: e3-synopsis
+
+study:
+  id: CDISCPILOT01
+  title: >-
+    Safety and Efficacy of the Xanomeline Transdermal Therapeutic System (TTS) in
+    Patients with Mild to Moderate Alzheimer's Disease
+  short_title: "Xanomeline TTS in Mild to Moderate Alzheimer's Disease"
+  phase: "Phase 2"
+  indication: "Mild to moderate Alzheimer's disease"
+  product: "Xanomeline Transdermal Therapeutic System (TTS)"
+  sponsor: "open.csr demonstration report (CDISC pilot study data)"
+  cutoff: "2014-07-01"
+  design: "Randomised, double-blind, placebo-controlled, parallel-group"
+  treatment_groups: ["Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"]
+  primary_analysis_set: "Safety Analysis Set"
+  data_source: "pharmaverseadam (CDISCPILOT01 ADaM)"
+  scope_note: >-
+    Safety-focused synopsis assembled from the same library as the full ICH E3
+    clinical study report for this study. Efficacy fields are intentionally
+    unpopulated (design decision D12).
+
+# A synopsis has no Section 16, so the generated provenance appendix is declared
+# on the synopsis model's own section 14.
+provenance_section: "14"
+
+# ---------------------------------------------------------------------- fields
+slots:
+  - section: "1.1"
+    text: [TXT-SYN-0101]
+
+  - section: "1.2"
+    text: [TXT-SYN-0102]
+
+  - section: "1.3"
+    text: [TXT-SYN-0103]
+
+  - section: "1.4"
+    text: [TXT-SYN-0104]
+
+  - section: "1.5"
+    text: [TXT-SYN-0105]
+
+  - section: "1.6"
+    text: [TXT-SYN-0106]
+
+  - section: "2"
+    text: [TXT-SYN-0200]
+
+  - section: "3"
+    text: [TXT-SYN-0300]
+
+  - section: "4"
+    text: [TXT-SYN-0400]
+    displays: [t-disposition]
+
+  - section: "5"
+    text: [TXT-SYN-0500]
+
+  - section: "6"
+    text: [TXT-SYN-0600]
+
+  - section: "7"
+    text: [TXT-SYN-0700]
+    displays: [t-exposure]
+
+  - section: "8"
+    text: [TXT-SYN-0800]
+
+  # 9.1 Criteria for Evaluation: Efficacy — intentionally unpopulated (D12).
+  - section: "9.2"
+    text: [TXT-SYN-0902]
+
+  - section: "10"
+    text: [TXT-SYN-1000]
+
+  # 11.1 Efficacy Results — intentionally unpopulated (D12).
+  - section: "11.2"
+    text: [TXT-SYN-1102]
+    displays: [t-ae-overview]
+
+  - section: "11.3"
+    text: [TXT-SYN-1103]
+
+  - section: "12"
+    text: [TXT-SYN-1200]
+
+# ------------------------------------------------------------- supporting displays
+# The same six displays the full clinical study report carries, attached here as a
+# single flat index. Their numbers are assigned from this order (design decision
+# D6), so the display that is Table 14.1.1 in the CSR is Table 13.1 here without
+# either the display specification or any prose changing: identity is the slug.
+post_text:
+  - section: "13"
+    displays:
+      - t-disposition
+      - t-demographics
+      - t-exposure
+      - t-ae-overview
+      - t-ae-common
+      - l-ae-serious
