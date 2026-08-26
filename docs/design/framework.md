@@ -27,7 +27,7 @@ directories.
 | Displays | `library/tfl/<slug>/` | What to compute, and how to show it |
 | Values | `library/values/values.yaml` | Numbers the report reuses, given a name once |
 | Text | `library/text/TXT-E3-<section>.md` | Prose keyed to an ICH E3 section, binding numbers rather than stating them |
-| Templates | `library/templates/ich-e3/` | What an E3 report is, and what this report puts in it |
+| Templates | `library/templates/<id>/` | What a document of this kind is, and what this study puts in it. Two objects today: the full ICH E3 report and its Annex I synopsis |
 
 Everything else in the repository is either the machinery that reads them (`pipeline/`,
 `scripts/`), or generated output that is never hand-edited (`outputs/`, `docs/assembled/`,
@@ -55,13 +55,14 @@ Everything else in the repository is either the machinery that reads them (`pipe
         │                             │                               │
         ▼                             ▼                               ▼
  ┌────────────────────────────────────────────────────────────────────────────────┐
- │ 4 · TEMPLATE   library/templates/ich-e3/                                        │
- │    sections.yaml   what an ICH E3 report IS — 119 sections and their content    │
- │    assembly.yaml   what THIS report puts in them — prose, displays, 14.x slots  │
+ │ 4 · TEMPLATE OBJECTS   library/templates/<id>/                                  │
+ │    sections.yaml   what a document of this kind IS — sections and their content │
+ │    assembly.yaml   what THIS study puts in them — prose, displays, number slots │
+ │    ich-e3 (119 sections) · e3-synopsis (25) — one display library, both numbered │
  └────────────────────────────────────┬───────────────────────────────────────────┘
-                                      │ assemble.mjs
+                                      │ assemble.mjs --all
                                       ▼
-                        docs/assembled/csr.html · the site
+              docs/assembled/csr.html · e3-synopsis.html · the site
 ```
 
 The R pipeline owns the top band, from study data to a rendered table. The Node build owns
@@ -346,15 +347,40 @@ drafts are held out, each named with the reason.
 
 ## 4 · Templates
 
-Two files, and the division between them is the useful part.
+A **template object** is a directory under `library/templates/` holding two files, and the
+division between them is the useful part.
 
-- [`sections.yaml`](../../library/templates/ich-e3/sections.yaml) — what an ICH E3 report
-  *is*. 119 sections, each with a number, a title, a stable slug, and the kind of content it
-  may hold. Written once for the standard, reusable by any study, encoded from E3 itself.
-- [`assembly.yaml`](../../library/templates/ich-e3/assembly.yaml) — what *this* report puts
-  in them. The study's own facts, the narrative slots (which text blocks and in-text
-  displays fill which section), and the Section 14 slots (which displays sit under which
-  post-text heading, in order).
+- `sections.yaml` — what a document of this kind *is*. Sections with a number, a title, a
+  stable slug, and the kind of content each may hold. Written once for the standard,
+  reusable by any study.
+- `assembly.yaml` — what *this* document puts in them. The study's own facts, the narrative
+  slots (which text blocks and in-text displays fill which section), and the post-text slots
+  (which displays sit under which heading, in order).
+
+The library holds two template objects today:
+
+| Object | Document | Sections | Assembles to |
+|---|---|---|---|
+| [`ich-e3`](../../library/templates/ich-e3/) | Full ICH E3 Clinical Study Report | 119 | `docs/assembled/csr.{json,html}` |
+| [`e3-synopsis`](../../library/templates/e3-synopsis/) | ICH E3 Annex I synopsis of the same study | 25 | `docs/assembled/e3-synopsis.{json,html}` |
+
+`node scripts/assemble.mjs --template <id>` assembles one; `--all` assembles every object in
+the library, which is what CI runs. Two properties of that pair are the reason a second
+object exists at all:
+
+- **The same display specification serves both.** `t-disposition` is Table 14.1.1 in the
+  report and Table 13.1 in the synopsis, from one unchanged spec, because a display's
+  identity is its slug and its number is assigned per document at build time.
+- **The two documents cannot quote the same quantity differently.** Where both state a
+  number they state it through the same named value, so a disagreement is a build failure
+  rather than a review finding. This is the values store earning its keep.
+
+Gates judge the document being assembled, not the whole Text Library — an E3 block
+legitimately cross-references Section 16.2.1 and must not fail against a synopsis model with
+no Section 16. Blocks the library holds but this build did not assemble are reported as
+warnings, so "not gated" cannot read as "gated and clean".
+
+The rest of this section walks `ich-e3`.
 
 A section declares its content model from a four-word vocabulary: `text`,
 `in_text_display`, `post_text_index`, `generated_provenance`. An empty list is a structural
@@ -401,8 +427,8 @@ The assembler also writes a provenance appendix into Section 16.1.9 with no huma
 involvement: per display, its number, both spec hashes, the input datasets with versions and
 hashes, the R environment, and the commit.
 
-`node scripts/assemble.mjs` does all of it and exits non-zero on any gate failure. CI runs
-it on every pull request.
+`node scripts/assemble.mjs --all` does all of it, for every template object, and exits
+non-zero on any gate failure in any document. CI runs it on every pull request.
 
 ---
 
@@ -434,9 +460,15 @@ things a reviewer would otherwise trip over.
    the files. One regeneration from a clean tree would close it. Separately, the ARD and
    manifest write `null` where the ledger writes `""` — two spellings of the same absence,
    neither documented.
-2. **The named-value store reaches no approved sentence.** 15 values declared, 7 cited, all
-   7 in a single generated-tier draft that is correctly excluded from assembly. The gate runs
-   and passes; the assembled report contains no resolved `{{value:}}` token.
+2. **Named values reach the synopsis, not the report.** 15 values are declared. The Annex I
+   synopsis cites 11 of them across two blocks — including both derived values, where
+   `ae-any-n-xanomeline` resolves to 152 and `ae-excess-high-vs-placebo` to 3 — so the
+   feature is visible in an assembled document. The full ICH E3 report still resolves none:
+   its only `{{value:}}` citations are in `TXT-E3-1002`, a generated-tier draft correctly
+   excluded from assembly. Approving or retiring that block is what would close the gap on
+   the report side.
+   (Recorded 2026-08-26 as "reaches no approved sentence"; corrected the same evening after
+   the synopsis template object landed in [#29](https://github.com/jwildfire/open.csr/pull/29).)
 3. **`iterations.yaml` has no schema section in `contracts.md`** — it appears only as a
    filename in the layout listing, though it is one of the three files that define a display.
 4. **Three smaller contract gaps.** The `pattern` vocabulary is referenced but never
@@ -444,6 +476,11 @@ things a reviewer would otherwise trip over.
    while the renderer also honours `title` and `footnotes` (five of six displays use
    `title`); and the assembler's header comment lists five gates on `csr.json` where the code
    emits six, omitting the values gate.
+5. **A named-value citation leaves no entry in a block's `bindings` array.** That array
+   indexes ARD bindings only. `TXT-SYN-1102` resolves six named values and reports
+   `bindings: []`, so anything counting bindings from `csr.json` undercounts what the
+   sentence actually cites. The substitution is still span-tracked, so the fidelity gate is
+   unaffected — this is an index gap, not a gate gap.
 
 ---
 
