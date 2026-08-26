@@ -88,6 +88,11 @@
                          ▲            ▲           ▲              ▲
                 library/tfl/    library/tfl/  library/text/  library/templates/
                 analysis.yaml   display.yaml   text blocks    ich-e3/
+                iterations.yaml                     ▲         sections.yaml
+                                                    │         assembly.yaml
+                                              library/values/
+                                              values.yaml — a number named once,
+                                              resolved from the committed ARDs
 
  ┌──────────────────────────────────────────────────────────────────────────┐
  │  quality/ — requirement matrices · testthat + vitest evidence · guards    │
@@ -95,9 +100,11 @@
 </pre>
 <div class="card-grid three">
 <article class="card"><h3>TFL Builder + Library</h3><p class="mono-path">library/tfl/&lt;slug&gt;/</p><ul><li><code>analysis.yaml</code> — what to compute (ARS-aligned)</li><li><code>display.yaml</code> — how to show it</li><li><code>iterations.yaml</code> — every saved regeneration</li></ul></article>
+<article class="card"><h3>Values Store</h3><p class="mono-path">library/values/values.yaml</p><ul><li>A number the report reuses, named once</li><li><code>source</code> — an address into a committed ARD</li><li><code>derived</code> — declared arithmetic, closed vocabulary</li></ul></article>
 <article class="card"><h3>Text Library</h3><p class="mono-path">library/text/&lt;ID&gt;.md</p><ul><li>Three tiers: boilerplate, parameterized, generated</li><li>Numbers arrive as <code>{{ard:…}}</code> bindings</li><li>Approval state travels in the frontmatter</li></ul></article>
 <article class="card"><h3>Report Template Library</h3><p class="mono-path">library/templates/ich-e3/</p><ul><li>ICH E3 as data: 16 sections, content models</li><li>Assembly slots and 14.x numbering at build time</li><li>16.1.9 provenance appendix generated mechanically</li></ul></article>
 </div>
+<p class="sub">How the four connect, end to end, with one display followed from the dataset to the sentence that quotes it: <a href="docs/docs-design-framework.html">the data design framework</a>.</p>
 </section>
 <section class="panel">
 <h2>Traceability, end to end</h2>
