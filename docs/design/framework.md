@@ -170,8 +170,8 @@ variants:
 `pattern` names a cell template. Eleven are built in — `n`, `N`, `n_pct`, `pct`,
 `continuous`, `mean_sd`, `median`, `median_range`, `range`, `q1_q3`, `value` — and the
 display's own `format` block adds to or overrides any of them with a template such as
-`"{n} ({p}%)"`. There are no functions in a spec, which is what makes a spec reviewable as
-a diff.
+`"{n} ({p}%)"`. No closures ever enter a spec — presentation stays declarative, which is
+what makes a spec reviewable as a diff.
 
 > An unquoted `pattern: n` parses as boolean `false` under YAML 1.1. Spec validation
 > rejects a non-string row key with an explicit message rather than rendering a silently
