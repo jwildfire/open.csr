@@ -80,14 +80,44 @@ import {
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const PATHS = {
-  sections: join(ROOT, 'library/templates/ich-e3/sections.yaml'),
-  assembly: join(ROOT, 'library/templates/ich-e3/assembly.yaml'),
+  templates: join(ROOT, 'library/templates'),
   text: join(ROOT, 'library/text'),
   tfl: join(ROOT, 'library/tfl'),
   outputs: join(ROOT, 'outputs'),
   fixtures: join(ROOT, 'tests/fixtures/ard'),
   out: join(ROOT, 'docs/assembled'),
 };
+
+/**
+ * The Report Template Library is plural: `library/templates/<id>/` holds one
+ * document model (`sections.yaml`) and one per-CSR configuration
+ * (`assembly.yaml`), and nothing in template-lib.mjs is specific to any one of
+ * them. `ich-e3` stays the default so `npm run assemble` and CI are unchanged;
+ * `--template <id>` assembles any other object in the library.
+ *
+ * `basename` is the stem the assembled document is written under in
+ * docs/assembled/. ich-e3 keeps `csr` for compatibility with the site build and
+ * every published link; anything else is written under its own template id.
+ */
+export function templatePaths(template = 'ich-e3') {
+  const dir = join(PATHS.templates, template);
+  return {
+    id: template,
+    dir,
+    sections: join(dir, 'sections.yaml'),
+    assembly: join(dir, 'assembly.yaml'),
+    basename: template === 'ich-e3' ? 'csr' : template,
+  };
+}
+
+/** Template ids present in library/templates/ (a directory with a sections.yaml). */
+export function listTemplates() {
+  if (!existsSync(PATHS.templates)) return [];
+  return readdirSync(PATHS.templates, { withFileTypes: true })
+    .filter((e) => e.isDirectory() && existsSync(join(PATHS.templates, e.name, 'sections.yaml')))
+    .map((e) => e.name)
+    .sort();
+}
 
 /** Titles used when the TFL Library has not (yet) supplied a display.yaml. */
 const FALLBACK_TITLES = {
@@ -326,10 +356,16 @@ function prerenderedHtml(slug, variant) {
 // Assembly
 // ---------------------------------------------------------------------------
 
-export function assemble({ write = true } = {}) {
-  const sectionModel = loadSections(PATHS.sections);
+export function assemble({ write = true, template = 'ich-e3' } = {}) {
+  const tpl = templatePaths(template);
+  if (!existsSync(tpl.sections)) {
+    throw new Error(
+      `unknown template "${template}" — library/templates/ holds: ${listTemplates().join(', ') || '(none)'}`
+    );
+  }
+  const sectionModel = loadSections(tpl.sections);
   const sectionErrors = validateSections(sectionModel);
-  const assembly = loadAssembly(PATHS.assembly);
+  const assembly = loadAssembly(tpl.assembly);
   const library = loadTextLibrary(PATHS.text);
 
   // --- displays referenced anywhere in this CSR -----------------------------
@@ -398,7 +434,23 @@ export function assemble({ write = true } = {}) {
     sectionIndex: sectionIndex(sectionModel),
     values: valueIndex(valueStore)
   };
-  const gates = runGates([...library.values()], ards, context);
+  // Gates judge THIS document, not the whole Text Library. Cross-references
+  // resolve against the document model being assembled, so a block written for
+  // the full ICH E3 report — which legitimately points at Section 16.2.1 — must
+  // not be failed against a synopsis model that has no Section 16. A block the
+  // library holds but no template assembles is reported as a warning rather than
+  // silently skipped, so "not gated" can never pass for "gated and clean".
+  const assembledIds = new Set();
+  for (const slot of assembly.slots) slot.text.forEach((id) => assembledIds.add(id));
+  const assembledBlocks = [...library.values()].filter((b) => assembledIds.has(b.id));
+  const gates = runGates(assembledBlocks, ards, context);
+  for (const b of library.values()) {
+    if (!assembledIds.has(b.id)) {
+      gates.warnings.push(
+        `${b.id}: in the Text Library but not assembled into ${tpl.id}; not gated by this build`
+      );
+    }
+  }
   gates.values = {
     ok: valueReport.ok,
     checked: valueReport.checked,
@@ -510,7 +562,11 @@ export function assemble({ write = true } = {}) {
         ? { created: ards.get(d.slug).created ?? null, provenance: ards.get(d.slug).provenance ?? null }
         : null,
     })),
-    textBlocks: [...library.values()].map((b) => ({
+    // The blocks THIS document assembles. The Text Library is shared across
+    // template objects, so listing all of it here would put synopsis blocks in
+    // the clinical study report's own appendix; blocks the library holds but
+    // this document does not use are reported in gates.warnings instead.
+    textBlocks: assembledBlocks.map((b) => ({
       id: b.id,
       title: b.title,
       tier: b.tier,
@@ -541,8 +597,8 @@ export function assemble({ write = true } = {}) {
 
   if (write) {
     mkdirSync(PATHS.out, { recursive: true });
-    writeFileSync(join(PATHS.out, 'csr.json'), `${JSON.stringify(doc, null, 2)}\n`);
-    writeFileSync(join(PATHS.out, 'csr.html'), renderDocumentHtml(doc));
+    writeFileSync(join(PATHS.out, `${tpl.basename}.json`), `${JSON.stringify(doc, null, 2)}\n`);
+    writeFileSync(join(PATHS.out, `${tpl.basename}.html`), renderDocumentHtml(doc));
   }
   return doc;
 }
@@ -898,11 +954,30 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9em;}
 
 // Entry point
 if (import.meta.url === `file://${process.argv[1]}`) {
-  const doc = assemble({ write: true });
+  // `--template <id>` selects a template object; `--all` assembles every one in
+  // the library. With neither, the default ich-e3 build is exactly what CI ran
+  // before the library became plural.
+  const argv = process.argv.slice(2);
+  const flagIndex = argv.indexOf('--template');
+  const requested = flagIndex >= 0 ? argv[flagIndex + 1] : null;
+  const templates = argv.includes('--all')
+    ? listTemplates()
+    : [requested ?? 'ich-e3'];
+  let failed = false;
+  for (const templateId of templates) {
+    const doc = assemble({ write: true, template: templateId });
+    if (!reportBuild(doc, templatePaths(templateId))) failed = true;
+    if (templates.length > 1) console.log('');
+  }
+  process.exit(failed ? 1 : 0);
+}
+
+/** Console report for one assembled document. Returns doc.ok. */
+function reportBuild(doc, tpl) {
   const { gates } = doc;
   const line = (label, ok, detail) =>
     console.log(`  ${ok ? '✓' : '✗'} ${label}${detail ? ` — ${detail}` : ''}`);
-  console.log(`open.csr assembler — ${doc.study.id ?? 'CSR'}`);
+  console.log(`open.csr assembler — ${tpl.id} — ${doc.study.id ?? 'CSR'}`);
   console.log(`  ${doc.sections.length} sections, ${doc.sections.filter((s) => s.populated).length} populated`);
   console.log(`  ${doc.displayIndex.length} displays, ${doc.textBlocks.length} text blocks`);
   line('structure', gates.structure.ok, gates.structure.errors.join('; '));
@@ -932,6 +1007,6 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   );
   if (doc.buildErrors.length) for (const e of doc.buildErrors) console.log(`  ! ${e}`);
   for (const w of gates.warnings) console.log(`  ~ ${w}`);
-  console.log(`  wrote docs/assembled/csr.json and docs/assembled/csr.html`);
-  process.exit(doc.ok ? 0 : 1);
+  console.log(`  wrote docs/assembled/${tpl.basename}.json and docs/assembled/${tpl.basename}.html`);
+  return doc.ok;
 }

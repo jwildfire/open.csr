@@ -102,7 +102,7 @@ by at least one test that makes it fail.
 | TXT-LIB-003 | A binding that would render more decimal places than a display convention allows is surfaced as a precision warning rather than shipped silently. | Quality | `text-gates.test.js` | Verified |
 | TXT-TRACE-001 | Every resolved binding in the assembled document carries the ARD row it came from, so a sentence traces to a statistic without a second lookup. | Traceability | `assemble-document.test.js` | Verified |
 
-## Content — the sections the demonstration CSR fills
+## Content — the sections the demonstration documents fill
 
 These requirements are about *what the prose says*, not about the machinery. Their
 verification is the block's own gate result plus the recorded human approval in its
@@ -123,6 +123,7 @@ frontmatter — an automated suite cannot verify medical-writing judgement, so
 | TXT-SAE-001 | Section 12.3.1 reports deaths, serious adverse events and severe adverse events by treatment group and states explicitly where the event count is too small to support inference. | Content | `text-blocks.test.js` | Draft (generated tier, pending approval) |
 | TXT-CONC-001 | Section 12.6 ranks the safety findings by importance, separates local tolerability from systemic serious toxicity, states the exposure caveat, and draws no benefit-risk conclusion in the absence of efficacy data. | Content | `text-blocks.test.js` | Draft (generated tier, pending approval) |
 | TXT-DISC-001 | Section 13 integrates disposition, exposure and adverse event findings into one argument and states the limitations — exposure imbalance, missing discontinuation reasons, population composition and the absence of efficacy data — without introducing any fact absent from the referenced ARDs. | Content | `text-blocks.test.js` | Draft (generated tier, pending approval) |
+| TXT-SYN-001 | The ICH E3 Annex I synopsis fields are filled by their own `TXT-SYN-*` blocks, which quote the study through the same named values the full report quotes, state plainly which Annex I fields the ADaM extract cannot supply rather than inventing them, and draw no clinical conclusion. | Content | `assemble-templates-plural.test.js` | Draft (awaiting review) |
 
 ## Text status view — the surface
 

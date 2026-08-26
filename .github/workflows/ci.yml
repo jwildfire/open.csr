@@ -53,11 +53,14 @@ jobs:
       - name: Evidence sets are fresh
         run: node scripts/evidence.mjs --check --no-run
 
-      - name: Assemble the CSR (enforces the D7 gates)
+      - name: Assemble every template object (enforces the D7 gates)
         # Re-assembles from library/ + outputs/ so the binding-resolution,
         # numeric-fidelity, cross-reference and approval gates run on every PR.
-        # Non-zero exit on any gate failure.
-        run: node scripts/assemble.mjs
+        # `--all` covers every template object in library/templates/, not only the
+        # default clinical study report: a template that is never assembled in CI
+        # is a directory, not a template, and would rot unnoticed (#28).
+        # Non-zero exit if any gate fails in any document.
+        run: node scripts/assemble.mjs --all
 
       - name: Build the demo site
         run: node scripts/site.mjs
