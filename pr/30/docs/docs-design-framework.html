@@ -220,8 +220,8 @@ variants:
 <p><code>pattern</code> names a cell template. Eleven are built in — <code>n</code>, <code>N</code>, <code>n_pct</code>, <code>pct</code>,
 <code>continuous</code>, <code>mean_sd</code>, <code>median</code>, <code>median_range</code>, <code>range</code>, <code>q1_q3</code>, <code>value</code> — and the
 display&#39;s own <code>format</code> block adds to or overrides any of them with a template such as
-<code>&quot;{n} ({p}%)&quot;</code>. There are no functions in a spec, which is what makes a spec reviewable as
-a diff.</p>
+<code>&quot;{n} ({p}%)&quot;</code>. No closures ever enter a spec — presentation stays declarative, which is
+what makes a spec reviewable as a diff.</p>
 <blockquote>
 <p>An unquoted <code>pattern: n</code> parses as boolean <code>false</code> under YAML 1.1. Spec validation
 rejects a non-string row key with an explicit message rather than rendering a silently
