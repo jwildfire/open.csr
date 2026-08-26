@@ -395,6 +395,11 @@
   },
   "docs": [
     {
+      "file": "docs/design/framework.md",
+      "title": "The data design framework",
+      "group": "Design"
+    },
+    {
       "file": "docs/design/design.md",
       "title": "Design",
       "group": "Design"

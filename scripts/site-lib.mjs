@@ -636,6 +636,11 @@ export function renderHome({ config, displays, textBlocks, quality }) {
                          ▲            ▲           ▲              ▲
                 library/tfl/    library/tfl/  library/text/  library/templates/
                 analysis.yaml   display.yaml   text blocks    ich-e3/
+                iterations.yaml                     ▲         sections.yaml
+                                                    │         assembly.yaml
+                                              library/values/
+                                              values.yaml — a number named once,
+                                              resolved from the committed ARDs
 
  ┌──────────────────────────────────────────────────────────────────────────┐
  │  quality/ — requirement matrices · testthat + vitest evidence · guards    │
@@ -696,6 +701,11 @@ export function renderHome({ config, displays, textBlocks, quality }) {
       '<code>display.yaml</code> — how to show it',
       '<code>iterations.yaml</code> — every saved regeneration'
     ]),
+    architectureCard('Values Store', 'library/values/values.yaml', [
+      'A number the report reuses, named once',
+      '<code>source</code> — an address into a committed ARD',
+      '<code>derived</code> — declared arithmetic, closed vocabulary'
+    ]),
     architectureCard('Text Library', 'library/text/&lt;ID&gt;.md', [
       'Three tiers: boilerplate, parameterized, generated',
       'Numbers arrive as <code>{{ard:…}}</code> bindings',
@@ -707,6 +717,9 @@ export function renderHome({ config, displays, textBlocks, quality }) {
       '16.1.9 provenance appendix generated mechanically'
     ]),
     `</div>`,
+    `<p class="sub">How the four connect, end to end, with one display followed from the ` +
+      `dataset to the sentence that quotes it: ` +
+      `<a href="docs/docs-design-framework.html">the data design framework</a>.</p>`,
     `</section>`,
 
     `<section class="panel">`,
