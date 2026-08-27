@@ -390,9 +390,12 @@ sections:
     slug: post-text-efficacy
     content: [post_text_index]
     note: >-
-      Declared and left empty. No efficacy analysis dataset exists for CDISCPILOT01
-      in pharmaverseadam (design decision D12), and Section 11.1's prose points
-      here to say so. Dropping the heading would have hidden the gap.
+      Populated. This heading was declared and left empty for as long as the only
+      packaging in use was pharmaverseadam, which carries no efficacy analysis
+      dataset for CDISCPILOT01 — dropping the heading would have hidden the gap.
+      D12's correction of 2026-08-27 retired that premise: the pilot's own ADaM
+      package carries both primary efficacy endpoints, so the section now holds
+      the nine efficacy displays the full report holds, in the same order.
 
   - number: "14.3"
     title: "Safety Data"

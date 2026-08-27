@@ -236,8 +236,8 @@ describe('Abbreviated clinical study report', () => {
     expect(doc.buildErrors).toEqual([]);
     // The abbreviated report carries a subset, so the claim is that the displays
     // it DOES carry are numbered as the full report numbers them — not that it
-    // carries the same ones. Section numbering is per-section, so dropping the
-    // efficacy section leaves every retained number untouched.
+    // carries the same ones. Section numbering is per-section, so a section this
+    // model drops leaves every retained number untouched.
     const abbrNumbers = numbersOf(doc);
     const csrNumbers = numbersOf(csr);
     expect(Object.keys(abbrNumbers).length).toBeGreaterThan(0);
@@ -245,7 +245,20 @@ describe('Abbreviated clinical study report', () => {
       expect(csrNumbers[slug], `${slug} is numbered as the full report numbers it`).toBe(number);
     }
     const populated = (d) => d.sections.filter((s) => s.populated).map((s) => s.number).sort();
-    expect(populated(doc)).toEqual(populated(csr).filter((n) => n !== '14.2'));
+    // Was pinned to `.filter((n) => n !== '14.2')` while 14.2 was declared and
+    // empty here. D12's correction of 2026-08-27 gave this study an efficacy
+    // analysis dataset, so that literal went stale the moment the section filled.
+    //
+    // Derived instead, and the claim is the one that actually matters: this model
+    // populates nothing the full report does not, and every section the full
+    // report populates and this one does not is missing because THIS MODEL HAS NO
+    // SUCH SECTION — not because a populated section was left empty. A section
+    // added to either report cannot make this test wrong instead of the report.
+    const abbrDeclared = new Set(doc.sections.map((s) => s.number));
+    expect(populated(doc).filter((n) => !populated(csr).includes(n))).toEqual([]);
+    for (const n of populated(csr).filter((n) => !populated(doc).includes(n))) {
+      expect(abbrDeclared.has(n), `${n} is populated in the full report and empty here`).toBe(false);
+    }
     // Same content, fewer headings around it — which is the whole difference.
     expect(doc.sections.length).toBeLessThan(csr.sections.length);
   });
