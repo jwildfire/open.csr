@@ -59,9 +59,10 @@ sections:
     slug: post-text-displays
     content: [post_text_index]
     note: >-
-      E3's own title, kept even though this package IS the text, because keeping
-      it is what makes a display in the package and the same display in the report
-      carry one number.
+      E3's own title, kept although this document carries no text for the displays
+      to be excluded from. Keeping E3's number is what makes a display carry one
+      number in the package and in the report; retitling it would have cost that
+      for nothing.
 
   - number: "14.1"
     title: "Demographic Data"

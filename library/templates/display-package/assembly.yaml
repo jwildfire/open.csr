@@ -9,7 +9,7 @@
 # THERE IS NO `slots:` BLOCK, AND THAT IS THE POINT. A display package carries no
 # narrative, so this assembly claims no text block at all. Every block in the Text
 # Library is therefore reported by the assembler as "in the Text Library but not
-# assembled into display-package; not gated by this build" — thirty-odd warning
+# assembled into display-package; not gated by this build" — thirty-three warning
 # lines that are all true. The alternative, staying quiet about them, would let
 # "not gated" pass for "gated and clean" (RPT-LIB-004).
 #
