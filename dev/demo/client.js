@@ -52,11 +52,15 @@ if (app) {
   const nav = document.querySelector('[data-app-nav]');
   let state = { tab: DEFAULT_TAB, doc: null, display: null, block: null, focus: null };
 
-  // Which nodes the visitor has collapsed (open.csr #10). Held for the browser
-  // session rather than forever: a tree shape is a working state, not a
-  // preference, and it should not outlive the visit that produced it. Keys are
-  // `group:<id>` and `node:<group>/<id>` so a document and a group can never
-  // collide.
+  // Which GROUPS the visitor has collapsed (open.csr #10, narrowed by #40).
+  // Held for the browser session rather than forever: a tree shape is a working
+  // state, not a preference, and it should not outlive the visit that produced
+  // it. Keys are `group:<id>`.
+  //
+  // Documents used to be in here too, under `node:<group>/<id>`. That was the
+  // second state — a document could be "expanded" without being the open one —
+  // and #40 removed it rather than trying to keep it in step with the selection.
+  // A stale `node:` key from an older session is inert: nothing reads it.
   const COLLAPSE_KEY = 'opencsr.nav.collapsed';
   const collapsed = new Set(readCollapsed());
 
@@ -116,15 +120,9 @@ if (app) {
       }
       root.classList.toggle('is-active', id === state.tab);
     }
-    // Node-level collapse survives navigation the same way.
-    for (const node of nav.querySelectorAll('[data-nav-node]')) {
-      const group = node.querySelector('[data-nav-toggle]')?.getAttribute('data-nav-group') || '';
-      const key = `node:${group}/${node.getAttribute('data-nav-node')}`;
-      const isCollapsed = collapsed.has(key);
-      node.classList.toggle('is-collapsed', isCollapsed);
-      const toggle = node.querySelector('[data-nav-toggle]');
-      if (toggle) toggle.setAttribute('aria-expanded', isCollapsed ? 'false' : 'true');
-    }
+    // Documents have no expansion state of their own to restore: marking the
+    // current item below is what puts a document's contents on screen, and the
+    // stylesheet does the rest (#40).
     for (const item of nav.querySelectorAll('[data-nav-item]')) {
       const on =
         item.getAttribute('data-nav-group') === state.tab &&
@@ -309,21 +307,9 @@ if (app) {
   // --- the explorer ------------------------------------------------------
   if (nav) {
     nav.addEventListener('click', (event) => {
-      // A node's own disclosure control: expand or collapse, and nothing else.
-      // It sits beside the item rather than inside it precisely so that this
-      // click is not also a selection (#10).
-      const nodeToggle = event.target.closest('[data-nav-toggle]');
-      if (nodeToggle) {
-        event.preventDefault();
-        const node = nodeToggle.closest('[data-nav-node]');
-        const isCollapsed = node.classList.toggle('is-collapsed');
-        nodeToggle.setAttribute('aria-expanded', isCollapsed ? 'false' : 'true');
-        setCollapsed(
-          `node:${nodeToggle.getAttribute('data-nav-group')}/${node.getAttribute('data-nav-node')}`,
-          isCollapsed
-        );
-        return;
-      }
+      // There is no per-document disclosure control to handle: selecting a
+      // document is what opens its contents, and that is the item branch at the
+      // bottom of this handler (#40).
       const toggle = event.target.closest('[data-nav-group-toggle]');
       if (toggle) {
         const root = toggle.closest('[data-nav-group-root]');

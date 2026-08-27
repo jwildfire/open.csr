@@ -53,7 +53,7 @@
     </header>
     
     <main class="site-main" id="main"><p class="crumb"><a href="index.html">Design &amp; Research</a> / <span class="mono">docs/design/demo-layout.md</span></p>
-<div class="doc-layout"><nav class="doc-toc" aria-label="On this page"><h2>On this page</h2><ol><li><a href="#1-what-changed-and-why">1. What changed and why</a></li><li><a href="#2-what-this-application-actually-is">2. What this application actually is</a></li><li><a href="#3-the-three-options">3. The three options</a></li><li><a href="#4-decision">4. Decision</a></li><li><a href="#5-what-option-1-specifies">5. What Option 1 specifies</a></li><li><a href="#6-revision-the-explorer-2026-07-25-same-day">6. Revision: the explorer (2026-07-25, same day)</a></li><li><a href="#7-what-this-does-not-change">7. What this does not change</a></li></ol></nav><article class="prose doc"><h1>Demo application layout — options and decision</h1>
+<div class="doc-layout"><nav class="doc-toc" aria-label="On this page"><h2>On this page</h2><ol><li><a href="#1-what-changed-and-why">1. What changed and why</a></li><li><a href="#2-what-this-application-actually-is">2. What this application actually is</a></li><li><a href="#3-the-three-options">3. The three options</a></li><li><a href="#4-decision">4. Decision</a></li><li><a href="#5-what-option-1-specifies">5. What Option 1 specifies</a></li><li><a href="#6-revision-the-explorer-2026-07-25-same-day">6. Revision: the explorer (2026-07-25, same day)</a></li><li><a href="#7-what-this-does-not-change">7. What this does not change</a></li><li><a href="#8-revision-one-state-not-two-2026-08-26">8. Revision: one state, not two (2026-08-26)</a></li><li><a href="#9-revision-the-sidebar-stops-knowing-about-the-csr-2026-08-26">9. Revision: the sidebar stops knowing about the CSR (2026-08-26)</a></li></ol></nav><article class="prose doc"><h1>Demo application layout — options and decision</h1>
 <p>Written 2026-07-25. Requirement: <a href="https://github.com/jwildfire/obot.roadmap/issues/113">obot.roadmap#113</a>. Supersedes the v0 tab-strip layout shipped in <a href="https://github.com/jwildfire/open.csr/pull/3">PR #3</a>.</p>
 <p><strong>The demo page is not a page about the application. It is the application.</strong> This document picks the shell it lives in.</p>
 <hr>
@@ -234,6 +234,81 @@ jump across the document lands immediately, which reads better anyway.</p>
 when spec editing produces a diff that needs somewhere to live.</p>
 <h2 id="7-what-this-does-not-change">7. What this does not change</h2>
 <p>The panes themselves, the shared selection, the link-interception rule, and the standalone permalinks are all unchanged — this is a shell replacement, not a rewrite. <code>/gallery/</code>, <code>/reader/</code>, <code>/text/</code> and now <code>/templates/</code> remain the addressable permalinks and the destinations the evidence pages and trace panels link to.</p>
+<h2 id="8-revision-one-state-not-two-2026-08-26">8. Revision: one state, not two (2026-08-26)</h2>
+<p>§6 gave every explorer node with children a disclosure button, on the reasoning
+that expanding a node and selecting it are different intentions. In the tree that
+shipped they are not, and holding them apart is what made the sidebar wrong.</p>
+<p>The Documents view has exactly one document open at a time — that is the pane&#39;s
+rule, not the tree&#39;s — so &quot;is this document&#39;s contents showing?&quot; already had an
+answer. The disclosure button gave it a second one, remembered per node for the
+browsing session and never reconciled with the first. The stylesheet only ever
+revealed the section list next to the <em>current</em> document, so the two answers
+produced two visible faults: the arrow on a document that was not open moved and
+revealed nothing, and the arrow on the document that <em>was</em> open hid its contents.
+@jwildfire, on the live demo: <em>&quot;Sidebar logic is slightly wonky. you can toggle
+without showing the controls.&quot;</em></p>
+<p>The fix is a subtraction rather than a cleverer arrow. The open document shows
+its table of contents; every other document shows its title alone; selecting a
+different document moves the table of contents with it. What is left is one rule,
+<code>.nav-item[data-current] + .nav-sections</code>, and no second control able to disagree
+with it. The button, its <code>is-collapsed</code> class, its per-node <code>sessionStorage</code> key
+and its stylesheet rules all left with it.</p>
+<p>Three things deliberately did not change:</p>
+<ul>
+<li><strong>Group-level collapse stays.</strong> Which collection you are looking at —
+DOCUMENTS, DISPLAYS, TEXT, VALUES — is a genuinely separate question from which
+document is open, it has its own caret, and it is remembered for the browsing
+session. That state was never wonky.</li>
+<li><strong>The unpopulated-section greying stays.</strong> A section a template declares but
+does not populate renders dimmed, navigable and tooltipped. That is the
+framework telling the truth about the difference between declaring and filling,
+and this revision does not touch it.</li>
+<li><strong>Deep links still open the document they name.</strong> <code>#tab=documents&amp;doc=…&amp;focus=…</code>
+resolves the document, swaps the panel and moves the tree&#39;s contents with it
+before the scroll is attempted — the order in <code>render()</code> is what makes a link
+into a document you are not reading work at all.</li>
+</ul>
+<p>Removing four buttons from the tab order costs a keyboard user nothing: the
+document links were always focusable, and activating one is now the whole of
+opening its contents.</p>
+<h2 id="9-revision-the-sidebar-stops-knowing-about-the-csr-2026-08-26">9. Revision: the sidebar stops knowing about the CSR (2026-08-26)</h2>
+<p>The same pass turned up two more places where the shared surfaces still assumed
+one document, both of them the assumption §6 was written under and #36 removed
+from the shell.</p>
+<p><strong>A display listed the documents that use it, and could only ever list one.</strong>
+<code>usedIn</code> was an array — someone anticipated more than one document — built from
+the primary document&#39;s <code>displayIndex</code> alone, so with four template objects in the
+library three of them were invisible to it. It is now built by <code>displayUsage()</code>
+over the whole library, and it carries what each document CALLS the display, not
+just that it uses it. That index feeds three surfaces at once, so the gallery, a
+display&#39;s own page and the explorer cannot disagree about where a display
+appears.</p>
+<p><strong>The explorer stated a display number, and four assemblies disagree about it.</strong>
+The framework&#39;s own contract is that a display is identified by its slug and the
+number belongs to the assembly: <code>sections.yaml</code> is the document model,
+<code>assembly.yaml</code> is what a given report puts in it, and that split is what makes
+the numbering claim possible at all. The AE overview is <code>Table 14.3.1.2</code> in the
+report and <code>Table 13.4</code> in the synopsis. So a number on the explorer — a surface
+that serves every document at once — is one report&#39;s fact printed on a
+document-agnostic place, and removing it is the framework being applied rather
+than a matter of taste.</p>
+<p>Numbers stay wherever the assembly is unambiguous:</p>
+<ul>
+<li><strong>Inside a document</strong>, where the assembly that assigned the number is the one
+you are reading.</li>
+<li><strong>On the display&#39;s own store page</strong>, where every document is listed and each
+number is stated beside the document that assigned it. That is what makes
+<code>14.3.1.2</code> and <code>13.4</code> on the same page read as two documents&#39; names for one
+display rather than as a contradiction — and it is the only reason a number is
+safe on a shared surface at all.</li>
+</ul>
+<p><strong>A display in a document now links to its store entry</strong>, mirroring the text
+block&#39;s link to the Text Library exactly: a trailing reference line under the
+object, naming it, linking to its own library page. The href is written in the
+form <code>resolveAppLink</code> parses, so inside the demo it is absorbed into a pane
+switch and on the standalone reader page it navigates — one link, both
+behaviours. The point of the mirroring is that a reader learns one gesture rather
+than two.</p>
 <hr>
 <p><em>This document was drafted by Claude Code using Opus 5 and not yet reviewed by @jwildfire.</em></p>
 </article></div></main>
