@@ -31,6 +31,7 @@ import {
   loadDisplays,
   loadEvidence,
   loadRequirements,
+  requirementsFor,
   loadTextBlocks,
   renderCsrReader,
   renderTraceChrome,
@@ -197,7 +198,12 @@ page(path.join(buildDir, 'gallery', 'index.html'), {
 // the same string.
 const displayFragments = displays.map((display) => {
   const evidence = loadEvidence(rootDir, display.module);
-  const requirements = loadRequirements(rootDir, display.module).requirements || {};
+  // The per-display file carries the WHOLE matrix; `prefixes` is what says which
+  // rows are this display's. Without this the page lists all 49 for everything.
+  const requirements = requirementsFor(
+    loadRequirements(rootDir, display.module).requirements,
+    display.prefixes
+  );
   return {
     slug: display.slug,
     title: display.title,

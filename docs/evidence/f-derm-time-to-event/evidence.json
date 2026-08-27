@@ -1,0 +1,89 @@
+{
+  "module": "f-derm-time-to-event",
+  "generated": "2026-08-27T14:52:45.349Z",
+  "records": [
+    {
+      "requirementIds": [
+        "DSP-ALL-001"
+      ],
+      "title": "DSP-ALL-001: every display renders a table that actually contains numbers (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-ALL-002"
+      ],
+      "title": "DSP-ALL-002: every display declares a regulatory identifier and a source line (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-TTE-001"
+      ],
+      "title": "DSP-TTE-001: the time-to-event display reproduces the published narrative (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-cibic.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-TTE-002"
+      ],
+      "title": "DSP-TTE-002: the survival figure is drawn from the ARD and cannot disagree with it (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-cibic.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-TTE-003"
+      ],
+      "title": "DSP-TTE-003: the annotated test is addressed into the ARD and reported at its precision (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-cibic.R",
+      "issueRefs": [
+        1
+      ]
+    }
+  ],
+  "traceability": {
+    "adamDatasets": [
+      "adsl",
+      "adtte"
+    ],
+    "adamHashes": {
+      "adsl": "sha256:6534192e6ae2a8789015148d2068ecdd8421791ea6d7f9cc307fef1db97945f9",
+      "adtte": "sha256:1a015e54cd547294b53877b35d55869461f1b83649eb630d9f942bb6198f9309"
+    },
+    "ardFile": "outputs/f-derm-time-to-event/v001/ard.json",
+    "ardHash": "sha256:2b6232813ba9ddffd6410358197a5766675e5ac754b8acd6cd9cad203b23ba9a",
+    "displayFile": "library/tfl/f-derm-time-to-event/display.yaml",
+    "specHash": "sha256:dd67fc12f07b9385d20a849745d6d24fa38adb36470696468d5de7b4fe62d0c0",
+    "iteration": "v001",
+    "sourceCommit": null
+  },
+  "environment": {
+    "os": "Darwin 23.6.0",
+    "node": "v24.14.0",
+    "vitest": null,
+    "r": "4.3.3"
+  },
+  "run": null
+}

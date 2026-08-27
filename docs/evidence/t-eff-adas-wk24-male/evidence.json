@@ -1,0 +1,161 @@
+{
+  "module": "t-eff-adas-wk24-male",
+  "generated": "2026-08-27T14:52:45.349Z",
+  "records": [
+    {
+      "requirementIds": [
+        "DSP-ALL-001"
+      ],
+      "title": "DSP-ALL-001: every display renders a table that actually contains numbers (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-ALL-002"
+      ],
+      "title": "DSP-ALL-002: every display declares a regulatory identifier and a source line (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-EFF-001"
+      ],
+      "title": "DSP-EFF-001: efficacy descriptive statistics match the vendored ADaM computed directly (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-efficacy.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-EFF-002"
+      ],
+      "title": "DSP-EFF-002: the ANCOVA statistics reproduce the reference report exactly (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-efficacy.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-EFF-003"
+      ],
+      "title": "DSP-EFF-003: the completers display separates population size from records summarised (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-efficacy.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-EFF-004"
+      ],
+      "title": "DSP-EFF-004: the over-time display's two imputation lanes select different records (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-efficacy.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-EFF-005"
+      ],
+      "title": "DSP-EFF-005: the repeated-measures fit reproduces the reference report's PROC MIXED output (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-efficacy.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-EFF-006"
+      ],
+      "title": "DSP-EFF-006: the repeated-measures LS means are the visit-averaged treatment effect (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-efficacy.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-EFF-007"
+      ],
+      "title": "DSP-EFF-007: the NPI-X endpoint follows the analysis plan, not the shipped NPTOTMN parameter (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-efficacy.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-EFF-008"
+      ],
+      "title": "DSP-EFF-008: a derived subject record refuses a carry column that varies inside the subject (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-efficacy.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-EFF-009"
+      ],
+      "title": "DSP-EFF-009: every rendered efficacy cell matches the reference report bar the five declared (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-efficacy.R",
+      "issueRefs": [
+        1
+      ]
+    }
+  ],
+  "traceability": {
+    "adamDatasets": [
+      "adqsadas",
+      "adsl"
+    ],
+    "adamHashes": {
+      "adsl": "sha256:6534192e6ae2a8789015148d2068ecdd8421791ea6d7f9cc307fef1db97945f9",
+      "adqsadas": "sha256:0f3e481baf734dc3e5ce7373d255269c2285400ff5bee77be525d832bade80cf"
+    },
+    "ardFile": "outputs/t-eff-adas-wk24-male/v001/ard.json",
+    "ardHash": "sha256:f4ecc3b36b6a75bc97799cbcd7efad17139f1edad38f8aa25c68474cbb343ba5",
+    "displayFile": "library/tfl/t-eff-adas-wk24-male/display.yaml",
+    "specHash": "sha256:f08b78fe8e88aaa42862be64c962f7ee814e55d42a7c2137a2a8356c5152e1a9",
+    "iteration": "v001",
+    "sourceCommit": null
+  },
+  "environment": {
+    "os": "Darwin 23.6.0",
+    "node": "v24.14.0",
+    "vitest": null,
+    "r": "4.3.3"
+  },
+  "run": null
+}
