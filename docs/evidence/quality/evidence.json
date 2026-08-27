@@ -1,6 +1,6 @@
 {
   "module": "quality",
-  "generated": "2026-08-26T21:09:52.194Z",
+  "generated": "2026-08-27T00:39:23.871Z",
   "records": [
     {
       "requirementIds": [
@@ -144,6 +144,54 @@
       "file": "tests/unit/site-render.test.js",
       "issueRefs": [
         1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-SITE-010"
+      ],
+      "title": "draft prose is disclosed where it is read QC-SITE-010: an unreviewed document says so above its first section (#32)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-documents.test.js",
+      "issueRefs": [
+        32
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-SITE-010"
+      ],
+      "title": "draft prose is disclosed where it is read QC-SITE-010: prose state is read off the assembled document, not asserted (#32)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-documents.test.js",
+      "issueRefs": [
+        32
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-SITE-010"
+      ],
+      "title": "draft prose is disclosed where it is read QC-SITE-010: the notice is on the rendered reader, before the document body (#32)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-documents.test.js",
+      "issueRefs": [
+        32
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-SITE-010"
+      ],
+      "title": "draft prose is disclosed where it is read QC-SITE-010: the switcher and the sidebar carry the same flag as the page (#32)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-documents.test.js",
+      "issueRefs": [
+        32
       ]
     },
     {
@@ -1300,6 +1348,90 @@
     },
     {
       "requirementIds": [
+        "QC-SITE-009"
+      ],
+      "title": "the document set QC-SITE-009: a document not on screen is a link out, not a dead selection (#32)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-documents.test.js",
+      "issueRefs": [
+        32
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-SITE-009"
+      ],
+      "title": "the document set QC-SITE-009: a planned document with no template object keeps its place (#32)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-documents.test.js",
+      "issueRefs": [
+        32
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-SITE-009"
+      ],
+      "title": "the document set QC-SITE-009: an undeclared template object is titled from its own model (#32)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-documents.test.js",
+      "issueRefs": [
+        32
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-SITE-009"
+      ],
+      "title": "the document set QC-SITE-009: every assembled template object becomes a document, declared or not (#32)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-documents.test.js",
+      "issueRefs": [
+        32
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-SITE-009"
+      ],
+      "title": "the document set QC-SITE-009: the home page lists the documents and links both of a document's pages (#32)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-documents.test.js",
+      "issueRefs": [
+        32
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-SITE-009"
+      ],
+      "title": "the document set QC-SITE-009: the primary document keeps the published URLs and the rest sit beside it (#32)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-documents.test.js",
+      "issueRefs": [
+        32
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-SITE-009"
+      ],
+      "title": "the document set QC-SITE-009: the switcher offers every other document from any document (#32)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-documents.test.js",
+      "issueRefs": [
+        32
+      ]
+    },
+    {
+      "requirementIds": [
         "QC-DEMO-018"
       ],
       "title": "the navigation tree QC-DEMO-018: more than one document is listed, and an unbuilt one says so (#1)",
@@ -1416,6 +1548,30 @@
       "file": "tests/unit/site-demo.test.js",
       "issueRefs": [
         1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-SITE-009"
+      ],
+      "title": "the repository this site is built from QC-SITE-009: this repo's own library is plural and every object is assembled (#32)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-documents.test.js",
+      "issueRefs": [
+        32
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-SITE-010"
+      ],
+      "title": "the repository this site is built from QC-SITE-010: the committed synopsis is unreviewed, and nothing in the site pretends otherwise (#32)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-documents.test.js",
+      "issueRefs": [
+        32
       ]
     },
     {

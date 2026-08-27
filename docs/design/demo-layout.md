@@ -160,11 +160,22 @@ Four decisions this encodes:
 
 1. **The study is the root.** Everything under it belongs to it. A second study
    becomes a second root, not a second application.
-2. **Documents is a collection, not a page.** The CSR is one document; a SAP is
-   another; an ISS would be a third. The registry lives in
-   `site/config.json` → `documents`, so adding one is a config edit. Documents
-   that have no template yet are listed and marked `planned` rather than hidden,
-   because the point is to show the shape.
+2. **Documents is a collection, not a page.** The CSR is one document; the ICH E3
+   Annex I synopsis is another; a SAP would be a third. The registry is
+   `library/templates/` itself (#32): every template object the assembler has
+   built becomes a document here, with its own reader page, its own document-model
+   page and its own entry in this tree, without being named anywhere in the site
+   build. `site/config.json` → `documents` carries editorial metadata — a nicer
+   title, an abbreviation, a blurb — and the documents that are *planned* and so
+   have no template object to discover. It is a merge, never a gate: a template
+   object the config has never heard of still publishes, titled from its own
+   model, with a build warning naming it. Planned documents are listed and marked
+   rather than hidden, because the point is to show the shape.
+
+   The app renders one document at a time. The document on screen keeps its
+   section tree and its in-app selection; every other document is an ordinary
+   link to its own reader page, so it works with JavaScript off and never offers
+   a selection that would resolve to nothing.
 3. **Displays sit beside documents, not inside one.** The same display can be
    referenced by more than one document — the AE overview belongs in the CSR and
    would belong in an ISS. So a display records *which documents use it* instead
