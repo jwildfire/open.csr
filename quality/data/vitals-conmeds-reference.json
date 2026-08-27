@@ -1,0 +1,1936 @@
+{
+  "schema": "opencsr/vitals-conmeds-reference/v1",
+  "note": "The values the sponsor's own clinical study report printed for the vital signs, weight and concomitant-medication displays of CDISCPILOT01. This file is not a re-implementation of open.csr's arithmetic - it is a transcription of a document produced in 2006, in SAS, by someone else. It is the third measurement in this display group's qualification: the pipeline computes a number, qc/vitals-conmeds-agreement.R computes the same number a second way from the raw pharmaverseadam datasets sharing no code with the pipeline, and both are compared with what the report published. Two agreeing implementations can be wrong together; neither can talk this file into agreeing with them.",
+  "reference": {
+    "document": "Clinical Study Report, CDISC SDTM/ADaM Pilot Project, protocol CDISCPILOT01 (H2Q-MC-LZZT), final 27 June 2006",
+    "displays": "Section 14: Table 14-7.01 (pages 139-143), Table 14-7.02 (pages 144-147), Table 14-7.03 (page 148), Table 14-7.04 (pages 149-150)",
+    "source_programs": "The reference pages name their own programs: rtvs.sas for Tables 14-7.01 to 14-7.03 and Conmeds.sas for Table 14-7.04. Neither program is read, held or reimplemented here; only the printed results are transcribed.",
+    "licence": "Pages 154-409 of the published PDF - the protocol and the sample case report form - carry 'Copyright (c) 2006 Eli Lilly and Company' and are neither reproduced nor excerpted anywhere in this repository. The pages transcribed here (139-150) fall outside every Lilly range and are the pilot project's own Section 14 output.",
+    "transcription": "Extracted mechanically from the layout-preserving text of the published PDF rather than retyped, then checked against the rendered pages: 81 cells for Table 14-7.01 (3 measures x 3 positions x 3 visits x 3 treatment groups), 54 for Table 14-7.02 (the same without baseline), 15 for Table 14-7.03, and 1 + 10 + 34 rows for Table 14-7.04.",
+    "transcription_notes": [
+      "The reference tables head their treatment column 'Treatment' and do not say whether it is planned or actual. The column sizes identify it: 86 / 84 / 84 is planned treatment (TRT01P). Actual treatment (TRT01A) gives 86 / 96 / 72 in this study, because twelve subjects received a treatment other than the one they were randomised to. open.csr's displays follow the reference and group by planned treatment, and say so in their own footnotes.",
+      "'End of Trt.' in the reference is footnoted 'the last on-treatment assessment of the specified vital sign (on or before the Week 24 visit)'. open.csr derives that flag itself (EOTFL in prepare_data) rather than using the AVISIT == 'End of Treatment' record pharmaverseadam ships, which exists for only 189 of 254 subjects and is not restricted to Week 24.",
+      "Table 14-7.04 prints a bare '0' for a category no subject fell into; it is transcribed here as n = 0, pct = 0. open.csr renders the same cell as '0 (0.0%)'. The statistics are identical; only the presentation of an empty cell differs.",
+      "Table 14-7.04 prints percentages to whole numbers. open.csr renders them to one decimal, the convention the rest of its display library uses. The comparison in qc/vitals-conmeds-agreement.R therefore rounds the computed percentage to whole numbers before checking it against this file, and checks the underlying subject count exactly.",
+      "'SYSTEMIC HORMONAL PREPARATIONS, EXCL.' is transcribed as printed. The class name is truncated in the study's own source data, not by this transcription.",
+      "Table 14-7.01 covers systolic blood pressure, diastolic blood pressure and pulse only. Temperature, height, body mass index, body surface area and mean arterial pressure are present in ADVS and are summarised by neither the reference nor open.csr."
+    ]
+  },
+  "population": {
+    "Placebo": 86,
+    "Xanomeline Low Dose": 84,
+    "Xanomeline High Dose": 84
+  },
+  "digits": {
+    "mean": 1,
+    "sd": 2,
+    "median": 1,
+    "min": 1,
+    "max": 1,
+    "pct": 0
+  },
+  "displays": {
+    "t-vitals": {
+      "reference": "Table 14-7.01",
+      "title": "Summary of Vital Signs at Baseline and End of Treatment",
+      "key": "PARAMCD|ATPT|visit|treatment",
+      "statistic": "AVAL, the observed value",
+      "cells": {
+        "DIABP|AFTER LYING DOWN FOR 5 MINUTES|Baseline|Placebo": {
+          "n": 85,
+          "mean": "75.7",
+          "sd": "11.09",
+          "median": "76.0",
+          "min": "40.0",
+          "max": "99.0"
+        },
+        "DIABP|AFTER LYING DOWN FOR 5 MINUTES|Baseline|Xanomeline High Dose": {
+          "n": 84,
+          "mean": "77.2",
+          "sd": "9.80",
+          "median": "78.0",
+          "min": "51.0",
+          "max": "98.0"
+        },
+        "DIABP|AFTER LYING DOWN FOR 5 MINUTES|Baseline|Xanomeline Low Dose": {
+          "n": 84,
+          "mean": "76.3",
+          "sd": "9.77",
+          "median": "76.0",
+          "min": "57.0",
+          "max": "100.0"
+        },
+        "DIABP|AFTER LYING DOWN FOR 5 MINUTES|End of treatment|Placebo": {
+          "n": 84,
+          "mean": "74.5",
+          "sd": "11.11",
+          "median": "76.0",
+          "min": "44.0",
+          "max": "109.0"
+        },
+        "DIABP|AFTER LYING DOWN FOR 5 MINUTES|End of treatment|Xanomeline High Dose": {
+          "n": 82,
+          "mean": "74.1",
+          "sd": "9.27",
+          "median": "74.0",
+          "min": "56.0",
+          "max": "94.0"
+        },
+        "DIABP|AFTER LYING DOWN FOR 5 MINUTES|End of treatment|Xanomeline Low Dose": {
+          "n": 84,
+          "mean": "74.3",
+          "sd": "8.88",
+          "median": "74.0",
+          "min": "45.0",
+          "max": "90.0"
+        },
+        "DIABP|AFTER LYING DOWN FOR 5 MINUTES|Week 24|Placebo": {
+          "n": 59,
+          "mean": "72.9",
+          "sd": "11.32",
+          "median": "74.0",
+          "min": "44.0",
+          "max": "109.0"
+        },
+        "DIABP|AFTER LYING DOWN FOR 5 MINUTES|Week 24|Xanomeline High Dose": {
+          "n": 30,
+          "mean": "73.9",
+          "sd": "9.23",
+          "median": "74.0",
+          "min": "60.0",
+          "max": "92.0"
+        },
+        "DIABP|AFTER LYING DOWN FOR 5 MINUTES|Week 24|Xanomeline Low Dose": {
+          "n": 27,
+          "mean": "76.1",
+          "sd": "9.14",
+          "median": "76.0",
+          "min": "60.0",
+          "max": "90.0"
+        },
+        "DIABP|AFTER STANDING FOR 1 MINUTE|Baseline|Placebo": {
+          "n": 85,
+          "mean": "77.9",
+          "sd": "10.63",
+          "median": "78.0",
+          "min": "51.0",
+          "max": "104.0"
+        },
+        "DIABP|AFTER STANDING FOR 1 MINUTE|Baseline|Xanomeline High Dose": {
+          "n": 84,
+          "mean": "78.1",
+          "sd": "10.77",
+          "median": "78.0",
+          "min": "56.0",
+          "max": "108.0"
+        },
+        "DIABP|AFTER STANDING FOR 1 MINUTE|Baseline|Xanomeline Low Dose": {
+          "n": 84,
+          "mean": "76.2",
+          "sd": "10.14",
+          "median": "78.0",
+          "min": "54.0",
+          "max": "98.0"
+        },
+        "DIABP|AFTER STANDING FOR 1 MINUTE|End of treatment|Placebo": {
+          "n": 84,
+          "mean": "74.9",
+          "sd": "12.16",
+          "median": "76.0",
+          "min": "45.0",
+          "max": "117.0"
+        },
+        "DIABP|AFTER STANDING FOR 1 MINUTE|End of treatment|Xanomeline High Dose": {
+          "n": 82,
+          "mean": "75.9",
+          "sd": "11.77",
+          "median": "76.5",
+          "min": "48.0",
+          "max": "112.0"
+        },
+        "DIABP|AFTER STANDING FOR 1 MINUTE|End of treatment|Xanomeline Low Dose": {
+          "n": 84,
+          "mean": "75.0",
+          "sd": "9.34",
+          "median": "75.0",
+          "min": "51.0",
+          "max": "98.0"
+        },
+        "DIABP|AFTER STANDING FOR 1 MINUTE|Week 24|Placebo": {
+          "n": 59,
+          "mean": "74.2",
+          "sd": "12.89",
+          "median": "74.0",
+          "min": "45.0",
+          "max": "117.0"
+        },
+        "DIABP|AFTER STANDING FOR 1 MINUTE|Week 24|Xanomeline High Dose": {
+          "n": 30,
+          "mean": "74.9",
+          "sd": "11.00",
+          "median": "76.0",
+          "min": "50.0",
+          "max": "97.0"
+        },
+        "DIABP|AFTER STANDING FOR 1 MINUTE|Week 24|Xanomeline Low Dose": {
+          "n": 27,
+          "mean": "76.3",
+          "sd": "10.28",
+          "median": "78.0",
+          "min": "60.0",
+          "max": "98.0"
+        },
+        "DIABP|AFTER STANDING FOR 3 MINUTES|Baseline|Placebo": {
+          "n": 85,
+          "mean": "77.7",
+          "sd": "11.00",
+          "median": "78.0",
+          "min": "46.0",
+          "max": "110.0"
+        },
+        "DIABP|AFTER STANDING FOR 3 MINUTES|Baseline|Xanomeline High Dose": {
+          "n": 84,
+          "mean": "79.6",
+          "sd": "10.19",
+          "median": "80.0",
+          "min": "51.0",
+          "max": "104.0"
+        },
+        "DIABP|AFTER STANDING FOR 3 MINUTES|Baseline|Xanomeline Low Dose": {
+          "n": 84,
+          "mean": "76.6",
+          "sd": "10.93",
+          "median": "76.0",
+          "min": "48.0",
+          "max": "108.0"
+        },
+        "DIABP|AFTER STANDING FOR 3 MINUTES|End of treatment|Placebo": {
+          "n": 84,
+          "mean": "75.0",
+          "sd": "11.19",
+          "median": "74.5",
+          "min": "51.0",
+          "max": "110.0"
+        },
+        "DIABP|AFTER STANDING FOR 3 MINUTES|End of treatment|Xanomeline High Dose": {
+          "n": 81,
+          "mean": "76.8",
+          "sd": "11.71",
+          "median": "78.0",
+          "min": "50.0",
+          "max": "118.0"
+        },
+        "DIABP|AFTER STANDING FOR 3 MINUTES|End of treatment|Xanomeline Low Dose": {
+          "n": 83,
+          "mean": "74.9",
+          "sd": "9.66",
+          "median": "74.0",
+          "min": "57.0",
+          "max": "102.0"
+        },
+        "DIABP|AFTER STANDING FOR 3 MINUTES|Week 24|Placebo": {
+          "n": 59,
+          "mean": "74.3",
+          "sd": "11.38",
+          "median": "74.0",
+          "min": "51.0",
+          "max": "110.0"
+        },
+        "DIABP|AFTER STANDING FOR 3 MINUTES|Week 24|Xanomeline High Dose": {
+          "n": 30,
+          "mean": "76.0",
+          "sd": "10.63",
+          "median": "78.5",
+          "min": "50.0",
+          "max": "98.0"
+        },
+        "DIABP|AFTER STANDING FOR 3 MINUTES|Week 24|Xanomeline Low Dose": {
+          "n": 27,
+          "mean": "76.2",
+          "sd": "10.18",
+          "median": "76.0",
+          "min": "57.0",
+          "max": "98.0"
+        },
+        "PULSE|AFTER LYING DOWN FOR 5 MINUTES|Baseline|Placebo": {
+          "n": 85,
+          "mean": "70.4",
+          "sd": "10.46",
+          "median": "70.0",
+          "min": "51.0",
+          "max": "100.0"
+        },
+        "PULSE|AFTER LYING DOWN FOR 5 MINUTES|Baseline|Xanomeline High Dose": {
+          "n": 84,
+          "mean": "70.1",
+          "sd": "9.27",
+          "median": "68.0",
+          "min": "52.0",
+          "max": "98.0"
+        },
+        "PULSE|AFTER LYING DOWN FOR 5 MINUTES|Baseline|Xanomeline Low Dose": {
+          "n": 84,
+          "mean": "68.8",
+          "sd": "9.52",
+          "median": "68.0",
+          "min": "50.0",
+          "max": "88.0"
+        },
+        "PULSE|AFTER LYING DOWN FOR 5 MINUTES|End of treatment|Placebo": {
+          "n": 84,
+          "mean": "69.3",
+          "sd": "9.42",
+          "median": "68.5",
+          "min": "50.0",
+          "max": "92.0"
+        },
+        "PULSE|AFTER LYING DOWN FOR 5 MINUTES|End of treatment|Xanomeline High Dose": {
+          "n": 82,
+          "mean": "68.1",
+          "sd": "11.27",
+          "median": "68.0",
+          "min": "47.0",
+          "max": "100.0"
+        },
+        "PULSE|AFTER LYING DOWN FOR 5 MINUTES|End of treatment|Xanomeline Low Dose": {
+          "n": 84,
+          "mean": "67.8",
+          "sd": "10.55",
+          "median": "68.0",
+          "min": "48.0",
+          "max": "100.0"
+        },
+        "PULSE|AFTER LYING DOWN FOR 5 MINUTES|Week 24|Placebo": {
+          "n": 59,
+          "mean": "69.1",
+          "sd": "9.46",
+          "median": "68.0",
+          "min": "50.0",
+          "max": "92.0"
+        },
+        "PULSE|AFTER LYING DOWN FOR 5 MINUTES|Week 24|Xanomeline High Dose": {
+          "n": 30,
+          "mean": "69.3",
+          "sd": "11.88",
+          "median": "68.0",
+          "min": "47.0",
+          "max": "96.0"
+        },
+        "PULSE|AFTER LYING DOWN FOR 5 MINUTES|Week 24|Xanomeline Low Dose": {
+          "n": 27,
+          "mean": "68.1",
+          "sd": "9.28",
+          "median": "68.0",
+          "min": "52.0",
+          "max": "90.0"
+        },
+        "PULSE|AFTER STANDING FOR 1 MINUTE|Baseline|Placebo": {
+          "n": 85,
+          "mean": "75.5",
+          "sd": "12.68",
+          "median": "76.0",
+          "min": "56.0",
+          "max": "133.0"
+        },
+        "PULSE|AFTER STANDING FOR 1 MINUTE|Baseline|Xanomeline High Dose": {
+          "n": 84,
+          "mean": "75.0",
+          "sd": "10.89",
+          "median": "72.0",
+          "min": "56.0",
+          "max": "104.0"
+        },
+        "PULSE|AFTER STANDING FOR 1 MINUTE|Baseline|Xanomeline Low Dose": {
+          "n": 84,
+          "mean": "73.5",
+          "sd": "10.59",
+          "median": "72.0",
+          "min": "53.0",
+          "max": "100.0"
+        },
+        "PULSE|AFTER STANDING FOR 1 MINUTE|End of treatment|Placebo": {
+          "n": 84,
+          "mean": "73.5",
+          "sd": "9.09",
+          "median": "74.0",
+          "min": "52.0",
+          "max": "96.0"
+        },
+        "PULSE|AFTER STANDING FOR 1 MINUTE|End of treatment|Xanomeline High Dose": {
+          "n": 82,
+          "mean": "72.6",
+          "sd": "11.11",
+          "median": "71.0",
+          "min": "52.0",
+          "max": "100.0"
+        },
+        "PULSE|AFTER STANDING FOR 1 MINUTE|End of treatment|Xanomeline Low Dose": {
+          "n": 84,
+          "mean": "73.0",
+          "sd": "10.84",
+          "median": "73.0",
+          "min": "51.0",
+          "max": "104.0"
+        },
+        "PULSE|AFTER STANDING FOR 1 MINUTE|Week 24|Placebo": {
+          "n": 59,
+          "mean": "72.8",
+          "sd": "8.98",
+          "median": "74.0",
+          "min": "52.0",
+          "max": "88.0"
+        },
+        "PULSE|AFTER STANDING FOR 1 MINUTE|Week 24|Xanomeline High Dose": {
+          "n": 30,
+          "mean": "73.4",
+          "sd": "11.93",
+          "median": "72.0",
+          "min": "54.0",
+          "max": "98.0"
+        },
+        "PULSE|AFTER STANDING FOR 1 MINUTE|Week 24|Xanomeline Low Dose": {
+          "n": 27,
+          "mean": "72.1",
+          "sd": "9.53",
+          "median": "74.0",
+          "min": "52.0",
+          "max": "88.0"
+        },
+        "PULSE|AFTER STANDING FOR 3 MINUTES|Baseline|Placebo": {
+          "n": 85,
+          "mean": "74.6",
+          "sd": "11.94",
+          "median": "74.0",
+          "min": "54.0",
+          "max": "134.0"
+        },
+        "PULSE|AFTER STANDING FOR 3 MINUTES|Baseline|Xanomeline High Dose": {
+          "n": 84,
+          "mean": "74.0",
+          "sd": "10.76",
+          "median": "72.0",
+          "min": "52.0",
+          "max": "100.0"
+        },
+        "PULSE|AFTER STANDING FOR 3 MINUTES|Baseline|Xanomeline Low Dose": {
+          "n": 84,
+          "mean": "72.3",
+          "sd": "10.99",
+          "median": "70.0",
+          "min": "51.0",
+          "max": "104.0"
+        },
+        "PULSE|AFTER STANDING FOR 3 MINUTES|End of treatment|Placebo": {
+          "n": 84,
+          "mean": "73.4",
+          "sd": "9.08",
+          "median": "74.0",
+          "min": "56.0",
+          "max": "98.0"
+        },
+        "PULSE|AFTER STANDING FOR 3 MINUTES|End of treatment|Xanomeline High Dose": {
+          "n": 81,
+          "mean": "71.8",
+          "sd": "10.76",
+          "median": "70.0",
+          "min": "54.0",
+          "max": "106.0"
+        },
+        "PULSE|AFTER STANDING FOR 3 MINUTES|End of treatment|Xanomeline Low Dose": {
+          "n": 83,
+          "mean": "71.6",
+          "sd": "10.42",
+          "median": "72.0",
+          "min": "52.0",
+          "max": "97.0"
+        },
+        "PULSE|AFTER STANDING FOR 3 MINUTES|Week 24|Placebo": {
+          "n": 59,
+          "mean": "72.8",
+          "sd": "8.73",
+          "median": "74.0",
+          "min": "56.0",
+          "max": "88.0"
+        },
+        "PULSE|AFTER STANDING FOR 3 MINUTES|Week 24|Xanomeline High Dose": {
+          "n": 30,
+          "mean": "72.4",
+          "sd": "11.92",
+          "median": "71.5",
+          "min": "54.0",
+          "max": "96.0"
+        },
+        "PULSE|AFTER STANDING FOR 3 MINUTES|Week 24|Xanomeline Low Dose": {
+          "n": 27,
+          "mean": "70.7",
+          "sd": "10.78",
+          "median": "72.0",
+          "min": "52.0",
+          "max": "96.0"
+        },
+        "SYSBP|AFTER LYING DOWN FOR 5 MINUTES|Baseline|Placebo": {
+          "n": 85,
+          "mean": "138.6",
+          "sd": "16.75",
+          "median": "140.0",
+          "min": "90.0",
+          "max": "180.0"
+        },
+        "SYSBP|AFTER LYING DOWN FOR 5 MINUTES|Baseline|Xanomeline High Dose": {
+          "n": 84,
+          "mean": "140.1",
+          "sd": "17.82",
+          "median": "141.0",
+          "min": "100.0",
+          "max": "188.0"
+        },
+        "SYSBP|AFTER LYING DOWN FOR 5 MINUTES|Baseline|Xanomeline Low Dose": {
+          "n": 84,
+          "mean": "138.8",
+          "sd": "16.55",
+          "median": "138.0",
+          "min": "100.0",
+          "max": "178.0"
+        },
+        "SYSBP|AFTER LYING DOWN FOR 5 MINUTES|End of treatment|Placebo": {
+          "n": 84,
+          "mean": "136.7",
+          "sd": "18.30",
+          "median": "134.0",
+          "min": "100.0",
+          "max": "180.0"
+        },
+        "SYSBP|AFTER LYING DOWN FOR 5 MINUTES|End of treatment|Xanomeline High Dose": {
+          "n": 82,
+          "mean": "134.0",
+          "sd": "17.86",
+          "median": "130.0",
+          "min": "101.0",
+          "max": "178.0"
+        },
+        "SYSBP|AFTER LYING DOWN FOR 5 MINUTES|End of treatment|Xanomeline Low Dose": {
+          "n": 84,
+          "mean": "135.7",
+          "sd": "17.17",
+          "median": "134.0",
+          "min": "100.0",
+          "max": "190.0"
+        },
+        "SYSBP|AFTER LYING DOWN FOR 5 MINUTES|Week 24|Placebo": {
+          "n": 59,
+          "mean": "135.8",
+          "sd": "17.30",
+          "median": "131.0",
+          "min": "100.0",
+          "max": "180.0"
+        },
+        "SYSBP|AFTER LYING DOWN FOR 5 MINUTES|Week 24|Xanomeline High Dose": {
+          "n": 30,
+          "mean": "132.2",
+          "sd": "18.18",
+          "median": "130.0",
+          "min": "101.0",
+          "max": "178.0"
+        },
+        "SYSBP|AFTER LYING DOWN FOR 5 MINUTES|Week 24|Xanomeline Low Dose": {
+          "n": 27,
+          "mean": "134.1",
+          "sd": "16.74",
+          "median": "136.0",
+          "min": "100.0",
+          "max": "173.0"
+        },
+        "SYSBP|AFTER STANDING FOR 1 MINUTE|Baseline|Placebo": {
+          "n": 85,
+          "mean": "135.3",
+          "sd": "17.89",
+          "median": "134.0",
+          "min": "90.0",
+          "max": "180.0"
+        },
+        "SYSBP|AFTER STANDING FOR 1 MINUTE|Baseline|Xanomeline High Dose": {
+          "n": 84,
+          "mean": "137.3",
+          "sd": "19.71",
+          "median": "138.0",
+          "min": "100.0",
+          "max": "194.0"
+        },
+        "SYSBP|AFTER STANDING FOR 1 MINUTE|Baseline|Xanomeline Low Dose": {
+          "n": 84,
+          "mean": "135.6",
+          "sd": "18.04",
+          "median": "136.0",
+          "min": "100.0",
+          "max": "186.0"
+        },
+        "SYSBP|AFTER STANDING FOR 1 MINUTE|End of treatment|Placebo": {
+          "n": 84,
+          "mean": "133.9",
+          "sd": "18.68",
+          "median": "130.5",
+          "min": "90.0",
+          "max": "199.0"
+        },
+        "SYSBP|AFTER STANDING FOR 1 MINUTE|End of treatment|Xanomeline High Dose": {
+          "n": 82,
+          "mean": "130.4",
+          "sd": "20.37",
+          "median": "128.0",
+          "min": "90.0",
+          "max": "198.0"
+        },
+        "SYSBP|AFTER STANDING FOR 1 MINUTE|End of treatment|Xanomeline Low Dose": {
+          "n": 84,
+          "mean": "132.8",
+          "sd": "17.53",
+          "median": "130.0",
+          "min": "92.0",
+          "max": "180.0"
+        },
+        "SYSBP|AFTER STANDING FOR 1 MINUTE|Week 24|Placebo": {
+          "n": 59,
+          "mean": "133.5",
+          "sd": "19.23",
+          "median": "130.0",
+          "min": "90.0",
+          "max": "199.0"
+        },
+        "SYSBP|AFTER STANDING FOR 1 MINUTE|Week 24|Xanomeline High Dose": {
+          "n": 30,
+          "mean": "130.4",
+          "sd": "20.83",
+          "median": "128.0",
+          "min": "96.0",
+          "max": "198.0"
+        },
+        "SYSBP|AFTER STANDING FOR 1 MINUTE|Week 24|Xanomeline Low Dose": {
+          "n": 27,
+          "mean": "131.0",
+          "sd": "17.82",
+          "median": "130.0",
+          "min": "92.0",
+          "max": "168.0"
+        },
+        "SYSBP|AFTER STANDING FOR 3 MINUTES|Baseline|Placebo": {
+          "n": 85,
+          "mean": "136.5",
+          "sd": "18.77",
+          "median": "136.0",
+          "min": "80.0",
+          "max": "184.0"
+        },
+        "SYSBP|AFTER STANDING FOR 3 MINUTES|Baseline|Xanomeline High Dose": {
+          "n": 84,
+          "mean": "138.8",
+          "sd": "18.75",
+          "median": "138.0",
+          "min": "100.0",
+          "max": "186.0"
+        },
+        "SYSBP|AFTER STANDING FOR 3 MINUTES|Baseline|Xanomeline Low Dose": {
+          "n": 84,
+          "mean": "136.4",
+          "sd": "18.11",
+          "median": "134.5",
+          "min": "104.0",
+          "max": "182.0"
+        },
+        "SYSBP|AFTER STANDING FOR 3 MINUTES|End of treatment|Placebo": {
+          "n": 84,
+          "mean": "134.1",
+          "sd": "18.01",
+          "median": "130.0",
+          "min": "90.0",
+          "max": "190.0"
+        },
+        "SYSBP|AFTER STANDING FOR 3 MINUTES|End of treatment|Xanomeline High Dose": {
+          "n": 81,
+          "mean": "130.4",
+          "sd": "17.77",
+          "median": "130.0",
+          "min": "88.0",
+          "max": "184.0"
+        },
+        "SYSBP|AFTER STANDING FOR 3 MINUTES|End of treatment|Xanomeline Low Dose": {
+          "n": 83,
+          "mean": "133.1",
+          "sd": "17.80",
+          "median": "130.0",
+          "min": "98.0",
+          "max": "200.0"
+        },
+        "SYSBP|AFTER STANDING FOR 3 MINUTES|Week 24|Placebo": {
+          "n": 59,
+          "mean": "134.8",
+          "sd": "17.35",
+          "median": "131.0",
+          "min": "100.0",
+          "max": "190.0"
+        },
+        "SYSBP|AFTER STANDING FOR 3 MINUTES|Week 24|Xanomeline High Dose": {
+          "n": 30,
+          "mean": "129.2",
+          "sd": "16.95",
+          "median": "126.0",
+          "min": "90.0",
+          "max": "172.0"
+        },
+        "SYSBP|AFTER STANDING FOR 3 MINUTES|Week 24|Xanomeline Low Dose": {
+          "n": 27,
+          "mean": "131.0",
+          "sd": "17.92",
+          "median": "130.0",
+          "min": "100.0",
+          "max": "168.0"
+        }
+      }
+    },
+    "t-vitals-change": {
+      "reference": "Table 14-7.02",
+      "title": "Summary of Vital Signs Change from Baseline at End of Treatment",
+      "key": "PARAMCD|ATPT|visit|treatment",
+      "statistic": "value minus that subject's own observed Week 0 value in the same position",
+      "cells": {
+        "DIABP|AFTER LYING DOWN FOR 5 MINUTES|End of treatment|Placebo": {
+          "n": 83,
+          "mean": "-1.0",
+          "sd": "10.99",
+          "median": "0.0",
+          "min": "-34.0",
+          "max": "41.0"
+        },
+        "DIABP|AFTER LYING DOWN FOR 5 MINUTES|End of treatment|Xanomeline High Dose": {
+          "n": 82,
+          "mean": "-3.1",
+          "sd": "8.79",
+          "median": "-4.0",
+          "min": "-24.0",
+          "max": "21.0"
+        },
+        "DIABP|AFTER LYING DOWN FOR 5 MINUTES|End of treatment|Xanomeline Low Dose": {
+          "n": 84,
+          "mean": "-2.0",
+          "sd": "8.80",
+          "median": "-2.0",
+          "min": "-30.0",
+          "max": "18.0"
+        },
+        "DIABP|AFTER LYING DOWN FOR 5 MINUTES|Week 24|Placebo": {
+          "n": 58,
+          "mean": "-0.8",
+          "sd": "10.82",
+          "median": "-0.5",
+          "min": "-18.0",
+          "max": "41.0"
+        },
+        "DIABP|AFTER LYING DOWN FOR 5 MINUTES|Week 24|Xanomeline High Dose": {
+          "n": 30,
+          "mean": "-2.2",
+          "sd": "9.20",
+          "median": "-1.0",
+          "min": "-20.0",
+          "max": "21.0"
+        },
+        "DIABP|AFTER LYING DOWN FOR 5 MINUTES|Week 24|Xanomeline Low Dose": {
+          "n": 27,
+          "mean": "-0.9",
+          "sd": "7.71",
+          "median": "-2.0",
+          "min": "-20.0",
+          "max": "16.0"
+        },
+        "DIABP|AFTER STANDING FOR 1 MINUTE|End of treatment|Placebo": {
+          "n": 83,
+          "mean": "-2.8",
+          "sd": "10.17",
+          "median": "-2.0",
+          "min": "-34.0",
+          "max": "24.0"
+        },
+        "DIABP|AFTER STANDING FOR 1 MINUTE|End of treatment|Xanomeline High Dose": {
+          "n": 82,
+          "mean": "-2.1",
+          "sd": "12.10",
+          "median": "-2.0",
+          "min": "-34.0",
+          "max": "28.0"
+        },
+        "DIABP|AFTER STANDING FOR 1 MINUTE|End of treatment|Xanomeline Low Dose": {
+          "n": 84,
+          "mean": "-1.2",
+          "sd": "8.93",
+          "median": "0.0",
+          "min": "-30.0",
+          "max": "20.0"
+        },
+        "DIABP|AFTER STANDING FOR 1 MINUTE|Week 24|Placebo": {
+          "n": 58,
+          "mean": "-2.3",
+          "sd": "10.08",
+          "median": "-4.0",
+          "min": "-23.0",
+          "max": "24.0"
+        },
+        "DIABP|AFTER STANDING FOR 1 MINUTE|Week 24|Xanomeline High Dose": {
+          "n": 30,
+          "mean": "-2.3",
+          "sd": "10.85",
+          "median": "-7.0",
+          "min": "-18.0",
+          "max": "22.0"
+        },
+        "DIABP|AFTER STANDING FOR 1 MINUTE|Week 24|Xanomeline Low Dose": {
+          "n": 27,
+          "mean": "1.0",
+          "sd": "7.30",
+          "median": "2.0",
+          "min": "-20.0",
+          "max": "18.0"
+        },
+        "DIABP|AFTER STANDING FOR 3 MINUTES|End of treatment|Placebo": {
+          "n": 83,
+          "mean": "-2.7",
+          "sd": "9.36",
+          "median": "-2.0",
+          "min": "-30.0",
+          "max": "20.0"
+        },
+        "DIABP|AFTER STANDING FOR 3 MINUTES|End of treatment|Xanomeline High Dose": {
+          "n": 81,
+          "mean": "-2.6",
+          "sd": "10.81",
+          "median": "-2.0",
+          "min": "-40.0",
+          "max": "27.0"
+        },
+        "DIABP|AFTER STANDING FOR 3 MINUTES|End of treatment|Xanomeline Low Dose": {
+          "n": 83,
+          "mean": "-1.8",
+          "sd": "9.69",
+          "median": "-1.0",
+          "min": "-24.0",
+          "max": "38.0"
+        },
+        "DIABP|AFTER STANDING FOR 3 MINUTES|Week 24|Placebo": {
+          "n": 58,
+          "mean": "-2.3",
+          "sd": "9.56",
+          "median": "-3.5",
+          "min": "-22.0",
+          "max": "20.0"
+        },
+        "DIABP|AFTER STANDING FOR 3 MINUTES|Week 24|Xanomeline High Dose": {
+          "n": 30,
+          "mean": "-2.1",
+          "sd": "9.77",
+          "median": "-3.5",
+          "min": "-20.0",
+          "max": "16.0"
+        },
+        "DIABP|AFTER STANDING FOR 3 MINUTES|Week 24|Xanomeline Low Dose": {
+          "n": 27,
+          "mean": "-1.6",
+          "sd": "8.29",
+          "median": "0.0",
+          "min": "-20.0",
+          "max": "10.0"
+        },
+        "PULSE|AFTER LYING DOWN FOR 5 MINUTES|End of treatment|Placebo": {
+          "n": 83,
+          "mean": "-0.9",
+          "sd": "8.69",
+          "median": "-1.0",
+          "min": "-24.0",
+          "max": "24.0"
+        },
+        "PULSE|AFTER LYING DOWN FOR 5 MINUTES|End of treatment|Xanomeline High Dose": {
+          "n": 82,
+          "mean": "-1.7",
+          "sd": "8.95",
+          "median": "-2.0",
+          "min": "-34.0",
+          "max": "20.0"
+        },
+        "PULSE|AFTER LYING DOWN FOR 5 MINUTES|End of treatment|Xanomeline Low Dose": {
+          "n": 84,
+          "mean": "-1.0",
+          "sd": "11.12",
+          "median": "-0.5",
+          "min": "-24.0",
+          "max": "32.0"
+        },
+        "PULSE|AFTER LYING DOWN FOR 5 MINUTES|Week 24|Placebo": {
+          "n": 58,
+          "mean": "-0.3",
+          "sd": "8.77",
+          "median": "-1.0",
+          "min": "-24.0",
+          "max": "24.0"
+        },
+        "PULSE|AFTER LYING DOWN FOR 5 MINUTES|Week 24|Xanomeline High Dose": {
+          "n": 30,
+          "mean": "-2.0",
+          "sd": "11.16",
+          "median": "-2.0",
+          "min": "-34.0",
+          "max": "20.0"
+        },
+        "PULSE|AFTER LYING DOWN FOR 5 MINUTES|Week 24|Xanomeline Low Dose": {
+          "n": 27,
+          "mean": "-1.6",
+          "sd": "10.53",
+          "median": "0.0",
+          "min": "-24.0",
+          "max": "25.0"
+        },
+        "PULSE|AFTER STANDING FOR 1 MINUTE|End of treatment|Placebo": {
+          "n": 83,
+          "mean": "-1.8",
+          "sd": "11.05",
+          "median": "-1.0",
+          "min": "-53.0",
+          "max": "20.0"
+        },
+        "PULSE|AFTER STANDING FOR 1 MINUTE|End of treatment|Xanomeline High Dose": {
+          "n": 82,
+          "mean": "-2.1",
+          "sd": "10.43",
+          "median": "-1.5",
+          "min": "-36.0",
+          "max": "22.0"
+        },
+        "PULSE|AFTER STANDING FOR 1 MINUTE|End of treatment|Xanomeline Low Dose": {
+          "n": 84,
+          "mean": "-0.5",
+          "sd": "11.69",
+          "median": "0.0",
+          "min": "-24.0",
+          "max": "34.0"
+        },
+        "PULSE|AFTER STANDING FOR 1 MINUTE|Week 24|Placebo": {
+          "n": 58,
+          "mean": "-1.7",
+          "sd": "11.72",
+          "median": "0.5",
+          "min": "-53.0",
+          "max": "18.0"
+        },
+        "PULSE|AFTER STANDING FOR 1 MINUTE|Week 24|Xanomeline High Dose": {
+          "n": 30,
+          "mean": "-1.8",
+          "sd": "13.41",
+          "median": "-3.0",
+          "min": "-36.0",
+          "max": "20.0"
+        },
+        "PULSE|AFTER STANDING FOR 1 MINUTE|Week 24|Xanomeline Low Dose": {
+          "n": 27,
+          "mean": "-1.3",
+          "sd": "9.05",
+          "median": "0.0",
+          "min": "-20.0",
+          "max": "12.0"
+        },
+        "PULSE|AFTER STANDING FOR 3 MINUTES|End of treatment|Placebo": {
+          "n": 83,
+          "mean": "-1.0",
+          "sd": "9.89",
+          "median": "0.0",
+          "min": "-46.0",
+          "max": "18.0"
+        },
+        "PULSE|AFTER STANDING FOR 3 MINUTES|End of treatment|Xanomeline High Dose": {
+          "n": 81,
+          "mean": "-1.9",
+          "sd": "9.49",
+          "median": "-1.0",
+          "min": "-40.0",
+          "max": "20.0"
+        },
+        "PULSE|AFTER STANDING FOR 3 MINUTES|End of treatment|Xanomeline Low Dose": {
+          "n": 83,
+          "mean": "-0.7",
+          "sd": "10.73",
+          "median": "-1.0",
+          "min": "-22.0",
+          "max": "29.0"
+        },
+        "PULSE|AFTER STANDING FOR 3 MINUTES|Week 24|Placebo": {
+          "n": 58,
+          "mean": "-1.5",
+          "sd": "10.47",
+          "median": "0.0",
+          "min": "-46.0",
+          "max": "14.0"
+        },
+        "PULSE|AFTER STANDING FOR 3 MINUTES|Week 24|Xanomeline High Dose": {
+          "n": 30,
+          "mean": "-2.7",
+          "sd": "11.12",
+          "median": "-2.0",
+          "min": "-40.0",
+          "max": "14.0"
+        },
+        "PULSE|AFTER STANDING FOR 3 MINUTES|Week 24|Xanomeline Low Dose": {
+          "n": 27,
+          "mean": "-2.1",
+          "sd": "8.77",
+          "median": "-2.0",
+          "min": "-20.0",
+          "max": "16.0"
+        },
+        "SYSBP|AFTER LYING DOWN FOR 5 MINUTES|End of treatment|Placebo": {
+          "n": 83,
+          "mean": "-2.0",
+          "sd": "16.76",
+          "median": "-4.0",
+          "min": "-32.0",
+          "max": "50.0"
+        },
+        "SYSBP|AFTER LYING DOWN FOR 5 MINUTES|End of treatment|Xanomeline High Dose": {
+          "n": 82,
+          "mean": "-5.8",
+          "sd": "14.48",
+          "median": "-8.0",
+          "min": "-36.0",
+          "max": "29.0"
+        },
+        "SYSBP|AFTER LYING DOWN FOR 5 MINUTES|End of treatment|Xanomeline Low Dose": {
+          "n": 84,
+          "mean": "-3.1",
+          "sd": "16.57",
+          "median": "-2.0",
+          "min": "-48.0",
+          "max": "34.0"
+        },
+        "SYSBP|AFTER LYING DOWN FOR 5 MINUTES|Week 24|Placebo": {
+          "n": 58,
+          "mean": "-2.1",
+          "sd": "14.73",
+          "median": "-4.0",
+          "min": "-28.0",
+          "max": "50.0"
+        },
+        "SYSBP|AFTER LYING DOWN FOR 5 MINUTES|Week 24|Xanomeline High Dose": {
+          "n": 30,
+          "mean": "-5.6",
+          "sd": "17.18",
+          "median": "-7.0",
+          "min": "-36.0",
+          "max": "26.0"
+        },
+        "SYSBP|AFTER LYING DOWN FOR 5 MINUTES|Week 24|Xanomeline Low Dose": {
+          "n": 27,
+          "mean": "-0.3",
+          "sd": "17.19",
+          "median": "2.0",
+          "min": "-48.0",
+          "max": "30.0"
+        },
+        "SYSBP|AFTER STANDING FOR 1 MINUTE|End of treatment|Placebo": {
+          "n": 83,
+          "mean": "-1.6",
+          "sd": "17.76",
+          "median": "0.0",
+          "min": "-46.0",
+          "max": "48.0"
+        },
+        "SYSBP|AFTER STANDING FOR 1 MINUTE|End of treatment|Xanomeline High Dose": {
+          "n": 82,
+          "mean": "-6.7",
+          "sd": "16.98",
+          "median": "-8.0",
+          "min": "-44.0",
+          "max": "42.0"
+        },
+        "SYSBP|AFTER STANDING FOR 1 MINUTE|End of treatment|Xanomeline Low Dose": {
+          "n": 84,
+          "mean": "-2.8",
+          "sd": "17.40",
+          "median": "-1.5",
+          "min": "-52.0",
+          "max": "48.0"
+        },
+        "SYSBP|AFTER STANDING FOR 1 MINUTE|Week 24|Placebo": {
+          "n": 58,
+          "mean": "-1.7",
+          "sd": "16.87",
+          "median": "0.0",
+          "min": "-32.0",
+          "max": "40.0"
+        },
+        "SYSBP|AFTER STANDING FOR 1 MINUTE|Week 24|Xanomeline High Dose": {
+          "n": 30,
+          "mean": "-6.3",
+          "sd": "19.49",
+          "median": "-9.0",
+          "min": "-36.0",
+          "max": "42.0"
+        },
+        "SYSBP|AFTER STANDING FOR 1 MINUTE|Week 24|Xanomeline Low Dose": {
+          "n": 27,
+          "mean": "-0.1",
+          "sd": "17.73",
+          "median": "-1.0",
+          "min": "-30.0",
+          "max": "48.0"
+        },
+        "SYSBP|AFTER STANDING FOR 3 MINUTES|End of treatment|Placebo": {
+          "n": 83,
+          "mean": "-2.5",
+          "sd": "16.61",
+          "median": "-4.0",
+          "min": "-40.0",
+          "max": "48.0"
+        },
+        "SYSBP|AFTER STANDING FOR 3 MINUTES|End of treatment|Xanomeline High Dose": {
+          "n": 81,
+          "mean": "-8.3",
+          "sd": "15.21",
+          "median": "-8.0",
+          "min": "-40.0",
+          "max": "30.0"
+        },
+        "SYSBP|AFTER STANDING FOR 3 MINUTES|End of treatment|Xanomeline Low Dose": {
+          "n": 83,
+          "mean": "-3.5",
+          "sd": "16.51",
+          "median": "-4.0",
+          "min": "-52.0",
+          "max": "60.0"
+        },
+        "SYSBP|AFTER STANDING FOR 3 MINUTES|Week 24|Placebo": {
+          "n": 58,
+          "mean": "-1.0",
+          "sd": "15.80",
+          "median": "-3.5",
+          "min": "-36.0",
+          "max": "38.0"
+        },
+        "SYSBP|AFTER STANDING FOR 3 MINUTES|Week 24|Xanomeline High Dose": {
+          "n": 30,
+          "mean": "-9.0",
+          "sd": "16.88",
+          "median": "-8.0",
+          "min": "-40.0",
+          "max": "30.0"
+        },
+        "SYSBP|AFTER STANDING FOR 3 MINUTES|Week 24|Xanomeline Low Dose": {
+          "n": 27,
+          "mean": "-0.1",
+          "sd": "16.20",
+          "median": "0.0",
+          "min": "-30.0",
+          "max": "30.0"
+        }
+      }
+    },
+    "t-weight": {
+      "reference": "Table 14-7.03",
+      "title": "Summary of Weight and Weight Change from Baseline at End of Treatment",
+      "key": "WEIGHT or WEIGHT_CHG|visit|treatment",
+      "statistic": "AVAL for WEIGHT, change from baseline for WEIGHT_CHG",
+      "cells": {
+        "WEIGHT_CHG|End of treatment|Placebo": {
+          "n": 84,
+          "mean": "0.2",
+          "sd": "2.05",
+          "median": "0.0",
+          "min": "-4.5",
+          "max": "8.2"
+        },
+        "WEIGHT_CHG|End of treatment|Xanomeline High Dose": {
+          "n": 81,
+          "mean": "0.1",
+          "sd": "4.19",
+          "median": "-0.4",
+          "min": "-5.5",
+          "max": "33.3"
+        },
+        "WEIGHT_CHG|End of treatment|Xanomeline Low Dose": {
+          "n": 83,
+          "mean": "-0.4",
+          "sd": "2.41",
+          "median": "0.0",
+          "min": "-14.5",
+          "max": "5.9"
+        },
+        "WEIGHT_CHG|Week 24|Placebo": {
+          "n": 59,
+          "mean": "0.1",
+          "sd": "2.30",
+          "median": "0.0",
+          "min": "-4.5",
+          "max": "8.2"
+        },
+        "WEIGHT_CHG|Week 24|Xanomeline High Dose": {
+          "n": 30,
+          "mean": "1.0",
+          "sd": "6.47",
+          "median": "-0.2",
+          "min": "-4.5",
+          "max": "33.3"
+        },
+        "WEIGHT_CHG|Week 24|Xanomeline Low Dose": {
+          "n": 27,
+          "mean": "-0.3",
+          "sd": "2.04",
+          "median": "0.0",
+          "min": "-5.4",
+          "max": "3.2"
+        },
+        "WEIGHT|Baseline|Placebo": {
+          "n": 86,
+          "mean": "62.8",
+          "sd": "12.77",
+          "median": "60.6",
+          "min": "34.0",
+          "max": "86.2"
+        },
+        "WEIGHT|Baseline|Xanomeline High Dose": {
+          "n": 84,
+          "mean": "70.0",
+          "sd": "14.65",
+          "median": "69.2",
+          "min": "41.7",
+          "max": "108.0"
+        },
+        "WEIGHT|Baseline|Xanomeline Low Dose": {
+          "n": 83,
+          "mean": "67.3",
+          "sd": "14.13",
+          "median": "64.9",
+          "min": "45.4",
+          "max": "106.1"
+        },
+        "WEIGHT|End of treatment|Placebo": {
+          "n": 84,
+          "mean": "63.3",
+          "sd": "12.66",
+          "median": "64.0",
+          "min": "34.0",
+          "max": "86.6"
+        },
+        "WEIGHT|End of treatment|Xanomeline High Dose": {
+          "n": 81,
+          "mean": "69.7",
+          "sd": "14.00",
+          "median": "70.3",
+          "min": "42.2",
+          "max": "105.7"
+        },
+        "WEIGHT|End of treatment|Xanomeline Low Dose": {
+          "n": 84,
+          "mean": "66.7",
+          "sd": "14.32",
+          "median": "65.9",
+          "min": "41.7",
+          "max": "106.1"
+        },
+        "WEIGHT|Week 24|Placebo": {
+          "n": 59,
+          "mean": "63.2",
+          "sd": "12.58",
+          "median": "63.5",
+          "min": "34.0",
+          "max": "86.6"
+        },
+        "WEIGHT|Week 24|Xanomeline High Dose": {
+          "n": 30,
+          "mean": "71.1",
+          "sd": "15.82",
+          "median": "68.7",
+          "min": "49.9",
+          "max": "105.7"
+        },
+        "WEIGHT|Week 24|Xanomeline Low Dose": {
+          "n": 27,
+          "mean": "67.4",
+          "sd": "14.07",
+          "median": "62.6",
+          "min": "45.5",
+          "max": "106.1"
+        }
+      }
+    },
+    "t-conmeds": {
+      "reference": "Table 14-7.04",
+      "title": "Summary of Concomitant Medications (Number of Subjects)",
+      "key": "therapeutic class (CMCLAS) and coded medication (CMDECOD)",
+      "statistic": "subjects with at least one record, counted once per class and once per medication",
+      "any": {
+        "Placebo": {
+          "n": 77,
+          "pct": 90
+        },
+        "Xanomeline Low Dose": {
+          "n": 74,
+          "pct": 88
+        },
+        "Xanomeline High Dose": {
+          "n": 78,
+          "pct": 93
+        }
+      },
+      "classes": {
+        "ALIMENTARY TRACT AND METABOLISM": {
+          "total": {
+            "Placebo": {
+              "n": 12,
+              "pct": 14
+            },
+            "Xanomeline Low Dose": {
+              "n": 11,
+              "pct": 13
+            },
+            "Xanomeline High Dose": {
+              "n": 9,
+              "pct": 11
+            }
+          },
+          "terms": {
+            "CALCIUM": {
+              "Placebo": {
+                "n": 7,
+                "pct": 8
+              },
+              "Xanomeline Low Dose": {
+                "n": 6,
+                "pct": 7
+              },
+              "Xanomeline High Dose": {
+                "n": 3,
+                "pct": 4
+              }
+            },
+            "ALGELDRATE": {
+              "Placebo": {
+                "n": 2,
+                "pct": 2
+              },
+              "Xanomeline Low Dose": {
+                "n": 0,
+                "pct": 0
+              },
+              "Xanomeline High Dose": {
+                "n": 2,
+                "pct": 2
+              }
+            },
+            "LOPERAMIDE HYDROCHLORIDE": {
+              "Placebo": {
+                "n": 1,
+                "pct": 1
+              },
+              "Xanomeline Low Dose": {
+                "n": 1,
+                "pct": 1
+              },
+              "Xanomeline High Dose": {
+                "n": 1,
+                "pct": 1
+              }
+            },
+            "METFORMIN HYDROCHLORIDE": {
+              "Placebo": {
+                "n": 1,
+                "pct": 1
+              },
+              "Xanomeline Low Dose": {
+                "n": 1,
+                "pct": 1
+              },
+              "Xanomeline High Dose": {
+                "n": 0,
+                "pct": 0
+              }
+            },
+            "NIZATIDINE": {
+              "Placebo": {
+                "n": 1,
+                "pct": 1
+              },
+              "Xanomeline Low Dose": {
+                "n": 1,
+                "pct": 1
+              },
+              "Xanomeline High Dose": {
+                "n": 4,
+                "pct": 5
+              }
+            },
+            "CALCIUM CARBONATE": {
+              "Placebo": {
+                "n": 0,
+                "pct": 0
+              },
+              "Xanomeline Low Dose": {
+                "n": 0,
+                "pct": 0
+              },
+              "Xanomeline High Dose": {
+                "n": 1,
+                "pct": 1
+              }
+            },
+            "CIMETIDINE": {
+              "Placebo": {
+                "n": 0,
+                "pct": 0
+              },
+              "Xanomeline Low Dose": {
+                "n": 1,
+                "pct": 1
+              },
+              "Xanomeline High Dose": {
+                "n": 0,
+                "pct": 0
+              }
+            },
+            "SIMETICONE": {
+              "Placebo": {
+                "n": 0,
+                "pct": 0
+              },
+              "Xanomeline Low Dose": {
+                "n": 2,
+                "pct": 2
+              },
+              "Xanomeline High Dose": {
+                "n": 0,
+                "pct": 0
+              }
+            }
+          }
+        },
+        "ANTINEOPLASTIC AND IMMUNOMODULATING AGENTS": {
+          "total": {
+            "Placebo": {
+              "n": 1,
+              "pct": 1
+            },
+            "Xanomeline Low Dose": {
+              "n": 0,
+              "pct": 0
+            },
+            "Xanomeline High Dose": {
+              "n": 1,
+              "pct": 1
+            }
+          },
+          "terms": {
+            "LEUPRORELIN ACETATE": {
+              "Placebo": {
+                "n": 1,
+                "pct": 1
+              },
+              "Xanomeline Low Dose": {
+                "n": 0,
+                "pct": 0
+              },
+              "Xanomeline High Dose": {
+                "n": 1,
+                "pct": 1
+              }
+            }
+          }
+        },
+        "BLOOD AND BLOOD FORMING ORGANS": {
+          "total": {
+            "Placebo": {
+              "n": 0,
+              "pct": 0
+            },
+            "Xanomeline Low Dose": {
+              "n": 1,
+              "pct": 1
+            },
+            "Xanomeline High Dose": {
+              "n": 0,
+              "pct": 0
+            }
+          },
+          "terms": {
+            "FERROUS SULFATE": {
+              "Placebo": {
+                "n": 0,
+                "pct": 0
+              },
+              "Xanomeline Low Dose": {
+                "n": 1,
+                "pct": 1
+              },
+              "Xanomeline High Dose": {
+                "n": 0,
+                "pct": 0
+              }
+            }
+          }
+        },
+        "CARDIOVASCULAR SYSTEM": {
+          "total": {
+            "Placebo": {
+              "n": 12,
+              "pct": 14
+            },
+            "Xanomeline Low Dose": {
+              "n": 12,
+              "pct": 14
+            },
+            "Xanomeline High Dose": {
+              "n": 7,
+              "pct": 8
+            }
+          },
+          "terms": {
+            "AMLODIPINE": {
+              "Placebo": {
+                "n": 8,
+                "pct": 9
+              },
+              "Xanomeline Low Dose": {
+                "n": 1,
+                "pct": 1
+              },
+              "Xanomeline High Dose": {
+                "n": 2,
+                "pct": 2
+              }
+            },
+            "FUROSEMIDE": {
+              "Placebo": {
+                "n": 2,
+                "pct": 2
+              },
+              "Xanomeline Low Dose": {
+                "n": 2,
+                "pct": 2
+              },
+              "Xanomeline High Dose": {
+                "n": 1,
+                "pct": 1
+              }
+            },
+            "NIFEDIPINE": {
+              "Placebo": {
+                "n": 2,
+                "pct": 2
+              },
+              "Xanomeline Low Dose": {
+                "n": 0,
+                "pct": 0
+              },
+              "Xanomeline High Dose": {
+                "n": 0,
+                "pct": 0
+              }
+            },
+            "DOXAZOSIN MESILATE": {
+              "Placebo": {
+                "n": 1,
+                "pct": 1
+              },
+              "Xanomeline Low Dose": {
+                "n": 2,
+                "pct": 2
+              },
+              "Xanomeline High Dose": {
+                "n": 1,
+                "pct": 1
+              }
+            },
+            "DIGOXIN": {
+              "Placebo": {
+                "n": 0,
+                "pct": 0
+              },
+              "Xanomeline Low Dose": {
+                "n": 3,
+                "pct": 4
+              },
+              "Xanomeline High Dose": {
+                "n": 2,
+                "pct": 2
+              }
+            },
+            "DILTIAZEM HYDROCHLORIDE": {
+              "Placebo": {
+                "n": 0,
+                "pct": 0
+              },
+              "Xanomeline Low Dose": {
+                "n": 0,
+                "pct": 0
+              },
+              "Xanomeline High Dose": {
+                "n": 1,
+                "pct": 1
+              }
+            },
+            "FELODIPINE": {
+              "Placebo": {
+                "n": 0,
+                "pct": 0
+              },
+              "Xanomeline Low Dose": {
+                "n": 1,
+                "pct": 1
+              },
+              "Xanomeline High Dose": {
+                "n": 0,
+                "pct": 0
+              }
+            },
+            "FLUVASTATIN": {
+              "Placebo": {
+                "n": 0,
+                "pct": 0
+              },
+              "Xanomeline Low Dose": {
+                "n": 2,
+                "pct": 2
+              },
+              "Xanomeline High Dose": {
+                "n": 0,
+                "pct": 0
+              }
+            },
+            "LOSARTAN POTASSIUM": {
+              "Placebo": {
+                "n": 0,
+                "pct": 0
+              },
+              "Xanomeline Low Dose": {
+                "n": 2,
+                "pct": 2
+              },
+              "Xanomeline High Dose": {
+                "n": 0,
+                "pct": 0
+              }
+            }
+          }
+        },
+        "DERMATOLOGICALS": {
+          "total": {
+            "Placebo": {
+              "n": 0,
+              "pct": 0
+            },
+            "Xanomeline Low Dose": {
+              "n": 0,
+              "pct": 0
+            },
+            "Xanomeline High Dose": {
+              "n": 1,
+              "pct": 1
+            }
+          },
+          "terms": {
+            "CLOBETASOL PROPIONATE": {
+              "Placebo": {
+                "n": 0,
+                "pct": 0
+              },
+              "Xanomeline Low Dose": {
+                "n": 0,
+                "pct": 0
+              },
+              "Xanomeline High Dose": {
+                "n": 1,
+                "pct": 1
+              }
+            }
+          }
+        },
+        "GENITO URINARY SYSTEM AND SEX HORMONES": {
+          "total": {
+            "Placebo": {
+              "n": 6,
+              "pct": 7
+            },
+            "Xanomeline Low Dose": {
+              "n": 10,
+              "pct": 12
+            },
+            "Xanomeline High Dose": {
+              "n": 5,
+              "pct": 6
+            }
+          },
+          "terms": {
+            "ESTROGENS CONJUGATED": {
+              "Placebo": {
+                "n": 6,
+                "pct": 7
+              },
+              "Xanomeline Low Dose": {
+                "n": 10,
+                "pct": 12
+              },
+              "Xanomeline High Dose": {
+                "n": 5,
+                "pct": 6
+              }
+            }
+          }
+        },
+        "NERVOUS SYSTEM": {
+          "total": {
+            "Placebo": {
+              "n": 23,
+              "pct": 27
+            },
+            "Xanomeline Low Dose": {
+              "n": 14,
+              "pct": 17
+            },
+            "Xanomeline High Dose": {
+              "n": 8,
+              "pct": 10
+            }
+          },
+          "terms": {
+            "ACETYLSALICYLIC ACID": {
+              "Placebo": {
+                "n": 21,
+                "pct": 24
+              },
+              "Xanomeline Low Dose": {
+                "n": 11,
+                "pct": 13
+              },
+              "Xanomeline High Dose": {
+                "n": 6,
+                "pct": 7
+              }
+            },
+            "ALPRAZOLAM": {
+              "Placebo": {
+                "n": 1,
+                "pct": 1
+              },
+              "Xanomeline Low Dose": {
+                "n": 0,
+                "pct": 0
+              },
+              "Xanomeline High Dose": {
+                "n": 0,
+                "pct": 0
+              }
+            },
+            "DONEPEZIL HYDROCHLORIDE": {
+              "Placebo": {
+                "n": 1,
+                "pct": 1
+              },
+              "Xanomeline Low Dose": {
+                "n": 2,
+                "pct": 2
+              },
+              "Xanomeline High Dose": {
+                "n": 2,
+                "pct": 2
+              }
+            },
+            "SUMATRIPTAN": {
+              "Placebo": {
+                "n": 1,
+                "pct": 1
+              },
+              "Xanomeline Low Dose": {
+                "n": 0,
+                "pct": 0
+              },
+              "Xanomeline High Dose": {
+                "n": 0,
+                "pct": 0
+              }
+            },
+            "HALOPERIDOL": {
+              "Placebo": {
+                "n": 0,
+                "pct": 0
+              },
+              "Xanomeline Low Dose": {
+                "n": 1,
+                "pct": 1
+              },
+              "Xanomeline High Dose": {
+                "n": 0,
+                "pct": 0
+              }
+            },
+            "PAROXETINE HYDROCHLORIDE": {
+              "Placebo": {
+                "n": 0,
+                "pct": 0
+              },
+              "Xanomeline Low Dose": {
+                "n": 1,
+                "pct": 1
+              },
+              "Xanomeline High Dose": {
+                "n": 0,
+                "pct": 0
+              }
+            }
+          }
+        },
+        "RESPIRATORY SYSTEM": {
+          "total": {
+            "Placebo": {
+              "n": 4,
+              "pct": 5
+            },
+            "Xanomeline Low Dose": {
+              "n": 1,
+              "pct": 1
+            },
+            "Xanomeline High Dose": {
+              "n": 4,
+              "pct": 5
+            }
+          },
+          "terms": {
+            "SALBUTAMOL SULFATE": {
+              "Placebo": {
+                "n": 2,
+                "pct": 2
+              },
+              "Xanomeline Low Dose": {
+                "n": 1,
+                "pct": 1
+              },
+              "Xanomeline High Dose": {
+                "n": 0,
+                "pct": 0
+              }
+            },
+            "GUAIFENESIN": {
+              "Placebo": {
+                "n": 1,
+                "pct": 1
+              },
+              "Xanomeline Low Dose": {
+                "n": 0,
+                "pct": 0
+              },
+              "Xanomeline High Dose": {
+                "n": 0,
+                "pct": 0
+              }
+            },
+            "IPRATROPIUM BROMIDE": {
+              "Placebo": {
+                "n": 1,
+                "pct": 1
+              },
+              "Xanomeline Low Dose": {
+                "n": 0,
+                "pct": 0
+              },
+              "Xanomeline High Dose": {
+                "n": 0,
+                "pct": 0
+              }
+            },
+            "NAPROXEN SODIUM": {
+              "Placebo": {
+                "n": 1,
+                "pct": 1
+              },
+              "Xanomeline Low Dose": {
+                "n": 0,
+                "pct": 0
+              },
+              "Xanomeline High Dose": {
+                "n": 3,
+                "pct": 4
+              }
+            },
+            "BUDESONIDE": {
+              "Placebo": {
+                "n": 0,
+                "pct": 0
+              },
+              "Xanomeline Low Dose": {
+                "n": 0,
+                "pct": 0
+              },
+              "Xanomeline High Dose": {
+                "n": 1,
+                "pct": 1
+              }
+            }
+          }
+        },
+        "SYSTEMIC HORMONAL PREPARATIONS, EXCL.": {
+          "total": {
+            "Placebo": {
+              "n": 2,
+              "pct": 2
+            },
+            "Xanomeline Low Dose": {
+              "n": 13,
+              "pct": 15
+            },
+            "Xanomeline High Dose": {
+              "n": 8,
+              "pct": 10
+            }
+          },
+          "terms": {
+            "HYDROCORTISONE": {
+              "Placebo": {
+                "n": 2,
+                "pct": 2
+              },
+              "Xanomeline Low Dose": {
+                "n": 13,
+                "pct": 15
+              },
+              "Xanomeline High Dose": {
+                "n": 8,
+                "pct": 10
+              }
+            }
+          }
+        },
+        "UNCODED": {
+          "total": {
+            "Placebo": {
+              "n": 74,
+              "pct": 86
+            },
+            "Xanomeline Low Dose": {
+              "n": 70,
+              "pct": 83
+            },
+            "Xanomeline High Dose": {
+              "n": 77,
+              "pct": 92
+            }
+          },
+          "terms": {
+            "UNCODED": {
+              "Placebo": {
+                "n": 74,
+                "pct": 86
+              },
+              "Xanomeline Low Dose": {
+                "n": 70,
+                "pct": 83
+              },
+              "Xanomeline High Dose": {
+                "n": 77,
+                "pct": 92
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

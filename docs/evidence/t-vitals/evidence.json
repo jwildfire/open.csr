@@ -1,0 +1,101 @@
+{
+  "module": "t-vitals",
+  "generated": "2026-08-27T04:14:45.503Z",
+  "records": [
+    {
+      "requirementIds": [
+        "DSP-ALL-001"
+      ],
+      "title": "DSP-ALL-001: every display renders a table that actually contains numbers (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-ALL-002"
+      ],
+      "title": "DSP-ALL-002: every display declares a regulatory identifier and a source line (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-VS-001"
+      ],
+      "title": "DSP-VS-001: every rendered cell of the vital signs summary is what the reference report printed (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-vitals.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-VS-002"
+      ],
+      "title": "DSP-VS-002: baseline and end of treatment select one record per subject, parameter and position (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-vitals.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-VWC-001"
+      ],
+      "title": "DSP-VWC-001: all four displays group by planned treatment over the safety analysis set (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-vitals.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-VWC-002"
+      ],
+      "title": "DSP-VWC-002: the committed three-route agreement record is green and describes this iteration (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-vitals.R",
+      "issueRefs": [
+        1
+      ]
+    }
+  ],
+  "traceability": {
+    "adamDatasets": [
+      "adsl",
+      "advs"
+    ],
+    "adamHashes": {
+      "adsl": "sha256:83b1d423d2b40766af8138864699137cfb6e0ccb064ca25369c1ed7216936918",
+      "advs": "sha256:7be440388501966144aa18f3d460cc9e4bb783eb8312df196aa6dfb7502e685b"
+    },
+    "ardFile": "outputs/t-vitals/v001/ard.json",
+    "ardHash": "sha256:88e8ee0b9d51761c4bafa4a2b13ee72b699117f76d08849535d26674ecf8e961",
+    "displayFile": "library/tfl/t-vitals/display.yaml",
+    "specHash": "sha256:2aeb25861d2864c68dec7cb56a37435df974e048d036e1a3a1b256a5604d4290",
+    "iteration": "v001",
+    "sourceCommit": null
+  },
+  "environment": {
+    "os": "Darwin 23.6.0",
+    "node": "v24.14.0",
+    "vitest": null,
+    "r": "4.3.3"
+  },
+  "run": null
+}

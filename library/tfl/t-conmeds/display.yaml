@@ -1,0 +1,36 @@
+id: t-conmeds
+title: "Summary of Concomitant Medications (Number of Subjects)"
+study: CDISCPILOT01
+population_label: "Safety Analysis Set"
+cutoff: "2014-07-01"
+source: "Source: adcm, adsl (pharmaverseadam). Data cut-off: 2014-07-01."
+footnotes:
+  - "Treatment groups are PLANNED treatment (TRT01P). Twelve subjects in this study received a treatment other than the one they were randomised to; grouping by actual treatment (TRT01A) would give column sizes of 86, 96 and 72."
+  - "A subject is counted once per therapeutic class and once per coded medication, however many records they have. Class counts are therefore not the sum of the medication counts beneath them."
+  - "Every recorded medication counts, whether it was taken before, during or after treatment. Restricting to medications taken on treatment (ONTRTFL = 'Y') would count a much smaller set of records."
+  - "UNCODED is not a therapeutic class. It is how this study's data records a medication that was never coded to a dictionary term, and it is reported rather than dropped."
+  - "Classes, and the medications within a class, are ordered by the largest subject count in any treatment group, ties alphabetically. The reference document this display targets ordered them alphabetically by class instead."
+  - "Percentages are based on the number of subjects in the safety analysis set for each treatment group."
+columns:
+  order: [Placebo, "Xanomeline Low Dose", "Xanomeline High Dose"]
+format:
+  digits:
+    # `N:` and `n:` are deliberately absent. R's YAML reader resolves BOTH bare
+    # `N` and bare `n` to the boolean FALSE, so declaring the two together is a
+    # duplicate-key parse error and declaring either alone silently keys the digit
+    # plan under "FALSE". Counts default to zero decimals, which is what is wanted.
+    p: 1
+rows:
+  - { analysis: any_conmed, variable: CMFL, level: "Y", pattern: n_pct,
+      label: "Subjects receiving at least one concomitant medication" }
+  - { label: "Therapeutic class and coded medication, n (%)", section: true }
+  - { analysis: by_class_term, type: hierarchical, levels: [CMCLAS, CMDECOD],
+      pattern: n_pct }
+variants:
+  post_text: {}
+  in_text:
+    title: "Concomitant Medications Taken by at Least 5% of Subjects in Any Treatment Group"
+    filter:
+      min_pct: 5
+    footnotes:
+      - "Reduced rendering of the same analysis results dataset as the post-text display: a coded medication is shown when at least 5% of subjects in at least one treatment group took it, and a therapeutic class is shown when at least one of its medications is."

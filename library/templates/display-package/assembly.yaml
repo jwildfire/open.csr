@@ -67,3 +67,6 @@ post_text:
 
   - section: "14.3.2"
     displays: [l-ae-serious]
+
+  - section: "14.3.5"
+    displays: [t-vitals, t-vitals-change, t-weight, t-conmeds]

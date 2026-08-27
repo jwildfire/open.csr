@@ -263,6 +263,82 @@
       "prefixes": [
         "DSP-SAE"
       ]
+    },
+    {
+      "module": "t-vitals",
+      "slug": "t-vitals",
+      "title": "Summary of Vital Signs at Baseline and End of Treatment",
+      "regulatoryId": "VST01",
+      "type": "table",
+      "e3Section": "14.3.5",
+      "matrix": "displays.md",
+      "status": "planned",
+      "datasets": [
+        "advs",
+        "adsl"
+      ],
+      "blurb": "Blood pressure and pulse in three positions, at baseline, Week 24 and end of treatment, by planned treatment.",
+      "prefixes": [
+        "DSP-VS",
+        "DSP-VWC"
+      ]
+    },
+    {
+      "module": "t-vitals-change",
+      "slug": "t-vitals-change",
+      "title": "Summary of Vital Signs Change from Baseline at End of Treatment",
+      "regulatoryId": "VST02",
+      "type": "table",
+      "e3Section": "14.3.5",
+      "matrix": "displays.md",
+      "status": "planned",
+      "datasets": [
+        "advs",
+        "adsl"
+      ],
+      "blurb": "The same measurements as a change from each subject's own observed Week 0 value.",
+      "prefixes": [
+        "DSP-VSC",
+        "DSP-VWC"
+      ]
+    },
+    {
+      "module": "t-weight",
+      "slug": "t-weight",
+      "title": "Summary of Weight and Weight Change from Baseline at End of Treatment",
+      "regulatoryId": "VST03",
+      "type": "table",
+      "e3Section": "14.3.5",
+      "matrix": "displays.md",
+      "status": "planned",
+      "datasets": [
+        "advs",
+        "adsl"
+      ],
+      "blurb": "Weight and weight change from baseline at Week 24 and end of treatment.",
+      "prefixes": [
+        "DSP-WT",
+        "DSP-VWC"
+      ]
+    },
+    {
+      "module": "t-conmeds",
+      "slug": "t-conmeds",
+      "title": "Summary of Concomitant Medications",
+      "regulatoryId": "CMT01",
+      "type": "table",
+      "e3Section": "14.3.5",
+      "matrix": "displays.md",
+      "status": "planned",
+      "datasets": [
+        "adcm",
+        "adsl"
+      ],
+      "blurb": "Subjects taking at least one concomitant medication, and subject counts by therapeutic class and coded medication.",
+      "prefixes": [
+        "DSP-CM",
+        "DSP-VWC"
+      ]
     }
   ],
   "textBlocks": [

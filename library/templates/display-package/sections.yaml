@@ -104,6 +104,21 @@ sections:
       is omitted rather than left empty, because it is narrative and this document
       carries none.
 
+  - number: "14.3.5"
+    title: "Displays of Vital Signs, Weight and Concomitant Medications"
+    slug: post-text-vitals-conmeds
+    content: [post_text_index]
+    note: >-
+      NOT AN E3 SUBSECTION. E3 enumerates four subsections under 14.3 - adverse
+      event displays, death and serious adverse event listings, narratives, and the
+      abnormal laboratory value listing - and provides no slot for the vital signs,
+      weight and concomitant medication data its own Sections 12.5 and 12.6 require
+      the report to present. This subsection is an addition made by this document
+      model, in the place E3 leaves for the rest of the safety data, and it is
+      declared here rather than folded into 14.3.4 so that nothing about it looks
+      like it came from the guideline. The reference report for this study made the
+      same move under its own numbering, as Table 14-7.01 to Table 14-7.04.
+
   - number: "16"
     title: "Appendices"
     slug: appendices

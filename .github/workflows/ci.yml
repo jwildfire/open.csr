@@ -126,6 +126,38 @@ jobs:
             console.log(`OK — ${b.size} R test records match the commit.`);
           '
 
+      # Route B of the vital signs / weight / concomitant-medication qualification:
+      # every publishable statistic in those four committed ARDs, recomputed from
+      # the raw pharmaverseadam datasets by code that shares nothing with the
+      # pipeline, and compared both with the pipeline and with what the sponsor's
+      # 2006 clinical study report printed. Exits non-zero on any disagreement.
+      - name: Vital signs, weight and concomitant medications agree on three routes
+        run: Rscript qc/vitals-conmeds-agreement.R
+
+      - name: Committed agreement record matches this run
+        run: |
+          node -e '
+            const fs = require("node:fs");
+            const { execSync } = require("node:child_process");
+            const path = "quality/data/vitals-conmeds-agreement.json";
+            const fresh = JSON.parse(fs.readFileSync(path, "utf8"));
+            const committed = JSON.parse(execSync(`git show HEAD:${path}`, { encoding: "utf8" }));
+            const shape = (d) => JSON.stringify({
+              ok: d.ok,
+              comparisons: d.comparisons,
+              displays: (d.displays || []).map((x) => [
+                x.display, x.version, x.publishable_statistics, x.recomputed, x.unchecked
+              ])
+            });
+            if (shape(fresh) !== shape(committed)) {
+              console.error(path + " is stale:");
+              console.error("  commit:   " + shape(committed));
+              console.error("  this run: " + shape(fresh));
+              process.exit(1);
+            }
+            console.log(`OK — ${fresh.comparisons} comparisons match the commit.`);
+          '
+
       - name: Upload the R results
         if: always()
         uses: actions/upload-artifact@v4

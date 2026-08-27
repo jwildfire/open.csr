@@ -1,0 +1,42 @@
+# ------------------------------------------------------------------------------
+# t-conmeds — Summary of Concomitant Medications (Number of Subjects)
+# ------------------------------------------------------------------------------
+# Target: Table 14-7.04 of the CDISCPILOT01 clinical study report (27 June 2006).
+#
+# WHAT COUNTS AS CONCOMITANT. Every ADCM record counts. ADCM carries PREFL,
+# ONTRTFL and FUPFL, and a narrower reading — medications taken during treatment
+# only — is available and would give a different table. The reference report
+# counts every recorded medication (77, 74 and 78 subjects), and that is what this
+# display reproduces. The choice is stated in the display's own footnotes because
+# it is a definition, not a detail: restricting to ONTRTFL = "Y" drops roughly two
+# thirds of the records.
+#
+# CMCLAS is the anatomical therapeutic class as coded on the source records, and
+# CMDECOD the coded medication name. 6085 of 7510 records are coded "UNCODED" in
+# both, and they are reported as such rather than hidden: 86%, 83% and 92% of
+# subjects have at least one medication that was never coded, which is a property
+# of this study's data that a reader should see.
+#
+# `group: [TRT01P]` — planned treatment, as in the rest of this display group and
+# as in the reference report. Twelve subjects received a treatment other than the
+# one planned.
+# ------------------------------------------------------------------------------
+id: t-conmeds
+title: "Summary of Concomitant Medications (Number of Subjects)"
+regulatory_id: CMT01
+type: table
+dataset: adcm
+analysis_set: safety
+denominator: adsl
+group:
+  - TRT01P
+total: false
+analyses:
+  - name: any_conmed
+    method: subject_count
+    label: "Subjects receiving at least one concomitant medication"
+    variable: CMFL
+  - name: by_class_term
+    method: hierarchical_count
+    label: "Concomitant medications by therapeutic class and coded medication"
+    hierarchy: [CMCLAS, CMDECOD]

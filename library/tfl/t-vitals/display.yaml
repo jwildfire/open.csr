@@ -1,0 +1,184 @@
+id: t-vitals
+title: "Summary of Vital Signs at Baseline and End of Treatment"
+study: CDISCPILOT01
+population_label: "Safety Analysis Set"
+cutoff: "2014-07-01"
+source: "Source: advs, adsl (pharmaverseadam). Data cut-off: 2014-07-01."
+footnotes:
+  - "Treatment groups are PLANNED treatment (TRT01P). Twelve subjects in this study received a treatment other than the one they were randomised to; grouping by actual treatment (TRT01A) would give column sizes of 86, 96 and 72."
+  - "Blood pressure and pulse are measured in three positions and each position is summarised as its own series: a subject's baseline after standing for three minutes is not the baseline for their supine measurement."
+  - "End of treatment is the last observed measurement of that parameter in that position, at a planned visit after Week 0 up to and including Week 24. Unscheduled visits, the Week 26 follow-up visit and records derived by averaging or carry-forward are never selected."
+  - "n is the number of subjects contributing a measurement; N in the column header is the number of subjects in the safety analysis set."
+columns:
+  order: [Placebo, "Xanomeline Low Dose", "Xanomeline High Dose"]
+format:
+  digits:
+    # `N:` and `n:` are deliberately absent. R's YAML reader resolves BOTH bare
+    # `N` and bare `n` to the boolean FALSE, so declaring the two together is a
+    # duplicate-key parse error and declaring either alone silently keys the digit
+    # plan under "FALSE". Counts default to zero decimals, which is what is wanted.
+    p: 1
+    mean: 1
+    sd: 2
+    median: 1
+    min: 1
+    max: 1
+rows:
+  - { label: "Systolic Blood Pressure (mmHg)", section: true }
+  - { label: "After lying down for 5 minutes", section: true, indent: 1 }
+  - { label: "Baseline", section: true, indent: 2 }
+  - { analysis: sbp_lying_bl, variable: AVAL, pattern: "{N}", label: "n", indent: 3 }
+  - { analysis: sbp_lying_bl, variable: AVAL, pattern: mean_sd, label: "Mean (SD)", indent: 3 }
+  - { analysis: sbp_lying_bl, variable: AVAL, pattern: median, label: "Median", indent: 3 }
+  - { analysis: sbp_lying_bl, variable: AVAL, pattern: range, label: "Min, Max", indent: 3 }
+  - { label: "Week 24", section: true, indent: 2 }
+  - { analysis: sbp_lying_wk24, variable: AVAL, pattern: "{N}", label: "n", indent: 3 }
+  - { analysis: sbp_lying_wk24, variable: AVAL, pattern: mean_sd, label: "Mean (SD)", indent: 3 }
+  - { analysis: sbp_lying_wk24, variable: AVAL, pattern: median, label: "Median", indent: 3 }
+  - { analysis: sbp_lying_wk24, variable: AVAL, pattern: range, label: "Min, Max", indent: 3 }
+  - { label: "End of treatment", section: true, indent: 2 }
+  - { analysis: sbp_lying_eot, variable: AVAL, pattern: "{N}", label: "n", indent: 3 }
+  - { analysis: sbp_lying_eot, variable: AVAL, pattern: mean_sd, label: "Mean (SD)", indent: 3 }
+  - { analysis: sbp_lying_eot, variable: AVAL, pattern: median, label: "Median", indent: 3 }
+  - { analysis: sbp_lying_eot, variable: AVAL, pattern: range, label: "Min, Max", indent: 3 }
+
+  - { label: "After standing for 1 minute", section: true, indent: 1 }
+  - { label: "Baseline", section: true, indent: 2 }
+  - { analysis: sbp_stand1_bl, variable: AVAL, pattern: "{N}", label: "n", indent: 3 }
+  - { analysis: sbp_stand1_bl, variable: AVAL, pattern: mean_sd, label: "Mean (SD)", indent: 3 }
+  - { analysis: sbp_stand1_bl, variable: AVAL, pattern: median, label: "Median", indent: 3 }
+  - { analysis: sbp_stand1_bl, variable: AVAL, pattern: range, label: "Min, Max", indent: 3 }
+  - { label: "Week 24", section: true, indent: 2 }
+  - { analysis: sbp_stand1_wk24, variable: AVAL, pattern: "{N}", label: "n", indent: 3 }
+  - { analysis: sbp_stand1_wk24, variable: AVAL, pattern: mean_sd, label: "Mean (SD)", indent: 3 }
+  - { analysis: sbp_stand1_wk24, variable: AVAL, pattern: median, label: "Median", indent: 3 }
+  - { analysis: sbp_stand1_wk24, variable: AVAL, pattern: range, label: "Min, Max", indent: 3 }
+  - { label: "End of treatment", section: true, indent: 2 }
+  - { analysis: sbp_stand1_eot, variable: AVAL, pattern: "{N}", label: "n", indent: 3 }
+  - { analysis: sbp_stand1_eot, variable: AVAL, pattern: mean_sd, label: "Mean (SD)", indent: 3 }
+  - { analysis: sbp_stand1_eot, variable: AVAL, pattern: median, label: "Median", indent: 3 }
+  - { analysis: sbp_stand1_eot, variable: AVAL, pattern: range, label: "Min, Max", indent: 3 }
+
+  - { label: "After standing for 3 minutes", section: true, indent: 1 }
+  - { label: "Baseline", section: true, indent: 2 }
+  - { analysis: sbp_stand3_bl, variable: AVAL, pattern: "{N}", label: "n", indent: 3 }
+  - { analysis: sbp_stand3_bl, variable: AVAL, pattern: mean_sd, label: "Mean (SD)", indent: 3 }
+  - { analysis: sbp_stand3_bl, variable: AVAL, pattern: median, label: "Median", indent: 3 }
+  - { analysis: sbp_stand3_bl, variable: AVAL, pattern: range, label: "Min, Max", indent: 3 }
+  - { label: "Week 24", section: true, indent: 2 }
+  - { analysis: sbp_stand3_wk24, variable: AVAL, pattern: "{N}", label: "n", indent: 3 }
+  - { analysis: sbp_stand3_wk24, variable: AVAL, pattern: mean_sd, label: "Mean (SD)", indent: 3 }
+  - { analysis: sbp_stand3_wk24, variable: AVAL, pattern: median, label: "Median", indent: 3 }
+  - { analysis: sbp_stand3_wk24, variable: AVAL, pattern: range, label: "Min, Max", indent: 3 }
+  - { label: "End of treatment", section: true, indent: 2 }
+  - { analysis: sbp_stand3_eot, variable: AVAL, pattern: "{N}", label: "n", indent: 3 }
+  - { analysis: sbp_stand3_eot, variable: AVAL, pattern: mean_sd, label: "Mean (SD)", indent: 3 }
+  - { analysis: sbp_stand3_eot, variable: AVAL, pattern: median, label: "Median", indent: 3 }
+  - { analysis: sbp_stand3_eot, variable: AVAL, pattern: range, label: "Min, Max", indent: 3 }
+
+  - { label: "Diastolic Blood Pressure (mmHg)", section: true }
+  - { label: "After lying down for 5 minutes", section: true, indent: 1 }
+  - { label: "Baseline", section: true, indent: 2 }
+  - { analysis: dbp_lying_bl, variable: AVAL, pattern: "{N}", label: "n", indent: 3 }
+  - { analysis: dbp_lying_bl, variable: AVAL, pattern: mean_sd, label: "Mean (SD)", indent: 3 }
+  - { analysis: dbp_lying_bl, variable: AVAL, pattern: median, label: "Median", indent: 3 }
+  - { analysis: dbp_lying_bl, variable: AVAL, pattern: range, label: "Min, Max", indent: 3 }
+  - { label: "Week 24", section: true, indent: 2 }
+  - { analysis: dbp_lying_wk24, variable: AVAL, pattern: "{N}", label: "n", indent: 3 }
+  - { analysis: dbp_lying_wk24, variable: AVAL, pattern: mean_sd, label: "Mean (SD)", indent: 3 }
+  - { analysis: dbp_lying_wk24, variable: AVAL, pattern: median, label: "Median", indent: 3 }
+  - { analysis: dbp_lying_wk24, variable: AVAL, pattern: range, label: "Min, Max", indent: 3 }
+  - { label: "End of treatment", section: true, indent: 2 }
+  - { analysis: dbp_lying_eot, variable: AVAL, pattern: "{N}", label: "n", indent: 3 }
+  - { analysis: dbp_lying_eot, variable: AVAL, pattern: mean_sd, label: "Mean (SD)", indent: 3 }
+  - { analysis: dbp_lying_eot, variable: AVAL, pattern: median, label: "Median", indent: 3 }
+  - { analysis: dbp_lying_eot, variable: AVAL, pattern: range, label: "Min, Max", indent: 3 }
+
+  - { label: "After standing for 1 minute", section: true, indent: 1 }
+  - { label: "Baseline", section: true, indent: 2 }
+  - { analysis: dbp_stand1_bl, variable: AVAL, pattern: "{N}", label: "n", indent: 3 }
+  - { analysis: dbp_stand1_bl, variable: AVAL, pattern: mean_sd, label: "Mean (SD)", indent: 3 }
+  - { analysis: dbp_stand1_bl, variable: AVAL, pattern: median, label: "Median", indent: 3 }
+  - { analysis: dbp_stand1_bl, variable: AVAL, pattern: range, label: "Min, Max", indent: 3 }
+  - { label: "Week 24", section: true, indent: 2 }
+  - { analysis: dbp_stand1_wk24, variable: AVAL, pattern: "{N}", label: "n", indent: 3 }
+  - { analysis: dbp_stand1_wk24, variable: AVAL, pattern: mean_sd, label: "Mean (SD)", indent: 3 }
+  - { analysis: dbp_stand1_wk24, variable: AVAL, pattern: median, label: "Median", indent: 3 }
+  - { analysis: dbp_stand1_wk24, variable: AVAL, pattern: range, label: "Min, Max", indent: 3 }
+  - { label: "End of treatment", section: true, indent: 2 }
+  - { analysis: dbp_stand1_eot, variable: AVAL, pattern: "{N}", label: "n", indent: 3 }
+  - { analysis: dbp_stand1_eot, variable: AVAL, pattern: mean_sd, label: "Mean (SD)", indent: 3 }
+  - { analysis: dbp_stand1_eot, variable: AVAL, pattern: median, label: "Median", indent: 3 }
+  - { analysis: dbp_stand1_eot, variable: AVAL, pattern: range, label: "Min, Max", indent: 3 }
+
+  - { label: "After standing for 3 minutes", section: true, indent: 1 }
+  - { label: "Baseline", section: true, indent: 2 }
+  - { analysis: dbp_stand3_bl, variable: AVAL, pattern: "{N}", label: "n", indent: 3 }
+  - { analysis: dbp_stand3_bl, variable: AVAL, pattern: mean_sd, label: "Mean (SD)", indent: 3 }
+  - { analysis: dbp_stand3_bl, variable: AVAL, pattern: median, label: "Median", indent: 3 }
+  - { analysis: dbp_stand3_bl, variable: AVAL, pattern: range, label: "Min, Max", indent: 3 }
+  - { label: "Week 24", section: true, indent: 2 }
+  - { analysis: dbp_stand3_wk24, variable: AVAL, pattern: "{N}", label: "n", indent: 3 }
+  - { analysis: dbp_stand3_wk24, variable: AVAL, pattern: mean_sd, label: "Mean (SD)", indent: 3 }
+  - { analysis: dbp_stand3_wk24, variable: AVAL, pattern: median, label: "Median", indent: 3 }
+  - { analysis: dbp_stand3_wk24, variable: AVAL, pattern: range, label: "Min, Max", indent: 3 }
+  - { label: "End of treatment", section: true, indent: 2 }
+  - { analysis: dbp_stand3_eot, variable: AVAL, pattern: "{N}", label: "n", indent: 3 }
+  - { analysis: dbp_stand3_eot, variable: AVAL, pattern: mean_sd, label: "Mean (SD)", indent: 3 }
+  - { analysis: dbp_stand3_eot, variable: AVAL, pattern: median, label: "Median", indent: 3 }
+  - { analysis: dbp_stand3_eot, variable: AVAL, pattern: range, label: "Min, Max", indent: 3 }
+
+  - { label: "Pulse (beats/min)", section: true }
+  - { label: "After lying down for 5 minutes", section: true, indent: 1 }
+  - { label: "Baseline", section: true, indent: 2 }
+  - { analysis: pulse_lying_bl, variable: AVAL, pattern: "{N}", label: "n", indent: 3 }
+  - { analysis: pulse_lying_bl, variable: AVAL, pattern: mean_sd, label: "Mean (SD)", indent: 3 }
+  - { analysis: pulse_lying_bl, variable: AVAL, pattern: median, label: "Median", indent: 3 }
+  - { analysis: pulse_lying_bl, variable: AVAL, pattern: range, label: "Min, Max", indent: 3 }
+  - { label: "Week 24", section: true, indent: 2 }
+  - { analysis: pulse_lying_wk24, variable: AVAL, pattern: "{N}", label: "n", indent: 3 }
+  - { analysis: pulse_lying_wk24, variable: AVAL, pattern: mean_sd, label: "Mean (SD)", indent: 3 }
+  - { analysis: pulse_lying_wk24, variable: AVAL, pattern: median, label: "Median", indent: 3 }
+  - { analysis: pulse_lying_wk24, variable: AVAL, pattern: range, label: "Min, Max", indent: 3 }
+  - { label: "End of treatment", section: true, indent: 2 }
+  - { analysis: pulse_lying_eot, variable: AVAL, pattern: "{N}", label: "n", indent: 3 }
+  - { analysis: pulse_lying_eot, variable: AVAL, pattern: mean_sd, label: "Mean (SD)", indent: 3 }
+  - { analysis: pulse_lying_eot, variable: AVAL, pattern: median, label: "Median", indent: 3 }
+  - { analysis: pulse_lying_eot, variable: AVAL, pattern: range, label: "Min, Max", indent: 3 }
+
+  - { label: "After standing for 1 minute", section: true, indent: 1 }
+  - { label: "Baseline", section: true, indent: 2 }
+  - { analysis: pulse_stand1_bl, variable: AVAL, pattern: "{N}", label: "n", indent: 3 }
+  - { analysis: pulse_stand1_bl, variable: AVAL, pattern: mean_sd, label: "Mean (SD)", indent: 3 }
+  - { analysis: pulse_stand1_bl, variable: AVAL, pattern: median, label: "Median", indent: 3 }
+  - { analysis: pulse_stand1_bl, variable: AVAL, pattern: range, label: "Min, Max", indent: 3 }
+  - { label: "Week 24", section: true, indent: 2 }
+  - { analysis: pulse_stand1_wk24, variable: AVAL, pattern: "{N}", label: "n", indent: 3 }
+  - { analysis: pulse_stand1_wk24, variable: AVAL, pattern: mean_sd, label: "Mean (SD)", indent: 3 }
+  - { analysis: pulse_stand1_wk24, variable: AVAL, pattern: median, label: "Median", indent: 3 }
+  - { analysis: pulse_stand1_wk24, variable: AVAL, pattern: range, label: "Min, Max", indent: 3 }
+  - { label: "End of treatment", section: true, indent: 2 }
+  - { analysis: pulse_stand1_eot, variable: AVAL, pattern: "{N}", label: "n", indent: 3 }
+  - { analysis: pulse_stand1_eot, variable: AVAL, pattern: mean_sd, label: "Mean (SD)", indent: 3 }
+  - { analysis: pulse_stand1_eot, variable: AVAL, pattern: median, label: "Median", indent: 3 }
+  - { analysis: pulse_stand1_eot, variable: AVAL, pattern: range, label: "Min, Max", indent: 3 }
+
+  - { label: "After standing for 3 minutes", section: true, indent: 1 }
+  - { label: "Baseline", section: true, indent: 2 }
+  - { analysis: pulse_stand3_bl, variable: AVAL, pattern: "{N}", label: "n", indent: 3 }
+  - { analysis: pulse_stand3_bl, variable: AVAL, pattern: mean_sd, label: "Mean (SD)", indent: 3 }
+  - { analysis: pulse_stand3_bl, variable: AVAL, pattern: median, label: "Median", indent: 3 }
+  - { analysis: pulse_stand3_bl, variable: AVAL, pattern: range, label: "Min, Max", indent: 3 }
+  - { label: "Week 24", section: true, indent: 2 }
+  - { analysis: pulse_stand3_wk24, variable: AVAL, pattern: "{N}", label: "n", indent: 3 }
+  - { analysis: pulse_stand3_wk24, variable: AVAL, pattern: mean_sd, label: "Mean (SD)", indent: 3 }
+  - { analysis: pulse_stand3_wk24, variable: AVAL, pattern: median, label: "Median", indent: 3 }
+  - { analysis: pulse_stand3_wk24, variable: AVAL, pattern: range, label: "Min, Max", indent: 3 }
+  - { label: "End of treatment", section: true, indent: 2 }
+  - { analysis: pulse_stand3_eot, variable: AVAL, pattern: "{N}", label: "n", indent: 3 }
+  - { analysis: pulse_stand3_eot, variable: AVAL, pattern: mean_sd, label: "Mean (SD)", indent: 3 }
+  - { analysis: pulse_stand3_eot, variable: AVAL, pattern: median, label: "Median", indent: 3 }
+  - { analysis: pulse_stand3_eot, variable: AVAL, pattern: range, label: "Min, Max", indent: 3 }
+
+variants:
+  post_text: {}

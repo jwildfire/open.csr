@@ -7,3 +7,7 @@ site/_build/
 qc/vitest-results.json
 *.log
 .claude/worktrees/
+
+# An R plotting side effect, not work. Written into whatever directory an R run
+# started in; pipeline/tests/testthat/Rplots.pdf predates this line and stays.
+/Rplots.pdf

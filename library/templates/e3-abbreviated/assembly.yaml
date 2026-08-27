@@ -3,16 +3,27 @@
 # demonstration study, CDISCPILOT01.
 # ------------------------------------------------------------------------------
 # sections.yaml in this directory says what an abbreviated ICH E3 report IS. This
-# file says what THIS report puts in it — and the answer is: exactly what the full
-# report puts in it.
+# file says what THIS report puts in it — and the answer is: everything the full
+# report puts in a slot this model retains.
 #
-# THE SLOTS AND THE POST-TEXT BLOCK BELOW ARE IDENTICAL TO
+# EVERY SLOT AND POST-TEXT ENTRY BELOW IS COPIED FROM
 # library/templates/ich-e3/assembly.yaml. Same fifteen text blocks in the same
-# fourteen sections, same six displays, same in-text placements, same post-text
-# order. Not a sentence was written for this document, and no display was
-# re-specified for it. The two reports differ in their DOCUMENT MODEL, not in
-# what they say — which is the property this template object exists to
-# demonstrate, and the reason it cost nothing to add.
+# fourteen sections, same in-text placements, same post-text order, same six
+# displays under the same numbers. Not a sentence was written for this document,
+# and no display was re-specified for it. The two reports differ in their
+# DOCUMENT MODEL, not in what they say — which is the property this template
+# object exists to demonstrate, and the reason it cost nothing to add.
+#
+# IT IS A SUBSET, NOT A COPY, AND THE DIFFERENCE IS ONE SECTION DEEP. The full
+# report carries ten displays; this one carries six. The four it does not carry
+# are the vital signs, weight and concomitant-medication displays, which the full
+# report and the display package place under 14.3.5 — a subsection this model does
+# not declare, because it also does not declare E3 Sections 12.4 and 12.5. A
+# display cannot be placed in a section the model has not got, so the omission
+# follows from the document model rather than from a second opinion about the
+# displays. That is the same demonstration, not an exception to it. RPT-ABR-005
+# asserts the subset relation, so this paragraph cannot go quietly out of date the
+# next time the full report gains a display.
 #
 # That is not true of every second document. The synopsis needed eighteen new text
 # blocks, because the report's prose cross-references E3 section numbers a

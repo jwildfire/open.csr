@@ -1,0 +1,59 @@
+{
+  "schema": "opencsr/agreement/v1",
+  "subject": "vital signs, weight and concomitant medications",
+  "generated": "2026-08-27T04:14:17Z",
+  "reproducer": "qc/vitals-conmeds-agreement.R",
+  "routes": {
+    "A": "the open.csr pipeline, via each display's committed outputs/<slug>/current ARD",
+    "B": "recomputed in qc/vitals-conmeds-agreement.R from pharmaverseadam::adsl / advs / adcm, sharing no code with the pipeline",
+    "C": "quality/data/vitals-conmeds-reference.json, transcribed from the sponsor's clinical study report of 27 June 2006"
+  },
+  "environment": {
+    "r": "4.3.3",
+    "os": "Darwin 23.6.0",
+    "pharmaverseadam": "1.1.0"
+  },
+  "displays": [
+    {
+      "display": "t-vitals",
+      "version": "v001",
+      "ard": "outputs/t-vitals/v001/ard.json",
+      "reference": "Table 14-7.01",
+      "publishable_statistics": 495,
+      "recomputed": 495,
+      "unchecked": 0
+    },
+    {
+      "display": "t-vitals-change",
+      "version": "v001",
+      "ard": "outputs/t-vitals-change/v001/ard.json",
+      "reference": "Table 14-7.02",
+      "publishable_statistics": 333,
+      "recomputed": 333,
+      "unchecked": 0
+    },
+    {
+      "display": "t-weight",
+      "version": "v001",
+      "ard": "outputs/t-weight/v001/ard.json",
+      "reference": "Table 14-7.03",
+      "publishable_statistics": 99,
+      "recomputed": 99,
+      "unchecked": 0
+    },
+    {
+      "display": "t-conmeds",
+      "version": "v001",
+      "ard": "outputs/t-conmeds/v001/ard.json",
+      "reference": "Table 14-7.04",
+      "publishable_statistics": 414,
+      "recomputed": 414,
+      "unchecked": 0
+    }
+  ],
+  "comparisons": 2523,
+  "pipeline_vs_recomputation": 1341,
+  "recomputation_vs_report": 1179,
+  "ok": true,
+  "findings": []
+}

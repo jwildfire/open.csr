@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { assemble } from '../../scripts/assemble.mjs';
+import { listDisplaySlugs } from '../../scripts/template-lib.mjs';
 import { ROOT } from './text-test-helpers.js';
 
 // One assembly for the whole suite; `write: false` keeps docs/assembled/ untouched
@@ -70,7 +71,7 @@ describe('Assembled CSR document model', () => {
   });
 
   it('RPT-ARD-001: every display resolves to a real ARD, and the source is recorded as outputs or fixture (#1)', () => {
-    expect(doc.displayIndex.length).toBe(6);
+    expect(doc.displayIndex.length).toBe(listDisplaySlugs(join(ROOT, 'library/tfl')).length);
     for (const d of doc.displayIndex) {
       expect(['outputs', 'fixture'], d.slug).toContain(d.ardSource);
       expect(d.ardPath).toMatch(/ard\.json$|\.json$/);

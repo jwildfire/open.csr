@@ -1,14 +1,14 @@
 {
   "suite": "r-unit",
   "package": "opencsr",
-  "generated": "2026-07-27T04:44:16Z",
+  "generated": "2026-08-27T04:14:43Z",
   "environment": {
     "r": "4.3.3",
     "os": "Darwin 23.6.0"
   },
   "summary": {
-    "total": 90,
-    "passed": 90,
+    "total": 99,
+    "passed": 99,
     "failed": 0,
     "errored": 0,
     "skipped": 0
@@ -127,6 +127,51 @@
     {
       "file": "test-data-prep.R",
       "test": "TFL-PREP-007: treatment arms are ordered by dose, not alphabetically (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays-vitals.R",
+      "test": "DSP-VS-001: every rendered cell of the vital signs summary is what the reference report printed (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays-vitals.R",
+      "test": "DSP-VS-002: baseline and end of treatment select one record per subject, parameter and position (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays-vitals.R",
+      "test": "DSP-VSC-001: every rendered cell of the vital signs change display is what the reference report printed (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays-vitals.R",
+      "test": "DSP-WT-001: every rendered cell of the weight display is what the reference report printed (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays-vitals.R",
+      "test": "DSP-CM-001: concomitant medication counts match ADCM computed directly (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays-vitals.R",
+      "test": "DSP-CM-002: a subject counted for a medication is counted for its class (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays-vitals.R",
+      "test": "DSP-CM-003: the in-text variant applies the 5% threshold its spec declares (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays-vitals.R",
+      "test": "DSP-VWC-001: all four displays group by planned treatment over the safety analysis set (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays-vitals.R",
+      "test": "DSP-VWC-002: the committed three-route agreement record is green and describes this iteration (#1)",
       "status": "pass"
     },
     {
