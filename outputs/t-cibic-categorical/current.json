@@ -1,0 +1,9 @@
+{
+  "display": "t-cibic-categorical",
+  "version": "v001",
+  "updated": "2026-08-27T03:53:35Z",
+  "path": "outputs/t-cibic-categorical/v001",
+  "ard": "outputs/t-cibic-categorical/v001/ard.json",
+  "table": "outputs/t-cibic-categorical/v001/table.html",
+  "variants": "post_text"
+}

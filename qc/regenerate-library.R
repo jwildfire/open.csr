@@ -27,24 +27,34 @@ for (slug in display_slugs(root)) {
   unlink(file.path(display_dir(slug, root), "iterations.yaml"))
 }
 
-specs <- lapply(display_slugs(root), function(s) read_analysis_spec(s, root))
-needed <- unique(c("adsl", unlist(lapply(specs, function(s) c(s$dataset, s$denominator)))))
-message("Preparing data: ", paste(needed, collapse = ", "))
-data <- prepare_data(datasets = needed)
+slugs <- display_slugs(root)
+specs <- stats::setNames(lapply(slugs, function(s) read_analysis_spec(s, root)), slugs)
 
-# ---- five displays, one iteration each --------------------------------------
+# Displays no longer all read the same packaging of the study — the efficacy and
+# time-to-event displays are specified against the CDISC pilot's own ADaM
+# package — so data is prepared once PER DECLARED SOURCE rather than once for
+# the library. Preparing once for everything would either fail the source check
+# in regenerate() or, worse, render a display against data its specification did
+# not ask for.
+prepared <- prepare_data_for(specs)
+data_for <- function(slug) prepared[[source_key(specs[[slug]]$sources)]]
 
-initial <- c("t-demographics", "t-disposition", "t-exposure", "t-ae-overview", "l-ae-serious")
+# ---- every display but one, one iteration each -------------------------------
+# Membership is the library's, not a list kept in this file: a display added to
+# library/tfl/ is regenerated here without anybody remembering to say so. Only
+# t-ae-common is named, because only it has a history to replay.
+
+initial <- setdiff(slugs, "t-ae-common")
 for (slug in initial) {
   m <- regenerate(
     slug, root,
     change_request = paste0(
-      "Initial generation of ", read_analysis_spec(slug, root)$regulatory_id,
+      "Initial generation of ", specs[[slug]]$regulatory_id,
       " from the statistical analysis plan shell."
     ),
-    actor = "@jwildfire", data = data
+    actor = "@jwildfire", data = data_for(slug)
   )
-  message(sprintf("%-16s %s  %d ARD rows", slug, m$version, m$ard_rows))
+  message(sprintf("%-22s %s  %d ARD rows", slug, m$version, m$ard_rows))
 }
 
 # ---- t-ae-common: the change-request loop, replayed -------------------------
@@ -73,7 +83,7 @@ m1 <- regenerate(
     "treatment-emergent adverse events by system organ class and preferred term,",
     "with a 5% threshold on the in-text variant."
   ),
-  actor = "@jwildfire", data = data
+  actor = "@jwildfire", data = data_for("t-ae-common")
 )
 message(sprintf("%-16s %s  %d ARD rows", "t-ae-common", m1$version, m1$ard_rows))
 
@@ -89,7 +99,7 @@ m2 <- regenerate(
     "Applied as a spec edit - analysis.yaml `total: false` -> `true`,",
     "display.yaml `columns.order` gains Total - and regenerated; no output was hand-edited."
   ),
-  actor = "@medical-writer", data = data
+  actor = "@medical-writer", data = data_for("t-ae-common")
 )
 message(sprintf("%-16s %s  %d ARD rows", "t-ae-common", m2$version, m2$ard_rows))
 

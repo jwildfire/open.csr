@@ -11,11 +11,17 @@ import {
   validateSections,
 } from '../../scripts/template-lib.mjs';
 import { loadTextLibrary } from '../../scripts/text-lib.mjs';
-import { ASSEMBLY_YAML, LIBRARY_DIR, SECTIONS_YAML, fixtureArds } from './text-test-helpers.js';
+import {
+  ASSEMBLY_YAML,
+  LIBRARY_DIR,
+  SECTIONS_YAML,
+  fixtureArds,
+  librarySlugs,
+} from './text-test-helpers.js';
 
 const model = loadSections(SECTIONS_YAML);
 const assembly = loadAssembly(ASSEMBLY_YAML);
-const displaySlugs = [...fixtureArds().keys()];
+const displaySlugs = [...new Set([...fixtureArds().keys(), ...librarySlugs()])];
 const textIds = [...loadTextLibrary(LIBRARY_DIR).keys()];
 
 describe('ICH E3 document model', () => {
@@ -151,8 +157,12 @@ describe('Assembly configuration', () => {
   it('RPT-ASM-007: the assembly claims only sections the demonstration populates, and declares its scope (#1)', () => {
     expect(assembly.study.id).toBe('CDISCPILOT01');
     expect(assembly.study.cutoff).toBe('2014-07-01');
-    expect(assembly.study.scope_note).toMatch(/no efficacy ADaM/i);
-    expect(assembly.postText.map((p) => p.section)).not.toContain('14.2');
+    // Section 14.2 is populated: the study's own ADaM package supplies the
+    // efficacy domains the pharmaverse re-derivation does not carry. Section
+    // 14.3.4 is not, and is still declared rather than dropped, which is the
+    // property this test exists to hold.
+    expect(assembly.postText.map((p) => p.section)).toContain('14.2');
+    expect(assembly.postText.map((p) => p.section)).not.toContain('14.3.4');
     expect(assembly.provenanceSection).toBe('16.1.9');
   });
 });

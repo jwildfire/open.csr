@@ -74,10 +74,12 @@ sections:
     slug: post-text-efficacy
     content: [post_text_index]
     note: >-
-      Declared and left empty. No efficacy analysis dataset exists for CDISCPILOT01
-      in pharmaverseadam (design decision D12) and the reference report for the same
-      study carries thirteen efficacy tables. A package that dropped the heading
-      would look finished and tell the reviewer less.
+      Populated. This section was declared and empty for as long as open.csr had no
+      efficacy analysis dataset for CDISCPILOT01 (design decision D12) — a heading
+      dropped would have looked finished and told the reviewer less. The study's own
+      ADaM package supplied the data, and the section now carries the CIBIC+ analyses
+      and the time-to-event figure. The reference report has thirteen efficacy tables;
+      this package does not yet carry all of them.
 
   - number: "14.3"
     title: "Safety Data"

@@ -1,14 +1,14 @@
 {
   "suite": "r-unit",
   "package": "opencsr",
-  "generated": "2026-08-27T02:01:44Z",
+  "generated": "2026-08-27T04:07:03Z",
   "environment": {
     "r": "4.3.3",
     "os": "Darwin 23.6.0"
   },
   "summary": {
-    "total": 99,
-    "passed": 99,
+    "total": 111,
+    "passed": 111,
     "failed": 0,
     "errored": 0,
     "skipped": 0
@@ -172,6 +172,66 @@
     {
       "file": "test-data-prep.R",
       "test": "TFL-PREP-007: treatment arms are ordered by dose, not alphabetically (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays-efficacy.R",
+      "test": "DSP-CIBIC-001: the CIBIC+ summary tables reproduce the published tables cell for cell (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays-efficacy.R",
+      "test": "DSP-CIBIC-002: the analysis of covariance reproduces the published model results (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays-efficacy.R",
+      "test": "DSP-CIBIC-003: the column heading is the analysis set and the n row is the visit (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays-efficacy.R",
+      "test": "DSP-CIBIC-004: the categorical analysis reports every category at every visit and partitions it (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays-efficacy.R",
+      "test": "DSP-CIBIC-005: the categorical p-values are the published row-mean-scores CMH values (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays-efficacy.R",
+      "test": "DSP-TTE-001: the time-to-event display reproduces the published narrative (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays-efficacy.R",
+      "test": "DSP-TTE-002: the survival figure is drawn from the ARD and cannot disagree with it (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays-efficacy.R",
+      "test": "DSP-TTE-003: a p-value below the display's precision is reported at the boundary, not as zero (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays-efficacy.R",
+      "test": "TFL-FIG-001: a figure is drawn only from its ARD, and an unusable series fails the build (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays-efficacy.R",
+      "test": "TFL-FMT-004: p-values are reported at the boundary of their declared precision (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays-efficacy.R",
+      "test": "TFL-SPEC-007: a spec key YAML 1.1 resolved to a boolean is refused, not silently dropped (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays-efficacy.R",
+      "test": "TFL-PREP-016: a display is refused data prepared from a packaging its spec did not ask for (#1)",
       "status": "pass"
     },
     {

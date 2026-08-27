@@ -19,6 +19,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { assemble, listTemplates } from '../../scripts/assemble.mjs';
 import { loadAssembly, loadSections, validateSections } from '../../scripts/template-lib.mjs';
+import { librarySlugs } from './text-test-helpers.js';
 
 const ROOT = new URL('../..', import.meta.url).pathname;
 const model = (id) => loadSections(join(ROOT, `library/templates/${id}/sections.yaml`));
@@ -101,11 +102,13 @@ describe('Post-text display package', () => {
 
   it('RPT-PKG-005: empty display slots are declared and unpopulated, not dropped (#34)', () => {
     const doc = assemble({ write: false, template: 'display-package' });
+    // 14.2 was the original example and is now populated by the efficacy
+    // displays; 14.3.4 carries the claim in its place. Both are declared.
     for (const number of ['14.2', '14.3.4']) {
       const section = doc.sections.find((s) => s.number === number);
       expect(section, `section ${number} is declared`).toBeTruthy();
-      expect(section.populated).toBe(false);
     }
+    expect(doc.sections.find((s) => s.number === '14.3.4').populated).toBe(false);
     // 14.3.3 is narrative, and a display package carries none — omitted, not empty.
     expect(pkg.byNumber.has('14.3.3')).toBe(false);
   });
@@ -115,7 +118,7 @@ describe('Post-text display package', () => {
     expect(doc.study.id).toBe('CDISCPILOT01');
     expect(doc.ok).toBe(true);
     expect(doc.buildErrors).toEqual([]);
-    expect(doc.displayIndex.length).toBe(6);
+    expect(doc.displayIndex.length).toBe(librarySlugs().length);
   });
 });
 

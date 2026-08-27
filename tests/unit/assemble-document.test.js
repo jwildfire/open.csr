@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { assemble } from '../../scripts/assemble.mjs';
-import { ROOT } from './text-test-helpers.js';
+import { ROOT, librarySlugs } from './text-test-helpers.js';
 
 // One assembly for the whole suite; `write: false` keeps docs/assembled/ untouched
 // so running the tests never mutates a published artifact.
@@ -70,7 +70,10 @@ describe('Assembled CSR document model', () => {
   });
 
   it('RPT-ARD-001: every display resolves to a real ARD, and the source is recorded as outputs or fixture (#1)', () => {
-    expect(doc.displayIndex.length).toBe(6);
+    // Every display the library holds reaches the full report: a count taken
+    // from the library rather than written down here catches a display silently
+    // dropped from the assembly, and does not need editing when one is added.
+    expect(doc.displayIndex.length).toBe(librarySlugs().length);
     for (const d of doc.displayIndex) {
       expect(['outputs', 'fixture'], d.slug).toContain(d.ardSource);
       expect(d.ardPath).toMatch(/ard\.json$|\.json$/);
@@ -89,9 +92,23 @@ describe('Assembled CSR document model', () => {
       expect(entry.specHash).toMatch(/^sha256:/);
       expect(entry.displayHash).toMatch(/^sha256:/);
       expect(entry.data.length).toBeGreaterThan(0);
-      expect(entry.data[0]).toMatchObject({ source_pkg: 'pharmaverseadam' });
+      // The report is built from two packagings of CDISCPILOT01, and the
+      // appendix has to say which one each display used — a provenance record
+      // that named only one of them would be worse than none.
+      for (const dataset of entry.data) {
+        expect(['pharmaverseadam', 'phuse-org/phuse-scripts:data/adam']).toContain(
+          dataset.source_pkg
+        );
+      }
       expect(entry.environment.r).toMatch(/^\d+\.\d+/);
     }
+    const packagings = new Set(
+      provenance.displays.flatMap((d) => d.data.map((x) => x.source_pkg))
+    );
+    expect([...packagings].sort()).toEqual([
+      'pharmaverseadam',
+      'phuse-org/phuse-scripts:data/adam',
+    ]);
     expect(section('16.1.9').populated).toBe(true);
   });
 
@@ -141,7 +158,8 @@ describe('Assembled CSR document model', () => {
     const populated = doc.sections.filter((s) => s.populated);
     expect(populated.length).toBeGreaterThanOrEqual(15);
     expect(populated.length).toBeLessThan(doc.sections.length);
-    expect(section('14.2').populated).toBe(false); // no efficacy data (design D12)
+    expect(section('14.2').populated).toBe(true); // efficacy displays (CIBIC+, TTE)
+    expect(section('14.3.4').populated).toBe(false); // no laboratory displays yet
     expect(section('11.4.1').populated).toBe(false);
   });
 });

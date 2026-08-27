@@ -18,4 +18,17 @@ iterations:
   display_hash: sha256:7d1c9681e127b2587c2986d34d193c0c6680444a62ed50102a998f7ad2e311ce
   ard_hash: sha256:ac80459459bb4be27bcd79bb0c13609c51f3612a3c96917d726a404f1d5c0a14
   ard_rows: 43
+- version: v003
+  created: '2026-08-27T03:53:36Z'
+  actor: '@jwildfire'
+  change_request: 'Correct the digit plan so the pipeline reads it. The entry `N:
+    0` was resolved by YAML 1.1 as the boolean key FALSE, so the display declared
+    a precision for N that no renderer ever saw; the key is now quoted. No statistic
+    moves - the engine default for a count is the same zero decimals the specification
+    asked for - and this regeneration is the proof of that.'
+  git_commit: ''
+  spec_hash: sha256:190d1760455c525851b8e46bcdc832e327d003c61819565c98dfaf7430dd231b
+  display_hash: sha256:c326ce82ba6f2f3b91fcd7939de5e653079d38b62137791e47efcd19f2824143
+  ard_hash: sha256:e45ea110bc927ace905df1a936852ab4bd937e9c2577e3a544552730690985d2
+  ard_rows: 43
 

@@ -1,6 +1,6 @@
 {
   "module": "t-disposition",
-  "generated": "2026-08-27T02:01:44.958Z",
+  "generated": "2026-08-27T04:04:10.833Z",
   "records": [
     {
       "requirementIds": [
@@ -28,6 +28,66 @@
     },
     {
       "requirementIds": [
+        "DSP-CIBIC-001"
+      ],
+      "title": "DSP-CIBIC-001: the CIBIC+ summary tables reproduce the published tables cell for cell (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-efficacy.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-CIBIC-002"
+      ],
+      "title": "DSP-CIBIC-002: the analysis of covariance reproduces the published model results (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-efficacy.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-CIBIC-003"
+      ],
+      "title": "DSP-CIBIC-003: the column heading is the analysis set and the n row is the visit (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-efficacy.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-CIBIC-004"
+      ],
+      "title": "DSP-CIBIC-004: the categorical analysis reports every category at every visit and partitions it (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-efficacy.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-CIBIC-005"
+      ],
+      "title": "DSP-CIBIC-005: the categorical p-values are the published row-mean-scores CMH values (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-efficacy.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
         "DSP-DISP-001"
       ],
       "title": "DSP-DISP-001: disposition counts reproduce EOSSTT (#1)",
@@ -46,6 +106,42 @@
       "suite": "r-unit",
       "passed": true,
       "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-TTE-001"
+      ],
+      "title": "DSP-TTE-001: the time-to-event display reproduces the published narrative (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-efficacy.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-TTE-002"
+      ],
+      "title": "DSP-TTE-002: the survival figure is drawn from the ARD and cannot disagree with it (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-efficacy.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-TTE-003"
+      ],
+      "title": "DSP-TTE-003: a p-value below the display's precision is reported at the boundary, not as zero (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-efficacy.R",
       "issueRefs": [
         1
       ]

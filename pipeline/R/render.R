@@ -24,7 +24,9 @@ default_patterns <- function() {
 #'
 #' Applies the display's digit plan (falling back to the collected-precision
 #' conventions in [default_digits()]) and half-up rounding. Statistics that
-#' `{cards}` reports as proportions are scaled to percent.
+#' `{cards}` reports as proportions are scaled to percent, and a p-value too
+#' small (or too large) to print at its declared precision is reported at the
+#' boundary rather than rounded through it — see [format_pvalue_bound()].
 #'
 #' @param value Statistic value.
 #' @param stat_name Statistic name.
@@ -34,6 +36,7 @@ default_patterns <- function() {
 #' @examples
 #' format_stat(0.3385827, "p")   # "33.9"
 #' format_stat(8.5865, "sd")     # "8.59"
+#' format_stat(8.2e-14, "pval", list(pval = 4)) # "<0.0001"
 #' @export
 format_stat <- function(value, stat_name, digits = list()) {
   if (is.null(value) || length(value) == 0) {
@@ -52,7 +55,50 @@ format_stat <- function(value, stat_name, digits = list()) {
   d <- digits[[stat_name]]
   if (is.null(d)) d <- default_digits(stat_name)
   d <- as.integer(d)
+  if (stat_name %in% pvalue_stats()) {
+    bound <- format_pvalue_bound(value, d)
+    if (!is.na(bound)) {
+      return(bound)
+    }
+  }
   formatC(round_half_up(value, d), format = "f", digits = d, big.mark = "")
+}
+
+#' Report a p-value at the boundary of its declared precision
+#'
+#' Rounding is the right treatment for a measurement and the wrong treatment for
+#' a tail probability. A log-rank p-value of 8.2e-14 rounded to four decimals
+#' prints `0.0000`, which asserts that the probability is zero; it is not, and no
+#' statistic in a clinical study report should read as though it were. The
+#' convention regulatory tables use instead is to print the boundary — `<0.0001`
+#' — and this function applies it, symmetrically, at whatever precision the
+#' display declared. `>0.9999` is the same statement at the other end.
+#'
+#' This is presentation, not arithmetic: the ARD keeps the unrounded probability
+#' and only the rendered cell changes, so the number remains addressable and a
+#' bound never enters a computation.
+#'
+#' Which statistics are p-values is a naming convention, listed in
+#' [pvalue_stats()]. `p` is deliberately not among them — the engine already
+#' treats that name as a proportion and scales it to percent.
+#'
+#' @param value A p-value.
+#' @param digits Decimals the display declared for it.
+#' @return The boundary string, or `NA_character_` when the value prints
+#'   faithfully at that precision.
+#' @noRd
+format_pvalue_bound <- function(value, digits) {
+  if (is.na(digits) || digits < 1) {
+    return(NA_character_)
+  }
+  smallest <- 10^(-digits)
+  if (value > 0 && value < smallest) {
+    return(paste0("<", formatC(smallest, format = "f", digits = digits)))
+  }
+  if (value < 1 && (1 - value) < smallest) {
+    return(paste0(">", formatC(1 - smallest, format = "f", digits = digits)))
+  }
+  NA_character_
 }
 
 #' Render an ARD into a display
@@ -97,13 +143,15 @@ render_display <- function(ard, display_spec, variant = "post_text") {
 
   title <- vcfg$title %||% display_spec$title
   gt_tbl <- build_gt(body, display_spec, vcfg, title, variant)
-  html <- standalone_html(gt_tbl, title, display_spec, variant)
+  figure <- render_figure(rows, display_spec, body$columns)
+  html <- standalone_html(gt_tbl, title, display_spec, variant, figure)
 
   structure(
     list(
       html = html,
       table = body$table,
       gt = gt_tbl,
+      figure = figure,
       columns = body$columns,
       title = title,
       variant = variant,
@@ -469,8 +517,9 @@ build_gt <- function(body, display_spec, vcfg, title, variant) {
 #' display has to be openable from disk and publishable to a static site
 #' unchanged.
 #' @noRd
-standalone_html <- function(gt_tbl, title, display_spec, variant) {
+standalone_html <- function(gt_tbl, title, display_spec, variant, figure = NA_character_) {
   fragment <- gt::as_raw_html(gt_tbl, inline_css = TRUE)
+  has_figure <- length(figure) == 1 && !is.na(figure)
   css <- paste(
     "body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;",
     "margin:0;padding:24px;background:#ffffff;color:#111827;}",
@@ -479,6 +528,7 @@ standalone_html <- function(gt_tbl, title, display_spec, variant) {
     "table{border-collapse:collapse;}",
     "@media (prefers-color-scheme: dark){body{background:#0b0f19;color:#e5e7eb;}",
     ".meta{color:#9ca3af;}}",
+    if (has_figure) figure_css(length(figure_palette()$light)) else "",
     sep = ""
   )
   paste0(
@@ -488,6 +538,7 @@ standalone_html <- function(gt_tbl, title, display_spec, variant) {
     "<p class=\"meta\">", html_escape(display_spec$id), " &middot; ", html_escape(variant),
     " variant &middot; study ", html_escape(display_spec$study),
     " &middot; data cut-off ", html_escape(display_spec$cutoff), "</p>\n",
+    if (has_figure) paste0(figure, "\n") else "",
     fragment,
     "\n</main>\n</body>\n</html>\n"
   )

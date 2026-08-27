@@ -1,6 +1,6 @@
 {
   "schema": "opencsr/csr/v1",
-  "generated": "2026-08-27T02:01:45.153Z",
+  "generated": "2026-08-27T04:07:11.910Z",
   "study": {
     "id": "CDISCPILOT01",
     "title": "Safety and Efficacy of the Xanomeline Transdermal Therapeutic System (TTS) in Patients with Mild to Moderate Alzheimer's Disease",
@@ -17,7 +17,7 @@
       "Xanomeline High Dose"
     ],
     "primary_analysis_set": "Safety Analysis Set",
-    "data_source": "pharmaverseadam (CDISCPILOT01 ADaM)",
+    "data_source": "CDISCPILOT01 ADaM — pharmaverseadam, and the CDISC pilot's own package (phuse-org/phuse-scripts)",
     "scope_note": "Safety-focused synopsis assembled from the same library as the full ICH E3 clinical study report for this study. Efficacy fields are intentionally unpopulated (design decision D12)."
   },
   "template": {

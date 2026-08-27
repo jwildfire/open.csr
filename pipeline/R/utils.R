@@ -62,6 +62,15 @@ default_digits <- function(stat_name) {
 #' @noRd
 proportion_stats <- function() c("p", "prop")
 
+#' Statistics that are p-values
+#'
+#' Reported at the boundary of their declared precision rather than rounded
+#' through it (see `format_pvalue_bound()`). `p` is not here on purpose: the
+#' engine already claims that name for a proportion and scales it to percent,
+#' which is why every display in this library names a p-value `pval`.
+#' @noRd
+pvalue_stats <- function() c("pval")
+
 #' SHA-256 of a file's contents
 #' @noRd
 hash_file <- function(path) {
@@ -190,13 +199,67 @@ list_col_chr <- function(x) {
   )
 }
 
-#' Read a YAML file, erroring helpfully when it is missing
+#' Read a YAML file, erroring helpfully when it is missing or booby-trapped
 #' @noRd
 read_yaml_file <- function(path) {
   if (!file.exists(path)) {
     stop("Spec file not found: ", path, call. = FALSE)
   }
-  yaml::read_yaml(path)
+  doc <- yaml::read_yaml(path)
+  check_yaml_boolean_keys(doc, path)
+  doc
+}
+
+#' Refuse a spec whose keys YAML 1.1 resolved to booleans
+#'
+#' [validate_display_spec()] already refuses a row plan whose `pattern:` reads as
+#' a boolean, because YAML 1.1 resolves bare `n`, `y`, `no`, `on` and `off` that
+#' way. The same resolution applies to KEYS, and there it is worse: a digit plan
+#' written
+#'
+#' \preformatted{
+#' digits:
+#'   N: 0
+#'   n: 0
+#' }
+#'
+#' becomes a mapping with two entries both named `FALSE`. Either the file will
+#' not parse at all (a duplicate key), or — with only one of the pair present —
+#' it parses cleanly and `digits[["N"]]` is silently `NULL`, so the display
+#' quietly renders at the engine default instead of the precision its
+#' specification declared. A number printed to the wrong precision that nothing
+#' complains about is exactly the failure this project's evidence stream exists
+#' to make impossible, so a key that resolved to a boolean is an error naming the
+#' file and telling the author to quote it.
+#'
+#' @param x A parsed YAML document.
+#' @param path The file it came from, for the message.
+#' @param trail Key path accumulated during recursion.
+#' @return `TRUE`, invisibly.
+#' @noRd
+check_yaml_boolean_keys <- function(x, path, trail = character(0)) {
+  if (!is.list(x)) {
+    return(invisible(TRUE))
+  }
+  nms <- names(x)
+  if (!is.null(nms)) {
+    bad <- nms %in% c("TRUE", "FALSE")
+    if (any(bad)) {
+      where <- paste(c(trail, ""), collapse = ".")
+      stop(
+        "(", path, ") key `", paste(unique(nms[bad]), collapse = "`, `"),
+        "` under `", sub("\\.$", "", where), "` resolved to a boolean. YAML 1.1 reads bare ",
+        "`y`, `Y`, `n`, `N`, `yes`, `no`, `on` and `off` as booleans, including as ",
+        "map keys - so the entry you wrote is not the entry the pipeline reads. ",
+        "Quote the key (for example `\"n\": 0`).",
+        call. = FALSE
+      )
+    }
+  }
+  for (i in seq_along(x)) {
+    check_yaml_boolean_keys(x[[i]], path, c(trail, nms[i] %||% as.character(i)))
+  }
+  invisible(TRUE)
 }
 
 #' Write a YAML file with stable formatting

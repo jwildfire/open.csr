@@ -14,6 +14,14 @@
     "DSP-AE-004": "System organ class and preferred term subject counts equal the values computed directly from ADAE, with each subject counted once per term.",
     "DSP-AE-005": "The in-text variant of AET02 applies the 5% threshold declared in its spec: terms reaching 5% in any treatment group are shown, terms below it in every group are not, and the full display is unaffected.",
     "DSP-SAE-001": "The serious-AE listing has exactly one row per `AESER == \"Y\"` record, reports the recorded preferred terms and subjects, and is sorted as its spec declares.",
+    "DSP-CIBIC-001": "The n, mean, standard deviation, median and range printed at Weeks 8, 16 and 24 are the values the study's report printed for Tables 14-3.04, 14-3.06 and 14-3.02.",
+    "DSP-CIBIC-002": "The analysis of covariance reproduces the report's dose-response p-value, pairwise p-values, differences of least-squares means, standard errors and confidence limits, with the model-level result printed once.",
+    "DSP-CIBIC-003": "The column heading is the size of the efficacy analysis set and the `n` row is the number of subjects with a value at the visit; the two differ at Week 8 and the display does not conflate them.",
+    "DSP-CIBIC-004": "The categorical analysis reports all seven CIBIC+ categories at all three visits, including those no subject fell into, and the counts partition the subjects assessed at that visit exactly.",
+    "DSP-CIBIC-005": "The categorical p-value is the stratified Cochran-Mantel-Haenszel row-mean-scores statistic — the one of the three candidate statistics that reproduces the published values, and demonstrably not the general-association statistic.",
+    "DSP-TTE-001": "The Kaplan-Meier display reproduces the event counts, percentages, censored counts, medians and confidence limits the report's narrative states; events and censored subjects sum to the number at risk; a median not reached is empty rather than a number.",
+    "DSP-TTE-002": "The survival curve is drawn from the committed ARD and from nothing else: one series per treatment group, each non-increasing, ending at the ARD's final estimate, with the numbers-at-risk strip printing the ARD's counts.",
+    "DSP-TTE-003": "The log-rank p-value is reported as `<0.0001` rather than rounded to `0.0000`, and the unrounded probability is retained in the ARD.",
     "DSP-ALL-001": "Every display in the library renders a table containing real numbers — no shells, no placeholder output.",
     "DSP-ALL-002": "Every display declares a regulatory identifier, a source line naming the data cut-off, and at least one footnote."
   },
@@ -121,6 +129,78 @@
       "id": "DSP-SAE-001",
       "area": "",
       "text": "The serious-AE listing has exactly one row per `AESER == \"Y\"` record, reports the recorded preferred terms and subjects, and is sorted as its spec declares.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "DSP-CIBIC-001",
+      "area": "",
+      "text": "The n, mean, standard deviation, median and range printed at Weeks 8, 16 and 24 are the values the study's report printed for Tables 14-3.04, 14-3.06 and 14-3.02.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "DSP-CIBIC-002",
+      "area": "",
+      "text": "The analysis of covariance reproduces the report's dose-response p-value, pairwise p-values, differences of least-squares means, standard errors and confidence limits, with the model-level result printed once.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "DSP-CIBIC-003",
+      "area": "",
+      "text": "The column heading is the size of the efficacy analysis set and the `n` row is the number of subjects with a value at the visit; the two differ at Week 8 and the display does not conflate them.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "DSP-CIBIC-004",
+      "area": "",
+      "text": "The categorical analysis reports all seven CIBIC+ categories at all three visits, including those no subject fell into, and the counts partition the subjects assessed at that visit exactly.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "DSP-CIBIC-005",
+      "area": "",
+      "text": "The categorical p-value is the stratified Cochran-Mantel-Haenszel row-mean-scores statistic — the one of the three candidate statistics that reproduces the published values, and demonstrably not the general-association statistic.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "DSP-TTE-001",
+      "area": "",
+      "text": "The Kaplan-Meier display reproduces the event counts, percentages, censored counts, medians and confidence limits the report's narrative states; events and censored subjects sum to the number at risk; a median not reached is empty rather than a number.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "DSP-TTE-002",
+      "area": "",
+      "text": "The survival curve is drawn from the committed ARD and from nothing else: one series per treatment group, each non-increasing, ending at the ARD's final estimate, with the numbers-at-risk strip printing the ARD's counts.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "DSP-TTE-003",
+      "area": "",
+      "text": "The log-rank p-value is reported as `<0.0001` rather than rounded to `0.0000`, and the unrounded probability is retained in the ARD.",
       "source": "",
       "evidence": "",
       "link": "",

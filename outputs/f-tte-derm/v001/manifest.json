@@ -1,0 +1,57 @@
+{
+  "display": "f-tte-derm",
+  "version": "v001",
+  "created": "2026-08-27T04:03:33Z",
+  "actor": "@jwildfire",
+  "change_request": "Initial generation of TTE01 from CDISCPILOT01 Figure 14-1 and the analysis results metadata for Figure_14-1, which carries the procedure that produced it.",
+  "regulatory_id": "TTE01",
+  "git_commit": null,
+  "spec_hash": "sha256:c9feed698d358a501c8e7c9feb154bd17fd52fb362f63c2b3406d79f792f9ce8",
+  "display_hash": "sha256:1282cdb78a8bca4d809139d207304b4e109b91cf4e9023809f43f113a0082069",
+  "ard_hash": "sha256:5fc3f31be75767c19c89127a69e18566b3637ef0fff5e391862bb078c222f0e7",
+  "ard_rows": 39,
+  "ard_warnings": 0,
+  "ard_errors": 0,
+  "datasets": ["adsl", "adtte"],
+  "data": [
+    {
+      "dataset": "adsl",
+      "hash": "sha256:6534192e6ae2a8789015148d2068ecdd8421791ea6d7f9cc307fef1db97945f9",
+      "n_row": 254,
+      "n_col": 53,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    },
+    {
+      "dataset": "adtte",
+      "hash": "sha256:1a015e54cd547294b53877b35d55869461f1b83649eb630d9f942bb6198f9309",
+      "n_row": 254,
+      "n_col": 27,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    }
+  ],
+  "environment": {
+    "r": "4.3.3",
+    "os": "Darwin 23.6.0",
+    "packages": {
+      "cards": "0.6.1",
+      "cardx": "0.2.5",
+      "gtsummary": "2.3.0",
+      "gt": "1.0.0",
+      "dplyr": "1.1.4",
+      "pharmaverseadam": "1.1.0",
+      "jsonlite": "2.0.0",
+      "yaml": "2.3.10",
+      "digest": "0.6.37"
+    }
+  },
+  "variants": {
+    "post_text": {
+      "file": "table.html",
+      "rtf": "table.rtf",
+      "rtf_hash": "sha256:0b88f02d4702450311cc99fdb7e6779ee4f227de088b834749839b6d714809d7",
+      "n_rows": 11
+    }
+  }
+}
