@@ -1,0 +1,24 @@
+display: t-eff-adas-mmrm
+iterations:
+- version: v001
+  created: '2026-08-27T03:57:31Z'
+  actor: obot worker W0137
+  change_request: First generation of the MMRM supportive analysis (reference report
+    Table 14-3.11).
+  git_commit: ''
+  spec_hash: sha256:3070e2ae555ebd380a243e788f94e58d8b53d122f15a7bfa7ebfff80bc48324d
+  display_hash: sha256:8569301fcb38ab38b04de81183d685f8173f53ca5d09a850adea5fc46bf8e1b9
+  ard_hash: sha256:530038169fb15be4e5d4c2ba52b3476fbed6cd60ed6b6a8dd5cc463f19ec77ae
+  ard_rows: 34
+- version: v002
+  created: '2026-08-27T03:58:05Z'
+  actor: obot worker W0137
+  change_request: 'State in the display footnotes exactly which five cells differ
+    from the reference report, and why: Kenward-Roger degrees of freedom and PRJKH
+    standard errors are not implemented.'
+  git_commit: ''
+  spec_hash: sha256:3070e2ae555ebd380a243e788f94e58d8b53d122f15a7bfa7ebfff80bc48324d
+  display_hash: sha256:edf500134e53cb5b38327998d146394ae02c95250e84483692bb11b48656c174
+  ard_hash: sha256:9df5a5383226227390b036da06a51c8091fd384e0f03005309a70a07f06cb54d
+  ard_rows: 34
+
