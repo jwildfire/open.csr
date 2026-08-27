@@ -36,10 +36,29 @@
 # mixed-model implementation: fitting an unstructured MMRM twice in R would
 # share {nlme} with the pipeline and prove little. Its second route is C — the
 # reference report ships its own PROC MIXED output, so the six covariance
-# parameters, the REML criterion and the observation counts are all checked
+# parameters, the REML criterion and the observation counts are all compared
 # against SAS. That is a stronger independent check than a second R fit, not a
 # weaker one, but it is a different kind of check and is labelled as such in the
 # record. Route B still checks that display's record selection independently.
+#
+# AND THIS SCRIPT IS NOT THE GATE THAT ENFORCES IT. Measured 2026-08-27, by
+# changing one figure at a time in the committed ARD and running both gates:
+#
+#   * Change a printed MMRM figure — an LS mean, a treatment difference, a
+#     confidence limit, a p-value, or the REML criterion — then re-run this
+#     script with --write and again without it. It prints "All efficacy figures
+#     agree across every route that is compared" and exits 0. Every time.
+#   * The same change fails DSP-EFF-009 in pipeline/tests/testthat/
+#     test-displays-efficacy.R, which pins the record's five declared
+#     reference differences string by string. A changed sixth cell makes six
+#     differences; a changed one of the five rewrites its string. Both fail.
+#
+# So the display IS guarded, and CI runs the gate that guards it. What is wrong
+# is this script's closing sentence, which reads as coverage it does not have.
+# The MMRM's published cells are compared by the testthat suite, not here. Do
+# not read a green run of this script as having checked Table 14-3.11, and do
+# not add that comparison to the summary count without adding the comparison
+# itself first.
 #
 # Usage:
 #   Rscript qc/efficacy-agreement.R            # check; exit 1 on disagreement
@@ -585,4 +604,7 @@ if (length(failures)) {
   cat("\n", length(failures), " disagreement(s).\n", sep = "")
   quit(status = 1)
 }
-cat("\nAll efficacy figures agree across every route that is compared.\n")
+cat("\nEvery figure this script compares agrees on every route it compares.\n")
+cat("Table 14-3.11's published cells are NOT among them: the repeated-measures\n")
+cat("display is compared against the reference report by DSP-EFF-009 in the\n")
+cat("testthat suite instead. A green run here is not a check of that display.\n")
