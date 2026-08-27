@@ -169,8 +169,33 @@ prepare_data <- function(datasets = c("adsl", "adae", "adex", "adlb", "advs"),
     )
   }))
   attr(out, "manifest") <- tibble::as_tibble(manifest)
+  attr(out, "sources") <- src
   class(out) <- c("opencsr_data", "list")
   out
+}
+
+#' Which packaging each prepared dataset came from
+#'
+#' [prepare_data()] resolves its `sources` argument into a per-dataset registry
+#' and stamps the result onto the prepared list. This reads it back, which is
+#' what lets [regenerate()] refuse a prepared list that was built from a
+#' different packaging than the display's spec asks for — a display specified
+#' against the CDISC pilot's own efficacy data must not be silently rendered
+#' from the pharmaverse re-derivation.
+#'
+#' @param prepared Result of [prepare_data()].
+#' @return A named character vector mapping dataset name to source id.
+#' @examples
+#' \dontrun{
+#' data_sources_used(prepare_data("adqscibc", sources = "phuse"))
+#' }
+#' @export
+data_sources_used <- function(prepared) {
+  s <- attr(prepared, "sources")
+  if (is.null(s)) {
+    stop("`prepared` carries no source registry; was it produced by prepare_data()?", call. = FALSE)
+  }
+  s
 }
 
 #' Read one raw dataset from its source (see [prepare_data()])

@@ -1,0 +1,53 @@
+id: f-tte-derm
+title: "Time to First Dermatologic Event by Treatment Group"
+study: CDISCPILOT01
+population_label: "Safety Analysis Set"
+cutoff: "2014-07-01"
+source: "Source: adtte, adsl (CDISCPILOT01 ADaM package, phuse-org/phuse-scripts). Data cut-off: 2014-07-01."
+footnotes:
+  - "Dermatologic events are the adverse events of special interest the study flagged before unblinding — preferred terms judged dermatologic in nature, such as rash, pruritus and dermatitis. The event time is the day of the first such event; subjects without one are censored at their study completion date (ADTTE CNSR = 1)."
+  - "Kaplan-Meier estimates by treatment group, with the median and its 95% confidence limits on the linear (Brookmeyer-Crowley) scale, and the log-rank test across the three groups. The log-rank test is a single result for the whole display and is printed once."
+  - "The median was not reached in the placebo group — fewer than half of those subjects had a dermatologic event — so its median and confidence limits are empty rather than a number."
+  - "This display's analysis results dataset also carries the survival curve itself and the numbers at risk at 0, 30, 60, 90, 120, 150 and 180 days. The rendered curve is not yet drawn: open.csr's display contract names `figure` as a display type but the renderer has no figure path. Until it does, this display renders the statistics beneath the figure and nothing else."
+figure:
+  kind: kaplan_meier
+  analysis: km
+  x:
+    stat: km_time
+    label: "Days from first dose"
+  y:
+    stat: km_surv
+    label: "Proportion free of a dermatologic event"
+    limits: [0, 1]
+  at_risk:
+    times: risk_time
+    counts: risk_n
+    label: "Subjects at risk"
+columns:
+  order: [Placebo, "Xanomeline Low Dose", "Xanomeline High Dose"]
+format:
+  digits:
+    N: 0
+    n: 0
+    p: 0
+    n_censor: 0
+    median: 0
+    lcl: 0
+    ucl: 0
+    pval: 4
+    chisq: 2
+    df: 0
+rows:
+  - { label: "Subjects", section: true }
+  - { analysis: km, variable: KM, pattern: "{N}", label: "At risk at day 0", indent: 1 }
+  - { analysis: km, variable: KM, pattern: n_pct, label: "With a dermatologic event", indent: 1 }
+  - { analysis: km, variable: KM, pattern: "{n_censor}", label: "Censored", indent: 1 }
+  - { label: "Time to first event (days)", section: true }
+  - { analysis: km, variable: KM, pattern: "{median}", label: "Median", indent: 1 }
+  - { analysis: km, variable: KM, pattern: "({lcl}; {ucl})", label: "95% CI", indent: 1 }
+  - { label: "Comparison of treatment groups", section: true }
+  - { analysis: km, variable: LOGRANK, pattern: "{chisq}", label: "Log-rank chi-square", indent: 1 }
+  - { analysis: km, variable: LOGRANK, pattern: "{df}", label: "Degrees of freedom", indent: 1 }
+  - { analysis: km, variable: LOGRANK, pattern: "{pval}", label: "p-value", indent: 1 }
+variants:
+  post_text: {}

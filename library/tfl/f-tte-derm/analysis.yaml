@@ -1,0 +1,22 @@
+id: f-tte-derm
+title: "Time to First Dermatologic Event by Treatment Group"
+regulatory_id: TTE01
+type: figure
+dataset: adtte
+analysis_set: safety
+denominator: adsl
+sources: phuse
+group:
+  - TRT01A
+total: false
+analyses:
+  - name: population
+    method: subject_count
+    custom: ard_population_n
+    label: "Subjects in the safety analysis set"
+  - name: km
+    method: figure
+    custom: ard_kaplan_meier
+    label: "Kaplan-Meier estimate of time to first dermatologic event"
+    filter: "PARAMCD == 'TTDE'"
+    risk_times: [0, 30, 60, 90, 120, 150, 180]

@@ -88,6 +88,7 @@ validate_analysis_spec <- function(spec) {
     stop("`total: true` requires a grouping variable.", call. = FALSE)
   }
   spec$denominator <- spec$denominator %||% "adsl"
+  spec$sources <- normalise_spec_sources(spec$sources)
   if (!length(spec$analyses)) {
     stop("analysis spec must declare at least one entry under `analyses`.", call. = FALSE)
   }
@@ -126,6 +127,48 @@ validate_analysis_spec <- function(spec) {
     stop("analysis names must be unique within a spec.", call. = FALSE)
   }
   spec
+}
+
+#' Normalise an analysis spec's `sources:` declaration
+#'
+#' A display says which packaging of the study it is built from, because the two
+#' packagings of CDISCPILOT01 do not answer the same questions: only the CDISC
+#' pilot's own ADaM package states `EFFFL`, and only `{pharmaverseadam}` ships
+#' `adex`. Written as a single source id (`sources: phuse`) or as a per-dataset
+#' mapping (`sources: {adsl: phuse}`); omitted, the display takes the default
+#' registry. The value is handed to [prepare_data()] unchanged, so this function
+#' only has to turn YAML's shapes into the one shape that function accepts.
+#'
+#' @param sources The raw value parsed from `analysis.yaml`.
+#' @return `NULL`, a length-one character vector, or a named character vector.
+#' @noRd
+normalise_spec_sources <- function(sources) {
+  if (is.null(sources) || identical(sources, "")) {
+    return(NULL)
+  }
+  if (is.list(sources)) {
+    if (!length(sources)) {
+      return(NULL)
+    }
+    nms <- names(sources)
+    if (is.null(nms) || any(!nzchar(nms))) {
+      stop(
+        "`sources:` must be a single source id or a mapping of dataset to source ",
+        "(for example `sources: {adsl: phuse}`).",
+        call. = FALSE
+      )
+    }
+    return(stats::setNames(vapply(sources, as.character, character(1)), nms))
+  }
+  sources <- as.character(sources)
+  if (length(sources) != 1) {
+    stop(
+      "`sources:` must name one source, or map datasets to sources; got ",
+      length(sources), " unnamed values.",
+      call. = FALSE
+    )
+  }
+  sources
 }
 
 #' Validate a display specification

@@ -113,11 +113,12 @@ regenerate <- function(slug, root = csr_root(), change_request = "Initial genera
   }
 
   needed <- unique(c("adsl", analysis_spec$dataset, analysis_spec$denominator))
-  if (is.null(data)) data <- prepare_data(datasets = needed)
+  if (is.null(data)) data <- prepare_data(datasets = needed, sources = analysis_spec$sources)
   missing <- setdiff(needed, names(data))
   if (length(missing)) {
     stop("Prepared data is missing dataset(s): ", paste(missing, collapse = ", "), call. = FALSE)
   }
+  check_data_sources(data, analysis_spec, needed)
 
   custom_env <- source_custom(display_dir(slug, root))
   rows <- build_ard(analysis_spec, data, custom_env)
@@ -229,15 +230,82 @@ append_iteration <- function(slug, manifest, root = csr_root()) {
 #' @export
 regenerate_all <- function(slugs = display_slugs(root), root = csr_root(),
                            change_request = "Initial generation.", actor = "@jwildfire") {
-  specs <- lapply(slugs, function(s) read_analysis_spec(s, root))
-  needed <- unique(c("adsl", unlist(lapply(specs, function(s) c(s$dataset, s$denominator)))))
-  data <- prepare_data(datasets = needed)
+  specs <- stats::setNames(lapply(slugs, function(s) read_analysis_spec(s, root)), slugs)
+  prepared <- prepare_data_for(specs)
   out <- lapply(slugs, function(s) {
-    m <- regenerate(s, root, change_request = change_request, actor = actor, data = data)
+    m <- regenerate(
+      s, root,
+      change_request = change_request, actor = actor,
+      data = prepared[[source_key(specs[[s]]$sources)]]
+    )
     tibble::tibble(
       display = m$display, version = m$version, ard_rows = m$ard_rows,
       ard_errors = m$ard_errors
     )
   })
   invisible(do.call(rbind, out))
+}
+
+#' Stable key for a spec's `sources:` declaration
+#'
+#' Displays that declare the same packaging share one prepared dataset list;
+#' displays that declare different packagings must not. The key is what makes
+#' "the same" decidable without comparing whole registries.
+#' @noRd
+source_key <- function(sources) {
+  if (is.null(sources)) {
+    return("default")
+  }
+  nms <- names(sources)
+  if (is.null(nms)) {
+    return(paste0("all=", sources))
+  }
+  paste(paste0(nms, "=", unname(sources)), collapse = ",")
+}
+
+#' Prepare one dataset list per distinct `sources:` declaration
+#'
+#' Preparing data is the expensive step, so [regenerate_all()] used to do it
+#' once for the whole library. That is only correct while every display is built
+#' from the same packaging of the study. Grouping by declared source keeps the
+#' saving where it is safe and stops sharing where it is not.
+#' @noRd
+prepare_data_for <- function(specs) {
+  keys <- vapply(specs, function(s) source_key(s$sources), character(1))
+  out <- list()
+  for (k in unique(keys)) {
+    group <- specs[keys == k]
+    needed <- unique(c("adsl", unlist(lapply(group, function(s) c(s$dataset, s$denominator)))))
+    message("Preparing data (", k, "): ", paste(needed, collapse = ", "))
+    out[[k]] <- prepare_data(datasets = needed, sources = group[[1]]$sources)
+  }
+  out
+}
+
+#' Refuse a prepared dataset list built from the wrong packaging
+#'
+#' `regenerate(data = ...)` exists so a caller can prepare once and render many
+#' displays. Without this check that shortcut silently becomes a way to render a
+#' display against data its specification did not ask for — the efficacy
+#' displays would quietly fall back to the pharmaverse re-derivation, which does
+#' not state the study's efficacy analysis set at all. Any disagreement on any
+#' dataset the display actually reads is an error naming the datasets.
+#' @noRd
+check_data_sources <- function(data, analysis_spec, needed) {
+  wanted <- data_sources(analysis_spec$sources)[needed]
+  got <- tryCatch(data_sources_used(data)[needed], error = function(e) NULL)
+  if (is.null(got)) {
+    return(invisible(TRUE))
+  }
+  bad <- needed[!is.na(wanted) & !is.na(got) & wanted != got]
+  if (length(bad)) {
+    stop(
+      "Display '", analysis_spec$id, "' declares ",
+      paste0(bad, ": ", wanted[bad], collapse = ", "),
+      ", but the prepared data supplied was built from ",
+      paste0(bad, ": ", got[bad], collapse = ", "), ".",
+      call. = FALSE
+    )
+  }
+  invisible(TRUE)
 }
