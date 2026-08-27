@@ -237,6 +237,33 @@ Where the reference is silent, the display's own footnotes say so — see
 | DSP-TTE-002 | The survival curve is drawn from the committed ARD and from nothing else: one series per treatment group, each non-increasing, ending at the ARD's final estimate, with the numbers-at-risk strip printing the ARD's counts. | Correctness | `test-displays-efficacy.R`, `qc/efficacy-reference.R` | Verified |
 | DSP-TTE-003 | The log-rank p-value is reported as `<0.0001` rather than rounded to `0.0000`, and the unrounded probability is retained in the ARD. | Regulatory | `test-displays-efficacy.R` | Verified |
 
+### Two statistics in the ARD that no route checks
+
+Measured 2026-08-27 by changing one statistic at a time in the committed ARD and
+running both gates. `t-cibic-categorical` writes three statistics per visit for
+the Cochran-Mantel-Haenszel test — `pval`, `chisq` and `df`. Only `pval` is
+compared:
+
+- Change `pval` and `qc/efficacy-reference.R` exits 1 and names the cell.
+- Change `chisq`, or `df`, at any or all three visits, and `qc/efficacy-reference.R`
+  exits 0 and the whole testthat suite passes 1,974 assertions. Nothing fails.
+
+Neither statistic is printed on the display, so no *published figure* is
+unchecked and the qualification claim above stands as written. What is unchecked
+is the ARD, which is a deliverable in its own right under the analysis-results
+metadata this project targets — a reader of `ard.json` gets a chi-square and a
+degrees-of-freedom no route has ever confirmed.
+
+The degrees of freedom is also asserted in the display's own footnote, as the
+literal words "on 2 degrees of freedom" rather than as a binding. The footnote
+and the ARD can therefore disagree with nothing failing, which is the same defect
+the numeric-fidelity gate exists to prevent in text blocks.
+
+Fixing this means comparing both statistics in `qc/efficacy-reference.R` against
+the second measurement it already computes, and binding the footnote's `2`. It is
+deliberately NOT fixed here: this branch is preserved, not proposed, and adding a
+comparison to a branch nobody has reviewed would bury it.
+
 ### Engineered definitions
 
 Three things these displays report are not settled by the reference, and are
