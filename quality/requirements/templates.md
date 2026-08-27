@@ -48,6 +48,13 @@ that renders `csr.json` is [`quality.md`](quality.md).
   need; pilots 4, 5-dev and 6, the ADRG automation pipeline and most of the eCTD
   `-to-fda` packages carry no licence at all. Both models are encoded from ICH E3, a
   public guideline. See the design report published with #28.
+- **Coverage of the TFL Library** ([#45](https://github.com/jwildfire/open.csr/issues/45)) —
+  the assembler read `library/tfl/` only through the slugs an `assembly.yaml` already
+  named, so a display the library held and no template carried was invisible: four green
+  documents, exit 0, no mention of it. The Text Library never had that hole (RPT-LIB-004).
+  This matters at the seam #44 describes, where displays land in the library in one
+  increment and the wiring into Section 14.2 is a separate one; between the two, nothing
+  said the analysis had reached no deliverable.
 - [Contracts §7](../../docs/design/contracts.md) fixes the template model and the
   assembly configuration formats.
 
@@ -147,6 +154,9 @@ that renders `csr.json` is [`quality.md`](quality.md).
 | RPT-LIB-005 | Every template object the library holds assembles green against the same study in one run, and each re-derives its named values against the committed ARDs. CI assembles them all with `--all`: a template that is never assembled is a directory, not a template. | Functional | `assemble-template-subsets.test.js` | Verified |
 | RPT-LIB-006 | No file under `scripts/` names the third or fourth template object. A template object is discovered from disk by the assembler, the loader and the site build, or the framework is not generic — adding one costs two YAML files and no code. | Non-functional | `assemble-template-subsets.test.js` | Verified |
 | RPT-LIB-007 | All four documents resolve the same named values, from the same store, to the same numbers. Four documents about one study cannot disagree about a quantity. | Traceability | `assemble-template-subsets.test.js` | Verified |
+| RPT-LIB-008 | Every display the TFL Library holds is carried by at least one template object. A display specified, given a committed ARD and wired into nothing reaches no reader, and only a run over the whole library can see it — so `--all` fails on it, which is what CI runs. | Functional | `assemble-template-subsets.test.js` | Verified |
+| RPT-LIB-009 | Each assembled document names the library displays it does not carry, in `gates.warnings` and on `gates.displayCoverage`. Carrying a subset is legitimate and stays a warning; being silent about it is not, for the same reason an unassembled text block is reported (RPT-LIB-004). | Functional | `assemble-template-subsets.test.js` | Verified |
+| RPT-LIB-010 | The coverage comparison goes red on the case it exists for, not only green on the case that already passes. | Functional | `assemble-template-subsets.test.js` | Verified |
 
 ## Known limitations
 

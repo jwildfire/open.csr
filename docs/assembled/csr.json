@@ -1,6 +1,6 @@
 {
   "schema": "opencsr/csr/v1",
-  "generated": "2026-08-26T21:09:50.946Z",
+  "generated": "2026-08-27T02:57:39.694Z",
   "study": {
     "id": "CDISCPILOT01",
     "title": "Safety and Efficacy of the Xanomeline Transdermal Therapeutic System (TTS) in Patients with Mild to Moderate Alzheimer's Disease",
@@ -10429,6 +10429,25 @@
       "ok": true,
       "checked": 15,
       "violations": []
+    },
+    "displayCoverage": {
+      "library": [
+        "l-ae-serious",
+        "t-ae-common",
+        "t-ae-overview",
+        "t-demographics",
+        "t-disposition",
+        "t-exposure"
+      ],
+      "carried": [
+        "l-ae-serious",
+        "t-ae-common",
+        "t-ae-overview",
+        "t-demographics",
+        "t-disposition",
+        "t-exposure"
+      ],
+      "notCarried": []
     }
   }
 }

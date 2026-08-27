@@ -7,7 +7,7 @@
  * build time from `post_text` order. Renumbering a CSR is therefore a one-line
  * diff in assembly.yaml, never a refactor across specs, prose and tests.
  */
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import yaml from 'js-yaml';
 
 export const CONTENT_TYPES = ['text', 'in_text_display', 'post_text_index', 'generated_provenance'];
@@ -204,6 +204,35 @@ export function validateAssembly(assembly, sectionModel, { textIds = [], display
 /** Section-number -> {title, slug} index, for cross-reference resolution. */
 export function sectionIndex(sectionModel) {
   return new Map(sectionModel.sections.map((s) => [s.number, { title: s.title, slug: s.slug }]));
+}
+
+/**
+ * Every display slug the TFL Library holds: a directory under `library/tfl/`
+ * carrying a specification. Analogous to loading the Text Library — the point is
+ * to know what EXISTS, independently of what any one document assembles.
+ */
+export function listDisplaySlugs(dir) {
+  if (!existsSync(dir)) return [];
+  return readdirSync(dir, { withFileTypes: true })
+    .filter((e) => e.isDirectory())
+    .filter((e) => ['display.yaml', 'analysis.yaml'].some((f) => existsSync(`${dir}/${e.name}/${f}`)))
+    .map((e) => e.name)
+    .sort();
+}
+
+/**
+ * Display slugs the library holds that the given document does not carry.
+ *
+ * The Text Library already has this property: a block the library holds but this
+ * build did not assemble is reported, "so 'not gated' can never pass for 'gated
+ * and clean'" (RPT-LIB-004). Displays had no equivalent — a fully specified
+ * display with a committed ARD could sit in `library/tfl/` and every document in
+ * the library would assemble green without mentioning it. This is the same
+ * accounting for the TFL Library (RPT-LIB-008).
+ */
+export function unassembledDisplays(librarySlugs, referencedSlugs) {
+  const carried = referencedSlugs instanceof Set ? referencedSlugs : new Set(referencedSlugs);
+  return [...librarySlugs].filter((slug) => !carried.has(slug)).sort();
 }
 
 /** Read `library/tfl/<slug>/display.yaml` when the TFL Library has one. */
