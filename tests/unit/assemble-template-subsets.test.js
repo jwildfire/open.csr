@@ -18,7 +18,13 @@ import { describe, expect, it } from 'vitest';
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { assemble, listTemplates } from '../../scripts/assemble.mjs';
-import { loadAssembly, loadSections, validateSections } from '../../scripts/template-lib.mjs';
+import {
+  loadAssembly,
+  loadSections,
+  validateSections,
+  listDisplaySlugs,
+  unassembledDisplays,
+} from '../../scripts/template-lib.mjs';
 
 const ROOT = new URL('../..', import.meta.url).pathname;
 const model = (id) => loadSections(join(ROOT, `library/templates/${id}/sections.yaml`));
@@ -187,6 +193,60 @@ describe('Four documents, one library', () => {
       expect(doc.study.id, `${id} is the same study`).toBe('CDISCPILOT01');
       expect(doc.gates.values.ok, `${id} re-derives its values`).toBe(true);
     }
+  });
+
+  it('RPT-LIB-008: every display the TFL Library holds is carried by a template object (#45)', () => {
+    const library = listDisplaySlugs(join(ROOT, 'library/tfl'));
+    expect(library.length).toBeGreaterThan(0);
+
+    const carried = new Set();
+    for (const id of listTemplates()) {
+      for (const slug of assemble({ write: false, template: id }).gates.displayCoverage.carried) {
+        carried.add(slug);
+      }
+    }
+    // A display specified, given an ARD and then wired into nothing reaches no
+    // reader at all. It is the display analogue of an unassembled text block,
+    // except that nothing reported it until #45: the assembler only ever looked
+    // at library/tfl/ for slugs a template already named.
+    expect(unassembledDisplays(library, carried)).toEqual([]);
+  });
+
+  it('RPT-LIB-009: each document reports the library displays it does not carry (#45)', () => {
+    for (const id of listTemplates()) {
+      const { displayCoverage } = assemble({ write: false, template: id }).gates;
+      expect(displayCoverage.library, `${id} sees the whole TFL Library`).toEqual(
+        listDisplaySlugs(join(ROOT, 'library/tfl'))
+      );
+      // Carrying a subset is legitimate — a synopsis need not reproduce every
+      // table in the report — so this is an accounting, not a failure. What it
+      // may never be is silent.
+      for (const slug of displayCoverage.notCarried) {
+        expect(
+          assemble({ write: false, template: id }).gates.warnings.some((w) =>
+            w.startsWith(`${slug}: in the TFL Library but not carried by ${id}`)
+          ),
+          `${id} names ${slug}`
+        ).toBe(true);
+      }
+    }
+  });
+
+  it('RPT-LIB-010: the coverage check reports an uncarried display rather than passing it (#45)', () => {
+    // The green result above is only worth something if the same comparison goes
+    // red on the case it exists for. Run it on inputs that disagree.
+    const library = ['t-demographics', 't-eff-adas-wk24', 't-disposition'];
+    expect(unassembledDisplays(library, new Set(['t-demographics', 't-disposition']))).toEqual([
+      't-eff-adas-wk24',
+    ]);
+    expect(unassembledDisplays(library, new Set(library))).toEqual([]);
+    expect(unassembledDisplays(library, [])).toEqual([
+      't-demographics',
+      't-disposition',
+      't-eff-adas-wk24',
+    ]);
+    // A directory under library/tfl/ with no specification in it is not a display.
+    expect(listDisplaySlugs(join(ROOT, 'library/text'))).toEqual([]);
   });
 
   it('RPT-LIB-006: a new template object costs no change in scripts/ (#34)', () => {

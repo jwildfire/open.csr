@@ -46,7 +46,8 @@
  *                          displayHash, data: [...], environment, gitCommit,
  *                          created, source } ] },
  *   gates: { structure, bindingResolution, numericFidelity, approval,
- *            crossReferences, warnings, blocks: [...] }
+ *            crossReferences, warnings, blocks: [...],
+ *            displayCoverage: { library, carried, notCarried } }
  * }
  * ---------------------------------------------------------------------------
  */
@@ -74,6 +75,8 @@ import {
   assignDisplayNumbers,
   sectionIndex,
   loadDisplaySpec,
+  listDisplaySlugs,
+  unassembledDisplays,
   compareSectionNumbers,
   DISPLAY_TYPE_LABELS,
 } from './template-lib.mjs';
@@ -456,6 +459,30 @@ export function assemble({ write = true, template = 'ich-e3' } = {}) {
     checked: valueReport.checked,
     violations: valueReport.violations
   };
+
+  // The same accounting for the TFL Library. A display the library holds but this
+  // document does not carry is reported, exactly as an unassembled text block is:
+  // otherwise a fully specified display with a committed ARD can sit in
+  // library/tfl/ and every document assembles green without naming it, which is
+  // how a new analysis reaches none of the deliverables unnoticed (RPT-LIB-008).
+  //
+  // Per document this is a WARNING, because a document legitimately carries a
+  // subset — a synopsis is not obliged to reproduce every table in the report.
+  // Carried by NO template is a different claim, and only the `--all` run can see
+  // it; that one fails the build.
+  const libraryDisplays = listDisplaySlugs(PATHS.tfl);
+  const notCarried = unassembledDisplays(libraryDisplays, referenced);
+  for (const slug of notCarried) {
+    gates.warnings.push(
+      `${slug}: in the TFL Library but not carried by ${tpl.id}; this document does not present it`
+    );
+  }
+  gates.displayCoverage = {
+    library: libraryDisplays,
+    carried: [...referenced].sort(),
+    notCarried,
+  };
+
   gates.ok = gates.ok && valueReport.ok;
 
   // --- place content into sections -----------------------------------------
@@ -964,11 +991,34 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     ? listTemplates()
     : [requested ?? 'ich-e3'];
   let failed = false;
+  const carriedSomewhere = new Set();
+  let libraryDisplays = [];
   for (const templateId of templates) {
     const doc = assemble({ write: true, template: templateId });
+    for (const slug of doc.gates.displayCoverage.carried) carriedSomewhere.add(slug);
+    libraryDisplays = doc.gates.displayCoverage.library;
     if (!reportBuild(doc, templatePaths(templateId))) failed = true;
     if (templates.length > 1) console.log('');
   }
+
+  // Only a run over the whole library can tell "this document carries a subset"
+  // from "no deliverable presents this analysis at all". The second is a defect:
+  // the display was specified, its ARD was committed, and it reaches no reader.
+  // Assembling one template cannot see it, so the check lives here (RPT-LIB-008).
+  if (templates.length > 1) {
+    const orphans = unassembledDisplays(libraryDisplays, carriedSomewhere);
+    if (orphans.length) {
+      failed = true;
+      console.log(`open.csr assembler — TFL Library coverage across ${templates.length} template objects`);
+      console.log(`  ✗ ${orphans.length} display(s) in library/tfl/ are carried by no template object:`);
+      for (const slug of orphans) console.log(`    ✗ ${slug}`);
+      console.log('  Add each to a template assembly, or say in its matrix why the library holds it.');
+    } else {
+      console.log(`open.csr assembler — TFL Library coverage across ${templates.length} template objects`);
+      console.log(`  ✓ all ${libraryDisplays.length} display(s) in library/tfl/ are carried by a template object`);
+    }
+  }
+
   process.exit(failed ? 1 : 0);
 }
 

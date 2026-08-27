@@ -1,6 +1,6 @@
 {
   "module": "templates",
-  "generated": "2026-08-27T02:05:28.631Z",
+  "generated": "2026-08-27T02:57:34.000Z",
   "records": [
     {
       "requirementIds": [
@@ -352,6 +352,42 @@
     },
     {
       "requirementIds": [
+        "RPT-LIB-008"
+      ],
+      "title": "Four documents, one library RPT-LIB-008: every display the TFL Library holds is carried by a template object (#45)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/assemble-template-subsets.test.js",
+      "issueRefs": [
+        45
+      ]
+    },
+    {
+      "requirementIds": [
+        "RPT-LIB-009"
+      ],
+      "title": "Four documents, one library RPT-LIB-009: each document reports the library displays it does not carry (#45)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/assemble-template-subsets.test.js",
+      "issueRefs": [
+        45
+      ]
+    },
+    {
+      "requirementIds": [
+        "RPT-LIB-010"
+      ],
+      "title": "Four documents, one library RPT-LIB-010: the coverage check reports an uncarried display rather than passing it (#45)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/assemble-template-subsets.test.js",
+      "issueRefs": [
+        45
+      ]
+    },
+    {
+      "requirementIds": [
         "RPT-SYN-001"
       ],
       "title": "ICH E3 Annex I synopsis document model RPT-SYN-001: sections.yaml is a structurally valid document model (#28)",
@@ -688,7 +724,7 @@
   "environment": {
     "os": "Darwin 23.6.0",
     "node": "v24.14.0",
-    "vitest": "2.1.9",
+    "vitest": null,
     "r": "4.3.3"
   },
   "run": null
