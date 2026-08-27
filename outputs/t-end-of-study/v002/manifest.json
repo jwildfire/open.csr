@@ -1,0 +1,55 @@
+{
+  "display": "t-end-of-study",
+  "version": "v002",
+  "created": "2026-08-27T03:44:50Z",
+  "actor": "@obotclaw",
+  "change_request": "Correct the population line. The reference report runs Table 14-1.02 over Intent-to-Treat; this display claimed All Subjects. In this study both select the same 254 subjects, so no figure moves. The footnote for N now says where its wording departs from the reference.",
+  "regulatory_id": "DST03",
+  "git_commit": null,
+  "spec_hash": "sha256:d39450dddaefccbbea9b35b0196efd2836918cf0364b71f3786d89c21844d93f",
+  "display_hash": "sha256:6a7d3f311854434bd578cab4b8d109dfc7cd9327aaad0517e5f24fd9eb835d4e",
+  "ard_hash": "sha256:2a40e4cf421c90c5194a080354ebd95ffc9e28638ca9b1c0c3f4ca35bb54e23d",
+  "ard_rows": 162,
+  "ard_warnings": 0,
+  "ard_errors": 0,
+  "datasets": "adsl",
+  "data": [
+    {
+      "dataset": "adsl",
+      "hash": "sha256:6534192e6ae2a8789015148d2068ecdd8421791ea6d7f9cc307fef1db97945f9",
+      "n_row": 254,
+      "n_col": 53,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    }
+  ],
+  "environment": {
+    "r": "4.3.3",
+    "os": "Darwin 23.6.0",
+    "packages": {
+      "cards": "0.6.1",
+      "cardx": "0.2.5",
+      "gtsummary": "2.3.0",
+      "gt": "1.0.0",
+      "dplyr": "1.1.4",
+      "pharmaverseadam": "1.1.0",
+      "jsonlite": "2.0.0",
+      "yaml": "2.3.10",
+      "digest": "0.6.37"
+    }
+  },
+  "variants": {
+    "post_text": {
+      "file": "table.html",
+      "rtf": "table.rtf",
+      "rtf_hash": "sha256:4dc2dde2a4990c3e65baf3d626befb1563b67f967a97a2982cbfb63af56e58c2",
+      "n_rows": 15
+    },
+    "in_text": {
+      "file": "table-in-text.html",
+      "rtf": "table-in-text.rtf",
+      "rtf_hash": "sha256:d586f04b3df6c964b7c5db2151cbd52fc770a92742b445f74d33780b91e4f136",
+      "n_rows": 15
+    }
+  }
+}

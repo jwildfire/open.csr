@@ -1,6 +1,6 @@
 {
   "schema": "opencsr/csr/v1",
-  "generated": "2026-08-27T04:10:18.203Z",
+  "generated": "2026-08-27T12:13:10.624Z",
   "study": {
     "id": "CDISCPILOT01",
     "title": "Safety and Efficacy of the Xanomeline Transdermal Therapeutic System (TTS) in Patients with Mild to Moderate Alzheimer's Disease",
@@ -3065,6 +3065,8 @@
       "TXT-E3-1231: in the Text Library but not assembled into e3-synopsis; not gated by this build",
       "TXT-E3-1300: in the Text Library but not assembled into e3-synopsis; not gated by this build",
       "t-conmeds: in the TFL Library but not carried by e3-synopsis; this document does not present it",
+      "t-end-of-study: in the TFL Library but not carried by e3-synopsis; this document does not present it",
+      "t-populations: in the TFL Library but not carried by e3-synopsis; this document does not present it",
       "t-vitals: in the TFL Library but not carried by e3-synopsis; this document does not present it",
       "t-vitals-change: in the TFL Library but not carried by e3-synopsis; this document does not present it",
       "t-weight: in the TFL Library but not carried by e3-synopsis; this document does not present it"
@@ -3503,7 +3505,9 @@
         "t-conmeds",
         "t-demographics",
         "t-disposition",
+        "t-end-of-study",
         "t-exposure",
+        "t-populations",
         "t-vitals",
         "t-vitals-change",
         "t-weight"
@@ -3518,6 +3522,8 @@
       ],
       "notCarried": [
         "t-conmeds",
+        "t-end-of-study",
+        "t-populations",
         "t-vitals",
         "t-vitals-change",
         "t-weight"

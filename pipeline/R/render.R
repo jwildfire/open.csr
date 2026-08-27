@@ -355,11 +355,18 @@ table_body <- function(rows, display_spec, vcfg, patterns, digits) {
   if (is.null(plan) || nrow(plan) == 0) {
     stop("Display '", display_spec$id, "' produced no rows.", call. = FALSE)
   }
+  # A column may render a different statistic from the rest of the row — a
+  # hypothesis-test column carries one p-value per row while the treatment
+  # columns carry counts — so `columns.patterns` overrides the row's pattern for
+  # named columns only. Declared in display.yaml, like every other formatting
+  # decision; no column is special-cased in code.
+  col_patterns <- as.list(display_spec$columns$patterns %||% list())
   cells <- matrix("", nrow = nrow(plan), ncol = length(cols$levels))
   for (i in seq_len(nrow(plan))) {
     if (isTRUE(plan$section[i])) next
     for (j in seq_along(cols$levels)) {
-      cells[i, j] <- cell_value(rows, plan[i, ], cols$levels[j], patterns, digits)
+      pat <- col_patterns[[cols$levels[j]]] %||% plan$pattern[i]
+      cells[i, j] <- cell_value(rows, plan[i, ], cols$levels[j], patterns, digits, pat)
     }
   }
   tbl <- tibble::tibble(label = indent_label(plan$label, plan$indent))
@@ -380,7 +387,8 @@ indent_label <- function(label, indent) {
 
 #' Compute one cell by substituting formatted statistics into a pattern
 #' @noRd
-cell_value <- function(rows, plan_row, col_level, patterns, digits) {
+cell_value <- function(rows, plan_row, col_level, patterns, digits,
+                       pattern_name = plan_row$pattern) {
   keep <- rows$analysis == plan_row$analysis &
     !is.na(rows$group1_level) & rows$group1_level == col_level
   if (!is.na(plan_row$variable)) keep <- keep & rows$variable == plan_row$variable
@@ -395,7 +403,7 @@ cell_value <- function(rows, plan_row, col_level, patterns, digits) {
     return("")
   }
   digits <- utils::modifyList(as.list(digits), as.list(plan_row$digits[[1]] %||% list()))
-  pattern <- patterns[[plan_row$pattern]] %||% plan_row$pattern
+  pattern <- patterns[[pattern_name]] %||% pattern_name
   needed <- regmatches(pattern, gregexpr("\\{[^}]+\\}", pattern))[[1]]
   out <- pattern
   for (tok in needed) {

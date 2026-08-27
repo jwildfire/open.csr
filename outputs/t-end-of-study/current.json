@@ -1,0 +1,9 @@
+{
+  "display": "t-end-of-study",
+  "version": "v002",
+  "updated": "2026-08-27T03:44:50Z",
+  "path": "outputs/t-end-of-study/v002",
+  "ard": "outputs/t-end-of-study/v002/ard.json",
+  "table": "outputs/t-end-of-study/v002/table.html",
+  "variants": ["post_text", "in_text"]
+}

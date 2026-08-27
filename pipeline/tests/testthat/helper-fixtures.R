@@ -92,3 +92,72 @@ scratch_root <- function(slugs) {
   }
   root
 }
+
+# ---- the CDISC pilot's own ADSL, read without the package -------------------
+
+#' ADSL exactly as the CDISC pilot published it
+#'
+#' Read straight out of the vendored `.xpt.gz` with {haven}, with none of
+#' [prepare_data()]'s derivations applied. `ref_adsl()` above cannot serve the
+#' displays specified against `sources: phuse` — it is the {pharmaverseadam}
+#' re-derivation, which carries neither the study's own population flags nor its
+#' collected discontinuation reasons. Reading the file directly here keeps the
+#' expected values independent of the data layer under test, the same way
+#' `qc/reference-report-agreement.R` does.
+ref_phuse_adsl <- function() {
+  memo("ref_phuse_adsl", {
+    path <- file.path(
+      csr_root(), "pipeline", "inst", "extdata", "phuse-cdiscpilot01", "adsl.xpt.gz"
+    )
+    haven::read_xpt(memDecompress(readBin(path, "raw", file.size(path)), type = "gzip"))
+  })
+}
+
+#' A character column with missing and empty values collapsed to ""
+#'
+#' SAS-era ADaM writes an unset flag as a blank string, not NA, and the two
+#' appear in the same column. Comparing with `== "Y"` without this returns NA
+#' for the blanks and silently drops them out of a `sum()`.
+blank_na <- function(x) {
+  x <- as.character(x)
+  x[is.na(x)] <- ""
+  x
+}
+
+#' Locate a display row by the analysis it renders
+#'
+#' `cell()` above addresses a row by its printed label, which does not identify
+#' a row on these two displays: t-end-of-study prints "Missing" twice — once for
+#' an unknown completion status and once for an unrecorded reason — and carries
+#' footnote markers inside the label text. The display renders one row per entry
+#' in the spec's `rows`, section headings included, so the entry's `analysis` is
+#' the stable identity.
+row_of <- function(slug, analysis) {
+  rows <- read_display_spec(slug)$rows
+  idx <- which(vapply(rows, function(r) identical(r$analysis, analysis), logical(1)))
+  testthat::expect_length(idx, 1)
+  idx
+}
+
+#' A rendered cell, addressed by analysis rather than by label
+analysis_cell <- function(disp, slug, analysis, column) {
+  j <- which(disp$columns$levels == column)
+  testthat::expect_length(j, 1)
+  disp$table[[paste0("col", j)]][row_of(slug, analysis)]
+}
+
+#' The count and the percentage a rendered "n (p%)" cell reports
+count_at <- function(disp, slug, analysis, column) {
+  as.integer(sub("[^0-9].*$", "", analysis_cell(disp, slug, analysis, column)))
+}
+
+pct_at <- function(disp, slug, analysis, column) {
+  as.integer(sub("^.*\\(([0-9]+)%\\).*$", "\\1", analysis_cell(disp, slug, analysis, column)))
+}
+
+#' SAS rounds half away from zero; the displays follow it, so the expected
+#' values here have to as well.
+pct_half_up <- function(n, N) as.integer(floor(100 * n / N + 0.5))
+
+#' The three planned treatment groups, in the order the displays declare
+pilot_arms <- function() c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose")

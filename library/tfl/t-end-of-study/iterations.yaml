@@ -1,0 +1,25 @@
+display: t-end-of-study
+iterations:
+- version: v001
+  created: '2026-08-27T02:18:15Z'
+  actor: '@jwildfire'
+  change_request: Initial generation of DST03 from the CDISCPILOT01 statistical analysis
+    plan (Attachment 13.1.1 Template 2).
+  git_commit: ''
+  spec_hash: sha256:b22301120d285fe73b1eb1b4ba8da852e5127c369e10d37d756d241ee9923c22
+  display_hash: sha256:8ec9802506cf768c21a658d082ac2d4f06d4929b7eb64d64d3eb6a75c07c7821
+  ard_hash: sha256:979dd87c8155bc5a11a11bfcb971cdde111f4b03a2414cb93ae7a245b47e6441
+  ard_rows: 162
+- version: v002
+  created: '2026-08-27T03:44:50Z'
+  actor: '@obotclaw'
+  change_request: Correct the population line. The reference report runs Table 14-1.02
+    over Intent-to-Treat; this display claimed All Subjects. In this study both select
+    the same 254 subjects, so no figure moves. The footnote for N now says where its
+    wording departs from the reference.
+  git_commit: ''
+  spec_hash: sha256:d39450dddaefccbbea9b35b0196efd2836918cf0364b71f3786d89c21844d93f
+  display_hash: sha256:6a7d3f311854434bd578cab4b8d109dfc7cd9327aaad0517e5f24fd9eb835d4e
+  ard_hash: sha256:2a40e4cf421c90c5194a080354ebd95ffc9e28638ca9b1c0c3f4ca35bb54e23d
+  ard_rows: 162
+

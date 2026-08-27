@@ -112,6 +112,25 @@ jobs:
         # other, or when the committed record stops describing them (#39).
         run: Rscript qc/source-agreement.R
 
+      - name: The populations and end-of-study tables agree with the pilot's own report
+        # Third measurement of every cell t-populations and t-end-of-study
+        # publish, against the clinical study report the CDISC pilot published in
+        # 2006 from SAS programs sharing no code with this repository. Compares a
+        # from-scratch recomputation, the committed rendered HTML and the
+        # transcribed report; any two disagreeing is non-zero (DSP-REF-001).
+        #
+        # The fidelity of the transcription itself is checked by
+        # `--verify-transcription`, which is deliberately NOT run here: it needs
+        # the network and pdftotext, and a build that fails because a third-party
+        # download was slow teaches people to ignore the build. Run it by hand
+        # whenever quality/data/reference-report-agreement.json is edited.
+        run: Rscript qc/reference-report-agreement.R
+
+      - name: The reference-report comparison can still fail
+        # A green check nobody has seen fail is not evidence. Perturbs each of the
+        # three routes in turn and requires the comparison to catch each one.
+        run: Rscript qc/reference-report-agreement.R --self-test
+
       - name: Committed R results match this run
         # run-tests.R rewrites qc/testthat-results.json; anything but a
         # provenance-only difference means the committed evidence is stale.

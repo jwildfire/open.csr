@@ -1,14 +1,14 @@
 {
   "suite": "r-unit",
   "package": "opencsr",
-  "generated": "2026-08-27T12:02:21Z",
+  "generated": "2026-08-27T12:07:25Z",
   "environment": {
     "r": "4.3.3",
     "os": "Darwin 23.6.0"
   },
   "summary": {
-    "total": 108,
-    "passed": 108,
+    "total": 117,
+    "passed": 117,
     "failed": 0,
     "errored": 0,
     "skipped": 0
@@ -287,6 +287,51 @@
     {
       "file": "test-displays.R",
       "test": "DSP-ALL-002: every display declares a regulatory identifier and a source line (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays.R",
+      "test": "DSP-POP-001: the population rows match the study's own flags in ADSL (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays.R",
+      "test": "DSP-POP-002: completion rows use COMP24FL and the complement of DISCONFL (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays.R",
+      "test": "DSP-POP-003: the display reads the packaging that states the flags it reports (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays.R",
+      "test": "DSP-POP-004: planned and actual treatment agree for every subject (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays.R",
+      "test": "DSP-EOS-001: the completion-status rows partition each treatment group (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays.R",
+      "test": "DSP-EOS-002: the early-termination reasons partition the early terminations (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays.R",
+      "test": "DSP-EOS-003: a p-value appears on exactly the rows the analysis plan names (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays.R",
+      "test": "DSP-EOS-004: every percentage is based on the treatment group, not the discontinuations (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays.R",
+      "test": "DSP-REF-001: both displays publish the figures the pilot's own report printed (#1)",
       "status": "pass"
     },
     {

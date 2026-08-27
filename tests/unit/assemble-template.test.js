@@ -11,11 +11,11 @@ import {
   validateSections,
 } from '../../scripts/template-lib.mjs';
 import { loadTextLibrary } from '../../scripts/text-lib.mjs';
-import { ASSEMBLY_YAML, LIBRARY_DIR, SECTIONS_YAML, fixtureArds } from './text-test-helpers.js';
+import { ASSEMBLY_YAML, LIBRARY_DIR, SECTIONS_YAML, fixtureArds, librarySlugs } from './text-test-helpers.js';
 
 const model = loadSections(SECTIONS_YAML);
 const assembly = loadAssembly(ASSEMBLY_YAML);
-const displaySlugs = [...fixtureArds().keys()];
+const displaySlugs = librarySlugs();
 const textIds = [...loadTextLibrary(LIBRARY_DIR).keys()];
 
 describe('ICH E3 document model', () => {
