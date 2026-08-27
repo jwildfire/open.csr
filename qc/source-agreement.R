@@ -7,9 +7,14 @@
 # domains — ADSL, ADAE and ADVS — and they do not agree on all of them.
 #
 # This script measures the overlap and compares the measurement with the record
-# committed at quality/data/source-agreement.json. Any difference is an exit
-# code of 1: either the sources changed under us, or someone changed the record
-# without changing the data.
+# committed at quality/data/source-agreement.json. Any difference in a measured
+# fact is an exit code of 1: either the sources changed under us, or someone
+# changed the record without changing the data.
+#
+# The `environment` block is the one exception — recorded and printed, never
+# compared. {pharmaverseadam} is whatever the environment resolves (1.1.0 here,
+# 1.3.0 on CI), and a version bump that moves no measured fact is news, not a
+# failure. A version bump that DOES move one still fails, on the fact it moved.
 #
 # It is deliberately written WITHOUT loading {opencsr}: it reads the vendored
 # .xpt.gz files itself and compares with base R. The same facts are measured a
@@ -145,7 +150,17 @@ measure <- function() {
     study = "CDISCPILOT01",
     sources = list(
       phuse = "phuse-org/phuse-scripts:data/adam (CDISC pilot submission ADaM package)",
-      pharmaverseadam = paste0("pharmaverseadam ", as.character(utils::packageVersion("pharmaverseadam")))
+      pharmaverseadam = "pharmaverseadam (pharmaverse re-derivation from SDTM)"
+    ),
+    # Recorded for provenance, NOT compared: see `ignored` below. The vendored
+    # PHUSE data is pinned by PROVENANCE.json and checked separately, but
+    # {pharmaverseadam} is whatever the environment resolves, and a version bump
+    # that changes no measured fact must not fail the build. It is printed on
+    # every run so a bump is visible rather than silent.
+    environment = list(
+      pharmaverseadam = as.character(utils::packageVersion("pharmaverseadam")),
+      r = paste(R.version$major, R.version$minor, sep = "."),
+      os = Sys.info()[["sysname"]]
     ),
     comparison_rule = paste(
       "Values compared as text after normalising empty string to NA.",
@@ -262,7 +277,27 @@ as_text <- function(v) {
 
 fm <- flatten(measured)
 fr <- flatten(recorded)
-paths <- union(names(fm), names(fr))
+
+# Environment metadata is recorded and reported, never compared: it describes
+# the machine that measured, not the data that was measured.
+ignored <- grep("^environment\\.", union(names(fm), names(fr)), value = TRUE)
+env_line <- function(f) {
+  keys <- grep("^environment\\.", names(f), value = TRUE)
+  paste(sub("^environment\\.", "", keys), vapply(keys, function(k) as_text(f[[k]]), character(1)),
+    sep = " ", collapse = ", "
+  )
+}
+if (!identical(env_line(fm), env_line(fr))) {
+  cat(
+    "Environment differs from the one that wrote the record (not a failure):\n",
+    "  recorded: ", env_line(fr), "\n",
+    "  measured: ", env_line(fm), "\n",
+    "  Every measured fact below is compared regardless.\n",
+    sep = ""
+  )
+}
+
+paths <- setdiff(union(names(fm), names(fr)), ignored)
 bad <- character(0)
 for (p in paths) {
   m <- if (p %in% names(fm)) as_text(fm[[p]]) else "<absent from measurement>"
@@ -277,5 +312,9 @@ if (length(bad)) {
   quit(status = 1)
 }
 
-cat("OK: source agreement matches ", record_path, " (", length(paths), " facts)\n", sep = "")
+cat(
+  "OK: source agreement matches ", record_path, " — ", length(paths),
+  " facts, measured under ", env_line(fm), "\n",
+  sep = ""
+)
 quit(status = 0)

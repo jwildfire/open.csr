@@ -110,7 +110,7 @@ variants:
 
 **Manifest:** `list(dataset, n_row, n_col, hash, source_pkg, source_version)` per dataset, where `hash = digest::digest(df, algo = "sha256")`. For a `{pharmaverseadam}` dataset the last pair is the package and its version; for a PHUSE dataset it is `"phuse-org/phuse-scripts:data/adam"` and the pinned upstream commit.
 
-**Source agreement:** the two packagings overlap on ADSL, ADAE and ADVS and do not agree on all of it. Every divergence is recorded in `quality/data/source-agreement.json` and reproduced by `qc/source-agreement.R`, which exits non-zero when the measurement stops matching the record.
+**Source agreement:** the two packagings overlap on ADSL, ADAE and ADVS and do not agree on all of it. Every divergence is recorded in `quality/data/source-agreement.json` and reproduced by `qc/source-agreement.R`, which exits non-zero when any measured fact stops matching the record. The record's `environment` block — the R version, OS and `{pharmaverseadam}` version that measured — is recorded and printed but never compared: a version bump that moves no measured fact is news, not a failure, and one that moves a fact still fails on the fact it moved.
 
 ## 5. `ard.json` — the ARD serialization (owned schema, D5)
 

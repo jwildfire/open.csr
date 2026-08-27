@@ -2,7 +2,12 @@
   "study": "CDISCPILOT01",
   "sources": {
     "phuse": "phuse-org/phuse-scripts:data/adam (CDISC pilot submission ADaM package)",
-    "pharmaverseadam": "pharmaverseadam 1.1.0"
+    "pharmaverseadam": "pharmaverseadam (pharmaverse re-derivation from SDTM)"
+  },
+  "environment": {
+    "pharmaverseadam": "1.1.0",
+    "r": "4.3.3",
+    "os": "Darwin"
   },
   "comparison_rule": "Values compared as text after normalising empty string to NA. ADSL is aligned on USUBJID after removing the 52 pharmaverseadam screen failures; ADAE is aligned on USUBJID+AESEQ.",
   "adsl": {
