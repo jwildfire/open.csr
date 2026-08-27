@@ -1,0 +1,13 @@
+display: t-populations
+iterations:
+- version: v001
+  created: '2026-08-27T02:18:05Z'
+  actor: '@jwildfire'
+  change_request: Initial generation of DST02 from the CDISCPILOT01 statistical analysis
+    plan (Attachment 13.1.1 Template 1).
+  git_commit: ''
+  spec_hash: sha256:f65fbf88bc9a3e80d99a13996d860c7081b600706bcaad7be8959631bbcbdeb8
+  display_hash: sha256:a67aeb9f6fc21407ca7c7677439c537ca702244fb15bd9af53ee359543ee9c5a
+  ard_hash: sha256:a096a1d317bd1cbf8be558b56c0952a0ebde4fd590039bf212a15e746cf10064
+  ard_rows: 60
+

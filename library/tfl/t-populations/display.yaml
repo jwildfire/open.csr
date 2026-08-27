@@ -1,0 +1,27 @@
+id: t-populations
+title: "Summary of Populations"
+study: CDISCPILOT01
+population_label: "Intent-to-Treat Analysis Set"
+cutoff: "2015-03-05"
+source: "Source: adsl (phuse-org/phuse-scripts, data/adam/cdisc — the CDISC pilot submission's own ADaM package). Data cut-off: 2015-03-05."
+footnotes:
+  - "N in the column headers is the number of subjects randomised to that treatment group; percentages are based on it."
+  - "The ITT population includes all subjects randomised. The Safety population includes all randomised subjects known to have taken at least one dose of randomised study drug. The Efficacy population includes all subjects in the safety population who also have at least one post-baseline ADAS-Cog and CIBIC+ assessment."
+  - "Treatment groups are planned (randomised) treatment, TRT01P. In this ADSL planned and actual treatment agree for all 254 subjects."
+  - "Complete Study is the complement of the study's own DISCONFL: a subject who did not discontinue. Complete Week 24 is the study's COMP24FL."
+  - "The cut-off shown is the latest subject end date (RFENDT) recorded in the vendored ADSL. The CDISC pilot package states no separate database-lock date."
+columns:
+  order: [Placebo, "Xanomeline Low Dose", "Xanomeline High Dose", Total]
+format:
+  digits:
+    p: 0
+rows:
+  - { analysis: itt, label: "Intent-To-Treat (ITT)", pattern: n_pct }
+  - { analysis: safety, label: "Safety", pattern: n_pct }
+  - { analysis: efficacy, label: "Efficacy", pattern: n_pct }
+  - { analysis: complete_wk24, label: "Complete Week 24", pattern: n_pct }
+  - { analysis: complete_study, label: "Complete Study", pattern: n_pct }
+variants:
+  post_text: {}
+  in_text:
+    title: "Summary of Populations (Summary)"

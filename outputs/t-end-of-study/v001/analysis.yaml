@@ -1,0 +1,91 @@
+id: t-end-of-study
+title: "Summary of End of Study Data"
+regulatory_id: DST03
+type: table
+dataset: adsl
+analysis_set: all
+denominator: adsl
+# COMP24FL and DCREASCD are collected facts carried in the CDISC pilot's own
+# ADSL. The {pharmaverseadam} re-derivation of this study has neither, which is
+# why this display names its source rather than taking the default registry.
+sources: phuse
+# Planned treatment, as in the reference report.
+group:
+  - TRT01P
+total: true
+analyses:
+  # ---- completion status --------------------------------------------------
+  # The SAP compares "protocol completed" across arms with Fisher's exact test,
+  # so this row is the custom count-and-test; the other two are plain counts.
+  - name: completed_wk24
+    method: subject_count
+    custom: ard_count_and_fisher
+    label: "Completed Week 24"
+    variable: COMP24FL
+    filter: "COMP24FL == 'Y'"
+  - name: early_term
+    method: subject_count
+    label: "Early Termination (prior to Week 24)"
+    variable: COMP24FL
+    filter: "COMP24FL == 'N'"
+  - name: completion_missing
+    method: subject_count
+    label: "Completion status missing"
+    variable: COMP24FL
+    filter: "!(COMP24FL %in% c('Y', 'N'))"
+  # ---- reason for early termination, among the early terminations ---------
+  # Every reason is counted over the same column denominator as the completion
+  # rows (the treatment group), not over the early terminations, which is what
+  # the reference report does.
+  - name: et_ae
+    method: subject_count
+    custom: ard_count_and_fisher
+    label: "Early termination: adverse event"
+    variable: DCREASCD
+    filter: "COMP24FL == 'N' & DCREASCD == 'Adverse Event'"
+  - name: et_death
+    method: subject_count
+    label: "Early termination: death"
+    variable: DCREASCD
+    filter: "COMP24FL == 'N' & DCREASCD == 'Death'"
+  - name: et_loe
+    method: subject_count
+    custom: ard_count_and_fisher
+    label: "Early termination: lack of efficacy"
+    variable: DCREASCD
+    filter: "COMP24FL == 'N' & DCREASCD == 'Lack of Efficacy'"
+  - name: et_ltfu
+    method: subject_count
+    label: "Early termination: lost to follow-up"
+    variable: DCREASCD
+    filter: "COMP24FL == 'N' & DCREASCD == 'Lost to Follow-up'"
+  - name: et_withdrew
+    method: subject_count
+    label: "Early termination: subject decided to withdraw"
+    variable: DCREASCD
+    filter: "COMP24FL == 'N' & DCREASCD == 'Withdrew Consent'"
+  - name: et_physician
+    method: subject_count
+    label: "Early termination: physician decided to withdraw subject"
+    variable: DCREASCD
+    filter: "COMP24FL == 'N' & DCREASCD == 'Physician Decision'"
+  - name: et_ie
+    method: subject_count
+    label: "Early termination: protocol criteria not met"
+    variable: DCREASCD
+    filter: "COMP24FL == 'N' & DCREASCD == 'I/E Not Met'"
+  - name: et_protocol
+    method: subject_count
+    label: "Early termination: protocol violation"
+    variable: DCREASCD
+    filter: "COMP24FL == 'N' & DCREASCD == 'Protocol Violation'"
+  - name: et_sponsor
+    method: subject_count
+    label: "Early termination: sponsor decision"
+    variable: DCREASCD
+    filter: "COMP24FL == 'N' & DCREASCD == 'Sponsor Decision'"
+  - name: et_missing
+    method: subject_count
+    label: "Early termination: reason missing"
+    variable: DCREASCD
+    filter: "COMP24FL == 'N' & (is.na(DCREASCD) | !nzchar(DCREASCD))"

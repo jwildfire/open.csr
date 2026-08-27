@@ -1,0 +1,243 @@
+{
+  "record": "reference-report-agreement",
+  "what": "The figures the CDISC pilot's own clinical study report printed for Tables 14-1.01 and 14-1.02, transcribed cell by cell. open.csr rebuilds those two displays as t-populations and t-end-of-study; qc/reference-report-agreement.R checks that a from-scratch recomputation and the committed rendered HTML both land on every string below.",
+  "reference": {
+    "document": "Clinical Study Report, CDISC SDTM/ADaM Pilot Project, protocol CDISCPILOT01, FINAL, 27 June 2006",
+    "published_by": "CDISC SDTM/ADaM Pilot Project Team",
+    "tables": {
+      "t-populations": "Table 14-1.01, Summary of Populations (Population: Intent-to-Treat)",
+      "t-end-of-study": "Table 14-1.02, Summary of End of Study Data (Population: All Subjects)"
+    },
+    "produced_by": "SAS programs adsl1.sas and adsl2.sas, run 21:02 Monday, 26 June 2006, per the Source line printed on each table.",
+    "analysis_plan": "Statistical Analysis Plan section 9.7.1.2: 'The number of subjects randomized, the number of subjects in each analysis dataset, and the disposition of subjects were tabulated by treatment group. Specific reasons for early study discontinuation (protocol completed, lack of efficacy, and adverse event) were compared using a Fisher's exact test.' The display shells are Attachment 13.1.1 Templates 1 and 2.",
+    "read_for": "Printed figures and analysis definitions only. No data was taken from the report or from any repository other than phuse-org/phuse-scripts (MIT).",
+    "transcription": "Typed from the report by hand, not computed. Whitespace inside the parentheses is as printed; the comparison collapses it."
+  },
+  "comparison": {
+    "route_a": "A from-scratch recomputation in qc/reference-report-agreement.R that reads the vendored adsl.xpt.gz with {haven} and never loads {opencsr}.",
+    "route_b": "The cell text parsed out of the committed outputs/<slug>/<version>/table.html, which is what the pipeline published.",
+    "route_c": "This record: what the 2006 SAS programs printed.",
+    "rule": "All three must agree on every cell. Any disagreement is exit status 1."
+  },
+  "displays": {
+    "t-populations": {
+      "table": "14-1.01",
+      "columns": [
+        "Placebo",
+        "Xanomeline Low Dose",
+        "Xanomeline High Dose",
+        "Total"
+      ],
+      "column_n": [
+        86,
+        84,
+        84,
+        254
+      ],
+      "rows": [
+        {
+          "analysis": "itt",
+          "label": "Intent-To-Treat (ITT)",
+          "printed": [
+            "86 (100%)",
+            "84 (100%)",
+            "84 (100%)",
+            "254 (100%)"
+          ]
+        },
+        {
+          "analysis": "safety",
+          "label": "Safety",
+          "printed": [
+            "86 (100%)",
+            "84 (100%)",
+            "84 (100%)",
+            "254 (100%)"
+          ]
+        },
+        {
+          "analysis": "efficacy",
+          "label": "Efficacy",
+          "printed": [
+            "79 ( 92%)",
+            "81 ( 96%)",
+            "74 ( 88%)",
+            "234 ( 92%)"
+          ]
+        },
+        {
+          "analysis": "complete_wk24",
+          "label": "Complete Week 24",
+          "printed": [
+            "60 ( 70%)",
+            "28 ( 33%)",
+            "30 ( 36%)",
+            "118 ( 46%)"
+          ]
+        },
+        {
+          "analysis": "complete_study",
+          "label": "Complete Study",
+          "printed": [
+            "58 ( 67%)",
+            "25 ( 30%)",
+            "27 ( 32%)",
+            "110 ( 43%)"
+          ]
+        }
+      ]
+    },
+    "t-end-of-study": {
+      "table": "14-1.02",
+      "columns": [
+        "Placebo",
+        "Xanomeline Low Dose",
+        "Xanomeline High Dose",
+        "Total"
+      ],
+      "column_n": [
+        86,
+        84,
+        84,
+        254
+      ],
+      "p_value_column": "p-value",
+      "rows": [
+        {
+          "analysis": "completed_wk24",
+          "label": "Completed Week 24",
+          "printed": [
+            "60 ( 70%)",
+            "28 ( 33%)",
+            "30 ( 36%)",
+            "118 ( 46%)"
+          ],
+          "p_value_printed": "<.0001"
+        },
+        {
+          "analysis": "early_term",
+          "label": "Early Termination (prior to Week 24)",
+          "printed": [
+            "26 ( 30%)",
+            "56 ( 67%)",
+            "54 ( 64%)",
+            "136 ( 54%)"
+          ]
+        },
+        {
+          "analysis": "completion_missing",
+          "label": "Missing",
+          "printed": [
+            "0 ( 0%)",
+            "0 ( 0%)",
+            "0 ( 0%)",
+            "0 ( 0%)"
+          ]
+        },
+        {
+          "analysis": "et_ae",
+          "label": "Adverse Event",
+          "printed": [
+            "8 ( 9%)",
+            "44 ( 52%)",
+            "39 ( 46%)",
+            "91 ( 36%)"
+          ],
+          "p_value_printed": "<.0001"
+        },
+        {
+          "analysis": "et_death",
+          "label": "Death",
+          "printed": [
+            "1 ( 1%)",
+            "1 ( 1%)",
+            "0 ( 0%)",
+            "2 ( 1%)"
+          ],
+          "p_value_printed": "0.5000"
+        },
+        {
+          "analysis": "et_loe",
+          "label": "Lack of Efficacy[2]",
+          "printed": [
+            "3 ( 3%)",
+            "0 ( 0%)",
+            "1 ( 1%)",
+            "4 ( 2%)"
+          ],
+          "p_value_printed": "0.3281"
+        },
+        {
+          "analysis": "et_ltfu",
+          "label": "Lost to Follow-up",
+          "printed": [
+            "1 ( 1%)",
+            "0 ( 0%)",
+            "0 ( 0%)",
+            "1 ( 0%)"
+          ]
+        },
+        {
+          "analysis": "et_withdrew",
+          "label": "Subject decided to withdraw",
+          "printed": [
+            "9 ( 10%)",
+            "8 ( 10%)",
+            "8 ( 10%)",
+            "25 ( 10%)"
+          ]
+        },
+        {
+          "analysis": "et_physician",
+          "label": "Physician decided to withdraw subject",
+          "printed": [
+            "1 ( 1%)",
+            "0 ( 0%)",
+            "2 ( 2%)",
+            "3 ( 1%)"
+          ]
+        },
+        {
+          "analysis": "et_ie",
+          "label": "Protocol criteria not met",
+          "printed": [
+            "1 ( 1%)",
+            "0 ( 0%)",
+            "2 ( 2%)",
+            "3 ( 1%)"
+          ]
+        },
+        {
+          "analysis": "et_protocol",
+          "label": "Protocol violation",
+          "printed": [
+            "1 ( 1%)",
+            "1 ( 1%)",
+            "1 ( 1%)",
+            "3 ( 1%)"
+          ]
+        },
+        {
+          "analysis": "et_sponsor",
+          "label": "Sponsor decision",
+          "printed": [
+            "1 ( 1%)",
+            "2 ( 2%)",
+            "1 ( 1%)",
+            "4 ( 2%)"
+          ]
+        },
+        {
+          "analysis": "et_missing",
+          "label": "Missing",
+          "printed": [
+            "0 ( 0%)",
+            "0 ( 0%)",
+            "0 ( 0%)",
+            "0 ( 0%)"
+          ]
+        }
+      ]
+    }
+  }
+}

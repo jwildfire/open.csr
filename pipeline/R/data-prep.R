@@ -200,8 +200,35 @@ prepare_data <- function(datasets = c("adsl", "adae", "adex", "adlb", "advs", "a
     )
   }))
   attr(out, "manifest") <- tibble::as_tibble(manifest)
+  # The resolved registry travels with the data. regenerate() compares it with
+  # what the display's spec asked for, so a prepared list built from the wrong
+  # packaging of the study is refused instead of quietly producing an iteration
+  # whose numbers nobody asked for.
+  attr(out, "sources") <- src
   class(out) <- c("opencsr_data", "list")
   out
+}
+
+#' Which source each prepared dataset actually came from
+#'
+#' The per-dataset registry [prepare_data()] resolved and stamped onto its
+#' result. Read it rather than re-deriving it: the point of the stamp is that
+#' the answer comes from the object that was built, not from a second call to
+#' [data_sources()] that might resolve differently.
+#'
+#' @param prepared Result of [prepare_data()].
+#' @return A named character vector, one entry per prepared dataset.
+#' @examples
+#' \dontrun{
+#' data_sources_used(prepare_data("adsl"))
+#' }
+#' @export
+data_sources_used <- function(prepared) {
+  src <- attr(prepared, "sources")
+  if (is.null(src)) {
+    stop("`prepared` carries no source stamp; was it produced by prepare_data()?", call. = FALSE)
+  }
+  src
 }
 
 #' Read one raw dataset from its source (see [prepare_data()])

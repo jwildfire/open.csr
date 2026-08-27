@@ -88,6 +88,11 @@ validate_analysis_spec <- function(spec) {
     stop("`total: true` requires a grouping variable.", call. = FALSE)
   }
   spec$denominator <- spec$denominator %||% "adsl"
+  spec$sources <- normalise_sources(spec$sources)
+  # Resolving the registry here turns an unknown source id or an unknown
+  # dataset name into a spec-validation error, at the point the spec is read,
+  # rather than a prepare_data() error three calls later.
+  data_sources(spec$sources)
   if (!length(spec$analyses)) {
     stop("analysis spec must declare at least one entry under `analyses`.", call. = FALSE)
   }
@@ -204,4 +209,55 @@ check_specs_consistent <- function(analysis_spec, display_spec) {
     }
   }
   invisible(TRUE)
+}
+
+#' Normalise an analysis spec's `sources:` key
+#'
+#' A display may name the packaging of the study its numbers come from
+#' (contract §2). Three shapes are accepted, matching [data_sources()]:
+#' absent/`NULL` (the default registry), a single source id (`sources: phuse`),
+#' or a per-dataset mapping (`sources: {adsl: phuse}`). YAML parses the mapping
+#' as a list, so it is flattened to the named character vector `data_sources()`
+#' expects, and validated here rather than at prepare time so a typo is a spec
+#' error with the spec's own vocabulary in the message.
+#'
+#' @param sources The raw `sources` value from `analysis.yaml`.
+#' @return `NULL`, a length-one unnamed character vector, or a fully named
+#'   character vector.
+#' @noRd
+normalise_sources <- function(sources) {
+  if (is.null(sources) || identical(sources, "")) {
+    return(NULL)
+  }
+  if (is.list(sources)) {
+    if (!length(sources)) {
+      return(NULL)
+    }
+    nms <- names(sources)
+    if (is.null(nms) || any(!nzchar(nms))) {
+      stop(
+        "analysis spec `sources` mapping must name every dataset, ",
+        "for example `sources: {adsl: phuse}`.",
+        call. = FALSE
+      )
+    }
+    flat <- vapply(sources, function(x) {
+      if (length(x) != 1 || !is.character(x)) {
+        stop("analysis spec `sources` values must each be a single source id.", call. = FALSE)
+      }
+      x
+    }, character(1))
+    return(stats::setNames(unname(flat), nms))
+  }
+  if (!is.character(sources)) {
+    stop(
+      "analysis spec `sources` must be a source id or a dataset-to-source mapping; got ",
+      class(sources)[1], ".",
+      call. = FALSE
+    )
+  }
+  if (length(sources) != 1 || !is.null(names(sources))) {
+    return(sources)
+  }
+  sources
 }

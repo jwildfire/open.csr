@@ -63,6 +63,17 @@ data_sources <- function(source = NULL) {
   if (length(bad)) {
     stop("Unknown data source(s): ", paste(unique(bad), collapse = ", "), ".", call. = FALSE)
   }
+  # `out[names(source)] <- ...` would silently *add* an unrecognised dataset
+  # name to the registry, so a typo would look like a successful override and
+  # only surface as a confusing prepare_data() error later.
+  unknown <- setdiff(names(source), names(default))
+  if (length(unknown)) {
+    stop(
+      "Unknown dataset(s) in a source override: ", paste(unknown, collapse = ", "),
+      ". Known datasets: ", paste(sort(names(default)), collapse = ", "), ".",
+      call. = FALSE
+    )
+  }
   out <- default
   out[names(source)] <- unname(source)
   out

@@ -1,0 +1,55 @@
+{
+  "display": "t-populations",
+  "version": "v001",
+  "created": "2026-08-27T02:18:05Z",
+  "actor": "@jwildfire",
+  "change_request": "Initial generation of DST02 from the CDISCPILOT01 statistical analysis plan (Attachment 13.1.1 Template 1).",
+  "regulatory_id": "DST02",
+  "git_commit": null,
+  "spec_hash": "sha256:f65fbf88bc9a3e80d99a13996d860c7081b600706bcaad7be8959631bbcbdeb8",
+  "display_hash": "sha256:a67aeb9f6fc21407ca7c7677439c537ca702244fb15bd9af53ee359543ee9c5a",
+  "ard_hash": "sha256:a096a1d317bd1cbf8be558b56c0952a0ebde4fd590039bf212a15e746cf10064",
+  "ard_rows": 60,
+  "ard_warnings": 0,
+  "ard_errors": 0,
+  "datasets": "adsl",
+  "data": [
+    {
+      "dataset": "adsl",
+      "hash": "sha256:6534192e6ae2a8789015148d2068ecdd8421791ea6d7f9cc307fef1db97945f9",
+      "n_row": 254,
+      "n_col": 53,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    }
+  ],
+  "environment": {
+    "r": "4.3.3",
+    "os": "Darwin 23.6.0",
+    "packages": {
+      "cards": "0.6.1",
+      "cardx": "0.2.5",
+      "gtsummary": "2.3.0",
+      "gt": "1.0.0",
+      "dplyr": "1.1.4",
+      "pharmaverseadam": "1.1.0",
+      "jsonlite": "2.0.0",
+      "yaml": "2.3.10",
+      "digest": "0.6.37"
+    }
+  },
+  "variants": {
+    "post_text": {
+      "file": "table.html",
+      "rtf": "table.rtf",
+      "rtf_hash": "sha256:a7de94583a435302c075ebf13698eaae080d6537c236dec3f95d00b9450ac7e3",
+      "n_rows": 5
+    },
+    "in_text": {
+      "file": "table-in-text.html",
+      "rtf": "table-in-text.rtf",
+      "rtf_hash": "sha256:40864670e914413f2cf3f8df3456ffc0ab18c4f7285a1bd8d624cbc7c3f77cae",
+      "n_rows": 5
+    }
+  }
+}
