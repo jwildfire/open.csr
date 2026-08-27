@@ -2,8 +2,11 @@
 
 export(ard_ancova)
 export(ard_binding)
+export(ard_derived_ancova)
+export(ard_derived_continuous)
 export(ard_population_n)
 export(build_ard)
+export(derive_subject_summary)
 export(build_values)
 export(csr_root)
 export(current_iteration)

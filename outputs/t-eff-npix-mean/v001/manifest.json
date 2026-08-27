@@ -1,0 +1,57 @@
+{
+  "display": "t-eff-npix-mean",
+  "version": "v001",
+  "created": "2026-08-27T03:49:43Z",
+  "actor": "obot worker W0137",
+  "change_request": "First generation of the secondary efficacy endpoint (reference report Table 14-3.12).",
+  "regulatory_id": "EFT09",
+  "git_commit": null,
+  "spec_hash": "sha256:80f5f0ccff24b1cf2f942ea6b2e3615b2fe5bf61016f79e950b6c75d4df5019f",
+  "display_hash": "sha256:2a125282a0f3bffdb3ee0b9a2b4cde642ab5df2ae637c8df80d0a4e8c62fd731",
+  "ard_hash": "sha256:36723590232056152dc985b74eb8cc339012bcc06ccee13994237e583527c29b",
+  "ard_rows": 71,
+  "ard_warnings": 0,
+  "ard_errors": 0,
+  "datasets": ["adsl", "adqsnpix"],
+  "data": [
+    {
+      "dataset": "adsl",
+      "hash": "sha256:6534192e6ae2a8789015148d2068ecdd8421791ea6d7f9cc307fef1db97945f9",
+      "n_row": 254,
+      "n_col": 53,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    },
+    {
+      "dataset": "adqsnpix",
+      "hash": "sha256:2c590895d6d8dd6f847e3985be3dc4b5efde4bd08b140185a3c6a91aaf1d401f",
+      "n_row": 31140,
+      "n_col": 42,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    }
+  ],
+  "environment": {
+    "r": "4.3.3",
+    "os": "Darwin 23.6.0",
+    "packages": {
+      "cards": "0.6.1",
+      "cardx": "0.2.5",
+      "gtsummary": "2.3.0",
+      "gt": "1.0.0",
+      "dplyr": "1.1.4",
+      "pharmaverseadam": "1.1.0",
+      "jsonlite": "2.0.0",
+      "yaml": "2.3.10",
+      "digest": "0.6.37"
+    }
+  },
+  "variants": {
+    "post_text": {
+      "file": "table.html",
+      "rtf": "table.rtf",
+      "rtf_hash": "sha256:5a4ab89a91318ee4bc6c8e887ea10e89ebcfdf216f20e8dbf87eddb5adffc364",
+      "n_rows": 16
+    }
+  }
+}
