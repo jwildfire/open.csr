@@ -89,7 +89,7 @@ describe('the stylesheet parses', () => {
     // real symptoms of the 2026-07-27 regression: the selectors that were dead.
     const scan = scanBraces(css);
     expect(scan.depth).toBe(0);
-    for (const selector of ['.sr-only', '.nav-twisty', '.nav-section.is-empty']) {
+    for (const selector of ['.sr-only', '.rdr-draft-note', '.nav-section.is-empty']) {
       expect(css, `${selector} must be present`).toContain(selector);
       const before = css.slice(0, css.indexOf(selector));
       // Everything before a rule must itself be balanced, or the browser never
@@ -126,5 +126,29 @@ describe('the stylesheet parses', () => {
       depth += (line.match(/\{/g) || []).length - (line.match(/\}/g) || []).length;
     });
     expect(stray, `declarations outside any rule:\n${stray.join('\n')}`).toEqual([]);
+  });
+});
+
+// The explorer's one state, asserted in the stylesheet (open.csr #40).
+//
+// The rule that decides whether a document's contents are visible is CSS, not
+// JavaScript: a section list is shown when it sits next to the current document
+// and hidden otherwise. That is the whole of the state now, so it is worth a
+// test that the second half of the old pair really left rather than being
+// commented out or overridden further down.
+describe('a document\'s contents follow the selection and nothing else', () => {
+  test('QC-SITE-012: the current document reveals its contents, and only the current one (#40)', () => {
+    expect(css).toMatch(/\.nav-sections\s*\{[^}]*display:\s*none/);
+    expect(css).toMatch(/\.nav-item\[data-current\]\s*\+\s*\.nav-sections\s*\{[^}]*display:\s*block/);
+  });
+
+  test('QC-SITE-012: no rule survives that could hide the open document\'s contents (#40)', () => {
+    // A per-node collapse class, or a disclosure control to set it, would be the
+    // second state again — this time invisible in the markup tests, which is why
+    // the stylesheet gets its own assertion.
+    expect(css).not.toContain('nav-twisty');
+    expect(css).not.toContain('is-collapsed');
+    // The group-level caret is a different control and stays.
+    expect(css).toMatch(/\.nav-group\.open\s+\.nav-caret/);
   });
 });

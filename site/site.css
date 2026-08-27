@@ -2343,9 +2343,11 @@ body.app-page .app-bar {
   padding: 0 1.5rem;
 }
 
-/* A document's own contents, as the level below it. Shown for the selected
-   document only — sixteen sections per document is a list worth having in the
-   tree, and every document's list at once is not. */
+/* A document's own contents, as the level below it, and the whole of the tree's
+   second state — which is to say there isn't one. Every document renders its
+   section list; the open document's is the one shown, because it is the list
+   sitting next to the current item. Sixteen sections per document is worth
+   having in the tree, and four documents' worth at once is not (#40). */
 .nav-sections {
   display: none;
   list-style: none;
@@ -2757,50 +2759,12 @@ body.app-page .app-bar {
   border: 0;
 }
 
-/* Only nodes that HAVE children carry a control; the rest are flat rows, which
-   is what makes the chevron mean something when it appears. */
-.nav-node.has-children {
-  position: relative;
-}
-
-.nav-twisty {
-  position: absolute;
-  left: 0;
-  top: 0.28rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 1rem;
-  height: 1.05rem;
-  padding: 0;
-  border: 0;
-  border-radius: var(--radius-sm);
-  background: none;
-  color: var(--faint);
-  cursor: pointer;
-}
-
-.nav-twisty:hover {
-  color: var(--ink);
-  background: var(--paper-2);
-}
-
-.nav-twisty:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 1px;
-}
-
-.nav-twisty .nav-caret {
-  transform: rotate(90deg);
-}
-
-.nav-node.is-collapsed .nav-twisty .nav-caret {
-  transform: rotate(0deg);
-}
-
-.nav-node.is-collapsed .nav-sections {
-  display: none;
-}
+/* A document node is a flat row. It used to carry its own disclosure button, and
+   that button was the bug (#40): expansion and selection were two states, and a
+   document could be "expanded" while a different one was open. The rule that
+   decides whether a document's contents are visible now lives in one place, up
+   at `.nav-item[data-current] + .nav-sections`, and there is nothing down here
+   that can override it. */
 
 /* A group with nothing in it is a heading: no control, no hover affordance. */
 .nav-group.is-empty .nav-group-head {

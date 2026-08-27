@@ -59,7 +59,7 @@
     "QC-DEMO-022": "The header carries a Read/Edit mode control in which Read is current and Edit is genuinely disabled, and the explorer renders without throwing on an empty registry.",
     "QC-DEMO-023": "A built document contributes its own top-level sections to the tree, and a section counts as populated when it or anything beneath it is; an unbuilt document contributes none.",
     "QC-DEMO-024": "Sections render beneath their own document, each a deep link to its heading, with unpopulated sections still navigable and labelled as modelled-but-not-populated.",
-    "QC-DEMO-025": "Every explorer node with children carries a real disclosure button — keyboard-reachable, named for a screen reader, with `aria-expanded` and `aria-controls` — and a node with nothing beneath it carries none.",
+    "QC-DEMO-025": "Expansion and selection are one state, not two: the open document shows its table of contents and every other document shows its title alone, with no per-document disclosure control in the markup, no per-document collapse flag in the client, and nothing in the stylesheet that can hide the open document's contents. Group-level collapse is unaffected.",
     "QC-DEMO-026": "Sections the report does not populate are dimmed as a whole row and keep the tooltip that explains why, while populated sections stay at full contrast; a group with no items renders as a heading rather than an empty folder.",
     "QC-DEMO-027": "The Values pane shows every value's name, number and provenance — an ARD address with its iteration and hash, or the declared arithmetic for a derived value — and the text blocks that cite it.",
     "QC-DEMO-028": "The Values pane states the verdict of the gate that re-derived the store against the committed ARDs, and renders a documented empty state when no store exists.",
@@ -70,6 +70,7 @@
     "QC-DEMO-033": "A document the page rendered is a selectable explorer node carrying its standalone permalink as the no-JavaScript fallback; a document the page did not render stays an ordinary link out with no selection attributes.",
     "QC-DEMO-034": "Every rendered document contributes its own top-level sections to the explorer, each section link naming its document, and a section slug is resolved inside the document on screen rather than across the page.",
     "QC-DEMO-035": "Each document panel carries its own prose disclosure, so a document whose blocks are unreviewed reads as draft inside the app exactly as it does on its own page.",
+    "QC-SITE-012": "The stylesheet expresses the explorer's one state and only that: a document's section list is hidden by default and revealed by sitting next to the current document, with no per-node collapse class and no disclosure-control rules left to override it.",
     "QC-SITE-011": "Two documents assembled from the shared libraries quote the same artifacts: every display both documents place resolves to the same ARD source and the same ARD payload, and both carry the same value store with no value differing in raw value or formatted string. Only the per-document display number differs.",
     "QC-SITE-008": "`site/site.css` parses as a whole: every block is closed, no block is closed that was never opened, and no declaration sits outside a rule — so no rule in the file can be silently dead in the browser.",
     "QC-SITE-009": "The site publishes one reader page and one template page for every assembled template object in `library/templates/`, discovered from the library rather than declared: an object absent from `site/config.json` still publishes, titled from its own model, and every document reaches every other from the switcher, the navigation tree and the home page.",
@@ -592,8 +593,8 @@
     {
       "id": "QC-DEMO-025",
       "area": "Demo",
-      "text": "Every explorer node with children carries a real disclosure button — keyboard-reachable, named for a screen reader, with `aria-expanded` and `aria-controls` — and a node with nothing beneath it carries none.",
-      "source": "open.csr#10",
+      "text": "Expansion and selection are one state, not two: the open document shows its table of contents and every other document shows its title alone, with no per-document disclosure control in the markup, no per-document collapse flag in the client, and nothing in the stylesheet that can hide the open document's contents. Group-level collapse is unaffected.",
+      "source": "open.csr#40",
       "evidence": "js-unit",
       "link": "site-demo.test.js",
       "status": "draft"
@@ -686,6 +687,15 @@
       "source": "open.csr#36",
       "evidence": "js-unit",
       "link": "site-demo.test.js, site-documents.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-SITE-012",
+      "area": "Site",
+      "text": "The stylesheet expresses the explorer's one state and only that: a document's section list is hidden by default and revealed by sitting next to the current document, with no per-node collapse class and no disclosure-control rules left to override it.",
+      "source": "open.csr#40",
+      "evidence": "js-unit",
+      "link": "site-css.test.js",
       "status": "draft"
     },
     {

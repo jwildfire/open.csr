@@ -1,6 +1,6 @@
 {
   "module": "quality",
-  "generated": "2026-08-27T01:15:51.089Z",
+  "generated": "2026-08-27T01:54:40.635Z",
   "records": [
     {
       "requirementIds": [
@@ -90,24 +90,36 @@
       "requirementIds": [
         "QC-DEMO-025"
       ],
-      "title": "a document contents in the tree QC-DEMO-025: a node with children carries a keyboard-reachable disclosure control (#1)",
+      "title": "a document contents in the tree QC-DEMO-025: a document's contents sit immediately after it, so the open one is the one shown (#40)",
       "suite": "js-unit",
       "passed": true,
       "file": "tests/unit/site-demo.test.js",
       "issueRefs": [
-        1
+        40
       ]
     },
     {
       "requirementIds": [
         "QC-DEMO-025"
       ],
-      "title": "a document contents in the tree QC-DEMO-025: a node with nothing beneath it gets no chevron at all (#1)",
+      "title": "a document contents in the tree QC-DEMO-025: an unbuilt document contributes no contents and still no control (#40)",
       "suite": "js-unit",
       "passed": true,
       "file": "tests/unit/site-demo.test.js",
       "issueRefs": [
-        1
+        40
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-025"
+      ],
+      "title": "a document contents in the tree QC-DEMO-025: no document carries a disclosure control — selection alone opens its contents (#40)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        40
       ]
     },
     {
@@ -132,6 +144,30 @@
       "file": "tests/unit/site-demo.test.js",
       "issueRefs": [
         1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-SITE-012"
+      ],
+      "title": "a document's contents follow the selection and nothing else QC-SITE-012: no rule survives that could hide the open document's contents (#40)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-css.test.js",
+      "issueRefs": [
+        40
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-SITE-012"
+      ],
+      "title": "a document's contents follow the selection and nothing else QC-SITE-012: the current document reveals its contents, and only the current one (#40)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-css.test.js",
+      "issueRefs": [
+        40
       ]
     },
     {
@@ -1632,6 +1668,42 @@
       "file": "tests/unit/site-demo.test.js",
       "issueRefs": [
         36
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-020"
+      ],
+      "title": "the explorer wiring QC-DEMO-020: the group-level collapse the tree still needs is untouched (#40)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        40
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-025"
+      ],
+      "title": "the explorer wiring QC-DEMO-025: the client holds no per-document expansion state at all (#40)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        40
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-031"
+      ],
+      "title": "the explorer wiring QC-DEMO-031: a deep link into another document opens that document (#40)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        40
       ]
     },
     {

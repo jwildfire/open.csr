@@ -219,6 +219,48 @@ when spec editing produces a diff that needs somewhere to live.
 
 The panes themselves, the shared selection, the link-interception rule, and the standalone permalinks are all unchanged — this is a shell replacement, not a rewrite. `/gallery/`, `/reader/`, `/text/` and now `/templates/` remain the addressable permalinks and the destinations the evidence pages and trace panels link to.
 
+## 8. Revision: one state, not two (2026-08-26)
+
+§6 gave every explorer node with children a disclosure button, on the reasoning
+that expanding a node and selecting it are different intentions. In the tree that
+shipped they are not, and holding them apart is what made the sidebar wrong.
+
+The Documents view has exactly one document open at a time — that is the pane's
+rule, not the tree's — so "is this document's contents showing?" already had an
+answer. The disclosure button gave it a second one, remembered per node for the
+browsing session and never reconciled with the first. The stylesheet only ever
+revealed the section list next to the *current* document, so the two answers
+produced two visible faults: the arrow on a document that was not open moved and
+revealed nothing, and the arrow on the document that *was* open hid its contents.
+@jwildfire, on the live demo: *"Sidebar logic is slightly wonky. you can toggle
+without showing the controls."*
+
+The fix is a subtraction rather than a cleverer arrow. The open document shows
+its table of contents; every other document shows its title alone; selecting a
+different document moves the table of contents with it. What is left is one rule,
+`.nav-item[data-current] + .nav-sections`, and no second control able to disagree
+with it. The button, its `is-collapsed` class, its per-node `sessionStorage` key
+and its stylesheet rules all left with it.
+
+Three things deliberately did not change:
+
+- **Group-level collapse stays.** Which collection you are looking at —
+  DOCUMENTS, DISPLAYS, TEXT, VALUES — is a genuinely separate question from which
+  document is open, it has its own caret, and it is remembered for the browsing
+  session. That state was never wonky.
+- **The unpopulated-section greying stays.** A section a template declares but
+  does not populate renders dimmed, navigable and tooltipped. That is the
+  framework telling the truth about the difference between declaring and filling,
+  and this revision does not touch it.
+- **Deep links still open the document they name.** `#tab=documents&doc=…&focus=…`
+  resolves the document, swaps the panel and moves the tree's contents with it
+  before the scroll is attempted — the order in `render()` is what makes a link
+  into a document you are not reading work at all.
+
+Removing four buttons from the tab order costs a keyboard user nothing: the
+document links were always focusable, and activating one is now the whole of
+opening its contents.
+
 ---
 
 *This document was drafted by Claude Code using Opus 5 and not yet reviewed by @jwildfire.*
