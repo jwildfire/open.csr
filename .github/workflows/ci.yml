@@ -139,6 +139,14 @@ jobs:
         # when the set of declared differences from the reference changes.
         run: Rscript qc/efficacy-agreement.R
 
+      - name: The efficacy displays agree with the study's own report
+        # Third measurement of every published CIBIC+ and time-to-event
+        # statistic: recomputed from the vendored .xpt.gz without loading
+        # {opencsr}, compared with the committed ARDs to full precision and with
+        # the transcribed 2006 report at the declared digits. Non-zero on any
+        # disagreement (#44).
+        run: Rscript qc/efficacy-reference.R
+
       - name: Committed R results match this run
         # run-tests.R rewrites qc/testthat-results.json; anything but a
         # provenance-only difference means the committed evidence is stale.

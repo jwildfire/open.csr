@@ -24,6 +24,8 @@
     "prints in order: n, mean, sd, median, min, max, baseline mean, baseline sd,",
     "change mean, change sd, change median, change min, change max."
   ],
+  "schema": "opencsr/efficacy-reference/v1",
+  "note": "The values the sponsor's own clinical study report printed for the CIBIC+ and time-to-event displays of CDISCPILOT01. This file is not a re-implementation of open.csr's arithmetic — it is a transcription of a document produced in 2006, in SAS, by someone else. It is the third measurement in this display group's qualification: the pipeline computes a number, qc/efficacy-reference.R computes the same number a second way from the raw vendored data, and both are compared with what the report published. Two agreeing implementations can be wrong together; neither can talk this file into agreeing with them.",
   "source": {
     "document": "cdiscpilot01.pdf",
     "repository": "phuse-org/phuse-scripts",
@@ -32,6 +34,18 @@
     "pages_used": "49-60",
     "extraction": "pdftotext -layout, parsed mechanically; no hand transcription",
     "licence_note": "Pages 154-409 of this document carry an Eli Lilly copyright and are not used, quoted or reproduced here. Pages 49-60 and 416-487 are CDISC-authored."
+  },
+  "reference": {
+    "document": "Clinical Study Report, CDISC SDTM/ADaM Pilot Project, protocol CDISCPILOT01 (H2Q-MC-LZZT), final 27 June 2006",
+    "displays": "Section 14: Table 14-3.02 (page header 'Primary Endpoint Analysis: CIBIC+ - Summary at Week 24 - LOCF'), Table 14-3.04, Table 14-3.06, Table 14-3.13, Figure 14-1",
+    "analysis_results_metadata": "The study's define.xml carries Analysis Results Metadata (adamref:AnalysisResultDisplays) for Table_14-3.02 and Figure_14-1, including the selection criteria and the original SAS. Both are transcribed into the displays' custom.R.",
+    "provenance": "The report, its statistical analysis plan (Appendix 9) and its define.xml were read from cdisc-org/sdtm-adam-pilot-project for what they STATE about the study. No data was taken from there, and none from RConsortium/submissions-pilot*. Every number open.csr computes comes from the MIT-licensed phuse-org/phuse-scripts package vendored under pipeline/inst/extdata/phuse-cdiscpilot01/.",
+    "transcription_notes": [
+      "Table 14-3.06 and Table 14-3.13 carry page footers reading 'Population: Completers' and 'Population: Safety'. Both are wrong in the source document: the column headings on those pages are 79/81/74, which is the efficacy analysis set, and the row counts reproduce EFFFL = 'Y' exactly. The footers are 2006 copy-paste errors and are not reproduced.",
+      "Table 14-3.13's footnote reads 'CMH test (Pearson Chi-Square)'. The p-values it prints are the CMH ROW MEAN SCORES DIFFER statistic on 2 degrees of freedom, not the general-association statistic on 8 that the parenthetical suggests; the general-association statistic gives 0.4782, 0.7699 and 0.8685 on the same data. The published values are what this record carries.",
+      "Where the report prints a bare '0' for a category no subject fell into, open.csr renders '0 (0%)'. The statistics are identical; only the presentation of an empty cell differs.",
+      "Figure 14-1's medians and confidence limits are quoted from the report's narrative (Section 12.3.3), which states them to the day. The figure image itself is not machine-readable in the published PDF."
+    ]
   },
   "displays": {
     "t-eff-adas-wk24": {
@@ -1343,6 +1357,628 @@
             1.2
           ]
         ]
+      }
+    },
+    "t-cibic-week24": {
+      "reference": "Table 14-3.02",
+      "title": "Primary Endpoint Analysis: CIBIC+ - Summary at Week 24 - LOCF",
+      "selection": "EFFFL='Y' and ANL01FL='Y' and AVISIT='Week 24' and PARAMCD='CIBICVAL'",
+      "visit": "Week 24",
+      "columns": [
+        "Placebo",
+        "Xanomeline Low Dose",
+        "Xanomeline High Dose"
+      ],
+      "digits": {
+        "N": 0,
+        "mean": 1,
+        "sd": 2,
+        "median": 1,
+        "min": 0,
+        "max": 0,
+        "pval": 3,
+        "diff": 1,
+        "se": 2,
+        "lcl": 1,
+        "ucl": 1
+      },
+      "population_n": [
+        "79",
+        "81",
+        "74"
+      ],
+      "summary": {
+        "N": [
+          "79",
+          "81",
+          "74"
+        ],
+        "mean": [
+          "4.3",
+          "4.2",
+          "4.3"
+        ],
+        "sd": [
+          "0.77",
+          "0.79",
+          "0.81"
+        ],
+        "median": [
+          "4.0",
+          "4.0",
+          "4.0"
+        ],
+        "min": [
+          "2",
+          "2",
+          "3"
+        ],
+        "max": [
+          "6",
+          "6",
+          "6"
+        ]
+      },
+      "ancova": {
+        "dose_response": {
+          "pval": "0.960"
+        },
+        "xan_vs_pbo": {
+          "Xanomeline Low Dose": {
+            "pval": "0.489",
+            "diff": "-0.1",
+            "se": "0.13",
+            "lcl": "-0.3",
+            "ucl": "0.2"
+          },
+          "Xanomeline High Dose": {
+            "pval": "0.799",
+            "diff": "0.0",
+            "se": "0.13",
+            "lcl": "-0.2",
+            "ucl": "0.3"
+          }
+        },
+        "high_vs_low": {
+          "pval": "0.349",
+          "diff": "0.1",
+          "se": "0.13",
+          "lcl": "-0.1",
+          "ucl": "0.4"
+        }
+      }
+    },
+    "t-cibic-week8": {
+      "reference": "Table 14-3.04",
+      "title": "CIBIC+ - Summary at Week 8 - LOCF",
+      "selection": "EFFFL='Y' and ANL01FL='Y' and AVISIT='Week 8' and PARAMCD='CIBICVAL'",
+      "visit": "Week 8",
+      "columns": [
+        "Placebo",
+        "Xanomeline Low Dose",
+        "Xanomeline High Dose"
+      ],
+      "digits": {
+        "N": 0,
+        "mean": 1,
+        "sd": 2,
+        "median": 1,
+        "min": 0,
+        "max": 0,
+        "pval": 3,
+        "diff": 1,
+        "se": 2,
+        "lcl": 1,
+        "ucl": 1
+      },
+      "population_n": [
+        "79",
+        "81",
+        "74"
+      ],
+      "summary": {
+        "N": [
+          "77",
+          "81",
+          "73"
+        ],
+        "mean": [
+          "3.9",
+          "4.0",
+          "4.1"
+        ],
+        "sd": [
+          "0.73",
+          "0.72",
+          "0.75"
+        ],
+        "median": [
+          "4.0",
+          "4.0",
+          "4.0"
+        ],
+        "min": [
+          "2",
+          "2",
+          "2"
+        ],
+        "max": [
+          "6",
+          "6",
+          "6"
+        ]
+      },
+      "ancova": {
+        "dose_response": {
+          "pval": "0.167"
+        },
+        "xan_vs_pbo": {
+          "Xanomeline Low Dose": {
+            "pval": "0.754",
+            "diff": "0.0",
+            "se": "0.12",
+            "lcl": "-0.2",
+            "ucl": "0.3"
+          },
+          "Xanomeline High Dose": {
+            "pval": "0.128",
+            "diff": "0.2",
+            "se": "0.12",
+            "lcl": "-0.1",
+            "ucl": "0.4"
+          }
+        },
+        "high_vs_low": {
+          "pval": "0.218",
+          "diff": "0.1",
+          "se": "0.12",
+          "lcl": "-0.1",
+          "ucl": "0.4"
+        }
+      }
+    },
+    "t-cibic-week16": {
+      "reference": "Table 14-3.06",
+      "title": "CIBIC+ - Summary at Week 16 - LOCF",
+      "selection": "EFFFL='Y' and ANL01FL='Y' and AVISIT='Week 16' and PARAMCD='CIBICVAL'",
+      "visit": "Week 16",
+      "columns": [
+        "Placebo",
+        "Xanomeline Low Dose",
+        "Xanomeline High Dose"
+      ],
+      "digits": {
+        "N": 0,
+        "mean": 1,
+        "sd": 2,
+        "median": 1,
+        "min": 0,
+        "max": 0,
+        "pval": 3,
+        "diff": 1,
+        "se": 2,
+        "lcl": 1,
+        "ucl": 1
+      },
+      "population_n": [
+        "79",
+        "81",
+        "74"
+      ],
+      "summary": {
+        "N": [
+          "79",
+          "81",
+          "74"
+        ],
+        "mean": [
+          "4.2",
+          "4.0",
+          "4.0"
+        ],
+        "sd": [
+          "0.70",
+          "0.77",
+          "0.75"
+        ],
+        "median": [
+          "4.0",
+          "4.0",
+          "4.0"
+        ],
+        "min": [
+          "3",
+          "2",
+          "2"
+        ],
+        "max": [
+          "6",
+          "6",
+          "5"
+        ]
+      },
+      "ancova": {
+        "dose_response": {
+          "pval": "0.214"
+        },
+        "xan_vs_pbo": {
+          "Xanomeline Low Dose": {
+            "pval": "0.219",
+            "diff": "-0.1",
+            "se": "0.12",
+            "lcl": "-0.4",
+            "ucl": "0.1"
+          },
+          "Xanomeline High Dose": {
+            "pval": "0.272",
+            "diff": "-0.1",
+            "se": "0.12",
+            "lcl": "-0.4",
+            "ucl": "0.1"
+          }
+        },
+        "high_vs_low": {
+          "pval": "0.916",
+          "diff": "0.0",
+          "se": "0.12",
+          "lcl": "-0.2",
+          "ucl": "0.2"
+        }
+      }
+    },
+    "t-cibic-categorical": {
+      "reference": "Table 14-3.13",
+      "title": "CIBIC+ - Categorical Analysis - LOCF",
+      "selection": "EFFFL='Y' and ANL01FL='Y' and PARAMCD='CIBICVAL', by AVISIT",
+      "columns": [
+        "Placebo",
+        "Xanomeline Low Dose",
+        "Xanomeline High Dose"
+      ],
+      "digits": {
+        "N": 0,
+        "n": 0,
+        "p": 0,
+        "pval": 4
+      },
+      "population_n": [
+        "79",
+        "81",
+        "74"
+      ],
+      "categories": [
+        "Marked improvement",
+        "Moderate improvement",
+        "Minimal improvement",
+        "No change",
+        "Minimal worsening",
+        "Moderate worsening",
+        "Marked worsening"
+      ],
+      "visits": {
+        "Week 8": {
+          "N": [
+            "77",
+            "81",
+            "73"
+          ],
+          "n": {
+            "Placebo": [
+              "0",
+              "1",
+              "19",
+              "45",
+              "10",
+              "2",
+              "0"
+            ],
+            "Xanomeline Low Dose": [
+              "0",
+              "2",
+              "16",
+              "48",
+              "14",
+              "1",
+              "0"
+            ],
+            "Xanomeline High Dose": [
+              "0",
+              "1",
+              "13",
+              "38",
+              "20",
+              "1",
+              "0"
+            ]
+          },
+          "p": {
+            "Placebo": [
+              null,
+              "1",
+              "25",
+              "58",
+              "13",
+              "3",
+              null
+            ],
+            "Xanomeline Low Dose": [
+              null,
+              "2",
+              "20",
+              "59",
+              "17",
+              "1",
+              null
+            ],
+            "Xanomeline High Dose": [
+              null,
+              "1",
+              "18",
+              "52",
+              "27",
+              "1",
+              null
+            ]
+          },
+          "cmh_pval": "0.2727"
+        },
+        "Week 16": {
+          "N": [
+            "79",
+            "81",
+            "74"
+          ],
+          "n": {
+            "Placebo": [
+              "0",
+              "0",
+              "12",
+              "41",
+              "25",
+              "1",
+              "0"
+            ],
+            "Xanomeline Low Dose": [
+              "0",
+              "3",
+              "12",
+              "46",
+              "19",
+              "1",
+              "0"
+            ],
+            "Xanomeline High Dose": [
+              "0",
+              "2",
+              "13",
+              "39",
+              "20",
+              "0",
+              "0"
+            ]
+          },
+          "p": {
+            "Placebo": [
+              null,
+              null,
+              "15",
+              "52",
+              "32",
+              "1",
+              null
+            ],
+            "Xanomeline Low Dose": [
+              null,
+              "4",
+              "15",
+              "57",
+              "23",
+              "1",
+              null
+            ],
+            "Xanomeline High Dose": [
+              null,
+              "3",
+              "18",
+              "53",
+              "27",
+              null,
+              null
+            ]
+          },
+          "cmh_pval": "0.4003"
+        },
+        "Week 24": {
+          "N": [
+            "79",
+            "81",
+            "74"
+          ],
+          "n": {
+            "Placebo": [
+              "0",
+              "1",
+              "9",
+              "38",
+              "28",
+              "3",
+              "0"
+            ],
+            "Xanomeline Low Dose": [
+              "0",
+              "1",
+              "14",
+              "37",
+              "27",
+              "2",
+              "0"
+            ],
+            "Xanomeline High Dose": [
+              "0",
+              "0",
+              "11",
+              "33",
+              "25",
+              "5",
+              "0"
+            ]
+          },
+          "p": {
+            "Placebo": [
+              null,
+              "1",
+              "11",
+              "48",
+              "35",
+              "4",
+              null
+            ],
+            "Xanomeline Low Dose": [
+              null,
+              "1",
+              "17",
+              "46",
+              "33",
+              "2",
+              null
+            ],
+            "Xanomeline High Dose": [
+              null,
+              null,
+              "15",
+              "45",
+              "34",
+              "7",
+              null
+            ]
+          },
+          "cmh_pval": "0.6180"
+        }
+      },
+      "cmh_variants_not_published": {
+        "note": "Recorded so the choice of statistic is inspectable. Only row_mean_scores reproduces the published p-values.",
+        "general_association": {
+          "Week 8": "0.4782",
+          "Week 16": "0.7699",
+          "Week 24": "0.8685"
+        },
+        "row_mean_scores": {
+          "Week 8": "0.2727",
+          "Week 16": "0.4003",
+          "Week 24": "0.6180"
+        },
+        "nonzero_correlation": {
+          "Week 8": "0.1309",
+          "Week 16": "0.2641",
+          "Week 24": "0.8123"
+        }
+      }
+    },
+    "f-derm-time-to-event": {
+      "reference": "Figure 14-1",
+      "title": "Time to Dermatologic Event by Treatment Group",
+      "selection": "SAFFL='Y' and PARAMCD='TTDE'; event = CNSR != 1",
+      "columns": [
+        "Placebo",
+        "Xanomeline Low Dose",
+        "Xanomeline High Dose"
+      ],
+      "digits": {
+        "N": 0,
+        "n": 0,
+        "p": 0,
+        "n_censor": 0,
+        "p_censor": 0,
+        "median": 0,
+        "median_lcl": 0,
+        "median_ucl": 0,
+        "p_value": 4
+      },
+      "quoted_from": "The report's narrative, Section 12.3.3: '74% (n = 62) of xanomeline low dose and 73% (n = 61) of xanomeline high dose subjects with at least one event of special interest compared to 34% (n = 29) of placebo subjects ... a median time of 33 days in the xanomeline low dose group (95% CI: 27 - 48 days) and 36 days in the xanomeline high dose group (95% CI: 24 - 46 days) compared to placebo, in which the median time to first event was not estimable ... significantly different (p<0.0001)'.",
+      "km": {
+        "N": [
+          "86",
+          "84",
+          "84"
+        ],
+        "n": [
+          "29",
+          "62",
+          "61"
+        ],
+        "p": [
+          "34",
+          "74",
+          "73"
+        ],
+        "n_censor": [
+          "57",
+          "22",
+          "23"
+        ],
+        "p_censor": [
+          "66",
+          "26",
+          "27"
+        ],
+        "median": [
+          null,
+          "33",
+          "36"
+        ],
+        "median_lcl": [
+          null,
+          "27",
+          "24"
+        ],
+        "median_ucl": [
+          null,
+          "48",
+          "46"
+        ]
+      },
+      "derived_not_published": {
+        "note": "The report prints the event rate and the number censored, not the censored percentage. `km.p_censor` is the complement of the published event rate, recorded here so the display's second row has something to be checked against, and labelled so nobody mistakes it for a transcribed figure.",
+        "keys": [
+          "km.p_censor"
+        ]
+      },
+      "logrank": {
+        "published": "p<0.0001",
+        "max_pval": 0.0001
+      },
+      "median_ci_variants_not_published": {
+        "note": "SAS's quantile confidence limits depend on the transformation in force and the three do not agree here. Only the linear form reproduces both published intervals, which is why the display declares it. Recorded so the choice is inspectable rather than asserted.",
+        "plain": {
+          "Xanomeline Low Dose": [
+            "27",
+            "48"
+          ],
+          "Xanomeline High Dose": [
+            "24",
+            "46"
+          ]
+        },
+        "log_log": {
+          "Xanomeline Low Dose": [
+            "27",
+            "48"
+          ],
+          "Xanomeline High Dose": [
+            "23",
+            "46"
+          ]
+        },
+        "log": {
+          "Xanomeline Low Dose": [
+            "28",
+            "51"
+          ],
+          "Xanomeline High Dose": [
+            "25",
+            "47"
+          ]
+        }
       }
     }
   }

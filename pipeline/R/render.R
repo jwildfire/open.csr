@@ -24,23 +24,36 @@ default_patterns <- function() {
 #'
 #' Applies the display's digit plan (falling back to the collected-precision
 #' conventions in [default_digits()]) and half-up rounding. Statistics that
-#' `{cards}` reports as proportions are scaled to percent.
+#' `{cards}` reports as proportions are scaled to percent, and a p-value too
+#' small (or too large) to print at its declared precision is reported at the
+#' boundary rather than rounded through it — see [format_pvalue_bound()].
 #'
 #' @param value Statistic value.
 #' @param stat_name Statistic name.
 #' @param digits Named list/vector of decimals by statistic name.
+#' @param proportions Statistic names stored as proportions in \[0, 1\] and
+#'   shown as percentages. Defaults to what `{cards}` produces; a display whose
+#'   `custom.R` emits further proportions declares them in `display.yaml`'s
+#'   `format.proportions` rather than pre-scaling them in the ARD, so the ARD
+#'   keeps the statistic and the display keeps the presentation.
 #'
 #' @return A length-one character vector.
 #' @examples
 #' format_stat(0.3385827, "p")   # "33.9"
 #' format_stat(8.5865, "sd")     # "8.59"
+#' format_stat(8.2e-14, "pval", list(pval = 4)) # "<0.0001"
 #' @export
-format_stat <- function(value, stat_name, digits = list()) {
+format_stat <- function(value, stat_name, digits = list(), proportions = proportion_stats()) {
   if (is.null(value) || length(value) == 0) {
     return(NA_character_)
   }
   if (length(value) > 1) {
-    return(paste(vapply(value, format_stat, character(1), stat_name = stat_name, digits = digits), collapse = ", "))
+    return(paste(
+      vapply(value, format_stat, character(1),
+        stat_name = stat_name, digits = digits, proportions = proportions
+      ),
+      collapse = ", "
+    ))
   }
   if (is.na(value)) {
     return(NA_character_)
@@ -48,11 +61,54 @@ format_stat <- function(value, stat_name, digits = list()) {
   if (!is.numeric(value)) {
     return(as.character(value))
   }
-  if (stat_name %in% proportion_stats()) value <- value * 100
+  if (stat_name %in% proportions) value <- value * 100
   d <- digits[[stat_name]]
   if (is.null(d)) d <- default_digits(stat_name)
   d <- as.integer(d)
+  if (stat_name %in% pvalue_stats()) {
+    bound <- format_pvalue_bound(value, d)
+    if (!is.na(bound)) {
+      return(bound)
+    }
+  }
   formatC(round_half_up(value, d), format = "f", digits = d, big.mark = "")
+}
+
+#' Report a p-value at the boundary of its declared precision
+#'
+#' Rounding is the right treatment for a measurement and the wrong treatment for
+#' a tail probability. A log-rank p-value of 8.2e-14 rounded to four decimals
+#' prints `0.0000`, which asserts that the probability is zero; it is not, and no
+#' statistic in a clinical study report should read as though it were. The
+#' convention regulatory tables use instead is to print the boundary — `<0.0001`
+#' — and this function applies it, symmetrically, at whatever precision the
+#' display declared. `>0.9999` is the same statement at the other end.
+#'
+#' This is presentation, not arithmetic: the ARD keeps the unrounded probability
+#' and only the rendered cell changes, so the number remains addressable and a
+#' bound never enters a computation.
+#'
+#' Which statistics are p-values is a naming convention, listed in
+#' [pvalue_stats()]. `p` is deliberately not among them — the engine already
+#' treats that name as a proportion and scales it to percent.
+#'
+#' @param value A p-value.
+#' @param digits Decimals the display declared for it.
+#' @return The boundary string, or `NA_character_` when the value prints
+#'   faithfully at that precision.
+#' @noRd
+format_pvalue_bound <- function(value, digits) {
+  if (is.na(digits) || digits < 1) {
+    return(NA_character_)
+  }
+  smallest <- 10^(-digits)
+  if (value > 0 && value < smallest) {
+    return(paste0("<", formatC(smallest, format = "f", digits = digits)))
+  }
+  if (value < 1 && (1 - value) < smallest) {
+    return(paste0(">", formatC(1 - smallest, format = "f", digits = digits)))
+  }
+  NA_character_
 }
 
 #' Render an ARD into a display
@@ -84,26 +140,29 @@ render_display <- function(ard, display_spec, variant = "post_text") {
   vcfg <- display_spec$variants[[variant]] %||% list()
   patterns <- utils::modifyList(
     default_patterns(),
-    display_spec$format[setdiff(names(display_spec$format), "digits")]
+    display_spec$format[setdiff(names(display_spec$format), c("digits", "proportions"))]
   )
   digits <- display_spec$format$digits
+  proportions <- as.character(display_spec$format$proportions %||% proportion_stats())
 
   is_listing <- nrow(rows) > 0 && all(rows$context == "listing")
   body <- if (is_listing) {
     listing_body(rows, display_spec, digits)
   } else {
-    table_body(rows, display_spec, vcfg, patterns, digits)
+    table_body(rows, display_spec, vcfg, patterns, digits, proportions)
   }
 
   title <- vcfg$title %||% display_spec$title
   gt_tbl <- build_gt(body, display_spec, vcfg, title, variant)
-  html <- standalone_html(gt_tbl, title, display_spec, variant)
+  figure <- figure_svg(rows, display_spec, vcfg)
+  html <- standalone_html(gt_tbl, title, display_spec, variant, figure)
 
   structure(
     list(
       html = html,
       table = body$table,
       gt = gt_tbl,
+      figure = figure,
       columns = body$columns,
       title = title,
       variant = variant,
@@ -167,7 +226,7 @@ expand_rows <- function(rows, display_spec, vcfg) {
       label = r$label %||% r$level %||% r$variable %||% r$analysis,
       analysis = r$analysis, variable = r$variable, variable_level = r$level,
       pattern = r$pattern %||% "n_pct", indent = r$indent %||% 0,
-      digits = r$digits
+      digits = r$digits, na_text = r$na_text
     )
   }
   out <- drop_empty_sections(out)
@@ -179,7 +238,7 @@ expand_rows <- function(rows, display_spec, vcfg) {
 plan_row <- function(label, analysis = NA_character_, variable = NA_character_,
                      variable_level = NA_character_, group2_level = NA_character_,
                      pattern = NA_character_, indent = 0, section = FALSE,
-                     digits = list()) {
+                     digits = list(), na_text = NA_character_) {
   out <- data.frame(
     label = label, analysis = analysis %||% NA_character_,
     variable = variable %||% NA_character_,
@@ -187,6 +246,7 @@ plan_row <- function(label, analysis = NA_character_, variable = NA_character_,
     group2_level = group2_level %||% NA_character_,
     pattern = pattern %||% NA_character_,
     indent = as.integer(indent), section = section,
+    na_text = na_text %||% NA_character_,
     stringsAsFactors = FALSE
   )
   out$digits <- list(digits %||% list())
@@ -287,15 +347,14 @@ passes_threshold <- function(df, min_pct) {
 }
 
 #' Drop section headings left with no data rows beneath them
-#'
-#' A heading is empty when no data row falls under it — that is, when scanning
-#' forward from it reaches the next heading at the same or a shallower indent
-#' (or the end of the table) without passing a data row. Headings nested under
-#' it are scanned through rather than treated as the end of its span, so a
-#' display can stack headings — measure, then position, then visit — and keep
-#' every level that has data somewhere beneath it. A heading whose own span
-#' holds only other empty headings is still dropped, and so is a trailing one.
 #' @noRd
+# A section header is dropped only when nothing beneath it is data. The walk
+# forward is deliberate and the indent test is what makes it correct for nested
+# headers: a parameter header whose next row is a position header is NOT empty,
+# because the data sits a level further down. Checking only the immediately
+# following row drops every level of a multi-level display — it looked equivalent
+# while every display was flat, and t-vitals is three deep (parameter, position,
+# visit), so it silently removed 81 of its cells.
 drop_empty_sections <- function(out) {
   if (!length(out)) {
     return(out)
@@ -349,24 +408,24 @@ auto_row_plan <- function(rows) {
 
 #' Build the rendered table body for a summary display
 #' @noRd
-table_body <- function(rows, display_spec, vcfg, patterns, digits) {
+table_body <- function(rows, display_spec, vcfg, patterns, digits,
+                       proportions = proportion_stats()) {
   cols <- display_columns(rows, display_spec)
   plan <- expand_rows(rows, display_spec, vcfg)
   if (is.null(plan) || nrow(plan) == 0) {
     stop("Display '", display_spec$id, "' produced no rows.", call. = FALSE)
   }
-  # A column may render a different statistic from the rest of the row — a
-  # hypothesis-test column carries one p-value per row while the treatment
-  # columns carry counts — so `columns.patterns` overrides the row's pattern for
-  # named columns only. Declared in display.yaml, like every other formatting
-  # decision; no column is special-cased in code.
+  # A column may override the row's pattern. This is what lets one row print a
+  # count in the treatment columns and a p-value in the p-value column, and it is
+  # why the disposition tables carry a p-value on exactly the three rows the
+  # analysis plan names. Dropping it renders those cells empty.
   col_patterns <- as.list(display_spec$columns$patterns %||% list())
   cells <- matrix("", nrow = nrow(plan), ncol = length(cols$levels))
   for (i in seq_len(nrow(plan))) {
     if (isTRUE(plan$section[i])) next
     for (j in seq_along(cols$levels)) {
       pat <- col_patterns[[cols$levels[j]]] %||% plan$pattern[i]
-      cells[i, j] <- cell_value(rows, plan[i, ], cols$levels[j], patterns, digits, pat)
+      cells[i, j] <- cell_value(rows, plan[i, ], cols$levels[j], patterns, digits, pat, proportions)
     }
   }
   tbl <- tibble::tibble(label = indent_label(plan$label, plan$indent))
@@ -388,7 +447,8 @@ indent_label <- function(label, indent) {
 #' Compute one cell by substituting formatted statistics into a pattern
 #' @noRd
 cell_value <- function(rows, plan_row, col_level, patterns, digits,
-                       pattern_name = plan_row$pattern) {
+                       pattern_name = plan_row$pattern,
+                       proportions = proportion_stats()) {
   keep <- rows$analysis == plan_row$analysis &
     !is.na(rows$group1_level) & rows$group1_level == col_level
   if (!is.na(plan_row$variable)) keep <- keep & rows$variable == plan_row$variable
@@ -409,8 +469,17 @@ cell_value <- function(rows, plan_row, col_level, patterns, digits,
   for (tok in needed) {
     nm <- substr(tok, 2, nchar(tok) - 1)
     hit <- sub$stat[sub$stat_name == nm]
-    val <- if (length(hit)) format_stat(unlist(hit[[1]]), nm, digits) else NA_character_
+    val <- if (length(hit)) format_stat(unlist(hit[[1]]), nm, digits, proportions) else NA_character_
     if (is.na(val)) {
+      # A statistic that exists but is not estimable is not the same as a cell
+      # with nothing behind it. `na_text:` lets the row say which it is — a
+      # Kaplan-Meier median that never falls below 0.5 is "NE", not blank, and a
+      # blank cell in a clinical study report is read as an omission. Without the
+      # key the old behaviour (an empty cell) is unchanged.
+      na_text <- plan_row$na_text
+      if (!is.null(na_text) && !is.na(na_text)) {
+        return(as.character(na_text))
+      }
       return("")
     }
     out <- sub(tok, val, out, fixed = TRUE)
@@ -499,8 +568,13 @@ build_gt <- function(body, display_spec, vcfg, title, variant) {
 #' display has to be openable from disk and publishable to a static site
 #' unchanged.
 #' @noRd
-standalone_html <- function(gt_tbl, title, display_spec, variant) {
+standalone_html <- function(gt_tbl, title, display_spec, variant, figure = NULL) {
   fragment <- gt::as_raw_html(gt_tbl, inline_css = TRUE)
+  # The site embeds this document by lifting its <body> and discarding <head>
+  # (sanitizeEmbeddedHtml in scripts/site-lib.mjs), so the plot carries its own
+  # styling inside the <svg> rather than relying on a rule up here. See the note
+  # in figure_svg().
+  has_figure <- !is.null(figure) && length(figure) == 1 && !is.na(figure)
   css <- paste(
     "body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;",
     "margin:0;padding:24px;background:#ffffff;color:#111827;}",
@@ -509,6 +583,7 @@ standalone_html <- function(gt_tbl, title, display_spec, variant) {
     "table{border-collapse:collapse;}",
     "@media (prefers-color-scheme: dark){body{background:#0b0f19;color:#e5e7eb;}",
     ".meta{color:#9ca3af;}}",
+    if (has_figure) ".opencsr-figure{margin:0 auto 20px;}" else "",
     sep = ""
   )
   paste0(
@@ -518,6 +593,7 @@ standalone_html <- function(gt_tbl, title, display_spec, variant) {
     "<p class=\"meta\">", html_escape(display_spec$id), " &middot; ", html_escape(variant),
     " variant &middot; study ", html_escape(display_spec$study),
     " &middot; data cut-off ", html_escape(display_spec$cutoff), "</p>\n",
+    if (has_figure) paste0("<figure class=\"opencsr-figure-block\">", figure, "</figure>\n") else "",
     fragment,
     "\n</main>\n</body>\n</html>\n"
   )

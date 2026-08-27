@@ -1,6 +1,6 @@
 {
   "module": "t-disposition",
-  "generated": "2026-08-27T12:22:29.260Z",
+  "generated": "2026-08-27T12:39:49.163Z",
   "records": [
     {
       "requirementIds": [
@@ -22,6 +22,66 @@
       "suite": "r-unit",
       "passed": true,
       "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-CIBIC-001"
+      ],
+      "title": "DSP-CIBIC-001: the CIBIC+ summary tables reproduce the published tables cell for cell (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-cibic.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-CIBIC-002"
+      ],
+      "title": "DSP-CIBIC-002: the analysis of covariance reproduces the published model results (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-cibic.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-CIBIC-003"
+      ],
+      "title": "DSP-CIBIC-003: the column heading is the analysis set and the n row is the visit (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-cibic.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-CIBIC-004"
+      ],
+      "title": "DSP-CIBIC-004: the categorical analysis reports every category at every visit and partitions it (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-cibic.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-CIBIC-005"
+      ],
+      "title": "DSP-CIBIC-005: the categorical p-values are the published row-mean-scores CMH values (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-cibic.R",
       "issueRefs": [
         1
       ]
@@ -262,6 +322,42 @@
       "suite": "r-unit",
       "passed": true,
       "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-TTE-001"
+      ],
+      "title": "DSP-TTE-001: the time-to-event display reproduces the published narrative (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-cibic.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-TTE-002"
+      ],
+      "title": "DSP-TTE-002: the survival figure is drawn from the ARD and cannot disagree with it (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-cibic.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-TTE-003"
+      ],
+      "title": "DSP-TTE-003: the annotated test is addressed into the ARD and reported at its precision (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-cibic.R",
       "issueRefs": [
         1
       ]

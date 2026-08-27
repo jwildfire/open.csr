@@ -85,6 +85,31 @@
       "regulatory_id": null,
       "reference_table": "14-3.12",
       "reference_cells_differing": []
+    },
+    "t-cibic-week24": {
+      "regulatory_id": null,
+      "reference_table": null,
+      "reference_cells_differing": []
+    },
+    "t-cibic-week8": {
+      "regulatory_id": null,
+      "reference_table": null,
+      "reference_cells_differing": []
+    },
+    "t-cibic-week16": {
+      "regulatory_id": null,
+      "reference_table": null,
+      "reference_cells_differing": []
+    },
+    "t-cibic-categorical": {
+      "regulatory_id": null,
+      "reference_table": null,
+      "reference_cells_differing": []
+    },
+    "f-derm-time-to-event": {
+      "regulatory_id": null,
+      "reference_table": null,
+      "reference_cells_differing": []
     }
   }
 }

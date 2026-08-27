@@ -1,0 +1,57 @@
+{
+  "display": "t-cibic-week8",
+  "version": "v001",
+  "created": "2026-08-27T03:53:34Z",
+  "actor": "@jwildfire",
+  "change_request": "Initial generation of EFF03 from CDISCPILOT01 Table 14-3.04 and the analysis results metadata for Table_14-3.02, which states the model.",
+  "regulatory_id": "EFF03",
+  "git_commit": null,
+  "spec_hash": "sha256:d243537229381914a60a45df7ac19ed9d3fad85dd154a075e77316484bb6d75b",
+  "display_hash": "sha256:9e6e7dd111daa9da7b919759c13d52a215aa2ffcd6f0613c6cf96c23b6a031cf",
+  "ard_hash": "sha256:7e4e612e8b20e0ecdbc57d984b82811a64bd8eb667715d44904e7153c59c62d5",
+  "ard_rows": 43,
+  "ard_warnings": 0,
+  "ard_errors": 0,
+  "datasets": ["adsl", "adqscibc"],
+  "data": [
+    {
+      "dataset": "adsl",
+      "hash": "sha256:6534192e6ae2a8789015148d2068ecdd8421791ea6d7f9cc307fef1db97945f9",
+      "n_row": 254,
+      "n_col": 53,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    },
+    {
+      "dataset": "adqscibc",
+      "hash": "sha256:2af92608855a146509d9c39acf5afea33dceffc23cc24efde28a36f5771d5ea8",
+      "n_row": 730,
+      "n_col": 37,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    }
+  ],
+  "environment": {
+    "r": "4.3.3",
+    "os": "Darwin 23.6.0",
+    "packages": {
+      "cards": "0.6.1",
+      "cardx": "0.2.5",
+      "gtsummary": "2.3.0",
+      "gt": "1.0.0",
+      "dplyr": "1.1.4",
+      "pharmaverseadam": "1.1.0",
+      "jsonlite": "2.0.0",
+      "yaml": "2.3.10",
+      "digest": "0.6.37"
+    }
+  },
+  "variants": {
+    "post_text": {
+      "file": "table.html",
+      "rtf": "table.rtf",
+      "rtf_hash": "sha256:eda5a952449552ff25e68770049584e85812f349567259719aff3f8913bf2905",
+      "n_rows": 12
+    }
+  }
+}

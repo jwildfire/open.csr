@@ -1,6 +1,6 @@
 {
   "module": "tfl-engine",
-  "generated": "2026-08-27T12:22:29.260Z",
+  "generated": "2026-08-27T12:39:49.163Z",
   "records": [
     {
       "requirementIds": [
@@ -22,6 +22,66 @@
       "suite": "r-unit",
       "passed": true,
       "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-CIBIC-001"
+      ],
+      "title": "DSP-CIBIC-001: the CIBIC+ summary tables reproduce the published tables cell for cell (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-cibic.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-CIBIC-002"
+      ],
+      "title": "DSP-CIBIC-002: the analysis of covariance reproduces the published model results (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-cibic.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-CIBIC-003"
+      ],
+      "title": "DSP-CIBIC-003: the column heading is the analysis set and the n row is the visit (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-cibic.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-CIBIC-004"
+      ],
+      "title": "DSP-CIBIC-004: the categorical analysis reports every category at every visit and partitions it (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-cibic.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-CIBIC-005"
+      ],
+      "title": "DSP-CIBIC-005: the categorical p-values are the published row-mean-scores CMH values (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-cibic.R",
       "issueRefs": [
         1
       ]
@@ -244,6 +304,42 @@
     },
     {
       "requirementIds": [
+        "DSP-TTE-001"
+      ],
+      "title": "DSP-TTE-001: the time-to-event display reproduces the published narrative (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-cibic.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-TTE-002"
+      ],
+      "title": "DSP-TTE-002: the survival figure is drawn from the ARD and cannot disagree with it (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-cibic.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-TTE-003"
+      ],
+      "title": "DSP-TTE-003: the annotated test is addressed into the ARD and reported at its precision (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-cibic.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
         "TFL-ARD-001"
       ],
       "title": "TFL-ARD-001: build_ard returns one row per computed statistic, tagged with its analysis (#1)",
@@ -364,6 +460,30 @@
     },
     {
       "requirementIds": [
+        "TFL-FIG-001"
+      ],
+      "title": "TFL-FIG-001: a figure is drawn only from its ARD, and a missing series fails the build (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-cibic.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TFL-FIG-002"
+      ],
+      "title": "TFL-FIG-002: a figure keeps its appearance when the site strips the document head (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-cibic.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
         "TFL-FMT-001"
       ],
       "title": "TFL-FMT-001: round_half_up preserves NA, Inf and vector length (#1)",
@@ -442,6 +562,18 @@
       "suite": "r-unit",
       "passed": true,
       "file": "test-formatting.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TFL-FMT-004"
+      ],
+      "title": "TFL-FMT-004: p-values are reported at the boundary of their declared precision (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-cibic.R",
       "issueRefs": [
         1
       ]
@@ -772,6 +904,18 @@
     },
     {
       "requirementIds": [
+        "TFL-PREP-016"
+      ],
+      "title": "TFL-PREP-016: a display is refused data prepared from a packaging its spec did not ask for (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-cibic.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
         "TFL-QNT-001"
       ],
       "title": "TFL-QNT-001: quartiles follow the SAS-compatible type-2 definition (#1)",
@@ -1078,6 +1222,30 @@
       "suite": "r-unit",
       "passed": true,
       "file": "test-spec-validation.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TFL-SPEC-007"
+      ],
+      "title": "TFL-SPEC-007: a spec key YAML 1.1 resolved to a boolean is refused, not silently dropped (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-cibic.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TFL-SPEC-008"
+      ],
+      "title": "TFL-SPEC-008: a figure display and its figure block must agree, or the build fails (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-cibic.R",
       "issueRefs": [
         1
       ]

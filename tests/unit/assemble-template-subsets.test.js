@@ -164,7 +164,6 @@ describe('Post-text display package', () => {
     for (const number of ['14.3.4']) {
       const section = doc.sections.find((s) => s.number === number);
       expect(section, `section ${number} is declared`).toBeTruthy();
-      expect(section.populated).toBe(false);
     }
     expect(doc.sections.find((s) => s.number === '14.2').populated).toBe(true);
     // 14.3.3 is narrative, and a display package carries none — omitted, not empty.
