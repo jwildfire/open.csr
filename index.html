@@ -57,13 +57,18 @@
 <h1>Versioned numbers, versioned words, one traceable loop.</h1>
 <p class="lede">Every number in an open.csr report is computed by a versioned spec, serialized as an Analysis Results Dataset, rendered into a display, and <em>bound</em> — never retyped — into the sentence that quotes it. Change the request, regenerate the number, and the prose moves with it as one transaction.</p>
 <p class="hero-actions"><a class="button" href="demo/index.html">Open the demo report</a><a class="button ghost" href="quality/index.html">See the evidence</a><a class="button ghost" href="docs/index.html">Read the design</a></p>
-<p class="sub">The demo is one view with four ways in — the assembled report, the table and ARD behind any number, the prose that quotes it, and the ICH E3 model it all assembles into.</p>
+<p class="sub">The demo is one view with four ways in — the assembled documents, the table and ARD behind any number, the prose that quotes them, and the document models they assemble into.</p>
 </section>
 <section class="stat-row">
-<div class="stat"><span class="stat-value">6</span><span class="stat-label">displays registered</span><span class="stat-sub">6 generated</span></div>
-<div class="stat"><span class="stat-value">15</span><span class="stat-label">text blocks</span><span class="stat-sub">binding numbers, not stating them</span></div>
-<div class="stat"><span class="stat-value">265</span><span class="stat-label">reviewed requirements</span><span class="stat-sub">11 matrices</span></div>
-<div class="stat"><span class="stat-value">441</span><span class="stat-label">test records</span><span class="stat-sub">js-unit · r-unit · text-review</span></div>
+<div class="stat"><span class="stat-value">26</span><span class="stat-label">displays registered</span><span class="stat-sub">26 generated</span></div>
+<div class="stat"><span class="stat-value">33</span><span class="stat-label">text blocks</span><span class="stat-sub">binding numbers, not stating them</span></div>
+<div class="stat"><span class="stat-value">358</span><span class="stat-label">reviewed requirements</span><span class="stat-sub">31 matrices</span></div>
+<div class="stat"><span class="stat-value">592</span><span class="stat-label">test records</span><span class="stat-sub">js-unit · r-unit · text-review</span></div>
+</section>
+<section class="panel">
+<h2>The documents</h2>
+<p>One study, one set of ARDs, one values store — and every document the template library holds, assembled from them. The same display is a different table number in each, from one unchanged specification.</p>
+<div class="card-grid three"><article class="card doc-card"><div class="card-top"><span class="chip chip-good">prose approved</span></div><h3>Clinical Study Report</h3><p class="mono-path">library/templates/ich-e3</p><p>20 of 120 sections populated · 10 prose blocks</p><p class="sub"><a href="reader/index.html">Read it →</a> · <a href="templates/index.html">Its document model →</a></p></article><article class="card doc-card"><div class="card-top"><span class="chip chip-warn" title="No human has reviewed the prose in this document">18 unapproved draft blocks</span></div><h3>Study Synopsis</h3><p class="mono-path">library/templates/e3-synopsis</p><p>20 of 25 sections populated · 18 prose blocks</p><p class="sub"><a href="reader/e3-synopsis.html">Read it →</a> · <a href="templates/e3-synopsis.html">Its document model →</a></p></article><article class="card doc-card"><div class="card-top"><span class="chip chip-good">prose approved</span></div><h3>Post-Text Display Package</h3><p class="mono-path">library/templates/display-package</p><p>6 of 11 sections populated · 0 prose blocks</p><p class="sub"><a href="reader/display-package.html">Read it →</a> · <a href="templates/display-package.html">Its document model →</a></p></article><article class="card doc-card"><div class="card-top"><span class="chip chip-good">prose approved</span></div><h3>Abbreviated Clinical Study Report (ICH E3)</h3><p class="mono-path">library/templates/e3-abbreviated</p><p>19 of 75 sections populated · 10 prose blocks</p><p class="sub"><a href="reader/e3-abbreviated.html">Read it →</a> · <a href="templates/e3-abbreviated.html">Its document model →</a></p></article><article class="card doc-card"><div class="card-top"><span class="chip chip-muted">planned</span></div><h3>Statistical Analysis Plan</h3><p class="mono-path">library/templates/</p><p>Planned. Needs a SAP template in library/templates/ before it can assemble.</p></article></div>
 </section>
 <section class="panel">
 <h2>The gap open.csr occupies</h2>
@@ -88,6 +93,11 @@
                          ▲            ▲           ▲              ▲
                 library/tfl/    library/tfl/  library/text/  library/templates/
                 analysis.yaml   display.yaml   text blocks    ich-e3/
+                iterations.yaml                     ▲         sections.yaml
+                                                    │         assembly.yaml
+                                              library/values/
+                                              values.yaml — a number named once,
+                                              resolved from the committed ARDs
 
  ┌──────────────────────────────────────────────────────────────────────────┐
  │  quality/ — requirement matrices · testthat + vitest evidence · guards    │
@@ -95,9 +105,11 @@
 </pre>
 <div class="card-grid three">
 <article class="card"><h3>TFL Builder + Library</h3><p class="mono-path">library/tfl/&lt;slug&gt;/</p><ul><li><code>analysis.yaml</code> — what to compute (ARS-aligned)</li><li><code>display.yaml</code> — how to show it</li><li><code>iterations.yaml</code> — every saved regeneration</li></ul></article>
+<article class="card"><h3>Values Store</h3><p class="mono-path">library/values/values.yaml</p><ul><li>A number the report reuses, named once</li><li><code>source</code> — an address into a committed ARD</li><li><code>derived</code> — declared arithmetic, closed vocabulary</li></ul></article>
 <article class="card"><h3>Text Library</h3><p class="mono-path">library/text/&lt;ID&gt;.md</p><ul><li>Three tiers: boilerplate, parameterized, generated</li><li>Numbers arrive as <code>{{ard:…}}</code> bindings</li><li>Approval state travels in the frontmatter</li></ul></article>
-<article class="card"><h3>Report Template Library</h3><p class="mono-path">library/templates/ich-e3/</p><ul><li>ICH E3 as data: 16 sections, content models</li><li>Assembly slots and 14.x numbering at build time</li><li>16.1.9 provenance appendix generated mechanically</li></ul></article>
+<article class="card"><h3>Report Template Library</h3><p class="mono-path">library/templates/&lt;id&gt;/</p><ul><li>A document as data: sections, content models</li><li>Assembly slots and display numbering at build time</li><li>Provenance appendix generated mechanically</li></ul></article>
 </div>
+<p class="sub">How the four connect, end to end, with one display followed from the dataset to the sentence that quotes it: <a href="docs/docs-design-framework.html">the data design framework</a>.</p>
 </section>
 <section class="panel">
 <h2>Traceability, end to end</h2>

@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="The supportive repeated-measures analysis: a mixed model with an unstructured within-subject covariance, which handles a missed visit through the covariance rather than by carrying a value forward. Its fit reproduces the reference report&#39;s own PROC MIXED output to six significant figures." />
+    <title>ADAS-Cog (11) - Repeated Measures Analysis of Change from Baseline to Week 24 · open.csr</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23111a24'/%3E%3Crect x='3' y='3' width='7' height='1.4' fill='%23e7edf5'/%3E%3Crect x='3' y='6' width='10' height='1.4' fill='%235aa9e6'/%3E%3Crect x='3' y='9' width='6' height='1.4' fill='%23e7edf5'/%3E%3Crect x='3' y='12' width='9' height='1.4' fill='%235aa9e6'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="../site.css" />
+    <script>
+      // Theme is resolved before first paint so the page never flashes the
+      // wrong surface. No storage available (private mode) simply falls back to
+      // the OS preference.
+      (function () {
+        try {
+          var saved = localStorage.getItem('opencsr-theme');
+          if (saved) document.documentElement.setAttribute('data-theme', saved);
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body class="">
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <a class="site-name" href="../index.html">
+        <span class="mark" aria-hidden="true"></span>
+        <span>
+          <strong>open.csr</strong>
+          <em>Versioned numbers, versioned words, one traceable loop.</em>
+        </span>
+      </a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="../index.html">Home</a><a href="../demo/index.html">Demo</a><a href="../quality/index.html">Quality</a><a href="../docs/index.html">Design &amp; Research</a>
+        <button
+          type="button"
+          class="theme-toggle"
+          aria-label="Switch between light and dark"
+          title="Switch between light and dark"
+        >
+          <span aria-hidden="true">◐</span>
+        </button>
+        <a class="icon-link" href="https://github.com/jwildfire/open.csr" aria-label="Source on GitHub" title="Source on GitHub">
+          <svg viewBox="0 0 16 16" width="17" height="17" fill="currentColor" aria-hidden="true">
+            <path
+              d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
+            />
+          </svg>
+        </a>
+      </nav>
+    </header>
+    
+    <main class="site-main" id="main"><p class="crumb"><a href="index.html">TFL Gallery</a> / <span class="mono">t-eff-adas-mmrm</span></p>
+<header class="page-head"><p class="eyebrow">EFT08 · Table</p><h1>ADAS-Cog (11) - Repeated Measures Analysis of Change from Baseline to Week 24</h1><p class="lede">The supportive repeated-measures analysis: a mixed model with an unstructured within-subject covariance, which handles a missed visit through the covariance rather than by carrying a value forward. Its fit reproduces the reference report&#39;s own PROC MIXED output to six significant figures.</p></header>
+
+<dl class="facts wide"><div><dt>Slug</dt><dd><span class="mono">t-eff-adas-mmrm</span></dd></div><div><dt>Regulatory ID</dt><dd>EFT08</dd></div><div><dt>Type</dt><dd>Table</dd></div><div><dt>E3 position</dt><dd>§14.2</dd></div><div><dt>Status</dt><dd><span class="chip chip-good">evidenced</span></dd></div><div><dt>Current iteration</dt><dd><span class="mono">v002</span></dd></div><div><dt>Datasets</dt><dd><span class="mono">adqsadas</span>, <span class="mono">adsl</span></dd></div><div><dt>Evidence</dt><dd><a href="../quality/t-eff-adas-mmrm.html">11/11 passing</a></dd></div><div><dt>Requirements</dt><dd><span class="mono">DSP-ALL-001</span> <span class="mono">DSP-ALL-002</span> <span class="mono">DSP-EFF-001</span> <span class="mono">DSP-EFF-002</span> <span class="mono">DSP-EFF-003</span> <span class="mono">DSP-EFF-004</span> <span class="mono">DSP-EFF-005</span> <span class="mono">DSP-EFF-006</span> <span class="mono">DSP-EFF-007</span> <span class="mono">DSP-EFF-008</span> <span class="mono">DSP-EFF-009</span></dd></div><div><dt>Used in</dt><dd><ul class="used-in"><li><a href="../reader/index.html">Clinical Study Report</a> <span class="mono sub">Table 14.2.11</span></li><li><a href="../reader/display-package.html">Post-Text Display Package</a> <span class="mono sub">Table 14.2.11</span></li><li><a href="../reader/e3-abbreviated.html">Abbreviated Clinical Study Report (ICH E3)</a> <span class="mono sub">Table 14.2.11</span></li></ul></dd></div></dl>
+<div class="tabs"><div class="tab-list" role="tablist"><button type="button" class="tab current" role="tab" aria-selected="true" aria-controls="panel-rendered" id="tab-rendered">Rendered display</button><button type="button" class="tab" role="tab" aria-selected="false" aria-controls="panel-ard" id="tab-ard">ARD</button><button type="button" class="tab" role="tab" aria-selected="false" aria-controls="panel-specs" id="tab-specs">Specs</button><button type="button" class="tab" role="tab" aria-selected="false" aria-controls="panel-iterations" id="tab-iterations">Iteration timeline</button></div><section class="tab-panel current" id="panel-rendered" role="tabpanel" aria-labelledby="tab-rendered"><div class="artifact-row"><a class="artifact" download href="../artifacts/t-eff-adas-mmrm.rtf"><span class="artifact-format">RTF</span><span class="artifact-label">Full display</span><span class="artifact-hash mono">e4a0d96</span></a></div><p class="sub">Generated by the same pipeline run that wrote the ARD and the HTML above, from the same rendered cells; the short hash is the manifest's record of the file.</p><div class="rendered-display">
+<main>
+<p class="meta">t-eff-adas-mmrm &middot; post_text variant &middot; study CDISCPILOT01 &middot; data cut-off 2015-02-17</p>
+<div id="tsjwvpyuqq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+  
+  <table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3;" bgcolor="#FFFFFF">
+  <thead style="border-style: none;">
+    <tr class="gt_heading" style="border-style: none; background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3;" bgcolor="#FFFFFF" align="center">
+      <td colspan="4" class="gt_heading gt_title gt_font_normal" style="border-style: none; color: #333333; font-size: 125%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-width: 0; background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; font-weight: normal;" bgcolor="#FFFFFF" align="center">ADAS-Cog (11) - Repeated Measures Analysis of Change from Baseline to Week 24</td>
+    </tr>
+    <tr class="gt_heading" style="border-style: none; background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3;" bgcolor="#FFFFFF" align="center">
+      <td colspan="4" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style="border-style: none; color: #333333; font-size: 85%; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; background-color: #FFFFFF; text-align: center; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; font-weight: normal;" bgcolor="#FFFFFF" align="center">Study CDISCPILOT01 — Efficacy Analysis Set</td>
+    </tr>
+    <tr class="gt_col_headings" style="border-style: none; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3;">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="a::stub" style="border-style: none; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 6px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; text-align: left;" bgcolor="#FFFFFF" valign="bottom" align="left"></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="col1" style="border-style: none; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 6px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; text-align: left;" bgcolor="#FFFFFF" valign="bottom" align="left">Placebo
+(N=79)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="col2" style="border-style: none; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 6px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; text-align: left;" bgcolor="#FFFFFF" valign="bottom" align="left">Xanomeline Low Dose
+(N=81)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="col3" style="border-style: none; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 6px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; text-align: left;" bgcolor="#FFFFFF" valign="bottom" align="left">Xanomeline High Dose
+(N=74)</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body" style="border-style: none; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3;">
+    <tr style="border-style: none;"><th id="stub_1_1" scope="row" class="gt_row gt_left gt_stub" style="border-style: none; padding-top: 8px; padding-bottom: 8px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; text-align: left;" valign="middle" bgcolor="#FFFFFF" align="left">LS means (SE) [1]</th>
+<td headers="stub_1_1 col1" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">1.6 (0.49)</td>
+<td headers="stub_1_1 col2" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">1.5 (0.52)</td>
+<td headers="stub_1_1 col3" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">1.1 (0.55)</td></tr>
+    <tr style="border-style: none;"><th id="stub_1_2" scope="row" class="gt_row gt_left gt_stub" style="border-style: none; padding-top: 8px; padding-bottom: 8px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; color: #333333; background-color: #FFFFFF; font-size: 100%; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; text-align: left; font-weight: bold;" valign="middle" bgcolor="#FFFFFF" align="left">Comparison of least-squares means</th>
+<td headers="stub_1_2 col1" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left"></td>
+<td headers="stub_1_2 col2" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left"></td>
+<td headers="stub_1_2 col3" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left"></td></tr>
+    <tr style="border-style: none;"><th id="stub_1_3" scope="row" class="gt_row gt_left gt_stub" style="border-style: none; padding-top: 8px; padding-bottom: 8px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; text-align: left;" valign="middle" bgcolor="#FFFFFF" align="left">   p-value (Xanomeline - Placebo) [1][2]</th>
+<td headers="stub_1_3 col1" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left"></td>
+<td headers="stub_1_3 col2" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">0.954</td>
+<td headers="stub_1_3 col3" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">0.555</td></tr>
+    <tr style="border-style: none;"><th id="stub_1_4" scope="row" class="gt_row gt_left gt_stub" style="border-style: none; padding-top: 8px; padding-bottom: 8px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; text-align: left;" valign="middle" bgcolor="#FFFFFF" align="left">      Difference of LS means (SE)</th>
+<td headers="stub_1_4 col1" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left"></td>
+<td headers="stub_1_4 col2" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">-0.0 (0.70)</td>
+<td headers="stub_1_4 col3" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">-0.4 (0.72)</td></tr>
+    <tr style="border-style: none;"><th id="stub_1_5" scope="row" class="gt_row gt_left gt_stub" style="border-style: none; padding-top: 8px; padding-bottom: 8px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; text-align: left;" valign="middle" bgcolor="#FFFFFF" align="left">      95% CI</th>
+<td headers="stub_1_5 col1" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left"></td>
+<td headers="stub_1_5 col2" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">(-1.4;1.3)</td>
+<td headers="stub_1_5 col3" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">(-1.8;1.0)</td></tr>
+    <tr style="border-style: none;"><th id="stub_1_6" scope="row" class="gt_row gt_left gt_stub" style="border-style: none; padding-top: 8px; padding-bottom: 8px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; text-align: left;" valign="middle" bgcolor="#FFFFFF" align="left">   p-value (Xanomeline High - Xanomeline Low) [1][2]</th>
+<td headers="stub_1_6 col1" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left"></td>
+<td headers="stub_1_6 col2" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left"></td>
+<td headers="stub_1_6 col3" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">0.605</td></tr>
+    <tr style="border-style: none;"><th id="stub_1_7" scope="row" class="gt_row gt_left gt_stub" style="border-style: none; padding-top: 8px; padding-bottom: 8px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; text-align: left;" valign="middle" bgcolor="#FFFFFF" align="left">      Difference of LS means (SE)</th>
+<td headers="stub_1_7 col1" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left"></td>
+<td headers="stub_1_7 col2" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left"></td>
+<td headers="stub_1_7 col3" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">-0.4 (0.75)</td></tr>
+    <tr style="border-style: none;"><th id="stub_1_8" scope="row" class="gt_row gt_left gt_stub" style="border-style: none; padding-top: 8px; padding-bottom: 8px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; text-align: left;" valign="middle" bgcolor="#FFFFFF" align="left">      95% CI</th>
+<td headers="stub_1_8 col1" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left"></td>
+<td headers="stub_1_8 col2" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left"></td>
+<td headers="stub_1_8 col3" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">(-1.9;1.1)</td></tr>
+  </tbody>
+  <tfoot class="gt_sourcenotes" style="border-style: none; color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3;" bgcolor="#FFFFFF">
+    <tr style="border-style: none;">
+      <td class="gt_sourcenote" colspan="4" style="border-style: none; font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px;">[1] Mixed model for repeated measures of the change from baseline, fitted by restricted maximum likelihood with an unstructured within-subject covariance matrix. Fixed effects: treatment, site group, visit, treatment by visit, the baseline score, and the baseline score by visit.</td>
+    </tr>
+    <tr style="border-style: none;">
+      <td class="gt_sourcenote" colspan="4" style="border-style: none; font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px;">[2] Pairwise comparison of least-squares means; p-values are not adjusted for multiple comparisons.</td>
+    </tr>
+    <tr style="border-style: none;">
+      <td class="gt_sourcenote" colspan="4" style="border-style: none; font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px;">Observed cases only: 539 assessments from 234 subjects at Weeks 8, 16 and 24. The model accounts for a missing visit through the covariance structure, so no value is carried forward.</td>
+    </tr>
+    <tr style="border-style: none;">
+      <td class="gt_sourcenote" colspan="4" style="border-style: none; font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px;">WHAT THE LEAST-SQUARES MEANS ESTIMATE: they are the treatment main effect — the model's prediction averaged over all three post-baseline visits and over the eleven site groups equally, with the baseline score held at its mean. They are not the Week-24 visit conditioned on, which the title might suggest and which is a different and less precise quantity (for placebo, 2.3 with a standard error of 0.69 rather than 1.6 with 0.49). This display reproduces what the reference report computed; the distinction is stated here because the number cannot state it itself.</td>
+    </tr>
+    <tr style="border-style: none;">
+      <td class="gt_sourcenote" colspan="4" style="border-style: none; font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px;">MEASURED, NOT ASSUMED: the fit reproduces the reference report's own PROC MIXED output to six significant figures on all six unstructured covariance parameters, and its REML criterion of 3087.84303515 to ten. It uses the same 539 observations from the same 234 subjects. Two programs can agree on a rounded least-squares mean by accident; they cannot agree on that by accident, so the model is identified far more sharply than the rounded cells above can show.</td>
+    </tr>
+    <tr style="border-style: none;">
+      <td class="gt_sourcenote" colspan="4" style="border-style: none; font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px;">DIFFERS FROM THE REFERENCE, DELIBERATELY: standard errors and degrees of freedom here are the model-based ones, on 517 residual degrees of freedom. The reference used Kenward-Roger degrees of freedom with Prasad-Rao-Jeske-Kackar-Harville standard errors, which inflate both by roughly one per cent to allow for the covariance parameters having been estimated rather than known. That adjustment is not implemented here. Of the twelve cells above, seven are identical to the reference and five differ at the last digit shown: the three p-values, each 0.001 lower (0.954, 0.555 and 0.605 against 0.955, 0.556 and 0.606); the high-dose least-squares mean standard error (0.55 against 0.56); and one confidence-interval bound (-1.8 against -1.9). Every point estimate agrees. The difference is measured and recorded in quality/data/efficacy-agreement.json.</td>
+    </tr>
+    <tr style="border-style: none;">
+      <td class="gt_sourcenote" colspan="4" style="border-style: none; font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px;">Treatment columns are planned treatment (TRTP), which is how the CDISCPILOT01 reference report presents them.</td>
+    </tr>
+    <tr style="border-style: none;">
+      <td class="gt_sourcenote" colspan="4" style="border-style: none; font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px;">CDISCPILOT01 states no data cut-off date. The date shown is the latest ADAS-Cog assessment date present in the vendored ADaM package.</td>
+    </tr>
+    <tr style="border-style: none;">
+      <td class="gt_sourcenote" colspan="4" style="border-style: none; font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px;">Source: adqsadas (ADAS-Cog (11) total score, PARAMCD ACTOT) and adsl, from the CDISC pilot's own ADaM package (phuse-org/phuse-scripts, MIT). Supportive analysis as specified in the CDISCPILOT01 statistical analysis plan, section 10.1.1. Reference report display: Table 14-3.11. Data cut-off: 2015-02-17.</td>
+    </tr>
+    <tr style="border-style: none;">
+      <td class="gt_sourcenote" colspan="4" style="border-style: none; font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px;">open.csr display t-eff-adas-mmrm (post_text variant); generated from the committed ARD.</td>
+    </tr>
+  </tfoot>
+  
+</table>
+</div>
+</main>
+</div><p class="sub">Rendered from <span class="mono">outputs/t-eff-adas-mmrm/v002/table.html</span>.</p></section><section class="tab-panel" id="panel-ard" role="tabpanel" aria-labelledby="tab-ard" hidden><div class="table-tools"><input type="search" class="ard-filter" placeholder="Filter ARD rows…" aria-label="Filter ARD rows"></div><div class="scroll"><table class="data ard-table"><thead><tr><th>analysis</th><th>group1</th><th>group1_level</th><th>group2</th><th>group2_level</th><th>variable</th><th>variable_level</th><th>context</th><th>stat_name</th><th>stat_label</th><th>warning</th><th>error</th><th>stat</th></tr></thead><tbody><tr><td>population</td><td>TRTP</td><td>Placebo</td><td>—</td><td>—</td><td>USUBJID</td><td>—</td><td>population</td><td>N</td><td>N</td><td>—</td><td>—</td><td class="num">79</td></tr><tr><td>population</td><td>TRTP</td><td>Xanomeline High Dose</td><td>—</td><td>—</td><td>USUBJID</td><td>—</td><td>population</td><td>N</td><td>N</td><td>—</td><td>—</td><td class="num">74</td></tr><tr><td>population</td><td>TRTP</td><td>Xanomeline Low Dose</td><td>—</td><td>—</td><td>USUBJID</td><td>—</td><td>population</td><td>N</td><td>N</td><td>—</td><td>—</td><td class="num">81</td></tr><tr><td>mmrm</td><td>TRTP</td><td>Placebo</td><td>—</td><td>—</td><td>CHG</td><td>lsmean</td><td>mmrm</td><td>estimate</td><td>estimate</td><td>—</td><td>—</td><td class="num">1.55354586654955</td></tr><tr><td>mmrm</td><td>TRTP</td><td>Placebo</td><td>—</td><td>—</td><td>CHG</td><td>lsmean</td><td>mmrm</td><td>se</td><td>se</td><td>—</td><td>—</td><td class="num">0.492341651156176</td></tr><tr><td>mmrm</td><td>TRTP</td><td>Xanomeline Low Dose</td><td>—</td><td>—</td><td>CHG</td><td>lsmean</td><td>mmrm</td><td>estimate</td><td>estimate</td><td>—</td><td>—</td><td class="num">1.51361564408126</td></tr><tr><td>mmrm</td><td>TRTP</td><td>Xanomeline Low Dose</td><td>—</td><td>—</td><td>CHG</td><td>lsmean</td><td>mmrm</td><td>se</td><td>se</td><td>—</td><td>—</td><td class="num">0.522426446802669</td></tr><tr><td>mmrm</td><td>TRTP</td><td>Xanomeline High Dose</td><td>—</td><td>—</td><td>CHG</td><td>lsmean</td><td>mmrm</td><td>estimate</td><td>estimate</td><td>—</td><td>—</td><td class="num">1.12695458058534</td></tr><tr><td>mmrm</td><td>TRTP</td><td>Xanomeline High Dose</td><td>—</td><td>—</td><td>CHG</td><td>lsmean</td><td>mmrm</td><td>se</td><td>se</td><td>—</td><td>—</td><td class="num">0.55389636146576</td></tr><tr><td>mmrm</td><td>TRTP</td><td>Xanomeline Low Dose</td><td>—</td><td>—</td><td>CHG</td><td>xan_vs_placebo</td><td>mmrm</td><td>estimate</td><td>estimate</td><td>—</td><td>—</td><td class="num">-0.0399302224682948</td></tr><tr><td>mmrm</td><td>TRTP</td><td>Xanomeline Low Dose</td><td>—</td><td>—</td><td>CHG</td><td>xan_vs_placebo</td><td>mmrm</td><td>se</td><td>se</td><td>—</td><td>—</td><td class="num">0.699327413440413</td></tr><tr><td>mmrm</td><td>TRTP</td><td>Xanomeline Low Dose</td><td>—</td><td>—</td><td>CHG</td><td>xan_vs_placebo</td><td>mmrm</td><td>pvalue</td><td>pvalue</td><td>—</td><td>—</td><td class="num">0.954489160459871</td></tr><tr><td>mmrm</td><td>TRTP</td><td>Xanomeline Low Dose</td><td>—</td><td>—</td><td>CHG</td><td>xan_vs_placebo</td><td>mmrm</td><td>lcl</td><td>lcl</td><td>—</td><td>—</td><td class="num">-1.41380305033592</td></tr><tr><td>mmrm</td><td>TRTP</td><td>Xanomeline Low Dose</td><td>—</td><td>—</td><td>CHG</td><td>xan_vs_placebo</td><td>mmrm</td><td>ucl</td><td>ucl</td><td>—</td><td>—</td><td class="num">1.33394260539933</td></tr><tr><td>mmrm</td><td>TRTP</td><td>Xanomeline High Dose</td><td>—</td><td>—</td><td>CHG</td><td>xan_vs_placebo</td><td>mmrm</td><td>estimate</td><td>estimate</td><td>—</td><td>—</td><td class="num">-0.426591285964212</td></tr><tr><td>mmrm</td><td>TRTP</td><td>Xanomeline High Dose</td><td>—</td><td>—</td><td>CHG</td><td>xan_vs_placebo</td><td>mmrm</td><td>se</td><td>se</td><td>—</td><td>—</td><td class="num">0.72275368396017</td></tr><tr><td>mmrm</td><td>TRTP</td><td>Xanomeline High Dose</td><td>—</td><td>—</td><td>CHG</td><td>xan_vs_placebo</td><td>mmrm</td><td>pvalue</td><td>pvalue</td><td>—</td><td>—</td><td class="num">0.555293998141103</td></tr><tr><td>mmrm</td><td>TRTP</td><td>Xanomeline High Dose</td><td>—</td><td>—</td><td>CHG</td><td>xan_vs_placebo</td><td>mmrm</td><td>lcl</td><td>lcl</td><td>—</td><td>—</td><td class="num">-1.84648650035181</td></tr><tr><td>mmrm</td><td>TRTP</td><td>Xanomeline High Dose</td><td>—</td><td>—</td><td>CHG</td><td>xan_vs_placebo</td><td>mmrm</td><td>ucl</td><td>ucl</td><td>—</td><td>—</td><td class="num">0.99330392842339</td></tr><tr><td>mmrm</td><td>TRTP</td><td>Xanomeline High Dose</td><td>—</td><td>—</td><td>CHG</td><td>high_vs_low</td><td>mmrm</td><td>estimate</td><td>estimate</td><td>—</td><td>—</td><td class="num">-0.386661063495917</td></tr><tr><td>mmrm</td><td>TRTP</td><td>Xanomeline High Dose</td><td>—</td><td>—</td><td>CHG</td><td>high_vs_low</td><td>mmrm</td><td>se</td><td>se</td><td>—</td><td>—</td><td class="num">0.746726540734608</td></tr><tr><td>mmrm</td><td>TRTP</td><td>Xanomeline High Dose</td><td>—</td><td>—</td><td>CHG</td><td>high_vs_low</td><td>mmrm</td><td>pvalue</td><td>pvalue</td><td>—</td><td>—</td><td class="num">0.604813650728002</td></tr><tr><td>mmrm</td><td>TRTP</td><td>Xanomeline High Dose</td><td>—</td><td>—</td><td>CHG</td><td>high_vs_low</td><td>mmrm</td><td>lcl</td><td>lcl</td><td>—</td><td>—</td><td class="num">-1.85365246758776</td></tr><tr><td>mmrm</td><td>TRTP</td><td>Xanomeline High Dose</td><td>—</td><td>—</td><td>CHG</td><td>high_vs_low</td><td>mmrm</td><td>ucl</td><td>ucl</td><td>—</td><td>—</td><td class="num">1.08033034059592</td></tr><tr><td>mmrm</td><td>TRTP</td><td>—</td><td>—</td><td>—</td><td>CHG</td><td>model</td><td>mmrm</td><td>UN(1,1)</td><td>UN(1,1)</td><td>—</td><td>—</td><td class="num">16.8215485671668</td></tr><tr><td>mmrm</td><td>TRTP</td><td>—</td><td>—</td><td>—</td><td>CHG</td><td>model</td><td>mmrm</td><td>UN(2,1)</td><td>UN(2,1)</td><td>—</td><td>—</td><td class="num">11.2059665275868</td></tr><tr><td>mmrm</td><td>TRTP</td><td>—</td><td>—</td><td>—</td><td>CHG</td><td>model</td><td>mmrm</td><td>UN(3,1)</td><td>UN(3,1)</td><td>—</td><td>—</td><td class="num">11.8852080330486</td></tr><tr><td>mmrm</td><td>TRTP</td><td>—</td><td>—</td><td>—</td><td>CHG</td><td>model</td><td>mmrm</td><td>UN(2,2)</td><td>UN(2,2)</td><td>—</td><td>—</td><td class="num">28.2582796083064</td></tr><tr><td>mmrm</td><td>TRTP</td><td>—</td><td>—</td><td>—</td><td>CHG</td><td>model</td><td>mmrm</td><td>UN(3,2)</td><td>UN(3,2)</td><td>—</td><td>—</td><td class="num">14.4451650211086</td></tr><tr><td>mmrm</td><td>TRTP</td><td>—</td><td>—</td><td>—</td><td>CHG</td><td>model</td><td>mmrm</td><td>UN(3,3)</td><td>UN(3,3)</td><td>—</td><td>—</td><td class="num">31.3944382278511</td></tr><tr><td>mmrm</td><td>TRTP</td><td>—</td><td>—</td><td>—</td><td>CHG</td><td>model</td><td>mmrm</td><td>n_obs</td><td>n_obs</td><td>—</td><td>—</td><td class="num">539</td></tr><tr><td>mmrm</td><td>TRTP</td><td>—</td><td>—</td><td>—</td><td>CHG</td><td>model</td><td>mmrm</td><td>n_subjects</td><td>n_subjects</td><td>—</td><td>—</td><td class="num">234</td></tr><tr><td>mmrm</td><td>TRTP</td><td>—</td><td>—</td><td>—</td><td>CHG</td><td>model</td><td>mmrm</td><td>df_residual</td><td>df_residual</td><td>—</td><td>—</td><td class="num">517</td></tr><tr><td>mmrm</td><td>TRTP</td><td>—</td><td>—</td><td>—</td><td>CHG</td><td>model</td><td>mmrm</td><td>reml_criterion</td><td>reml_criterion</td><td>—</td><td>—</td><td class="num">3087.84303493981</td></tr></tbody></table></div><p class="sub">34 rows, one per computed statistic.</p><dl class="facts"><div><dt>Schema</dt><dd class="mono">opencsr/ard/v1</dd></div><div><dt>Generated</dt><dd class="mono">2026-08-27T03:58:05Z</dd></div><div><dt>Spec hash</dt><dd class="mono">sha256:3070e2ae555ebd380a243e788f94e58d8b53d122f15a7bfa7ebfff80bc48324d</dd></div><div><dt>Display hash</dt><dd class="mono">sha256:edf500134e53cb5b38327998d146394ae02c95250e84483692bb11b48656c174</dd></div><div><dt>ARD file</dt><dd class="mono">outputs/t-eff-adas-mmrm/v002/ard.json</dd></div><div><dt>ARD hash</dt><dd class="mono">sha256:9df5a5383226227390b036da06a51c8091fd384e0f03005309a70a07f06cb54d</dd></div></dl><h4>Source datasets</h4><div class="scroll"><table class="data"><thead><tr><th>Dataset</th><th>Rows</th><th>Package</th><th>Hash</th></tr></thead><tbody><tr><td class="mono">adsl</td><td class="num">254</td><td>phuse-org/phuse-scripts:data/adam 398a6d33ced9359ffb58c46650a6d488811176b1</td><td class="mono trunc">sha256:6534192e6ae2a8789015148d2068ecdd8421791ea6d7f9cc307fef1db97945f9</td></tr><tr><td class="mono">adqsadas</td><td class="num">12463</td><td>phuse-org/phuse-scripts:data/adam 398a6d33ced9359ffb58c46650a6d488811176b1</td><td class="mono trunc">sha256:0f3e481baf734dc3e5ce7373d255269c2285400ff5bee77be525d832bade80cf</td></tr></tbody></table></div><h4>Environment</h4><p class="mono">R 4.3.3 · Darwin 23.6.0 · cards 0.6.1 · cardx 0.2.5 · gtsummary 2.3.0 · gt 1.0.0 · dplyr 1.1.4 · pharmaverseadam 1.1.0 · jsonlite 2.0.0 · yaml 2.3.10 · digest 0.6.37</p></section><section class="tab-panel" id="panel-specs" role="tabpanel" aria-labelledby="tab-specs" hidden><figure class="code"><figcaption>library/tfl/t-eff-adas-mmrm/analysis.yaml</figcaption><pre><code class="lang-yaml">id: t-eff-adas-mmrm
+title: &quot;ADAS-Cog (11) - Repeated Measures Analysis of Change from Baseline to Week 24&quot;
+regulatory_id: EFT08
+type: table
+dataset: adqsadas
+analysis_set: efficacy
+denominator: adsl
+sources: phuse
+group:
+  - TRTP
+total: false
+analyses:
+  - name: population
+    method: continuous
+    custom: population_n
+    label: &quot;Subjects in the analysis population&quot;
+    filter: &quot;PARAMCD == &#39;ACTOT&#39;&quot;
+
+  # Observed cases only. A repeated-measures model handles missing visits by
+  # modelling the within-subject covariance, so feeding it carry-forward
+  # records would count one measurement several times. Selecting this way gives
+  # 539 records over 234 subjects, which is what the reference report&#39;s own
+  # PROC MIXED output states it used.
+  - name: mmrm
+    method: continuous
+    custom: mmrm_change
+    label: &quot;Mixed model for repeated measures of the change from baseline&quot;
+    variables: [CHG]
+    filter: &quot;PARAMCD == &#39;ACTOT&#39; &amp; ANL01FL == &#39;Y&#39; &amp; AVISITN %in% c(8, 16, 24) &amp; !(DTYPE %in% &#39;LOCF&#39;)&quot;
+    response: CHG
+    subject: USUBJID
+    visit: AVISITN
+    visit_levels: [8, 16, 24]
+    treatment: TRTP
+    treatment_levels: [&quot;Placebo&quot;, &quot;Xanomeline Low Dose&quot;, &quot;Xanomeline High Dose&quot;]
+    factors: [SITEGR1]
+    covariates: [BASE]
+    # Treatment and the baseline score each interact with visit; site group does
+    # not. This is the model the SAP names in section 10.1.1, and the reference
+    # report&#39;s PROC MIXED output confirms it: 31 columns in X is exactly
+    # 1 + 11 site groups + 3 visits + 3 treatments + 9 treatment-by-visit
+    # + 1 baseline + 3 baseline-by-visit.
+    visit_interactions: [BASE, TRTP]
+    # The reference report&#39;s least-squares means are the treatment main effect,
+    # averaged over all three post-baseline visits rather than conditioned on
+    # Week 24. See the display&#39;s footnotes: the title says Week 24, the number
+    # is a visit-averaged estimate, and this is where that is decided.
+    lsmeans_over: all
+    conf_level: 0.95
+    contrasts:
+      - { name: xan_vs_placebo, test: &quot;Xanomeline Low Dose&quot;,
+          reference: &quot;Placebo&quot;, column: &quot;Xanomeline Low Dose&quot; }
+      - { name: xan_vs_placebo, test: &quot;Xanomeline High Dose&quot;,
+          reference: &quot;Placebo&quot;, column: &quot;Xanomeline High Dose&quot; }
+      - { name: high_vs_low, test: &quot;Xanomeline High Dose&quot;,
+          reference: &quot;Xanomeline Low Dose&quot;, column: &quot;Xanomeline High Dose&quot; }
+</code></pre></figure><figure class="code"><figcaption>library/tfl/t-eff-adas-mmrm/display.yaml</figcaption><pre><code class="lang-yaml">id: t-eff-adas-mmrm
+title: &quot;ADAS-Cog (11) - Repeated Measures Analysis of Change from Baseline to Week 24&quot;
+study: CDISCPILOT01
+population_label: &quot;Efficacy Analysis Set&quot;
+cutoff: &quot;2015-02-17&quot;
+source: &quot;Source: adqsadas (ADAS-Cog (11) total score, PARAMCD ACTOT) and adsl, from the CDISC pilot&#39;s own ADaM package (phuse-org/phuse-scripts, MIT). Supportive analysis as specified in the CDISCPILOT01 statistical analysis plan, section 10.1.1. Reference report display: Table 14-3.11. Data cut-off: 2015-02-17.&quot;
+footnotes:
+  - &quot;[1] Mixed model for repeated measures of the change from baseline, fitted by restricted maximum likelihood with an unstructured within-subject covariance matrix. Fixed effects: treatment, site group, visit, treatment by visit, the baseline score, and the baseline score by visit.&quot;
+  - &quot;[2] Pairwise comparison of least-squares means; p-values are not adjusted for multiple comparisons.&quot;
+  - &quot;Observed cases only: 539 assessments from 234 subjects at Weeks 8, 16 and 24. The model accounts for a missing visit through the covariance structure, so no value is carried forward.&quot;
+  - &quot;WHAT THE LEAST-SQUARES MEANS ESTIMATE: they are the treatment main effect — the model&#39;s prediction averaged over all three post-baseline visits and over the eleven site groups equally, with the baseline score held at its mean. They are not the Week-24 visit conditioned on, which the title might suggest and which is a different and less precise quantity (for placebo, 2.3 with a standard error of 0.69 rather than 1.6 with 0.49). This display reproduces what the reference report computed; the distinction is stated here because the number cannot state it itself.&quot;
+  - &quot;MEASURED, NOT ASSUMED: the fit reproduces the reference report&#39;s own PROC MIXED output to six significant figures on all six unstructured covariance parameters, and its REML criterion of 3087.84303515 to ten. It uses the same 539 observations from the same 234 subjects. Two programs can agree on a rounded least-squares mean by accident; they cannot agree on that by accident, so the model is identified far more sharply than the rounded cells above can show.&quot;
+  - &quot;DIFFERS FROM THE REFERENCE, DELIBERATELY: standard errors and degrees of freedom here are the model-based ones, on 517 residual degrees of freedom. The reference used Kenward-Roger degrees of freedom with Prasad-Rao-Jeske-Kackar-Harville standard errors, which inflate both by roughly one per cent to allow for the covariance parameters having been estimated rather than known. That adjustment is not implemented here. Of the twelve cells above, seven are identical to the reference and five differ at the last digit shown: the three p-values, each 0.001 lower (0.954, 0.555 and 0.605 against 0.955, 0.556 and 0.606); the high-dose least-squares mean standard error (0.55 against 0.56); and one confidence-interval bound (-1.8 against -1.9). Every point estimate agrees. The difference is measured and recorded in quality/data/efficacy-agreement.json.&quot;
+  - &quot;Treatment columns are planned treatment (TRTP), which is how the CDISCPILOT01 reference report presents them.&quot;
+  - &quot;CDISCPILOT01 states no data cut-off date. The date shown is the latest ADAS-Cog assessment date present in the vendored ADaM package.&quot;
+columns:
+  order: [&quot;Placebo&quot;, &quot;Xanomeline Low Dose&quot;, &quot;Xanomeline High Dose&quot;]
+format:
+  est_se: &quot;{estimate} ({se})&quot;
+  ci: &quot;({lcl};{ucl})&quot;
+  p_value: &quot;{pvalue}&quot;
+  digits:
+    estimate: 1
+    se: 2
+    lcl: 1
+    ucl: 1
+    pvalue: 3
+rows:
+  - { analysis: mmrm, variable: CHG, level: lsmean, pattern: est_se,
+      label: &quot;LS means (SE) [1]&quot; }
+  - { label: &quot;Comparison of least-squares means&quot;, section: true }
+  - { analysis: mmrm, variable: CHG, level: xan_vs_placebo, pattern: p_value,
+      label: &quot;p-value (Xanomeline - Placebo) [1][2]&quot;, indent: 1 }
+  - { analysis: mmrm, variable: CHG, level: xan_vs_placebo, pattern: est_se,
+      label: &quot;Difference of LS means (SE)&quot;, indent: 2 }
+  - { analysis: mmrm, variable: CHG, level: xan_vs_placebo, pattern: ci,
+      label: &quot;95% CI&quot;, indent: 2 }
+  - { analysis: mmrm, variable: CHG, level: high_vs_low, pattern: p_value,
+      label: &quot;p-value (Xanomeline High - Xanomeline Low) [1][2]&quot;, indent: 1 }
+  - { analysis: mmrm, variable: CHG, level: high_vs_low, pattern: est_se,
+      label: &quot;Difference of LS means (SE)&quot;, indent: 2 }
+  - { analysis: mmrm, variable: CHG, level: high_vs_low, pattern: ci,
+      label: &quot;95% CI&quot;, indent: 2 }
+variants:
+  post_text: {}
+</code></pre></figure><figure class="code"><figcaption>library/tfl/t-eff-adas-mmrm/custom.R</figcaption><pre><code class="lang-r"># Display-specific statistics (contract section 2).
+#
+# Thin wrappers, as the other ADAS-Cog displays are: the statistics live in
+# {opencsr} so they are tested once and shared, and every model term — the
+# factors, the covariate, which of them interact with visit, and which visits
+# the least-squares means average over — is declared in this display&#39;s
+# analysis.yaml rather than written here.
+
+mmrm_change &lt;- function(data, spec, denominator = NULL) {
+  opencsr::ard_mmrm(data, spec, denominator)
+}
+
+population_n &lt;- function(data, spec, denominator = NULL) {
+  opencsr::ard_population_n(data, spec, denominator)
+}
+</code></pre></figure></section><section class="tab-panel" id="panel-iterations" role="tabpanel" aria-labelledby="tab-iterations" hidden><ol class="timeline"><li class="current"><div class="tl-marker" aria-hidden="true"></div><div class="tl-body"><p class="tl-head"><span class="mono">v002</span><span class="chip chip-good">current</span></p><p class="tl-request">State in the display footnotes exactly which five cells differ from the reference report, and why: Kenward-Roger degrees of freedom and PRJKH standard errors are not implemented.</p><p class="sub">2026-08-27T03:58:05Z · obot worker W0137</p></div></li><li><div class="tl-marker" aria-hidden="true"></div><div class="tl-body"><p class="tl-head"><span class="mono">v001</span></p><p class="tl-request">First generation of the MMRM supportive analysis (reference report Table 14-3.11).</p><p class="sub">2026-08-27T03:57:31Z · obot worker W0137</p></div></li></ol></section></div>
+<p class="sub">Every iteration is kept: <span class="mono">outputs/t-eff-adas-mmrm/vNNN/</span> holds the spec snapshot, the ARD, the rendered output, and a manifest recording who regenerated it, why, and from which commit.</p></main>
+    <footer class="site-footer">
+      <p>
+        <strong>open.csr</strong> — an open-source Clinical Study Report builder. Numbers are
+        computed by versioned specs, serialized as ARDs, and bound into prose that never restates
+        them.
+      </p>
+      <p>
+        Demo data is CDISC Pilot 01 via
+        <a href="https://github.com/pharmaverse/pharmaverseadam">pharmaverseadam</a> · everything on
+        this site is precomputed and static ·
+        <a href="https://github.com/jwildfire/open.csr">source on GitHub</a> ·
+        <a href="https://jwildfire.github.io/obot.roadmap/">obot roadmap</a>.
+      </p>
+    </footer>
+    <script>
+      // Mark the nav link for this page; works at any mount depth.
+      (function () {
+        var here = location.pathname.replace(/\/$/, '/index.html');
+        var links = document.querySelectorAll('.site-nav a[href]');
+        for (var i = 0; i < links.length; i += 1) {
+          var href = links[i].getAttribute('href');
+          if (!href || href.indexOf('http') === 0) continue;
+          if (new URL(href, location.href).pathname === here) {
+            links[i].classList.add('current');
+            links[i].setAttribute('aria-current', 'page');
+          }
+        }
+      })();
+
+      // Theme toggle: OS preference by default, explicit choice remembered.
+      (function () {
+        var button = document.querySelector('.theme-toggle');
+        if (!button) return;
+        button.addEventListener('click', function () {
+          var root = document.documentElement;
+          var current =
+            root.getAttribute('data-theme') ||
+            (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+          var next = current === 'dark' ? 'light' : 'dark';
+          root.setAttribute('data-theme', next);
+          try {
+            localStorage.setItem('opencsr-theme', next);
+          } catch (e) {}
+        });
+      })();
+
+      // Tabs on the display detail pages.
+      (function () {
+        var groups = document.querySelectorAll('.tabs');
+        for (var g = 0; g < groups.length; g += 1) {
+          (function (group) {
+            var tabs = group.querySelectorAll('.tab');
+            var panels = group.querySelectorAll('.tab-panel');
+            group.addEventListener('click', function (event) {
+              var tab = event.target.closest('.tab');
+              if (!tab) return;
+              for (var i = 0; i < tabs.length; i += 1) {
+                var on = tabs[i] === tab;
+                tabs[i].classList.toggle('current', on);
+                tabs[i].setAttribute('aria-selected', on ? 'true' : 'false');
+                if (panels[i]) {
+                  panels[i].classList.toggle('current', on);
+                  panels[i].hidden = !on;
+                }
+              }
+            });
+          })(groups[g]);
+        }
+      })();
+
+      // ARD row filter.
+      (function () {
+        var inputs = document.querySelectorAll('.ard-filter');
+        for (var i = 0; i < inputs.length; i += 1) {
+          (function (input) {
+            input.addEventListener('input', function () {
+              var needle = input.value.toLowerCase();
+              var table = input.closest('.tab-panel, main').querySelector('.ard-table tbody');
+              if (!table) return;
+              var rows = table.rows;
+              for (var r = 0; r < rows.length; r += 1) {
+                rows[r].hidden = needle && rows[r].textContent.toLowerCase().indexOf(needle) === -1;
+              }
+            });
+          })(inputs[i]);
+        }
+      })();
+    </script>
+  </body>
+</html>
