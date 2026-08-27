@@ -25,6 +25,15 @@ test cites appears below — both directions are enforced by `TFL-QC-002` and
 | TFL-PREP-005 | Every prepared dataset is described in a manifest with row/column counts, a SHA-256 content hash, and the source package and version. | Traceability | `test-data-prep.R` | Verified |
 | TFL-PREP-006 | The analysis-set registry maps `analysis_set` keys onto population flags and rejects unknown sets and datasets lacking the required flag. | Functional | `test-data-prep.R` | Verified |
 | TFL-PREP-007 | Treatment arms are ordered by dose, not alphabetically, in every prepared dataset. | Functional | `test-data-prep.R` | Verified |
+| TFL-PREP-008 | Every vendored PHUSE file matches the SHA-256 and byte count recorded in `PROVENANCE.json`, which pins the upstream repository, commit, per-file git blob SHA-1 and MIT licence. | Traceability | `test-data-phuse.R` | Verified |
+| TFL-PREP-009 | `prepare_data()` exposes the whole CDISCPILOT01 ADaM package — the ten datasets the study's `define.xml` documents, plus PHUSE's added `adcm` — and rejects an unknown dataset name by listing the known ones. | Functional | `test-data-phuse.R` | Verified |
+| TFL-PREP-010 | `TRT01A` on every non-ADSL dataset is taken from the prepared ADSL rather than the dataset's own `TRTA`/`TRTP`, so no display can group on an arm the subject-level table disagrees with. | Functional | `test-data-phuse.R` | Verified |
+| TFL-PREP-011 | On the PHUSE source the study's own `SAFFL`/`ITTFL`/`EFFFL` and baseline vitals are used as stated rather than re-derived, screen-failure absence is asserted rather than assumed, and `AGEGR1` carries the study's three age groups. | Functional | `test-data-phuse.R` | Verified |
+| TFL-PREP-012 | ADCM's relabelling of even-numbered sites into a synthetic second study is reversed, and every remapped subject is proven to be the same subject by age, sex and actual treatment before the remap is accepted. | Robustness | `test-data-phuse.R` | Verified |
+| TFL-PREP-013 | The manifest records the upstream repository path and pinned commit for every PHUSE-sourced dataset, in the same `source_pkg`/`source_version` pair a package uses. | Traceability | `test-data-phuse.R` | Verified |
+| TFL-PREP-014 | Adding the PHUSE package moves no domain `{pharmaverseadam}` already served, so every dataset the committed displays read is unchanged. | Regression | `test-data-phuse.R` | Verified |
+| TFL-PREP-015 | The analysis-set registry resolves `efficacy` to `EFFFL`; a source that states no efficacy set fails by naming the missing flag rather than returning every subject. | Functional | `test-data-phuse.R` | Verified |
+| TFL-SRC-001 | The two packagings of CDISCPILOT01 are measured against each other on the domains they share, and every divergence matches the record committed at `quality/data/source-agreement.json`; an unrecorded divergence fails the build. | Quality evidence | `test-data-phuse.R`, `qc/source-agreement.R` | Verified |
 
 ## Specification validation
 

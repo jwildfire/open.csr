@@ -42,7 +42,21 @@ Agent-drafted blocks use `tier: generated` with `approval.state: draft` and hone
 
 ## Data
 
-Demo data is [`{pharmaverseadam}`](https://pharmaverse.github.io/pharmaverseadam/) CDISCPILOT01 only. **Never commit study data** — everything must be regenerable from public packages. Population flags are derived in `prepare_data()`; don't assume a flag exists on the raw dataset.
+Demo data is CDISCPILOT01 — the CDISC SDTM/ADaM pilot's xanomeline Alzheimer's study — from two packagings, chosen per dataset by `data_sources()` (design D12). Population flags are derived or asserted in `prepare_data()`; don't assume a flag exists on the raw dataset.
+
+**The rule: never commit study data.** Everything must be regenerable from public packages. That is the default, and it has exactly one exception.
+
+**The exception: the CDISCPILOT01 ADaM extracts under `pipeline/inst/extdata/phuse-cdiscpilot01/`.** They are committed deliberately, because they are public test data published under the MIT licence and no equivalent exists in `{pharmaverseadam}` — which is precisely what made the efficacy and laboratory displays impossible to build at all (design D12). They are not regenerable from any R package, so the alternative to committing them was not having them.
+
+What makes the exception safe rather than merely convenient:
+
+- The licence was established first-hand, not assumed. [`phuse-org/phuse-scripts`](https://github.com/phuse-org/phuse-scripts) ships an MIT `LICENSE.md`, reproduced verbatim at [`LICENSE-phuse-scripts.md`](pipeline/inst/extdata/phuse-cdiscpilot01/LICENSE-phuse-scripts.md) beside the data it covers and attributed in [`NOTICE`](NOTICE), as Apache-2.0 §4 requires of a redistribution.
+- Provenance is verified, not asserted. `qc/vendor-phuse-data.R` fetches the upstream commit's tree, recomputes git's blob SHA-1 from the downloaded bytes, and refuses to write a file whose SHA does not match; `--check` re-verifies the committed files and CI runs it. A vendored file is therefore provably the upstream file, not merely something that parses.
+- Every file's origin — repository, commit, path, digest — is recorded in [`PROVENANCE.json`](pipeline/inst/extdata/phuse-cdiscpilot01/PROVENANCE.json).
+
+**What the exception does not cover.** Real study data from any trial, ever. Anything whose licence has not been established first-hand. And anything from the RConsortium submission-pilot repositories, which are GPL-3.0 or carry no licence at all, and are incompatible with this repository either way. Widening the exception is a design change: raise it before writing the file, not after.
+
+Recorded 2026-08-27 (#39, #41) on @jwildfire's decision — *"the never commit study data rule is ok to violate here since it's public data under MIT."* Amended rather than broken silently, so that the repository's rules and its contents describe the same thing.
 
 ## Pull requests
 

@@ -89,13 +89,28 @@ variants:
 
 ## 4. Prepared datasets (data-prep layer)
 
-`opencsr::prepare_data()` returns a named list of tibbles derived from `{pharmaverseadam}`, with documented derivations (D12):
+`opencsr::prepare_data(datasets, source_pkg, sources)` returns a named list of tibbles for one study, CDISCPILOT01, drawn from two packagings of it and prepared with documented derivations (D12).
+
+**Sources.** `data_sources()` maps each dataset name to `"pharmaverseadam"` or `"phuse"`. The default registry is fixed: `adsl`, `adae`, `adex`, `adlb`, `advs` from `{pharmaverseadam}`; `adqsadas`, `adqscibc`, `adqsnpix`, `adlbc`, `adlbh`, `adlbhy`, `adtte`, `adcm` from the vendored CDISC pilot package. `sources = "phuse"` or `sources = "pharmaverseadam"` takes everything from one; a named vector overrides per dataset. An unknown dataset name is an error listing the known ones — never an empty frame.
+
+**Vendored data.** `pipeline/inst/extdata/phuse-cdiscpilot01/` holds eleven gzipped `.xpt` files from `phuse-org/phuse-scripts` (MIT), with `PROVENANCE.json` recording the upstream repository, the pinned commit, and each file's upstream path, git blob SHA-1, SHA-256 and byte count, plus the upstream licence text. `qc/vendor-phuse-data.R` writes it and `--check` verifies it; nothing else may edit it.
+
+**Derivations, `{pharmaverseadam}` lane:**
 
 - Screen failures (`ARM == "Screen Failure"`) excluded from all analysis datasets.
-- `SAFFL` used as shipped; `ITTFL` derived (randomized, non-screen-failure); `EFFFL` not derived in v0 (no efficacy data).
+- `SAFFL` used as shipped; `ITTFL` derived (randomized, non-screen-failure); `EFFFL` **not derived and not guessed** — this packaging states no efficacy analysis set, so `analysis_set: efficacy` fails here, naming the missing flag.
 - **`DISCREAS`** is a *derived* discontinuation reason, deliberately not named `DCSREAS`: pharmaverseadam's ADSL ships neither `DCSREAS` nor `DCDECOD`, so the derivation collapses to Death (from `DTHFL`) versus Other/Not specified, and must not borrow the CDISC variable's semantics. Surfaced as a display footnote, asserted by a test.
-- Datasets: `adsl`, `adae`, `adlb`, `advs`, `adex`.
-- Attaches a manifest: `list(dataset, n_row, n_col, hash, source_pkg, source_version)` per dataset, where `hash = digest::digest(df, algo = "sha256")`.
+- `BLWT`/`BLHT`/`BLBMI` merged from the ADVS baseline records.
+
+**Derivations, PHUSE lane:** the study states its own `SAFFL`/`ITTFL`/`EFFFL` (blank recoded to `"N"`), its own baseline weight/height/BMI on ADSL, and its own three age groups (`<65`, `65-80`, `>80`); none of these is re-derived. `COMPLFL` is the complement of the study's `DISCONFL`. `DISCREAS` is derived to the *same two levels* as the other lane so a display specified against one source renders against the other; `DCDECOD` and `DCREASCD` are carried through untouched for a display that wants the collected reason. Screen-failure absence is asserted, not assumed. ADCM's relabelling of even-numbered sites into a synthetic `CDISCPILOT02` is reversed, and every remapped subject must match ADSL on age, sex and actual arm or the preparation fails.
+
+**Both lanes:** `TRT01A` on every non-ADSL dataset is taken from the prepared ADSL by `USUBJID`, never from the dataset's own `TRTA`/`TRTP`.
+
+**Analysis sets:** `safety` → `SAFFL`, `itt` → `ITTFL`, `efficacy` → `EFFFL`, `completers` → `COMPLFL`, `all` → no filter.
+
+**Manifest:** `list(dataset, n_row, n_col, hash, source_pkg, source_version)` per dataset, where `hash = digest::digest(df, algo = "sha256")`. For a `{pharmaverseadam}` dataset the last pair is the package and its version; for a PHUSE dataset it is `"phuse-org/phuse-scripts:data/adam"` and the pinned upstream commit.
+
+**Source agreement:** the two packagings overlap on ADSL, ADAE and ADVS and do not agree on all of it. Every divergence is recorded in `quality/data/source-agreement.json` and reproduced by `qc/source-agreement.R`, which exits non-zero when any measured fact stops matching the record. The record's `environment` block — the R version, OS and `{pharmaverseadam}` version that measured — is recorded and printed but never compared: a version bump that moves no measured fact is news, not a failure, and one that moves a fact still fails on the fact it moved.
 
 ## 5. `ard.json` — the ARD serialization (owned schema, D5)
 
