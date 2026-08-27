@@ -15,7 +15,8 @@ import {
   isTab,
   parseAppHash,
   resolveAppLink,
-  resolveDisplay
+  resolveDisplay,
+  resolveDocument
 } from './core.js';
 import { initEditors } from './editor.js';
 import { initReaderEditors } from './reader-edit.js';
@@ -32,6 +33,13 @@ if (app) {
   const displaySlugs = [...app.querySelectorAll('[data-app-display-panel]')].map((el) =>
     el.getAttribute('data-app-display-panel')
   );
+  // Every document the page rendered, by id and by the basename of its own
+  // reader page. The explorer names documents; a link between panes names pages;
+  // both resolve to the same panel (#36).
+  const documentEntries = [...app.querySelectorAll('[data-app-document-panel]')].map((el) => ({
+    id: el.getAttribute('data-app-document-panel'),
+    file: el.getAttribute('data-app-document-file')
+  }));
 
   let contextIndex = { study: '', displays: {} };
   try {
@@ -132,10 +140,14 @@ if (app) {
     if (state.tab === 'documents') markSection(state.focus);
   }
 
+  // A section slug belongs to a DOCUMENT, not to the page: the report and the
+  // synopsis both model `objectives`. Marking by slug alone would light up the
+  // heading in a document the visitor is not reading (#36).
   function markSection(id) {
     if (!nav) return;
     for (const link of nav.querySelectorAll('[data-nav-section]')) {
-      link.classList.toggle('current', !!id && link.getAttribute('data-nav-section') === id);
+      const mine = !state.doc || link.getAttribute('data-nav-doc') === state.doc;
+      link.classList.toggle('current', !!id && mine && link.getAttribute('data-nav-section') === id);
     }
   }
 
@@ -158,6 +170,31 @@ if (app) {
       parts.push(`<span class="ac-slug">${state.block}</span>`);
     }
     contextEl.innerHTML = parts.join('<span class="ac-sep" aria-hidden="true">·</span>');
+  }
+
+  // One document visible at a time, the same rule the Displays pane already
+  // follows. Returns the id actually shown, so the caller can write the resolved
+  // document back into the selection — a hash then always names a document that
+  // exists rather than the page basename a link happened to carry.
+  function showDocument(id) {
+    const resolved = resolveDocument(id, documentEntries);
+    for (const panel of app.querySelectorAll('[data-app-document-panel]')) {
+      panel.hidden = panel.getAttribute('data-app-document-panel') !== resolved;
+    }
+    return resolved;
+  }
+
+  // The element the current document panel owns, or the app's own if the
+  // Documents view is not the one showing.
+  //
+  // Section slugs are a DOCUMENT's namespace, not the page's: the CSR and the
+  // synopsis both model `objectives`, and they are different headings. Scoping
+  // the lookup to the visible panel is what keeps a deep link into the synopsis
+  // from landing in the report (#36).
+  function scope() {
+    if (state.tab !== 'documents') return app;
+    const panel = app.querySelector('[data-app-document-panel]:not([hidden])');
+    return panel || app;
   }
 
   function showDisplay(slug) {
@@ -197,7 +234,11 @@ if (app) {
   // lands immediately, which is the better reading experience anyway.
   function scrollToFocus(focus) {
     if (!focus) return;
+    const within = scope();
     const target =
+      within.querySelector(`#${cssEscape(focus)}`) ||
+      within.querySelector(`[data-app-block="${cssEscape(focus)}"]`) ||
+      within.querySelector(`[name="${cssEscape(focus)}"]`) ||
       app.querySelector(`#${cssEscape(focus)}`) ||
       app.querySelector(`[data-app-block="${cssEscape(focus)}"]`) ||
       app.querySelector(`[name="${cssEscape(focus)}"]`);
@@ -220,6 +261,7 @@ if (app) {
 
   function render({ push = false } = {}) {
     showTab(state.tab);
+    state.doc = showDocument(state.doc);
     state.display = showDisplay(state.display);
     markBlock(state.block);
     showNav();

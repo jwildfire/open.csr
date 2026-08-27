@@ -1549,6 +1549,12 @@ export function renderCsrReader({
   // CSR Reader" into a reader for whichever document it was handed — which is
   // what lets one renderer serve every template object in the library (#32).
   documents = [],
+  // The trace panel and its script. A standalone reader page owns its own pair;
+  // the Demo app renders SEVERAL documents into one page and hoists a single
+  // pair above them, because `id="trace"` and `id="trace-index"` can only mean
+  // one element each and a second copy of the script would answer every click
+  // twice (#36).
+  trace = true,
   root = ''
 }) {
   const normalized = normalizeCsr(csr.json);
@@ -1576,11 +1582,8 @@ export function renderCsrReader({
   const switcher = renderDocumentSwitcher({ documents, current: doc.id, root, view: 'reader' });
   const notice = renderProseNotice(doc);
 
-  const tracePanel =
-    `<aside class="trace" id="trace" hidden aria-live="polite">` +
-    `<div class="trace-head"><h2>Trace</h2>` +
-    `<button type="button" class="trace-close" aria-label="Close trace panel">×</button></div>` +
-    `<div class="trace-body"></div></aside>`;
+  const tracePanel = trace ? TRACE_PANEL : '';
+  const traceWiring = trace ? traceScript(traceIndex) : '';
 
   if (!normalized || !normalized.sections.length) {
     const fallback = csr.html
@@ -1599,7 +1602,7 @@ export function renderCsrReader({
       fallback,
       renderTracePreview(traceIndex),
       tracePanel,
-      traceScript(traceIndex)
+      traceWiring
     ].join('\n');
   }
 
@@ -1654,8 +1657,20 @@ export function renderCsrReader({
     `<article class="csr-doc">${body}</article>`,
     `</div>`,
     tracePanel,
-    traceScript(traceIndex)
+    traceWiring
   ].join('\n');
+}
+
+/**
+ * The trace panel and its wiring, for a page that renders more than one reader.
+ *
+ * One panel, one index, one listener — the script delegates from `document`, so
+ * a click inside whichever document is visible opens the same panel. Which is
+ * the point: the chain a number belongs to does not change because a second
+ * document quotes it (#36).
+ */
+export function renderTraceChrome(traceIndex) {
+  return `${TRACE_PANEL}\n${traceScript(traceIndex)}`;
 }
 
 function renderCsrSection(section, context) {
@@ -1799,6 +1814,14 @@ function renderTracePreview(traceIndex) {
     `<ul class="trace-list">${items}</ul></section>`
   );
 }
+
+// The panel itself: markup with no state, so it can be emitted by a reader page
+// or hoisted above several of them without either copy knowing which happened.
+const TRACE_PANEL =
+  `<aside class="trace" id="trace" hidden aria-live="polite">` +
+  `<div class="trace-head"><h2>Trace</h2>` +
+  `<button type="button" class="trace-close" aria-label="Close trace panel">×</button></div>` +
+  `<div class="trace-body"></div></aside>`;
 
 function traceScript(traceIndex) {
   return (

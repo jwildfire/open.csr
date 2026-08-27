@@ -36,7 +36,7 @@ import {
   loadDisplays,
   loadTextBlocks
 } from '../../scripts/site-lib.mjs';
-import { buildNavTree, renderSidebar } from '../../scripts/app-lib.mjs';
+import { buildNavTree, renderDocumentsPane, renderSidebar } from '../../scripts/app-lib.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(here, '..', '..');
@@ -152,6 +152,9 @@ describe('the document set', () => {
     expect(renderDocumentSwitcher({ documents: [fixtureDocs[0]], current: 'csr' })).toBe('');
   });
 
+  // A page that renders ONE document — which every standalone reader page is —
+  // passes no `rendered` set, so a second document stays a link to its own page.
+  // The Demo app renders them all and gets selections instead (#36, below).
   test('QC-SITE-009: a document not on screen is a link out, not a dead selection (#32)', () => {
     const tree = buildNavTree({
       config: fixtureConfig,
@@ -278,5 +281,153 @@ describe('the repository this site is built from', () => {
     expect(synopsis.prose.unapproved).toBe(synopsis.prose.total);
     expect(synopsis.prose.total).toBeGreaterThan(0);
     expect(renderProseNotice(synopsis)).toContain('Draft prose');
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Two documents in one viewer (open.csr #36)
+// ---------------------------------------------------------------------------
+
+describe('a document carries its own disclosure into the pane', () => {
+  test('QC-DEMO-035: each panel states its own prose state, so a draft reads as draft in the app (#36)', () => {
+    // Rendering the synopsis in the main shell makes it look MORE finished, so
+    // the disclosure matters more there. It travels with the document rather
+    // than being added to the shell, which is what makes a third draft template
+    // object disclosed for free.
+    const render = (doc) =>
+      renderCsrReader({
+        config: fixtureConfig,
+        csr: doc,
+        displays: [],
+        ards: {},
+        traceIndex: buildTraceIndex([]),
+        documents: fixtureDocs,
+        trace: false,
+        root: '../'
+      });
+    const entries = builtDocuments(fixtureDocs).map((doc) => ({
+      id: doc.id,
+      file: doc.primary ? 'index' : doc.templateId,
+      title: doc.title,
+      html: render(doc)
+    }));
+    const html = renderDocumentsPane({ entries, selected: 'csr', trace: '' });
+
+    const start = html.indexOf('data-app-document-panel="e3-synopsis"');
+    const end = html.indexOf('data-app-document-panel="third"');
+    expect(start).toBeGreaterThan(-1);
+    const synopsisPanel = html.slice(start, end);
+    expect(synopsisPanel).toContain('Draft prose');
+    expect(synopsisPanel).toContain('not reviewed');
+
+    // And the document whose blocks are all approved makes the opposite claim
+    // in its own panel rather than inheriting the neighbour's warning.
+    const csrPanel = html.slice(
+      html.indexOf('data-app-document-panel="csr"'),
+      start
+    );
+    expect(csrPanel).not.toContain('Draft prose');
+    expect(csrPanel).toContain('approved');
+  });
+
+  test('QC-DEMO-035: a reader rendered for a pane emits no trace panel of its own (#36)', () => {
+    // One `id="trace"` per page. The pane hoists a single panel above the set.
+    const doc = fixtureDocs.find((entry) => entry.templateId === 'e3-synopsis');
+    const args = {
+      config: fixtureConfig,
+      csr: doc,
+      displays: [],
+      ards: {},
+      traceIndex: buildTraceIndex([]),
+      documents: fixtureDocs,
+      root: '../'
+    };
+    expect(renderCsrReader({ ...args, trace: false })).not.toContain('id="trace"');
+    // A standalone page still owns its own, unchanged.
+    expect(renderCsrReader(args)).toContain('id="trace"');
+  });
+});
+
+describe('two documents, one set of analytics', () => {
+  // The reuse is real today. This is the guard that keeps it real: rendering
+  // both documents in one viewer is where a disagreement would become visible to
+  // a reader, and a template that recomputed a number rather than citing a
+  // display would fail here before anyone read two different figures on one
+  // screen.
+  const docs = loadDocuments(rootDir, JSON.parse(
+    readFileSync(path.join(rootDir, 'site', 'config.json'), 'utf8')
+  ));
+  const built = builtDocuments(docs).filter((doc) => doc.json);
+
+  test('QC-SITE-011: a display two documents both place is the same artifact in both (#36)', () => {
+    expect(built.length).toBeGreaterThan(1);
+    const seen = new Map();
+    const conflicts = [];
+    for (const doc of built) {
+      for (const entry of doc.json.displayIndex || []) {
+        const prior = seen.get(entry.slug);
+        const here = {
+          ardSource: entry.ardSource,
+          ardPath: entry.ardPath,
+          ard: JSON.stringify(entry.ard)
+        };
+        if (!prior) {
+          seen.set(entry.slug, { doc: doc.id, ...here });
+          continue;
+        }
+        for (const key of ['ardSource', 'ardPath', 'ard']) {
+          if (prior[key] !== here[key]) {
+            conflicts.push(`${entry.slug}: ${key} differs between ${prior.doc} and ${doc.id}`);
+          }
+        }
+      }
+    }
+    // Every display the synopsis places is one the report places too — the
+    // synopsis introduces no display of its own.
+    expect([...seen.keys()].length).toBeGreaterThan(0);
+    expect(conflicts).toEqual([]);
+  });
+
+  test('QC-SITE-011: two documents cannot disagree about a named value (#36)', () => {
+    const seen = new Map();
+    const conflicts = [];
+    let compared = 0;
+    for (const doc of built) {
+      for (const value of doc.json.values?.values || []) {
+        const prior = seen.get(value.id);
+        if (!prior) {
+          seen.set(value.id, { doc: doc.id, value });
+          continue;
+        }
+        compared += 1;
+        if (prior.value.value !== value.value || prior.value.formatted !== value.formatted) {
+          conflicts.push(
+            `${value.id}: ${prior.doc} says ${prior.value.formatted}, ${doc.id} says ${value.formatted}`
+          );
+        }
+      }
+    }
+    // A guard that compared nothing would pass whatever the documents said, so
+    // it has to prove it found values quoted by more than one of them.
+    expect(compared).toBeGreaterThan(0);
+    expect(conflicts).toEqual([]);
+  });
+
+  test('QC-SITE-011: only the per-document display NUMBER differs, and that is by design (#36)', () => {
+    // Numbering is derived from assembly order per document (QC-DEMO-012), so
+    // the report's 14.1.1 and the synopsis's 13.1 are the same table placed
+    // twice — not evidence of divergence. Asserting it keeps a future reader
+    // from "fixing" the difference.
+    const indexes = built.map(
+      (doc) => new Map((doc.json.displayIndex || []).map((entry) => [entry.slug, entry.number]))
+    );
+    const shared = [...indexes[0].keys()].filter((slug) =>
+      indexes.every((index) => index.has(slug))
+    );
+    expect(shared.length).toBeGreaterThan(0);
+    const differing = shared.filter(
+      (slug) => new Set(indexes.map((index) => index.get(slug))).size > 1
+    );
+    expect(differing).toEqual(shared);
   });
 });

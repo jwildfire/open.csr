@@ -64,6 +64,13 @@
     "QC-DEMO-027": "The Values pane shows every value's name, number and provenance — an ARD address with its iteration and hash, or the declared arithmetic for a derived value — and the text blocks that cite it.",
     "QC-DEMO-028": "The Values pane states the verdict of the gate that re-derived the store against the committed ARDs, and renders a documented empty state when no store exists.",
     "QC-DEMO-029": "Values are a collection of the study in the navigation tree, listed with their formatted numbers, and selecting one focuses it in the pane rather than introducing a fourth selection key.",
+    "QC-DEMO-030": "A link to any document's standalone reader page resolves to the Documents view naming that document — the primary document's page by the key `index`, every other template object by its own — so a second document is absorbed into the app the way a display permalink already is.",
+    "QC-DEMO-031": "A document selection resolves against the documents the page actually rendered, accepting either a document id or the basename of that document's reader page, and falls back to the first rendered document rather than to an empty pane.",
+    "QC-DEMO-032": "The Documents pane renders one panel per assembled document from the same reader renderer, keyed by both document id and reader-page basename, shows exactly one, and hoists a single trace panel and index above the set rather than emitting one per document.",
+    "QC-DEMO-033": "A document the page rendered is a selectable explorer node carrying its standalone permalink as the no-JavaScript fallback; a document the page did not render stays an ordinary link out with no selection attributes.",
+    "QC-DEMO-034": "Every rendered document contributes its own top-level sections to the explorer, each section link naming its document, and a section slug is resolved inside the document on screen rather than across the page.",
+    "QC-DEMO-035": "Each document panel carries its own prose disclosure, so a document whose blocks are unreviewed reads as draft inside the app exactly as it does on its own page.",
+    "QC-SITE-011": "Two documents assembled from the shared libraries quote the same artifacts: every display both documents place resolves to the same ARD source and the same ARD payload, and both carry the same value store with no value differing in raw value or formatted string. Only the per-document display number differs.",
     "QC-SITE-008": "`site/site.css` parses as a whole: every block is closed, no block is closed that was never opened, and no declaration sits outside a rule — so no rule in the file can be silently dead in the browser.",
     "QC-SITE-009": "The site publishes one reader page and one template page for every assembled template object in `library/templates/`, discovered from the library rather than declared: an object absent from `site/config.json` still publishes, titled from its own model, and every document reaches every other from the switcher, the navigation tree and the home page.",
     "QC-SITE-010": "Every document states whether its own prose has been reviewed, derived from the `approval.state` the assembler recorded on each block it placed: a document holding unapproved blocks carries a notice above its first section and a flag in the switcher, the navigation tree and its home-page card; a document whose blocks are all approved says that instead."
@@ -625,6 +632,69 @@
       "source": "#129",
       "evidence": "js-unit",
       "link": "site-demo.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-DEMO-030",
+      "area": "Demo",
+      "text": "A link to any document's standalone reader page resolves to the Documents view naming that document — the primary document's page by the key `index`, every other template object by its own — so a second document is absorbed into the app the way a display permalink already is.",
+      "source": "open.csr#36",
+      "evidence": "js-unit",
+      "link": "site-demo.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-DEMO-031",
+      "area": "Demo",
+      "text": "A document selection resolves against the documents the page actually rendered, accepting either a document id or the basename of that document's reader page, and falls back to the first rendered document rather than to an empty pane.",
+      "source": "open.csr#36",
+      "evidence": "js-unit",
+      "link": "site-demo.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-DEMO-032",
+      "area": "Demo",
+      "text": "The Documents pane renders one panel per assembled document from the same reader renderer, keyed by both document id and reader-page basename, shows exactly one, and hoists a single trace panel and index above the set rather than emitting one per document.",
+      "source": "open.csr#36",
+      "evidence": "js-unit",
+      "link": "site-demo.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-DEMO-033",
+      "area": "Demo",
+      "text": "A document the page rendered is a selectable explorer node carrying its standalone permalink as the no-JavaScript fallback; a document the page did not render stays an ordinary link out with no selection attributes.",
+      "source": "open.csr#36",
+      "evidence": "js-unit",
+      "link": "site-demo.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-DEMO-034",
+      "area": "Demo",
+      "text": "Every rendered document contributes its own top-level sections to the explorer, each section link naming its document, and a section slug is resolved inside the document on screen rather than across the page.",
+      "source": "open.csr#36",
+      "evidence": "js-unit",
+      "link": "site-demo.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-DEMO-035",
+      "area": "Demo",
+      "text": "Each document panel carries its own prose disclosure, so a document whose blocks are unreviewed reads as draft inside the app exactly as it does on its own page.",
+      "source": "open.csr#36",
+      "evidence": "js-unit",
+      "link": "site-demo.test.js, site-documents.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-SITE-011",
+      "area": "Site",
+      "text": "Two documents assembled from the shared libraries quote the same artifacts: every display both documents place resolves to the same ARD source and the same ARD payload, and both carry the same value store with no value differing in raw value or formatted string. Only the per-document display number differs.",
+      "source": "open.csr#36",
+      "evidence": "js-unit",
+      "link": "site-documents.test.js",
       "status": "draft"
     },
     {
