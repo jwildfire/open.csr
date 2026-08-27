@@ -1,0 +1,13 @@
+display: t-eff-adas-wk24
+iterations:
+- version: v001
+  created: '2026-08-27T02:21:19Z'
+  actor: obot worker
+  change_request: Initial generation of the ADAS-Cog Week 24 primary efficacy display
+    (#43).
+  git_commit: ''
+  spec_hash: sha256:b1293042583d96e58d1cbba3fb184d33bfc6e72be390f27c43871c6cfe43674a
+  display_hash: sha256:e51fda295f38f7b0b60a675f81eaf78d6a17790a268dc982cd33aaa94d61d0ab
+  ard_hash: sha256:7769370093c068677ce8aaf425e73844d343fb33524cfe9280e10792079531c3
+  ard_rows: 95
+
