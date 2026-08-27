@@ -178,19 +178,33 @@ surface a second study or a second document would extend.</p>
 </code></pre>
 <p>Four decisions this encodes:</p>
 <ol>
-<li><strong>The study is the root.</strong> Everything under it belongs to it. A second study
-becomes a second root, not a second application.</li>
-<li><strong>Documents is a collection, not a page.</strong> The CSR is one document; a SAP is
-another; an ISS would be a third. The registry lives in
-<code>site/config.json</code> → <code>documents</code>, so adding one is a config edit. Documents
-that have no template yet are listed and marked <code>planned</code> rather than hidden,
-because the point is to show the shape.</li>
-<li><strong>Displays sit beside documents, not inside one.</strong> The same display can be
+<li><p><strong>The study is the root.</strong> Everything under it belongs to it. A second study
+becomes a second root, not a second application.</p>
+</li>
+<li><p><strong>Documents is a collection, not a page.</strong> The CSR is one document; the ICH E3
+Annex I synopsis is another; a SAP would be a third. The registry is
+<code>library/templates/</code> itself (#32): every template object the assembler has
+built becomes a document here, with its own reader page, its own document-model
+page and its own entry in this tree, without being named anywhere in the site
+build. <code>site/config.json</code> → <code>documents</code> carries editorial metadata — a nicer
+title, an abbreviation, a blurb — and the documents that are <em>planned</em> and so
+have no template object to discover. It is a merge, never a gate: a template
+object the config has never heard of still publishes, titled from its own
+model, with a build warning naming it. Planned documents are listed and marked
+rather than hidden, because the point is to show the shape.</p>
+<p>The app renders one document at a time. The document on screen keeps its
+section tree and its in-app selection; every other document is an ordinary
+link to its own reader page, so it works with JavaScript off and never offers
+a selection that would resolve to nothing.</p>
+</li>
+<li><p><strong>Displays sit beside documents, not inside one.</strong> The same display can be
 referenced by more than one document — the AE overview belongs in the CSR and
 would belong in an ISS. So a display records <em>which documents use it</em> instead
-of living under one of them.</li>
-<li><strong>Templates stays in the header.</strong> A template describes what a report of that
-kind <em>is</em>, across every study, so it does not hang off one study in the tree.</li>
+of living under one of them.</p>
+</li>
+<li><p><strong>Templates stays in the header.</strong> A template describes what a report of that
+kind <em>is</em>, across every study, so it does not hang off one study in the tree.</p>
+</li>
 </ol>
 <p><strong>Vocabulary:</strong> <em>Reader</em> → <strong>Documents</strong>, <em>Tables</em> → <strong>Displays</strong> (tables,
 figures and listings). The emitted directories keep their v0 names — <code>/reader/</code>

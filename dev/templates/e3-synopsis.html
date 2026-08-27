@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="The Study Synopsis document model as data: the full section skeleton, what this report puts in each section, and the display numbering derived from assembly order." />
+    <title>Study Synopsis · template · open.csr</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23111a24'/%3E%3Crect x='3' y='3' width='7' height='1.4' fill='%23e7edf5'/%3E%3Crect x='3' y='6' width='10' height='1.4' fill='%235aa9e6'/%3E%3Crect x='3' y='9' width='6' height='1.4' fill='%23e7edf5'/%3E%3Crect x='3' y='12' width='9' height='1.4' fill='%235aa9e6'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="../site.css" />
+    <script>
+      // Theme is resolved before first paint so the page never flashes the
+      // wrong surface. No storage available (private mode) simply falls back to
+      // the OS preference.
+      (function () {
+        try {
+          var saved = localStorage.getItem('opencsr-theme');
+          if (saved) document.documentElement.setAttribute('data-theme', saved);
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body class="">
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <a class="site-name" href="../index.html">
+        <span class="mark" aria-hidden="true"></span>
+        <span>
+          <strong>open.csr</strong>
+          <em>Versioned numbers, versioned words, one traceable loop.</em>
+        </span>
+      </a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="../index.html">Home</a><a href="../demo/index.html">Demo</a><a href="../quality/index.html">Quality</a><a href="../docs/index.html">Design &amp; Research</a>
+        <button
+          type="button"
+          class="theme-toggle"
+          aria-label="Switch between light and dark"
+          title="Switch between light and dark"
+        >
+          <span aria-hidden="true">◐</span>
+        </button>
+        <a class="icon-link" href="https://github.com/jwildfire/open.csr" aria-label="Source on GitHub" title="Source on GitHub">
+          <svg viewBox="0 0 16 16" width="17" height="17" fill="currentColor" aria-hidden="true">
+            <path
+              d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
+            />
+          </svg>
+        </a>
+      </nav>
+    </header>
+    
+    <main class="site-main" id="main"><header class="page-head"><p class="eyebrow">Report Template Library</p><h2>Study Synopsis as data</h2><p class="lede">ICH E3 has been unrevised since 1995 and no machine-readable model of it existed publicly; ICH M11 did this for protocols in November 2025. <span class="mono">library/templates/e3-synopsis/sections.yaml</span> encodes this document's 25-entry skeleton — number, title, slug and content model. <span class="mono">assembly.yaml</span> says what <em>this</em> report puts in it. Display numbers appear in neither: the assembler derives them from assembly order, so reordering the report is a one-line diff and a display's identity never changes (design D6). The library is plural — the same two files describe every document open.csr assembles.</p></header>
+<nav class="doc-switch" aria-label="Documents in this study"><span class="doc-switch-label">Documents</span><a class="doc-tab" href="../templates/index.html">Clinical Study Report</a><span class="doc-tab current" aria-current="page">Study Synopsis<span class="doc-flag warn" title="18 of 18 prose blocks are unapproved drafts">draft prose</span></span></nav>
+<div class="stat-row"><div class="stat"><span class="stat-value">25</span><span class="stat-label">sections modelled</span><span class="stat-sub">the whole skeleton, filled or not</span></div><div class="stat"><span class="stat-value">19</span><span class="stat-label">populated in this demo</span><span class="stat-sub">every other section renders as a marked gap</span></div><div class="stat"><span class="stat-value">6</span><span class="stat-label">displays numbered</span><span class="stat-sub">assigned at assembly, not authored</span></div><div class="stat"><span class="stat-value">18</span><span class="stat-label">assembly slots configured</span><span class="stat-sub">text blocks and in-text displays</span></div></div>
+<p class="callout">Section <span class="mono">14</span> is generated, not written: package versions, ARD hashes, data manifests and session info are emitted mechanically. E3 reserved that slot in 1995 and open.csr fills it from the build.</p>
+<section class="app-block"><h3>Assigned numbering</h3><p class="sub">Derived from <span class="mono">assembly.yaml</span> <span class="mono">post_text</span> order at build time. The slug is what the specs, the ARDs and the bindings all refer to — reorder the report and every number here moves while no spec, ARD or sentence changes at all.</p><div class="scroll"><table class="data"><thead><tr><th>Number</th><th>Display</th><th>Slug</th><th>Section</th></tr></thead><tbody><tr><td class="mono">Table 13.1</td><td><a href="../gallery/t-disposition.html">Subject Disposition</a></td><td class="mono">t-disposition</td><td class="mono">13</td></tr><tr><td class="mono">Table 13.2</td><td><a href="../gallery/t-demographics.html">Demographic and Baseline Characteristics</a></td><td class="mono">t-demographics</td><td class="mono">13</td></tr><tr><td class="mono">Table 13.3</td><td><a href="../gallery/t-exposure.html">Extent of Exposure to Study Drug</a></td><td class="mono">t-exposure</td><td class="mono">13</td></tr><tr><td class="mono">Table 13.4</td><td><a href="../gallery/t-ae-overview.html">Overview of Treatment-Emergent Adverse Events</a></td><td class="mono">t-ae-overview</td><td class="mono">13</td></tr><tr><td class="mono">Table 13.5</td><td><a href="../gallery/t-ae-common.html">Treatment-Emergent Adverse Events by System Organ Class and Preferred Term</a></td><td class="mono">t-ae-common</td><td class="mono">13</td></tr><tr><td class="mono">Listing 13.6</td><td><a href="../gallery/l-ae-serious.html">Listing of Serious Adverse Events</a></td><td class="mono">l-ae-serious</td><td class="mono">13</td></tr></tbody></table></div></section>
+<section class="app-block"><h3>The document skeleton</h3><p class="sub">All 25 modelled sections, and what this report puts in each. Sections marked <em>not in this demo</em> still assemble, as headings that say so — the skeleton stays visible rather than being trimmed to what happens to be built.</p><div class="scroll"><table class="data e3-table"><thead><tr><th>§</th><th>Title</th><th>Content model</th><th>Text</th><th>Displays</th><th>State</th></tr></thead><tbody><tr class="is-gap"><td class="mono">1</td><td>Administrative Information</td><td><span class="muted">—</span></td><td><span class="muted">—</span></td><td><span class="muted">—</span></td><td><span class="chip chip-neutral" title="The section is modelled but this report does not fill it">not in this demo</span></td></tr><tr class="is-populated"><td class="mono">1.1</td><td>Name of Sponsor, Finished Product and Active Ingredient</td><td><span class="chip chip-neutral">text</span></td><td><a class="mono" href="../text/index.html#TXT-SYN-0101">TXT-SYN-0101</a></td><td><span class="muted">—</span></td><td><span class="chip chip-good">populated</span></td></tr><tr class="is-populated"><td class="mono">1.2</td><td>Title of Study</td><td><span class="chip chip-neutral">text</span></td><td><a class="mono" href="../text/index.html#TXT-SYN-0102">TXT-SYN-0102</a></td><td><span class="muted">—</span></td><td><span class="chip chip-good">populated</span></td></tr><tr class="is-populated"><td class="mono">1.3</td><td>Investigators and Study Centres</td><td><span class="chip chip-neutral">text</span></td><td><a class="mono" href="../text/index.html#TXT-SYN-0103">TXT-SYN-0103</a></td><td><span class="muted">—</span></td><td><span class="chip chip-good">populated</span></td></tr><tr class="is-populated"><td class="mono">1.4</td><td>Publication (Reference)</td><td><span class="chip chip-neutral">text</span></td><td><a class="mono" href="../text/index.html#TXT-SYN-0104">TXT-SYN-0104</a></td><td><span class="muted">—</span></td><td><span class="chip chip-good">populated</span></td></tr><tr class="is-populated"><td class="mono">1.5</td><td>Studied Period</td><td><span class="chip chip-neutral">text</span></td><td><a class="mono" href="../text/index.html#TXT-SYN-0105">TXT-SYN-0105</a></td><td><span class="muted">—</span></td><td><span class="chip chip-good">populated</span></td></tr><tr class="is-populated"><td class="mono">1.6</td><td>Phase of Development</td><td><span class="chip chip-neutral">text</span></td><td><a class="mono" href="../text/index.html#TXT-SYN-0106">TXT-SYN-0106</a></td><td><span class="muted">—</span></td><td><span class="chip chip-good">populated</span></td></tr><tr class="is-populated"><td class="mono">2</td><td>Objectives</td><td><span class="chip chip-neutral">text</span></td><td><a class="mono" href="../text/index.html#TXT-SYN-0200">TXT-SYN-0200</a></td><td><span class="muted">—</span></td><td><span class="chip chip-good">populated</span></td></tr><tr class="is-populated"><td class="mono">3</td><td>Methodology</td><td><span class="chip chip-neutral">text</span></td><td><a class="mono" href="../text/index.html#TXT-SYN-0300">TXT-SYN-0300</a></td><td><span class="muted">—</span></td><td><span class="chip chip-good">populated</span></td></tr><tr class="is-populated"><td class="mono">4</td><td>Number of Patients (Planned and Analysed)</td><td><span class="chip chip-neutral">text</span> <span class="chip chip-neutral">in text display</span></td><td><a class="mono" href="../text/index.html#TXT-SYN-0400">TXT-SYN-0400</a></td><td><a href="../gallery/t-disposition.html" title="Subject Disposition">Table 13.1</a></td><td><span class="chip chip-good">populated</span></td></tr><tr class="is-populated"><td class="mono">5</td><td>Diagnosis and Main Criteria for Inclusion</td><td><span class="chip chip-neutral">text</span></td><td><a class="mono" href="../text/index.html#TXT-SYN-0500">TXT-SYN-0500</a></td><td><span class="muted">—</span></td><td><span class="chip chip-good">populated</span></td></tr><tr class="is-populated"><td class="mono">6</td><td>Test Product, Dose and Mode of Administration, Batch Number</td><td><span class="chip chip-neutral">text</span></td><td><a class="mono" href="../text/index.html#TXT-SYN-0600">TXT-SYN-0600</a></td><td><span class="muted">—</span></td><td><span class="chip chip-good">populated</span></td></tr><tr class="is-populated"><td class="mono">7</td><td>Duration of Treatment</td><td><span class="chip chip-neutral">text</span> <span class="chip chip-neutral">in text display</span></td><td><a class="mono" href="../text/index.html#TXT-SYN-0700">TXT-SYN-0700</a></td><td><a href="../gallery/t-exposure.html" title="Extent of Exposure to Study Drug">Table 13.3</a></td><td><span class="chip chip-good">populated</span></td></tr><tr class="is-populated"><td class="mono">8</td><td>Reference Therapy, Dose and Mode of Administration, Batch Number</td><td><span class="chip chip-neutral">text</span></td><td><a class="mono" href="../text/index.html#TXT-SYN-0800">TXT-SYN-0800</a></td><td><span class="muted">—</span></td><td><span class="chip chip-good">populated</span></td></tr><tr class="is-gap"><td class="mono">9</td><td>Criteria for Evaluation</td><td><span class="muted">—</span></td><td><span class="muted">—</span></td><td><span class="muted">—</span></td><td><span class="chip chip-neutral" title="The section is modelled but this report does not fill it">not in this demo</span></td></tr><tr class="is-gap"><td class="mono">9.1</td><td>Efficacy</td><td><span class="chip chip-neutral">text</span></td><td><span class="muted">—</span></td><td><span class="muted">—</span></td><td><span class="chip chip-neutral" title="The section is modelled but this report does not fill it">not in this demo</span></td></tr><tr class="is-populated"><td class="mono">9.2</td><td>Safety</td><td><span class="chip chip-neutral">text</span></td><td><a class="mono" href="../text/index.html#TXT-SYN-0902">TXT-SYN-0902</a></td><td><span class="muted">—</span></td><td><span class="chip chip-good">populated</span></td></tr><tr class="is-populated"><td class="mono">10</td><td>Statistical Methods</td><td><span class="chip chip-neutral">text</span></td><td><a class="mono" href="../text/index.html#TXT-SYN-1000">TXT-SYN-1000</a></td><td><span class="muted">—</span></td><td><span class="chip chip-good">populated</span></td></tr><tr class="is-gap"><td class="mono">11</td><td>Summary — Conclusions</td><td><span class="muted">—</span></td><td><span class="muted">—</span></td><td><span class="muted">—</span></td><td><span class="chip chip-neutral" title="The section is modelled but this report does not fill it">not in this demo</span></td></tr><tr class="is-gap"><td class="mono">11.1</td><td>Efficacy Results</td><td><span class="chip chip-neutral">text</span></td><td><span class="muted">—</span></td><td><span class="muted">—</span></td><td><span class="chip chip-neutral" title="The section is modelled but this report does not fill it">not in this demo</span></td></tr><tr class="is-populated"><td class="mono">11.2</td><td>Safety Results</td><td><span class="chip chip-neutral">text</span> <span class="chip chip-neutral">in text display</span></td><td><a class="mono" href="../text/index.html#TXT-SYN-1102">TXT-SYN-1102</a></td><td><a href="../gallery/t-ae-overview.html" title="Overview of Treatment-Emergent Adverse Events">Table 13.4</a></td><td><span class="chip chip-good">populated</span></td></tr><tr class="is-populated"><td class="mono">11.3</td><td>Conclusion</td><td><span class="chip chip-neutral">text</span></td><td><a class="mono" href="../text/index.html#TXT-SYN-1103">TXT-SYN-1103</a></td><td><span class="muted">—</span></td><td><span class="chip chip-good">populated</span></td></tr><tr class="is-populated"><td class="mono">12</td><td>Date of the Report</td><td><span class="chip chip-neutral">text</span></td><td><a class="mono" href="../text/index.html#TXT-SYN-1200">TXT-SYN-1200</a></td><td><span class="muted">—</span></td><td><span class="chip chip-good">populated</span></td></tr><tr class="is-populated"><td class="mono">13</td><td>Supporting Displays</td><td><span class="chip chip-neutral">post text index</span></td><td><span class="muted">—</span></td><td><a href="../gallery/t-disposition.html" title="Subject Disposition">Table 13.1</a> <a href="../gallery/t-demographics.html" title="Demographic and Baseline Characteristics">Table 13.2</a> <a href="../gallery/t-exposure.html" title="Extent of Exposure to Study Drug">Table 13.3</a> <a href="../gallery/t-ae-overview.html" title="Overview of Treatment-Emergent Adverse Events">Table 13.4</a> <a href="../gallery/t-ae-common.html" title="Treatment-Emergent Adverse Events by System Organ Class and Preferred Term">Table 13.5</a> <a href="../gallery/l-ae-serious.html" title="Listing of Serious Adverse Events">Listing 13.6</a></td><td><span class="chip chip-good">populated</span></td></tr><tr class="is-gap"><td class="mono">14</td><td>Provenance of the Assembled Synopsis</td><td><span class="chip chip-neutral">generated provenance</span></td><td><span class="muted">—</span></td><td><span class="muted">—</span></td><td><span class="chip chip-neutral" title="The section is modelled but this report does not fill it">not in this demo</span></td></tr></tbody></table></div></section></main>
+    <footer class="site-footer">
+      <p>
+        <strong>open.csr</strong> — an open-source Clinical Study Report builder. Numbers are
+        computed by versioned specs, serialized as ARDs, and bound into prose that never restates
+        them.
+      </p>
+      <p>
+        Demo data is CDISC Pilot 01 via
+        <a href="https://github.com/pharmaverse/pharmaverseadam">pharmaverseadam</a> · everything on
+        this site is precomputed and static ·
+        <a href="https://github.com/jwildfire/open.csr">source on GitHub</a> ·
+        <a href="https://jwildfire.github.io/obot.roadmap/">obot roadmap</a>.
+      </p>
+    </footer>
+    <script>
+      // Mark the nav link for this page; works at any mount depth.
+      (function () {
+        var here = location.pathname.replace(/\/$/, '/index.html');
+        var links = document.querySelectorAll('.site-nav a[href]');
+        for (var i = 0; i < links.length; i += 1) {
+          var href = links[i].getAttribute('href');
+          if (!href || href.indexOf('http') === 0) continue;
+          if (new URL(href, location.href).pathname === here) {
+            links[i].classList.add('current');
+            links[i].setAttribute('aria-current', 'page');
+          }
+        }
+      })();
+
+      // Theme toggle: OS preference by default, explicit choice remembered.
+      (function () {
+        var button = document.querySelector('.theme-toggle');
+        if (!button) return;
+        button.addEventListener('click', function () {
+          var root = document.documentElement;
+          var current =
+            root.getAttribute('data-theme') ||
+            (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+          var next = current === 'dark' ? 'light' : 'dark';
+          root.setAttribute('data-theme', next);
+          try {
+            localStorage.setItem('opencsr-theme', next);
+          } catch (e) {}
+        });
+      })();
+
+      // Tabs on the display detail pages.
+      (function () {
+        var groups = document.querySelectorAll('.tabs');
+        for (var g = 0; g < groups.length; g += 1) {
+          (function (group) {
+            var tabs = group.querySelectorAll('.tab');
+            var panels = group.querySelectorAll('.tab-panel');
+            group.addEventListener('click', function (event) {
+              var tab = event.target.closest('.tab');
+              if (!tab) return;
+              for (var i = 0; i < tabs.length; i += 1) {
+                var on = tabs[i] === tab;
+                tabs[i].classList.toggle('current', on);
+                tabs[i].setAttribute('aria-selected', on ? 'true' : 'false');
+                if (panels[i]) {
+                  panels[i].classList.toggle('current', on);
+                  panels[i].hidden = !on;
+                }
+              }
+            });
+          })(groups[g]);
+        }
+      })();
+
+      // ARD row filter.
+      (function () {
+        var inputs = document.querySelectorAll('.ard-filter');
+        for (var i = 0; i < inputs.length; i += 1) {
+          (function (input) {
+            input.addEventListener('input', function () {
+              var needle = input.value.toLowerCase();
+              var table = input.closest('.tab-panel, main').querySelector('.ard-table tbody');
+              if (!table) return;
+              var rows = table.rows;
+              for (var r = 0; r < rows.length; r += 1) {
+                rows[r].hidden = needle && rows[r].textContent.toLowerCase().indexOf(needle) === -1;
+              }
+            });
+          })(inputs[i]);
+        }
+      })();
+    </script>
+  </body>
+</html>

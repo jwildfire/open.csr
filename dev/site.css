@@ -1033,6 +1033,93 @@ ol.loop li span:last-child {
   color: var(--muted);
 }
 
+/* Document switcher — the template library is plural, so every reader and every
+   template page carries a route to its siblings. One strip, one renderer: a
+   third template object joins it without a line of new CSS. */
+
+.doc-switch {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0 0 1.1rem;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.doc-switch-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--faint);
+  margin-right: 0.35rem;
+}
+
+.doc-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--rule-strong);
+  border-radius: 999px;
+  font-size: 0.88rem;
+  line-height: 1.3;
+  text-decoration: none;
+  color: var(--muted);
+  background: var(--card);
+}
+
+.doc-tab:hover {
+  color: var(--accent);
+  border-color: var(--accent-rule);
+}
+
+.doc-tab.current {
+  color: var(--ink);
+  background: var(--accent-soft);
+  border-color: var(--accent-rule);
+  font-weight: 600;
+}
+
+.doc-flag {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.05rem 0.4rem;
+  border-radius: 999px;
+  background: var(--paper-2);
+  color: var(--muted);
+}
+
+.doc-flag.warn {
+  background: var(--warn-bg);
+  color: var(--warn);
+}
+
+/* Where the prose in this document stands. Stated on the page that shows it,
+   because "assembled" is not "reviewed" and only one of the two is visible. */
+
+.prose-state {
+  margin-bottom: 1.4rem;
+}
+
+.prose-state.ok {
+  font-size: 0.86rem;
+  color: var(--muted);
+}
+
+.doc-card .card-top {
+  margin-bottom: 0.5rem;
+}
+
+/* A nav item that lives on another page: a real link, no selection state. */
+
+.nav-item.is-elsewhere .nav-label {
+  text-decoration: underline;
+  text-decoration-color: var(--rule-strong);
+  text-underline-offset: 2px;
+}
+
 /* Reader */
 
 .reader {
