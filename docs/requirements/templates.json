@@ -48,7 +48,8 @@
     "RPT-ABR-002": "The efficacy-analysis apparatus is absent — Section 11.4 and all fifteen of its subsections, the discussion of design choice (9.2) and the efficacy-specific measurement sections (9.5.2 to 9.5.4) — while the analysis sets, the baseline characteristics, the safety evaluation and the discussion remain. That single cut is what makes the report abbreviated.",
     "RPT-ABR-003": "The abbreviated report introduces no new prose: every text block its assembly names is one the full report already assembles, and the Text Library holds no block written for this document.",
     "RPT-ABR-004": "Every cross-reference in the reused prose resolves against the abbreviated model, because the model retains every section the retained prose points at — 16.2.1, 16.2.3, 16.2.4, 16.2.7, 16.1.9, 14.2 and 12.3.2 among them.",
-    "RPT-ABR-005": "The abbreviated report assembles green against CDISCPILOT01, populates exactly the sections the full report populates, and assigns every display the same number — the two documents differ in their document model, not in what they say.",
+    "RPT-ABR-005": "The abbreviated report assembles green against CDISCPILOT01, populates only sections the full report also populates, and assigns every display they share the same number — the two documents differ in their document model, not in what they say.",
+    "RPT-ABR-006": "Every display the abbreviated report carries is the full report's display object — same slug, same committed ARD file, same assigned number — and every display it does not carry is absent because this model declares no section to put it in. A display withheld from a section the model *does* declare is reported, so \"carries fewer displays\" can never quietly become \"disagrees about what to show\".",
     "RPT-LIB-005": "Every template object the library holds assembles green against the same study in one run, and each re-derives its named values against the committed ARDs. CI assembles them all with `--all`: a template that is never assembled is a directory, not a template.",
     "RPT-LIB-006": "No file under `scripts/` names the third or fourth template object. A template object is discovered from disk by the assembler, the loader and the site build, or the framework is not generic — adding one costs two YAML files and no code.",
     "RPT-LIB-007": "All four documents resolve the same named values, from the same store, to the same numbers. Four documents about one study cannot disagree about a quantity.",
@@ -474,7 +475,16 @@
     {
       "id": "RPT-ABR-005",
       "area": "",
-      "text": "The abbreviated report assembles green against CDISCPILOT01, populates exactly the sections the full report populates, and assigns every display the same number — the two documents differ in their document model, not in what they say.",
+      "text": "The abbreviated report assembles green against CDISCPILOT01, populates only sections the full report also populates, and assigns every display they share the same number — the two documents differ in their document model, not in what they say.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "RPT-ABR-006",
+      "area": "",
+      "text": "Every display the abbreviated report carries is the full report's display object — same slug, same committed ARD file, same assigned number — and every display it does not carry is absent because this model declares no section to put it in. A display withheld from a section the model *does* declare is reported, so \"carries fewer displays\" can never quietly become \"disagrees about what to show\".",
       "source": "",
       "evidence": "",
       "link": "",

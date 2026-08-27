@@ -1,6 +1,6 @@
 {
   "module": "templates",
-  "generated": "2026-08-27T04:14:45.503Z",
+  "generated": "2026-08-27T05:14:20.887Z",
   "records": [
     {
       "requirementIds": [
@@ -60,6 +60,18 @@
       "file": "tests/unit/assemble-template-subsets.test.js",
       "issueRefs": [
         34
+      ]
+    },
+    {
+      "requirementIds": [
+        "RPT-ABR-006"
+      ],
+      "title": "Abbreviated clinical study report RPT-ABR-006: it reuses the full report's displays, and drops one only with its section (#45)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/assemble-template-subsets.test.js",
+      "issueRefs": [
+        45
       ]
     },
     {

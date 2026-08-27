@@ -77,6 +77,35 @@ const sharedNumbers = (a, b) => {
 };
 const textIdsOf = (assembly) => assembly.slots.flatMap((s) => s.text);
 
+/** Where a document puts each display it carries, and which ARD it reads to do it. */
+const carriage = (doc) =>
+  new Map(doc.displayIndex.map((d) => [d.slug, { number: d.number, section: d.section, ard: d.ardPath }]));
+
+/**
+ * Displays the full report carries and a restriction drops WITHOUT its document
+ * model accounting for the drop.
+ *
+ * A restriction carrying fewer displays is legitimate, and RPT-LIB-009 already
+ * makes it loud. What this separates is the two reasons a display can be missing.
+ * If the model does not declare the section the full report placed it in, the
+ * omission follows from the document model — the same single cut that makes the
+ * report abbreviated — and needs no further defence. If the model DOES declare
+ * that section and the display is still absent, then somebody formed a second
+ * opinion about the display rather than about the document, and two reports of
+ * one study now disagree about what to show in a heading they share. That is the
+ * case this returns.
+ */
+function unexplainedOmissions(fullCarriage, subsetCarriage, subsetModel) {
+  const out = [];
+  for (const [slug, place] of fullCarriage) {
+    if (subsetCarriage.has(slug)) continue;
+    if (subsetModel.byNumber.has(place.section)) {
+      out.push(`${slug}: dropped although ${place.section} is a section of this model`);
+    }
+  }
+  return out.sort();
+}
+
 describe('Post-text display package', () => {
   it('RPT-PKG-001: the model is a strict restriction of the full ICH E3 model (#34)', () => {
     expect(validateSections(pkg)).toEqual([]);
@@ -206,6 +235,40 @@ describe('Abbreviated clinical study report', () => {
     expect(populated(doc).every((n) => populated(csr).includes(n))).toBe(true);
     // Same content, fewer headings around it — which is the whole difference.
     expect(doc.sections.length).toBeLessThan(csr.sections.length);
+  });
+
+  it('RPT-ABR-006: it reuses the full report\'s displays, and drops one only with its section (#45)', () => {
+    const mine = carriage(assemble({ write: false, template: 'e3-abbreviated' }));
+    const theirs = carriage(assemble({ write: false, template: 'ich-e3' }));
+    expect(mine.size).toBeGreaterThan(0);
+
+    // Reuse, not re-specification. Every display this report carries is the same
+    // display object the full report carries: same slug, same committed ARD file,
+    // same assigned number. Nothing here was built a second time for a second
+    // document, which is the property that keeps two reports of one study from
+    // drifting apart a display at a time.
+    for (const [slug, place] of mine) {
+      expect(theirs.has(slug), `${slug} is a display of the full report`).toBe(true);
+      expect(place.number, `${slug} keeps its number`).toBe(theirs.get(slug).number);
+      expect(place.ard, `${slug} reads the same ARD`).toBe(theirs.get(slug).ard);
+    }
+
+    // And every display it does NOT carry is missing because this model has no
+    // section to put it in — not because the display was reconsidered.
+    expect(unexplainedOmissions(theirs, mine, abbreviated)).toEqual([]);
+
+    // Red on the case it exists for. A restriction that declared the section and
+    // then withheld the display is exactly what the check must catch, and the
+    // green result above says nothing until this one does.
+    const withheld = unexplainedOmissions(
+      new Map([
+        ['t-demographics', { number: '14.1.2', section: '14.1', ard: 'a' }],
+        ['t-vitals', { number: '14.3.5.1', section: '14.3.5', ard: 'b' }],
+      ]),
+      new Map([['t-demographics', { number: '14.1.2', section: '14.1', ard: 'a' }]]),
+      { byNumber: new Map([['14.1', {}], ['14.3.5', {}]]) }
+    );
+    expect(withheld).toEqual(['t-vitals: dropped although 14.3.5 is a section of this model']);
   });
 });
 
