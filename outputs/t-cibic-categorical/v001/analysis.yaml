@@ -1,0 +1,52 @@
+id: t-cibic-categorical
+title: "CIBIC+ — Categorical Analysis — LOCF"
+regulatory_id: EFF05
+type: table
+dataset: adqscibc
+analysis_set: efficacy
+denominator: adsl
+sources: phuse
+group:
+  - TRT01A
+total: false
+analyses:
+  - name: population
+    method: subject_count
+    custom: ard_population_n
+    label: "Subjects in the efficacy analysis set"
+  - name: cat_week8
+    method: categorical
+    custom: ard_cibic_categories
+    label: "CIBIC+ category at Week 8 (LOCF)"
+    variables: [AVAL]
+    filter: "PARAMCD == 'CIBICVAL' & AVISIT == 'Week 8' & ANL01FL == 'Y'"
+  - name: cmh_week8
+    method: categorical
+    custom: ard_cibic_cmh
+    label: "CMH test of the Week 8 distributions, controlling for site group"
+    variables: [AVAL]
+    filter: "PARAMCD == 'CIBICVAL' & AVISIT == 'Week 8' & ANL01FL == 'Y'"
+  - name: cat_week16
+    method: categorical
+    custom: ard_cibic_categories
+    label: "CIBIC+ category at Week 16 (LOCF)"
+    variables: [AVAL]
+    filter: "PARAMCD == 'CIBICVAL' & AVISIT == 'Week 16' & ANL01FL == 'Y'"
+  - name: cmh_week16
+    method: categorical
+    custom: ard_cibic_cmh
+    label: "CMH test of the Week 16 distributions, controlling for site group"
+    variables: [AVAL]
+    filter: "PARAMCD == 'CIBICVAL' & AVISIT == 'Week 16' & ANL01FL == 'Y'"
+  - name: cat_week24
+    method: categorical
+    custom: ard_cibic_categories
+    label: "CIBIC+ category at Week 24 (LOCF)"
+    variables: [AVAL]
+    filter: "PARAMCD == 'CIBICVAL' & AVISIT == 'Week 24' & ANL01FL == 'Y'"
+  - name: cmh_week24
+    method: categorical
+    custom: ard_cibic_cmh
+    label: "CMH test of the Week 24 distributions, controlling for site group"
+    variables: [AVAL]
+    filter: "PARAMCD == 'CIBICVAL' & AVISIT == 'Week 24' & ANL01FL == 'Y'"

@@ -395,7 +395,9 @@ sections:
       dataset for CDISCPILOT01 — dropping the heading would have hidden the gap.
       D12's correction of 2026-08-27 retired that premise: the pilot's own ADaM
       package carries both primary efficacy endpoints, so the section now holds
-      the nine efficacy displays the full report holds, in the same order.
+      the same fourteen efficacy displays the full report holds, in the same
+      order. That is still not all thirteen efficacy tables the reference report
+      prints, and the ones absent are absent rather than misreported.
 
   - number: "14.3"
     title: "Safety Data"

@@ -58,15 +58,16 @@ study:
   design: "Randomised, double-blind, placebo-controlled, parallel-group"
   treatment_groups: ["Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"]
   primary_analysis_set: "Safety Analysis Set"
-  data_source: "pharmaverseadam (CDISCPILOT01 ADaM); phuse-org/phuse-scripts (the pilot's own ADaM package, Section 14.2)"
+  data_source: "CDISCPILOT01 ADaM — pharmaverseadam for the safety spine, and the CDISC pilot's own package (phuse-org/phuse-scripts) for Section 14.2"
   scope_note: >-
     The abbreviated form of the clinical study report for this study: the same
     prose and the same displays, in a document model with the efficacy-analysis
-    apparatus and the uncited appendices removed. Section 14.2 now carries the
-    nine efficacy displays; it was declared and empty only for as long as no
-    efficacy analysis dataset existed for this study in the demonstration data
-    (design decision D12), which stopped being true when the CDISC pilot's own
-    ADaM package was vendored.
+    apparatus and the uncited appendices removed. Section 14.2 carries the
+    fourteen efficacy displays the full report carries — the ADAS-Cog programme,
+    the CIBIC+ analyses, the NPI-X secondary endpoint and the study's one figure.
+    It was declared and empty only for as long as no efficacy analysis dataset
+    existed for this study in the demonstration data (design decision D12), which
+    stopped being true when the CDISC pilot's own ADaM package was vendored.
 
 # Unchanged from the full report: E3 reserves 16.1.9 for the documentation of
 # statistical methods, and this model retains it.
@@ -144,17 +145,29 @@ post_text:
 
   # Mirrors library/templates/ich-e3/assembly.yaml. Same displays, same order,
   # so both reports assign the same numbers and neither is re-specified.
+  # The efficacy displays, in the order the reference report prints them, and the
+  # same order as library/templates/ich-e3/assembly.yaml — which is what makes the
+  # assigned numbers identical across every document that carries them.
+  #
+  # Merge note: the ADAS-Cog set and the CIBIC+/time-to-event set arrived on
+  # separate branches, each adding its own "14.2" block. Git merged them into TWO
+  # entries with the same section number and raised no conflict.
   - section: "14.2"
     displays:
-      - t-eff-adas-wk24
-      - t-eff-adas-wk8
-      - t-eff-adas-wk16
-      - t-eff-adas-wk24-completers
-      - t-eff-adas-wk24-male
-      - t-eff-adas-wk24-female
-      - t-eff-adas-overtime
-      - t-eff-adas-mmrm
-      - t-eff-npix-mean
+      - t-eff-adas-wk24          # 14-3.01
+      - t-cibic-week24           # 14-3.02
+      - t-eff-adas-wk8           # 14-3.03
+      - t-cibic-week8            # 14-3.04
+      - t-eff-adas-wk16          # 14-3.05
+      - t-cibic-week16           # 14-3.06
+      - t-eff-adas-wk24-completers  # 14-3.07
+      - t-eff-adas-wk24-male     # 14-3.08
+      - t-eff-adas-wk24-female   # 14-3.09
+      - t-eff-adas-overtime      # 14-3.10
+      - t-eff-adas-mmrm          # 14-3.11
+      - t-eff-npix-mean          # 14-3.12
+      - t-cibic-categorical      # 14-3.13
+      - f-tte-derm               # Figure 14-1
 
   - section: "14.3.1"
     displays: [t-exposure, t-ae-overview, t-ae-common]

@@ -1,0 +1,12 @@
+display: t-cibic-categorical
+iterations:
+- version: v001
+  created: '2026-08-27T03:53:35Z'
+  actor: '@jwildfire'
+  change_request: Initial generation of EFF05 from CDISCPILOT01 Table 14-3.13.
+  git_commit: ''
+  spec_hash: sha256:f6675d7fa980619760f57857f5cba5bf0e75b6aa92d486c7664b19f7f216ba7b
+  display_hash: sha256:3e86f7c60fc952738119de57fc95e6056240dd3ef152d16e56966d5853a3ed35
+  ard_hash: sha256:bf869c30a1b569da9f37a56e6be472e60f6ad033cc60e48455f3d66a7647d850
+  ard_rows: 147
+

@@ -1,0 +1,13 @@
+display: t-cibic-week8
+iterations:
+- version: v001
+  created: '2026-08-27T03:53:34Z'
+  actor: '@jwildfire'
+  change_request: Initial generation of EFF03 from CDISCPILOT01 Table 14-3.04 and
+    the analysis results metadata for Table_14-3.02, which states the model.
+  git_commit: ''
+  spec_hash: sha256:d243537229381914a60a45df7ac19ed9d3fad85dd154a075e77316484bb6d75b
+  display_hash: sha256:9e6e7dd111daa9da7b919759c13d52a215aa2ffcd6f0613c6cf96c23b6a031cf
+  ard_hash: sha256:7e4e612e8b20e0ecdbc57d984b82811a64bd8eb667715d44904e7153c59c62d5
+  ard_rows: 43
+

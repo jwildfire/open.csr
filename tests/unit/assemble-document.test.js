@@ -107,6 +107,13 @@ describe('Assembled CSR document model', () => {
       }
       expect(entry.environment.r).toMatch(/^\d+\.\d+/);
     }
+    const packagings = new Set(
+      provenance.displays.flatMap((d) => d.data.map((x) => x.source_pkg))
+    );
+    expect([...packagings].sort()).toEqual([
+      'pharmaverseadam',
+      'phuse-org/phuse-scripts:data/adam',
+    ]);
     expect(section('16.1.9').populated).toBe(true);
   });
 

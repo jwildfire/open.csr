@@ -49,6 +49,21 @@ export function fixtureArds() {
   return ards;
 }
 
+/**
+ * Every display slug the TFL Library defines.
+ *
+ * Distinct from `fixtureArds()` on purpose. A fixture ARD answers "what numbers
+ * shall this test resolve against"; the library answers "which displays exist".
+ * Assembly validation is asking the second question — a slot naming a display
+ * the library does not hold is a broken assembly — and answering it from the
+ * fixture corpus would make every new display look like a configuration error.
+ */
+export function librarySlugs() {
+  const dir = join(ROOT, 'library/tfl');
+  if (!existsSync(dir)) return [];
+  return readdirSync(dir).filter((slug) => existsSync(join(dir, slug, 'display.yaml')));
+}
+
 /** A display/section index good enough to resolve cross-references in unit tests. */
 export function stubContext() {
   return {

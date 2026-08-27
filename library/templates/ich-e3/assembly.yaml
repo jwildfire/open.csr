@@ -30,7 +30,7 @@ study:
   design: "Randomised, double-blind, placebo-controlled, parallel-group"
   treatment_groups: ["Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"]
   primary_analysis_set: "Safety Analysis Set"
-  data_source: "pharmaverseadam (CDISCPILOT01 ADaM)"
+  data_source: "CDISCPILOT01 ADaM — pharmaverseadam, and the CDISC pilot's own package (phuse-org/phuse-scripts)"
   scope_note: >-
     Safety and efficacy demonstration. The safety displays are built from
     pharmaverseadam; the efficacy displays in Section 14.2 are built from the
@@ -121,16 +121,32 @@ post_text:
   # 14-3.xx labels: identity is the slug, the number is assigned from this order
   # at build time (D6).
   - section: "14.2"
+    # The efficacy displays, in the order the reference report prints them:
+    # ADAS-Cog and CIBIC+ alternate through Tables 14-3.01 to 14-3.06, then the
+    # ADAS-Cog subgroups and supportive analyses, then the CIBIC+ categorical
+    # analysis at 14-3.13, then the study's one figure. Numbers are assigned from
+    # this order at build time (D6) and appear in no source file, so a display
+    # added between two of these renumbers the rest by itself.
+    #
+    # Merge note: the ADAS-Cog set and the CIBIC+/time-to-event set arrived on
+    # separate branches, each adding its own "14.2" block. Git merged them into
+    # TWO entries with the same section number and no conflict — clean, and
+    # wrong. This is the single interleaved list.
     displays:
-      - t-eff-adas-wk24
-      - t-eff-adas-wk8
-      - t-eff-adas-wk16
-      - t-eff-adas-wk24-completers
-      - t-eff-adas-wk24-male
-      - t-eff-adas-wk24-female
-      - t-eff-adas-overtime
-      - t-eff-adas-mmrm
-      - t-eff-npix-mean
+      - t-eff-adas-wk24          # 14-3.01
+      - t-cibic-week24           # 14-3.02
+      - t-eff-adas-wk8           # 14-3.03
+      - t-cibic-week8            # 14-3.04
+      - t-eff-adas-wk16          # 14-3.05
+      - t-cibic-week16           # 14-3.06
+      - t-eff-adas-wk24-completers  # 14-3.07
+      - t-eff-adas-wk24-male     # 14-3.08
+      - t-eff-adas-wk24-female   # 14-3.09
+      - t-eff-adas-overtime      # 14-3.10
+      - t-eff-adas-mmrm          # 14-3.11
+      - t-eff-npix-mean          # 14-3.12
+      - t-cibic-categorical      # 14-3.13
+      - f-tte-derm               # Figure 14-1
 
   - section: "14.3.1"
     displays: [t-exposure, t-ae-overview, t-ae-common]

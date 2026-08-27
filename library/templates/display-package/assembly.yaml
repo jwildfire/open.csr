@@ -41,13 +41,15 @@ study:
   design: "Randomised, double-blind, placebo-controlled, parallel-group"
   treatment_groups: ["Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"]
   primary_analysis_set: "Safety Analysis Set"
-  data_source: "pharmaverseadam (CDISCPILOT01 ADaM)"
+  data_source: "CDISCPILOT01 ADaM — pharmaverseadam, and the CDISC pilot's own package (phuse-org/phuse-scripts)"
   scope_note: >-
     The post-text displays of the clinical study report for this study, delivered
     on their own for review before the report is written. No narrative: every
     number here is the rendering of a committed analysis results dataset, and the
-    appendix records which one. Abnormal laboratory values (Section 14.3.4) are
-    declared and empty — no laboratory display is specified for this study yet.
+    appendix records which one. Section 14.2 carries the whole efficacy set — the
+    ADAS-Cog programme, the CIBIC+ analyses, the NPI-X secondary endpoint and the
+    study's one figure — from the study's own ADaM package; abnormal laboratory
+    values (Section 14.3.4) are declared and still empty.
 
 # E3 already reserves 16.1.9 for the documentation of statistical methods, so the
 # generated provenance appendix goes where the full report puts it.
@@ -72,17 +74,29 @@ post_text:
 
   # Same nine displays, same order, as library/templates/ich-e3/assembly.yaml —
   # which is what makes the package's assigned numbers identical to the report's.
+  # The efficacy displays, in the order the reference report prints them, and the
+  # same order as library/templates/ich-e3/assembly.yaml — which is what makes the
+  # assigned numbers identical across every document that carries them.
+  #
+  # Merge note: the ADAS-Cog set and the CIBIC+/time-to-event set arrived on
+  # separate branches, each adding its own "14.2" block. Git merged them into TWO
+  # entries with the same section number and raised no conflict.
   - section: "14.2"
     displays:
-      - t-eff-adas-wk24
-      - t-eff-adas-wk8
-      - t-eff-adas-wk16
-      - t-eff-adas-wk24-completers
-      - t-eff-adas-wk24-male
-      - t-eff-adas-wk24-female
-      - t-eff-adas-overtime
-      - t-eff-adas-mmrm
-      - t-eff-npix-mean
+      - t-eff-adas-wk24          # 14-3.01
+      - t-cibic-week24           # 14-3.02
+      - t-eff-adas-wk8           # 14-3.03
+      - t-cibic-week8            # 14-3.04
+      - t-eff-adas-wk16          # 14-3.05
+      - t-cibic-week16           # 14-3.06
+      - t-eff-adas-wk24-completers  # 14-3.07
+      - t-eff-adas-wk24-male     # 14-3.08
+      - t-eff-adas-wk24-female   # 14-3.09
+      - t-eff-adas-overtime      # 14-3.10
+      - t-eff-adas-mmrm          # 14-3.11
+      - t-eff-npix-mean          # 14-3.12
+      - t-cibic-categorical      # 14-3.13
+      - f-tte-derm               # Figure 14-1
 
   - section: "14.3.1"
     displays: [t-exposure, t-ae-overview, t-ae-common]
