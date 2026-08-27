@@ -1,6 +1,6 @@
-id: t-eff-adas-wk24-completers
-title: "ADAS-Cog (11) - Change from Baseline to Week 24 - Completers at Week 24, Observed Cases, Windowed"
-regulatory_id: EFT04
+id: t-eff-adas-wk24-male
+title: "ADAS-Cog (11) - Change from Baseline to Week 24 in Male Subjects - LOCF"
+regulatory_id: EFT05
 type: table
 dataset: adqsadas
 analysis_set: efficacy
@@ -14,18 +14,18 @@ analyses:
     method: continuous
     custom: population_n
     label: "Subjects in the analysis population"
-    filter: "PARAMCD == 'ACTOT' & COMP24FL == 'Y'"
+    filter: "PARAMCD == 'ACTOT' & SEX == 'M'"
   - name: summary
     method: continuous
     label: "ADAS-Cog (11) total score at baseline, at Week 24, and its change"
     variables: [BASE, AVAL, CHG]
-    filter: "PARAMCD == 'ACTOT' & ANL01FL == 'Y' & COMP24FL == 'Y' & !(DTYPE %in% 'LOCF') & AVISIT == 'Week 24'"
+    filter: "PARAMCD == 'ACTOT' & ANL01FL == 'Y' & SEX == 'M' & AVISIT == 'Week 24'"
   - name: ancova
     method: continuous
     custom: ancova_change
     label: "ANCOVA of the change from baseline to Week 24"
     variables: [CHG]
-    filter: "PARAMCD == 'ACTOT' & ANL01FL == 'Y' & COMP24FL == 'Y' & !(DTYPE %in% 'LOCF') & AVISIT == 'Week 24'"
+    filter: "PARAMCD == 'ACTOT' & ANL01FL == 'Y' & SEX == 'M' & AVISIT == 'Week 24'"
     response: CHG
     covariates: [BASE]
     factors: [SITEGR1]

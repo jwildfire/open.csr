@@ -1,15 +1,14 @@
-id: t-eff-adas-wk24-completers
-title: "ADAS-Cog (11) - Change from Baseline to Week 24 - Completers at Week 24, Observed Cases, Windowed"
+id: t-eff-adas-wk24-male
+title: "ADAS-Cog (11) - Change from Baseline to Week 24 in Male Subjects - LOCF"
 study: CDISCPILOT01
-population_label: "Efficacy Analysis Set, Week 24 completers"
+population_label: "Efficacy Analysis Set, male subjects"
 cutoff: "2015-02-17"
-source: "Source: adqsadas (ADAS-Cog (11) total score, PARAMCD ACTOT) and adsl, from the CDISC pilot's own ADaM package (phuse-org/phuse-scripts, MIT). Analysis as specified in the CDISCPILOT01 statistical analysis plan, section 10.1.1. Reference report display: Table 14-3.07. Data cut-off: 2015-02-17."
+source: "Source: adqsadas (ADAS-Cog (11) total score, PARAMCD ACTOT) and adsl, from the CDISC pilot's own ADaM package (phuse-org/phuse-scripts, MIT). Analysis as specified in the CDISCPILOT01 statistical analysis plan, section 10.1.1. Reference report display: Table 14-3.08. Data cut-off: 2015-02-17."
 footnotes:
   - "[1] Based on an analysis of covariance (ANCOVA) model with treatment and site group as factors and the baseline score as a covariate."
   - "[2] Test for a non-zero coefficient for treatment (dose) as a continuous variable."
   - "[3] Pairwise comparison with treatment as a categorical variable; p-values are not adjusted for multiple comparisons."
-  - "Only assessments falling within the Week 24 assessment window are included, and no value is imputed."
-  - "Baseline, on-treatment and change statistics are summarised over one record per subject at the analysis visit, so a subject with no assessment in that window contributes to none of the three and n is smaller than the column N."
+  - "Missing post-baseline values are imputed by last observation carried forward, over assessments assigned to visit windows (CDISCPILOT01 statistical analysis plan, sections 8.1 and 8.2)."
   - "Treatment columns are planned treatment (TRTP), which is how the CDISCPILOT01 reference report presents them."
   - "CDISCPILOT01 states no data cut-off date. The date shown is the latest ADAS-Cog assessment date present in the vendored ADaM package."
 columns:
