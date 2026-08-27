@@ -17,7 +17,7 @@
 // different surface (site-lib.mjs) and remains the per-block permalink. The
 // Templates pane renders the E3 document model, which v0 had no surface for.
 
-import { chip, empty, escapeHtml, renderDocumentSwitcher } from './site-lib.mjs';
+import { chip, displayUsage, empty, escapeHtml, renderDocumentSwitcher } from './site-lib.mjs';
 import { DISPLAY_TYPE_LABELS, assignDisplayNumbers } from './template-lib.mjs';
 
 // Each view's `href` is its standalone permalink. The client upgrades a click
@@ -94,10 +94,12 @@ export function buildNavTree({
   rendered = [],
   root = '../'
 } = {}) {
-  const numbers = new Map(
-    (csr?.displayIndex || []).map((entry) => [entry.slug, { number: entry.number, label: entry.label }])
+  // Which documents place each display, across the WHOLE library. Falling back
+  // to the primary document keeps a caller that hands over no library — a
+  // standalone reader page — honest about the one document it does know (#42).
+  const usage = displayUsage(
+    documents.length ? documents : csr ? [{ id: 'csr', title: 'Clinical Study Report', json: csr }] : []
   );
-  const usedInCsr = new Set((csr?.displayIndex || []).map((entry) => entry.slug));
 
   // A document's own contents are the third level of the tree rather than a
   // second navigation column beside it: which document and which section are the
@@ -185,10 +187,17 @@ export function buildNavTree({
         items: displays.map((display) => ({
           id: display.slug,
           label: display.title,
-          number: numbers.get(display.slug)?.number || null,
+          // No number. A display is identified by its slug; the number belongs
+          // to the assembly, and this tree serves every document at once — the
+          // AE overview is Table 14.3.1.2 in the report and Table 13.2 in the
+          // synopsis, so a number here is one report's fact printed on a
+          // document-agnostic surface. Numbers are stated where the assembly is
+          // unambiguous: inside a document, and on the display's own store page
+          // beside the document that assigned it (#42).
+          number: null,
           status: display.status,
-          // Which documents reference it — a display is shared, not owned.
-          usedIn: usedInCsr.has(display.slug) ? ['CSR'] : []
+          // Which documents place it — a display is shared, not owned.
+          usedIn: (usage.get(display.slug) || []).map((place) => place.title)
         }))
       },
       {
@@ -219,13 +228,19 @@ export function buildNavTree({
   };
 }
 
-// The id an expandable node's children list carries, so the toggle that controls
-// it can name it in `aria-controls` (open.csr #10).
+// The id a document's section list carries. It was `aria-controls` on a
+// disclosure button until #40 took the button away; it stays because a stable id
+// per document's contents is worth having whether or not anything points at it
+// yet, and because the section list is the one part of the tree that is
+// addressed from outside it.
 export function navChildrenId(groupId, itemId) {
   return `nav-children-${groupId}-${String(itemId).replace(/[^a-zA-Z0-9_-]/g, '-')}`;
 }
 
-// A document's sections: the fourth level, shown for the selected document.
+// A document's sections: the fourth level, shown for the selected document and
+// for no other. Every document's list is rendered; the stylesheet reveals the
+// one next to the current document. That single rule IS the state — before #40
+// there was a second one, a per-document disclosure flag, and the two disagreed.
 //
 // An unpopulated section stays navigable — the heading really is in the assembled
 // document, saying it is not part of this demonstration — but it says so visually
@@ -285,25 +300,16 @@ function treeItem(groupId, item, kind) {
       `data-nav-item="${escapeHtml(item.id)}"` +
       (disabled ? ' aria-disabled="true"' : '');
 
-  // The disclosure control is a real button beside the item rather than part of
-  // it: expanding a node and selecting it are different intentions, and a
-  // keyboard user needs to be able to do the first without doing the second.
-  // Nodes with nothing beneath them get no control at all — an affordance that
-  // does nothing is worse than none (#10).
-  const children = item.sections?.length || 0;
-  const twisty = children
-    ? `<button type="button" class="nav-twisty" data-nav-toggle="${escapeHtml(item.id)}" ` +
-      `data-nav-group="${groupId}" aria-expanded="true" ` +
-      `aria-controls="${navChildrenId(groupId, item.id)}">` +
-      `<span class="nav-caret" aria-hidden="true"></span>` +
-      `<span class="sr-only">Show or hide the contents of ${escapeHtml(item.label)}</span>` +
-      `</button>`
-    : '';
-
+  // No disclosure control, by design (#40). A document node used to carry one,
+  // which meant the tree answered "are this document's contents showing?" twice
+  // — once by which document is open, once by a remembered per-node flag — and
+  // the two answers were independent. On a document that was not open the arrow
+  // moved and revealed nothing; on the one that was open it hid the contents the
+  // tree exists to list. So the arrow went rather than getting cleverer: the
+  // open document shows its sections, the rest show their titles, and there is
+  // no second control left to disagree with the first.
   return (
-    `<li class="nav-node${children ? ' has-children' : ''}"` +
-    `${children ? ` data-nav-node="${escapeHtml(item.id)}"` : ''}>` +
-    twisty +
+    `<li class="nav-node">` +
     `${
       disabled
         ? `<span ${attrs}>`
