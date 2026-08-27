@@ -2,9 +2,12 @@
 
 Requirements for the individual tables and listings in the v0 TFL library. Each
 requirement is a statement about *the numbers a display reports*, verified by
-recomputing them directly from the source `{pharmaverseadam}` datasets with
-`dplyr` and comparing against the rendered cells — value-level regression rather
-than pixel comparison (design decision D4).
+recomputing them directly from the source datasets with `dplyr` and comparing
+against the rendered cells — value-level regression rather than pixel comparison
+(design decision D4). Which source depends on the display: the first six read
+`{pharmaverseadam}`, and the two specified against the CDISC pilot's own ADaM
+packaging are recomputed from the vendored `.xpt.gz` read straight with
+`{haven}`, never through `prepare_data()`.
 
 Engine-level requirements (how ARDs are built, serialised and rendered at all)
 live in [`tfl-engine.md`](tfl-engine.md).
@@ -13,6 +16,8 @@ live in [`tfl-engine.md`](tfl-engine.md).
 |---|---|---|---|
 | Demographic and Baseline Characteristics | `t-demographics` | DMT01 | ADSL (+ ADVS baseline) |
 | Subject Disposition | `t-disposition` | DST01 | ADSL |
+| Summary of Populations | `t-populations` | DST02 | ADSL (CDISC pilot packaging) |
+| Summary of End of Study Data | `t-end-of-study` | DST03 | ADSL (CDISC pilot packaging) |
 | Extent of Exposure | `t-exposure` | EXT01 | ADEX |
 | Overview of Treatment-Emergent Adverse Events | `t-ae-overview` | AET01 | ADAE |
 | Adverse Events by SOC and Preferred Term | `t-ae-common` | AET02 | ADAE |
@@ -35,6 +40,40 @@ live in [`tfl-engine.md`](tfl-engine.md).
 |---|---|---|---|---|
 | DSP-DISP-001 | Randomised, treated, completed and discontinued counts reproduce `EOSSTT` by treatment arm, with percentages based on randomised subjects. | Functional | `test-displays.R` | Verified |
 | DSP-DISP-002 | The derived discontinuation reasons partition the discontinued subjects exactly, in every column including Total, and the death count matches `DTHFL`. | Functional | `test-displays.R` | Verified |
+
+## Populations (DST02)
+
+Rebuilds Table 14-1.01 of the clinical study report the CDISC pilot itself
+published. The reference prints the row **Complete Study** and states no
+definition for it; this display derives it as the complement of the study's own
+`DISCONFL` and says so in a footnote, so a reader is not left to infer that the
+definition came from the reference.
+
+| ID | Requirement | Type | Verification | Status |
+|---|---|---|---|---|
+| DSP-POP-001 | The ITT, Safety and Efficacy rows equal the counts of the study's own `ITTFL`, `SAFFL` and `EFFFL` in the CDISC pilot ADSL, by planned treatment group and overall, with percentages based on the group's randomised N. | Functional | `test-displays.R` | Verified |
+| DSP-POP-002 | Complete Week 24 equals the study's `COMP24FL`; Complete Study is derived as the complement of the study's `DISCONFL`; and completing the study implies having completed Week 24. | Functional | `test-displays.R` | Verified |
+| DSP-POP-003 | The display reads the packaging that states the flags it reports. `EFFFL` and `COMP24FL` are absent from the `{pharmaverseadam}` re-derivation of this study, so `sources: phuse` is forced by the analysis rather than chosen. | Traceability | `test-displays.R` | Verified |
+| DSP-POP-004 | Planned and actual treatment agree for all 254 subjects, which is what makes the planned-treatment grouping both displays declare — and footnote — report the same subjects an actual-treatment grouping would. | Consistency | `test-displays.R` | Verified |
+
+## End of study data (DST03)
+
+Rebuilds Table 14-1.02. Two definitions here are the project's rather than the
+reference's, and both are footnoted on the table: the reference states no
+completion-status source, and it prints no denominator rule for the reason rows.
+
+| ID | Requirement | Type | Verification | Status |
+|---|---|---|---|---|
+| DSP-EOS-001 | The three completion-status rows — completed Week 24, terminated early, status missing — partition every treatment group and the Total column exactly. | Consistency | `test-displays.R` | Verified |
+| DSP-EOS-002 | The nine reasons for early termination plus the missing-reason row partition the early terminations exactly, in every column including Total, so no subject falls through a reason the spec omitted. | Consistency | `test-displays.R` | Verified |
+| DSP-EOS-003 | A p-value appears on exactly the three rows the statistical analysis plan names — protocol completion, adverse event and lack of efficacy — and each equals a Fisher's exact test computed independently across the three treatment groups. No other row carries one. | Functional | `test-displays.R` | Verified |
+| DSP-EOS-004 | Every percentage, the reason rows included, is based on the treatment group's randomised N rather than on the number of early terminations. | Functional | `test-displays.R` | Verified |
+
+## Agreement with the published reference report
+
+| ID | Requirement | Type | Verification | Status |
+|---|---|---|---|---|
+| DSP-REF-001 | Every cell `t-populations` and `t-end-of-study` publish equals the figure the CDISC pilot's own clinical study report printed for Tables 14-1.01 and 14-1.02 in 2006, from SAS programs sharing no code with this repository. The transcribed reference is at `quality/data/reference-report-agreement.json`; `qc/reference-report-agreement.R` compares it against both a from-scratch recomputation and the committed rendered HTML and exits non-zero on any disagreement, and `--verify-transcription` re-derives the transcription itself from the source document. | Quality evidence | `test-displays.R`, `qc/reference-report-agreement.R` | Verified |
 
 ## Exposure (EXT01)
 

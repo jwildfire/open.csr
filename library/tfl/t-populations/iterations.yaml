@@ -10,4 +10,19 @@ iterations:
   display_hash: sha256:a67aeb9f6fc21407ca7c7677439c537ca702244fb15bd9af53ee359543ee9c5a
   ard_hash: sha256:a096a1d317bd1cbf8be558b56c0952a0ebde4fd590039bf212a15e746cf10064
   ard_rows: 60
+- version: v002
+  created: '2026-08-27T03:44:48Z'
+  actor: '@obotclaw'
+  change_request: 'Correct the population line. The reference report runs Table 14-1.01
+    over All Subjects; this display claimed Intent-to-Treat, and t-end-of-study claimed
+    the reverse — the two were transcribed the wrong way round. In this study both
+    select the same 254 subjects, so no figure moves; the table now states the population
+    its reference states. The footnotes now name the two things this display defines
+    that the reference does not: the derivation of Complete Study, and the meaning
+    of N.'
+  git_commit: ''
+  spec_hash: sha256:c8dbaff2d4a4cad9b25ac1dcad574d029394f9730e76116bd44b52f60af38414
+  display_hash: sha256:9ac815d290f719b956f05fbc8d2353a3d49e676edd6ddb6daedc7481524cccd0
+  ard_hash: sha256:61a333a1dc8074996bb9aa8114931d8093626da5a9c92ada5a5aea63ebfa6626
+  ard_rows: 60
 

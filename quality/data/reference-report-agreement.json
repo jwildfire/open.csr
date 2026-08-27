@@ -5,13 +5,27 @@
     "document": "Clinical Study Report, CDISC SDTM/ADaM Pilot Project, protocol CDISCPILOT01, FINAL, 27 June 2006",
     "published_by": "CDISC SDTM/ADaM Pilot Project Team",
     "tables": {
-      "t-populations": "Table 14-1.01, Summary of Populations (Population: Intent-to-Treat)",
-      "t-end-of-study": "Table 14-1.02, Summary of End of Study Data (Population: All Subjects)"
+      "t-populations": "Table 14-1.01, Summary of Populations (Population: All Subjects)",
+      "t-end-of-study": "Table 14-1.02, Summary of End of Study Data (Population: Intent-to-Treat)"
     },
     "produced_by": "SAS programs adsl1.sas and adsl2.sas, run 21:02 Monday, 26 June 2006, per the Source line printed on each table.",
     "analysis_plan": "Statistical Analysis Plan section 9.7.1.2: 'The number of subjects randomized, the number of subjects in each analysis dataset, and the disposition of subjects were tabulated by treatment group. Specific reasons for early study discontinuation (protocol completed, lack of efficacy, and adverse event) were compared using a Fisher's exact test.' The display shells are Attachment 13.1.1 Templates 1 and 2.",
     "read_for": "Printed figures and analysis definitions only. No data was taken from the report or from any repository other than phuse-org/phuse-scripts (MIT).",
-    "transcription": "Typed from the report by hand, not computed. Whitespace inside the parentheses is as printed; the comparison collapses it."
+    "transcription": "Typed from the report by hand, not computed. Whitespace inside the parentheses is as printed; the comparison collapses it. Because it is typed, this is the one route that cannot be re-derived from anything in the repository, so `--verify-transcription` re-reads the source document and checks it; see `source_document` below.",
+    "source_document": {
+      "repository": "phuse-org/phuse-scripts",
+      "commit": "398a6d33ced9359ffb58c46650a6d488811176b1",
+      "path": "data/adam/TDF_ADaM_v1.0/cdiscpilot_docs/cdiscpilot01.pdf",
+      "sha256": "0cab016c76abb3dcaef31110611c95dbd9cd00df083b35e6d28fd69fca0d842d",
+      "pages": {
+        "t-populations": 43,
+        "t-end-of-study": 44
+      },
+      "not_vendored": "The PDF is deliberately NOT vendored into this repository. Pages 154-409 of it — the protocol and the sample CRF — carry 'Copyright (c) 2006 Eli Lilly and Company' and are not ours to redistribute. The two pages this record transcribes, 43 and 44, are result tables authored by the CDISC SDTM/ADaM Pilot Project Team and sit outside that range; they are read, not copied.",
+      "verified": "2026-08-27, by `Rscript qc/reference-report-agreement.R --verify-transcription`, against the document whose SHA-256 is pinned above. Every cell, row label and printed p-value below was re-derived from the PDF text and matched.",
+      "verification_found": "Two errors in the hand transcription, both introduced when this record was first written and both invisible to the three-route comparison because the specs were written from the same misreading: (1) a p-value of 0.5000 recorded against the Death row, which the report does not print — the report prints a p-value on exactly the three rows the SAP names; (2) the two tables' population labels recorded the wrong way round.",
+      "not_in_ci": "This check is not a CI step. It needs the network and a PDF text extractor (poppler's pdftotext), and a build that fails because a third-party download was slow teaches people to ignore it. It is a maintainer command, to be run whenever this record is edited. What CI does run is the three-route comparison, which no longer has anything to compare against if this record is wrong — which is exactly why the record's own provenance is pinned here rather than asserted."
+    }
   },
   "comparison": {
     "route_a": "A from-scratch recomputation in qc/reference-report-agreement.R that reads the vendored adsl.xpt.gz with {haven} and never loads {opencsr}.",
@@ -153,8 +167,7 @@
             "1 ( 1%)",
             "0 ( 0%)",
             "2 ( 1%)"
-          ],
-          "p_value_printed": "0.5000"
+          ]
         },
         {
           "analysis": "et_loe",

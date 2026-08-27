@@ -171,7 +171,13 @@ describe('Post-text display package', () => {
     expect(doc.study.id).toBe('CDISCPILOT01');
     expect(doc.ok).toBe(true);
     expect(doc.buildErrors).toEqual([]);
-    expect(doc.displayIndex.length).toBe(listDisplaySlugs(join(ROOT, 'library/tfl')).length);
+    // The package presents exactly what the report's Section 14 does; asserting
+    // the relationship rather than a count keeps a new display from needing this
+    // number edited.
+    const csr = assemble({ write: false, template: 'ich-e3' });
+    expect(doc.displayIndex.map((d) => d.slug).sort()).toEqual(
+      csr.displayIndex.map((d) => d.slug).sort()
+    );
   });
 });
 

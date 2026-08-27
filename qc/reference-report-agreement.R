@@ -29,10 +29,16 @@
 #   Rscript qc/reference-report-agreement.R --self-test
 #       Perturb each route in turn and confirm the comparison catches it. A green
 #       check nobody has seen fail is not evidence.
+#   Rscript qc/reference-report-agreement.R --verify-transcription [--pdf <path>]
+#       Re-read the report itself and require route C to match it. Route C is the
+#       only route that cannot be re-derived from this repository, so it is the
+#       only one where a mistake survives a green check; it did, twice. Needs the
+#       network and pdftotext, so it is a maintainer command, not a CI step.
 
 args <- commandArgs(trailingOnly = TRUE)
 verbose <- "--verbose" %in% args
 self_test <- "--self-test" %in% args
+verify_transcription <- "--verify-transcription" %in% args
 
 root <- getwd()
 while (!file.exists(file.path(root, "docs", "design", "contracts.md"))) {
@@ -45,6 +51,9 @@ record_path <- file.path(root, "quality", "data", "reference-report-agreement.js
 adsl_path <- file.path(root, "pipeline", "inst", "extdata", "phuse-cdiscpilot01", "adsl.xpt.gz")
 
 record <- jsonlite::fromJSON(record_path, simplifyVector = FALSE)
+
+# base R only gained `%||%` in 4.4; DESCRIPTION pins a 4.1 floor.
+`%||%` <- function(x, y) if (is.null(x)) y else x
 
 # ---- route A: recomputation, no {opencsr} -----------------------------------
 
@@ -204,6 +213,189 @@ route_c <- function(slug, perturb = FALSE) {
       cells = c(unname(printed), if (is.null(r$p_value_printed)) "" else r$p_value_printed)
     )
   })
+}
+
+# ---- verifying route C against the source document --------------------------
+
+# Routes A and B are re-derived from files in this repository every time the
+# script runs, so a mistake in either shows up as a disagreement. Route C cannot
+# be: it is typed. Nothing in the repository can contradict it, which makes it
+# the one route where an error survives a green check — and where an error is
+# worst, because the specs are written from the same reading, so all three routes
+# agree on the same mistake.
+#
+# This mode closes that hole. It reads the report itself, extracts the two pages
+# this record transcribes, and requires the record to match. It needs the network
+# and poppler's pdftotext, so it is a maintainer command rather than a CI step
+# (see `not_in_ci` in the record); run it whenever the record is edited.
+#
+#   Rscript qc/reference-report-agreement.R --verify-transcription
+#   Rscript qc/reference-report-agreement.R --verify-transcription --pdf /path/to.pdf
+#   Rscript qc/reference-report-agreement.R --verify-transcription --self-test
+
+source_doc <- record$reference$source_document
+
+locate_pdf <- function() {
+  explicit <- if ("--pdf" %in% args) args[which(args == "--pdf") + 1] else ""
+  from_env <- Sys.getenv("OPENCSR_PILOT_PDF", "")
+  for (p in c(explicit, from_env)) {
+    if (nzchar(p) && file.exists(p)) return(p)
+  }
+  url <- sprintf(
+    "https://raw.githubusercontent.com/%s/%s/%s",
+    source_doc$repository, source_doc$commit, source_doc$path
+  )
+  dest <- tempfile(fileext = ".pdf")
+  cat("  fetching the report from", url, "\n")
+  status <- utils::download.file(url, dest, quiet = TRUE, mode = "wb")
+  if (!identical(status, 0L) || !file.exists(dest)) {
+    stop("could not fetch the source document; pass --pdf <path> instead.", call. = FALSE)
+  }
+  dest
+}
+
+# The report page is fixed-width text: a data row is a label followed by exactly
+# four "n ( p%)" cells and an optional p-value. Parsing it this way rather than
+# by column position means a shifted margin cannot silently drop a column.
+cell_pattern <- "[0-9]+[[:space:]]*\\([[:space:]]*[0-9]+%\\)"
+
+parse_report_page <- function(pdf, page) {
+  out <- tempfile(fileext = ".txt")
+  status <- suppressWarnings(system2(
+    "pdftotext",
+    c("-layout", "-f", page, "-l", page, shQuote(pdf), shQuote(out)),
+    stdout = FALSE, stderr = FALSE
+  ))
+  if (!identical(as.integer(status), 0L) || !file.exists(out)) {
+    stop(
+      "pdftotext failed (is poppler installed? `brew install poppler` / ",
+      "`apt-get install poppler-utils`).",
+      call. = FALSE
+    )
+  }
+  lines <- readLines(out, warn = FALSE)
+  rows <- list()
+  for (line in lines) {
+    m <- gregexpr(cell_pattern, line)[[1]]
+    if (length(m) != 4 || m[1] == -1) next
+    starts <- as.integer(m)
+    lens <- attr(m, "match.length")
+    cells <- vapply(seq_along(starts), function(i) {
+      norm_cell(substr(line, starts[i], starts[i] + lens[i] - 1))
+    }, character(1))
+    label <- norm_label(substr(line, 1, starts[1] - 1))
+    tail_txt <- trimws(substr(line, starts[4] + lens[4], nchar(line)))
+    rows[[length(rows) + 1]] <- list(label = label, cells = cells, p = tail_txt)
+  }
+  list(lines = lines, rows = rows)
+}
+
+verify_transcription_run <- function(mutate = NULL) {
+  bad <- character(0)
+  pdf <- locate_pdf()
+
+  got <- digest::digest(file = pdf, algo = "sha256")
+  if (!identical(got, source_doc$sha256)) {
+    return(sprintf(
+      "  the document is not the one this record was written from:\n    expected sha256 %s\n    got      sha256 %s",
+      source_doc$sha256, got
+    ))
+  }
+
+  for (slug in names(record$displays)) {
+    page <- source_doc$pages[[slug]]
+    parsed <- parse_report_page(pdf, page)
+    printed <- parsed$rows
+    expected <- record$displays[[slug]]$rows
+    if (!is.null(mutate)) expected <- mutate(expected)
+
+    if (length(printed) != length(expected)) {
+      bad <- c(bad, sprintf(
+        "  %s: page %s of the report has %d data rows, the record has %d",
+        slug, page, length(printed), length(expected)
+      ))
+      next
+    }
+    for (i in seq_along(expected)) {
+      e <- expected[[i]]
+      p <- printed[[i]]
+      if (!identical(norm_label(e$label), p$label)) {
+        bad <- c(bad, sprintf(
+          "  %s row %d: record label '%s', report prints '%s'",
+          slug, i, norm_label(e$label), p$label
+        ))
+      }
+      rec_cells <- vapply(e$printed, norm_cell, character(1))
+      if (!identical(unname(rec_cells), p$cells)) {
+        bad <- c(bad, sprintf(
+          "  %s / %s: record cells %s, report prints %s",
+          slug, e$analysis,
+          paste(rec_cells, collapse = " | "), paste(p$cells, collapse = " | ")
+        ))
+      }
+      rec_p <- e$p_value_printed %||% ""
+      if (!identical(rec_p, p$p)) {
+        bad <- c(bad, sprintf(
+          "  %s / %s: record p-value '%s', report prints '%s'",
+          slug, e$analysis, rec_p, p$p
+        ))
+      }
+    }
+    # The population the table was run on is part of what it claims, and the two
+    # tables in this pair state different ones. Getting them the wrong way round
+    # is exactly the error this mode was written after.
+    stated <- grep("^Population:", trimws(parsed$lines), value = TRUE)[1]
+    claimed <- record$reference$tables[[slug]]
+    want <- trimws(sub("^Population:", "", stated %||% ""))
+    if (!nzchar(want) || !grepl(want, claimed, fixed = TRUE)) {
+      bad <- c(bad, sprintf(
+        "  %s: the report states 'Population: %s'; the record describes it as '%s'",
+        slug, want, claimed
+      ))
+    }
+  }
+  bad
+}
+
+if (verify_transcription) {
+  if (self_test) {
+    cat("Self-test: the record perturbed, then left alone.\n")
+    failures <- character(0)
+    caught <- verify_transcription_run(mutate = function(rows) {
+      rows[[1]]$printed[[1]] <- "99 ( 99%)"
+      rows
+    })
+    if (length(caught)) {
+      cat(sprintf("  ok   perturbing the record was caught (%d line(s))\n", length(caught)))
+    } else {
+      cat("  FAIL perturbing the record went UNDETECTED\n")
+      failures <- c(failures, "mutated")
+    }
+    clean <- verify_transcription_run()
+    if (length(clean)) {
+      cat("  FAIL the unperturbed record does not match the report:\n")
+      cat(paste(clean, collapse = "\n"), "\n", sep = "")
+      failures <- c(failures, "clean")
+    } else {
+      cat("  ok   the unperturbed record matches the report\n")
+    }
+    quit(status = if (length(failures)) 1 else 0)
+  }
+
+  bad <- verify_transcription_run()
+  if (length(bad)) {
+    cat("TRANSCRIPTION DISAGREES WITH THE SOURCE REPORT —", length(bad), "problem(s):\n")
+    cat(paste(bad, collapse = "\n"), "\n", sep = "")
+    quit(status = 1)
+  }
+  n_rows <- sum(vapply(record$displays, function(d) length(d$rows), numeric(1)))
+  cat(sprintf(
+    "OK: all %d transcribed rows across %d tables match pages %s of %s (sha256 %s).\n",
+    n_rows, length(record$displays),
+    paste(unlist(source_doc$pages), collapse = " and "),
+    basename(source_doc$path), substr(source_doc$sha256, 1, 12)
+  ))
+  quit(status = 0)
 }
 
 # ---- comparison -------------------------------------------------------------

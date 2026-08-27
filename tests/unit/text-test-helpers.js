@@ -11,10 +11,25 @@ export const SECTIONS_YAML = join(ROOT, 'library/templates/ich-e3/sections.yaml'
 export const ASSEMBLY_YAML = join(ROOT, 'library/templates/ich-e3/assembly.yaml');
 
 /**
+ * Every display slug the TFL Library holds. Tests that need the universe of
+ * valid display references use this rather than the fixture directory: a display
+ * is real because the library defines it, not because a JS fixture happens to
+ * stand in for its ARD.
+ */
+/**
  * Fixture ARDs, keyed by display slug. Unit tests always resolve against these —
  * never against `outputs/`, which the R pipeline owns and rewrites — so a gate test
  * fails for the reason it claims rather than because a display was regenerated.
  */
+export function librarySlugs() {
+  const dir = join(ROOT, 'library/tfl');
+  if (!existsSync(dir)) return [];
+  return readdirSync(dir, { withFileTypes: true })
+    .filter((e) => e.isDirectory() && existsSync(join(dir, e.name, 'analysis.yaml')))
+    .map((e) => e.name)
+    .sort();
+}
+
 export function fixtureArds() {
   const ards = new Map();
   if (!existsSync(ARD_FIXTURES)) return ards;

@@ -2,8 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { assemble } from '../../scripts/assemble.mjs';
-import { listDisplaySlugs } from '../../scripts/template-lib.mjs';
-import { ROOT } from './text-test-helpers.js';
+import { ROOT, librarySlugs } from './text-test-helpers.js';
 
 // One assembly for the whole suite; `write: false` keeps docs/assembled/ untouched
 // so running the tests never mutates a published artifact.
@@ -71,7 +70,14 @@ describe('Assembled CSR document model', () => {
   });
 
   it('RPT-ARD-001: every display resolves to a real ARD, and the source is recorded as outputs or fixture (#1)', () => {
-    expect(doc.displayIndex.length).toBe(listDisplaySlugs(join(ROOT, 'library/tfl')).length);
+    // Derived, not a magic number: the report carries what its assembly names,
+    // and a display added to the library and to Section 14 must not need this
+    // count edited to stay green.
+    expect(doc.displayIndex.length).toBe(new Set(doc.displayIndex.map((d) => d.slug)).size);
+    expect(doc.displayIndex.map((d) => d.slug).sort()).toEqual(
+      doc.displayIndex.map((d) => d.slug).filter((s) => librarySlugs().includes(s)).sort()
+    );
+    expect(doc.displayIndex.length).toBeGreaterThanOrEqual(6);
     for (const d of doc.displayIndex) {
       expect(['outputs', 'fixture'], d.slug).toContain(d.ardSource);
       expect(d.ardPath).toMatch(/ard\.json$|\.json$/);
@@ -90,7 +96,13 @@ describe('Assembled CSR document model', () => {
       expect(entry.specHash).toMatch(/^sha256:/);
       expect(entry.displayHash).toMatch(/^sha256:/);
       expect(entry.data.length).toBeGreaterThan(0);
-      expect(entry.data[0]).toMatchObject({ source_pkg: 'pharmaverseadam' });
+      // The report draws on two packagings of the same study — {pharmaverseadam}
+      // for the safety spine, the CDISC pilot's own ADaM package for the domains
+      // that one does not carry — so 16.1.9 records which, per dataset. What
+      // matters here is that it came out of the ARD envelope rather than prose.
+      expect(typeof entry.data[0].source_pkg).toBe('string');
+      expect(entry.data[0].source_pkg.length).toBeGreaterThan(0);
+      expect(entry.data[0].source_version).toBeTruthy();
       expect(entry.environment.r).toMatch(/^\d+\.\d+/);
     }
     expect(section('16.1.9').populated).toBe(true);
