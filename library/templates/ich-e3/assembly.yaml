@@ -32,9 +32,12 @@ study:
   primary_analysis_set: "Safety Analysis Set"
   data_source: "pharmaverseadam (CDISCPILOT01 ADaM)"
   scope_note: >-
-    Safety-focused demonstration. No efficacy ADaM exists for CDISCPILOT01 in
-    pharmaverseadam, so Sections 11.4 and 14.2 are intentionally unpopulated
-    (design decision D12); deriving an ADQSADAS-class dataset is roadmap v0.3.
+    Safety and efficacy demonstration. The safety displays are built from
+    pharmaverseadam; the efficacy displays in Section 14.2 are built from the
+    CDISC pilot's own ADaM package, vendored from phuse-org/phuse-scripts, which
+    is the only packaging of CDISCPILOT01 that carries the efficacy domains
+    (design decision D12). Section 11.4 remains unpopulated: its narrative
+    analysis of efficacy is not yet written.
 
 # Where the assembler writes the auto-generated provenance appendix.
 provenance_section: "16.1.9"
@@ -109,6 +112,25 @@ post_text:
   # landing two tables.
   - section: "14.1"
     displays: [t-disposition, t-demographics, t-populations, t-end-of-study]
+
+  # Efficacy. Ordered as the CDISCPILOT01 reference report orders its own
+  # Section 14.3 efficacy displays — the two Week-24 primaries first, then the
+  # other visits, then the subgroups, then the over-time summary, the supportive
+  # repeated-measures analysis and the secondary endpoint. The assigned numbers
+  # here are 14.2.1 onwards and have nothing to do with the reference report's
+  # 14-3.xx labels: identity is the slug, the number is assigned from this order
+  # at build time (D6).
+  - section: "14.2"
+    displays:
+      - t-eff-adas-wk24
+      - t-eff-adas-wk8
+      - t-eff-adas-wk16
+      - t-eff-adas-wk24-completers
+      - t-eff-adas-wk24-male
+      - t-eff-adas-wk24-female
+      - t-eff-adas-overtime
+      - t-eff-adas-mmrm
+      - t-eff-npix-mean
 
   - section: "14.3.1"
     displays: [t-exposure, t-ae-overview, t-ae-common]

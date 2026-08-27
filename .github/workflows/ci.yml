@@ -131,6 +131,14 @@ jobs:
         # three routes in turn and requires the comparison to catch each one.
         run: Rscript qc/reference-report-agreement.R --self-test
 
+      - name: The efficacy displays agree with an independent recomputation and with the reference report
+        # Every figure in the nine efficacy displays, measured a second time by a
+        # route that never loads {opencsr} and solves the ANCOVA by an explicit
+        # QR rather than lm(), and a third time against the CDISC pilot's own
+        # published Section 14 tables. Non-zero when any of the three moves, or
+        # when the set of declared differences from the reference changes.
+        run: Rscript qc/efficacy-agreement.R
+
       - name: Committed R results match this run
         # run-tests.R rewrites qc/testthat-results.json; anything but a
         # provenance-only difference means the committed evidence is stale.

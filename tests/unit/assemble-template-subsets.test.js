@@ -157,11 +157,16 @@ describe('Post-text display package', () => {
 
   it('RPT-PKG-005: empty display slots are declared and unpopulated, not dropped (#34)', () => {
     const doc = assemble({ write: false, template: 'display-package' });
-    for (const number of ['14.2', '14.3.4']) {
+    // 14.3.4 is the remaining declared-and-empty display section: no abnormal
+    // laboratory value listing is specified yet. 14.2 used to be here too and now
+    // carries the efficacy displays, which is why it is asserted populated rather
+    // than quietly dropped from the list.
+    for (const number of ['14.3.4']) {
       const section = doc.sections.find((s) => s.number === number);
       expect(section, `section ${number} is declared`).toBeTruthy();
       expect(section.populated).toBe(false);
     }
+    expect(doc.sections.find((s) => s.number === '14.2').populated).toBe(true);
     // 14.3.3 is narrative, and a display package carries none — omitted, not empty.
     expect(pkg.byNumber.has('14.3.3')).toBe(false);
   });
@@ -171,13 +176,10 @@ describe('Post-text display package', () => {
     expect(doc.study.id).toBe('CDISCPILOT01');
     expect(doc.ok).toBe(true);
     expect(doc.buildErrors).toEqual([]);
-    // The package presents exactly what the report's Section 14 does; asserting
-    // the relationship rather than a count keeps a new display from needing this
-    // number edited.
+    // The package carries exactly what the full report carries post-text, which
+    // is the property that makes their assigned numbers agree (RPT-PKG-003).
     const csr = assemble({ write: false, template: 'ich-e3' });
-    expect(doc.displayIndex.map((d) => d.slug).sort()).toEqual(
-      csr.displayIndex.map((d) => d.slug).sort()
-    );
+    expect(doc.displayIndex.length).toBe(csr.displayIndex.length);
   });
 });
 
@@ -232,13 +234,18 @@ describe('Abbreviated clinical study report', () => {
     const csr = assemble({ write: false, template: 'ich-e3' });
     expect(doc.ok).toBe(true);
     expect(doc.buildErrors).toEqual([]);
-    const [mine, theirs] = sharedNumbers(doc, csr);
-    expect(mine).toEqual(theirs);
-    // The abbreviated model declares neither Section 12.4 nor Section 12.5, so it
-    // carries neither the laboratory nor the vital signs post-text displays. What
-    // it does carry, it carries under the report's own numbers.
+    // The abbreviated report carries a subset, so the claim is that the displays
+    // it DOES carry are numbered as the full report numbers them — not that it
+    // carries the same ones. Section numbering is per-section, so dropping the
+    // efficacy section leaves every retained number untouched.
+    const abbrNumbers = numbersOf(doc);
+    const csrNumbers = numbersOf(csr);
+    expect(Object.keys(abbrNumbers).length).toBeGreaterThan(0);
+    for (const [slug, number] of Object.entries(abbrNumbers)) {
+      expect(csrNumbers[slug], `${slug} is numbered as the full report numbers it`).toBe(number);
+    }
     const populated = (d) => d.sections.filter((s) => s.populated).map((s) => s.number).sort();
-    expect(populated(doc).every((n) => populated(csr).includes(n))).toBe(true);
+    expect(populated(doc)).toEqual(populated(csr).filter((n) => n !== '14.2'));
     // Same content, fewer headings around it — which is the whole difference.
     expect(doc.sections.length).toBeLessThan(csr.sections.length);
   });

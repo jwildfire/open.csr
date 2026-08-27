@@ -21,6 +21,16 @@ export const ASSEMBLY_YAML = join(ROOT, 'library/templates/ich-e3/assembly.yaml'
  * never against `outputs/`, which the R pipeline owns and rewrites — so a gate test
  * fails for the reason it claims rather than because a display was regenerated.
  */
+/**
+ * Every display slug the TFL Library holds.
+ *
+ * Distinct from `fixtureArds()` on purpose. A test that asks "does this assembly
+ * reference a display that exists?" is asking about the LIBRARY, and answering it
+ * from the six fixture ARDs made every display added since those fixtures were
+ * written look like a typo. A test that asks "what do the numbers say?" still
+ * resolves against the fixtures, which is what keeps it independent of whatever
+ * the R pipeline last regenerated.
+ */
 export function librarySlugs() {
   const dir = join(ROOT, 'library/tfl');
   if (!existsSync(dir)) return [];
