@@ -1,0 +1,801 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="ICH E3-aligned prose blocks in three tiers, with approval state and every number bound to an ARD address rather than typed." />
+    <title>Text Library · open.csr</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23111a24'/%3E%3Crect x='3' y='3' width='7' height='1.4' fill='%23e7edf5'/%3E%3Crect x='3' y='6' width='10' height='1.4' fill='%235aa9e6'/%3E%3Crect x='3' y='9' width='6' height='1.4' fill='%23e7edf5'/%3E%3Crect x='3' y='12' width='9' height='1.4' fill='%235aa9e6'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="../site.css" />
+    <script>
+      // Theme is resolved before first paint so the page never flashes the
+      // wrong surface. No storage available (private mode) simply falls back to
+      // the OS preference.
+      (function () {
+        try {
+          var saved = localStorage.getItem('opencsr-theme');
+          if (saved) document.documentElement.setAttribute('data-theme', saved);
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body class="">
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <a class="site-name" href="../index.html">
+        <span class="mark" aria-hidden="true"></span>
+        <span>
+          <strong>open.csr</strong>
+          <em>Versioned numbers, versioned words, one traceable loop.</em>
+        </span>
+      </a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="../index.html">Home</a><a href="../demo/index.html">Demo</a><a href="../quality/index.html">Quality</a><a href="../docs/index.html">Design &amp; Research</a>
+        <button
+          type="button"
+          class="theme-toggle"
+          aria-label="Switch between light and dark"
+          title="Switch between light and dark"
+        >
+          <span aria-hidden="true">◐</span>
+        </button>
+        <a class="icon-link" href="https://github.com/jwildfire/open.csr" aria-label="Source on GitHub" title="Source on GitHub">
+          <svg viewBox="0 0 16 16" width="17" height="17" fill="currentColor" aria-hidden="true">
+            <path
+              d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
+            />
+          </svg>
+        </a>
+      </nav>
+    </header>
+    
+    <main class="site-main" id="main"><header class="page-head"><p class="eyebrow">Text Library</p><h1>Text blocks</h1><p class="lede">ICH E3-aligned prose in three tiers. Blocks never state a number — they bind one, and the binding resolves against the display’s current ARD at assembly time.</p></header>
+<div class="legend"><p><span class="chip chip-muted">boilerplate</span> fixed text, no numbers</p><p><span class="chip chip-info">parameterized</span> bindings only — every number comes from an ARD</p><p><span class="chip chip-warn">generated</span> agent-drafted, human-approved before it can assemble</p></div>
+<p class="callout warn">5 agent-drafted blocks are still marked <span class="mono">draft</span> in the block source, so the assembler leaves them out of the report. Approval is recorded in each block's frontmatter and applied by the assembly gate; the <a href="../demo/index.html#tab=text">Demo's Text view</a> shows where every block stands, with the prompt that produced it and every binding resolved to its ARD row.</p>
+<p class="callout good">Every binding in the library resolves to exactly one ARD row.</p>
+<div class="card-grid text-grid"><article class="card text-block" id="TXT-SYN-0101"><div class="card-top"><span class="chip chip-muted">boilerplate</span><span class="chip chip-warn" title="Excluded from assembly until approved">draft</span></div><h3><span class="mono">TXT-SYN-0101</span></h3><p class="card-meta">E3 §1.1 · Name of Sponsor, Finished Product and Active Ingredient</p><div class="prose"><p>This synopsis is an open.csr demonstration report. It carries no sponsor: the
+underlying data are the CDISC pilot study ADaM datasets published in the
+<code>pharmaverseadam</code> package under the Apache License, and the report around them was
+assembled by the open.csr framework to exercise its own machinery end to end.</p>
+<p>The finished product studied is the Xanomeline Transdermal Therapeutic System
+(TTS). The active ingredient is xanomeline.</p>
+</div><p class="sub">No bindings — this block states no results.</p><p class="sub">Requirements: <span class="mono">TXT-SYN-001</span></p></article><article class="card text-block" id="TXT-SYN-0102"><div class="card-top"><span class="chip chip-muted">boilerplate</span><span class="chip chip-warn" title="Excluded from assembly until approved">draft</span></div><h3><span class="mono">TXT-SYN-0102</span></h3><p class="card-meta">E3 §1.2 · Title of Study</p><div class="prose"><p>Safety and Efficacy of the Xanomeline Transdermal Therapeutic System (TTS) in
+Patients with Mild to Moderate Alzheimer&#39;s Disease.</p>
+<p>The protocol identifier is <code>CDISCPILOT01</code>.</p>
+</div><p class="sub">No bindings — this block states no results.</p><p class="sub">Requirements: <span class="mono">TXT-SYN-001</span></p></article><article class="card text-block" id="TXT-SYN-0103"><div class="card-top"><span class="chip chip-muted">boilerplate</span><span class="chip chip-warn" title="Excluded from assembly until approved">draft</span></div><h3><span class="mono">TXT-SYN-0103</span></h3><p class="card-meta">E3 §1.3 · Investigators and Study Centres</p><div class="prose"><p>The study was conducted at multiple centres. Individual investigator and centre
+identities are not carried in the ADaM extract this demonstration is built from,
+so no coordinating investigator is named here.</p>
+<p>In a real report this field cross-references the list of investigators in the
+appendices, and the by-site enrolment summary that accompanies it.</p>
+</div><p class="sub">No bindings — this block states no results.</p><p class="sub">Requirements: <span class="mono">TXT-SYN-001</span></p></article><article class="card text-block" id="TXT-SYN-0104"><div class="card-top"><span class="chip chip-muted">boilerplate</span><span class="chip chip-warn" title="Excluded from assembly until approved">draft</span></div><h3><span class="mono">TXT-SYN-0104</span></h3><p class="card-meta">E3 §1.4 · Publication (Reference)</p><div class="prose"><p>None. The CDISC pilot study is a teaching dataset distributed for standards work
+and is not a published clinical trial.</p>
+</div><p class="sub">No bindings — this block states no results.</p><p class="sub">Requirements: <span class="mono">TXT-SYN-001</span></p></article><article class="card text-block" id="TXT-SYN-0105"><div class="card-top"><span class="chip chip-muted">boilerplate</span><span class="chip chip-warn" title="Excluded from assembly until approved">draft</span></div><h3><span class="mono">TXT-SYN-0105</span></h3><p class="card-meta">E3 §1.5 · Studied Period</p><div class="prose"><p>Dates of first enrolment and last completed visit are not carried in the ADaM
+extract this demonstration is built from and are therefore not reported.</p>
+<p>All analyses in this synopsis and in the accompanying clinical study report were
+produced against a single data cutoff of 2014-07-01, and every number in both
+documents resolves to the same committed analysis results datasets taken at that
+cutoff.</p>
+</div><p class="sub">No bindings — this block states no results.</p><p class="sub">Requirements: <span class="mono">TXT-SYN-001</span></p></article><article class="card text-block" id="TXT-SYN-0106"><div class="card-top"><span class="chip chip-muted">boilerplate</span><span class="chip chip-warn" title="Excluded from assembly until approved">draft</span></div><h3><span class="mono">TXT-SYN-0106</span></h3><p class="card-meta">E3 §1.6 · Phase of Development</p><div class="prose"><p>Phase 2.</p>
+</div><p class="sub">No bindings — this block states no results.</p><p class="sub">Requirements: <span class="mono">TXT-SYN-001</span></p></article><article class="card text-block" id="TXT-SYN-1000"><div class="card-top"><span class="chip chip-muted">boilerplate</span><span class="chip chip-warn" title="Excluded from assembly until approved">draft</span></div><h3><span class="mono">TXT-SYN-1000</span></h3><p class="card-meta">E3 §10 · Statistical Methods</p><div class="prose"><p>Descriptive statistics only. Continuous measures are summarised as number of
+patients, mean, standard deviation, median, quartiles, minimum and maximum;
+categorical measures as counts and percentages of the analysis population. No
+hypothesis test is performed and no confidence interval is presented, so nothing
+in this synopsis should be read as a statistical comparison between groups.</p>
+<p>Each summary is produced once, as an analysis results dataset, and every rendering
+of it — the in-text table, the post-text table, and each number quoted in this
+prose — is read back from that one dataset. The generated provenance appendix
+records, for each display, which dataset the numbers came from.</p>
+</div><p class="sub">No bindings — this block states no results.</p><p class="sub">Requirements: <span class="mono">TXT-SYN-001</span></p></article><article class="card text-block" id="TXT-E3-1001"><div class="card-top"><span class="chip chip-info">parameterized</span><span class="chip chip-good" title="@jwildfire 2026-07-25">approved</span></div><h3><span class="mono">TXT-E3-1001</span></h3><p class="card-meta">E3 §10.1 · Disposition of Patients</p><div class="prose"><p>Of the <span class="binding" data-trace="binding" data-display="t-disposition" data-address="t-disposition:randomised:n;group=Total" data-value="254" data-analysis="randomised" data-stat="n" data-reason="" tabindex="0" role="button">254</span> patients randomised and
+treated, <span class="binding" data-trace="binding" data-display="t-disposition" data-address="t-disposition:completed:n;group=Total" data-value="110" data-analysis="completed" data-stat="n" data-reason="" tabindex="0" role="button">110</span>
+(<span class="binding" data-trace="binding" data-display="t-disposition" data-address="t-disposition:completed:p;group=Total;scale=100;digits=1" data-value="43.3" data-analysis="completed" data-stat="p" data-reason="" tabindex="0" role="button">43.3</span>%) completed the
+study and <span class="binding" data-trace="binding" data-display="t-disposition" data-address="t-disposition:discontinued:n;group=Total" data-value="144" data-analysis="discontinued" data-stat="n" data-reason="" tabindex="0" role="button">144</span>
+(<span class="binding" data-trace="binding" data-display="t-disposition" data-address="t-disposition:discontinued:p;group=Total;scale=100;digits=1" data-value="56.7" data-analysis="discontinued" data-stat="p" data-reason="" tabindex="0" role="button">56.7</span>%) discontinued
+prematurely.</p>
+<p>Completion was substantially lower in both xanomeline groups than in the placebo
+group. <span class="binding" data-trace="binding" data-display="t-disposition" data-address="t-disposition:completed:n;group=Placebo" data-value="58" data-analysis="completed" data-stat="n" data-reason="" tabindex="0" role="button">58</span> of the
+<span class="binding" data-trace="binding" data-display="t-disposition" data-address="t-disposition:randomised:n;group=Placebo" data-value="86" data-analysis="randomised" data-stat="n" data-reason="" tabindex="0" role="button">86</span> patients randomised to placebo
+(<span class="binding" data-trace="binding" data-display="t-disposition" data-address="t-disposition:completed:p;group=Placebo;scale=100;digits=1" data-value="67.4" data-analysis="completed" data-stat="p" data-reason="" tabindex="0" role="button">67.4</span>%) completed the
+study, compared with <span class="binding" data-trace="binding" data-display="t-disposition" data-address="t-disposition:completed:n;group=Xanomeline Low Dose" data-value="25" data-analysis="completed" data-stat="n" data-reason="" tabindex="0" role="button">25</span> of
+<span class="binding" data-trace="binding" data-display="t-disposition" data-address="t-disposition:randomised:n;group=Xanomeline Low Dose" data-value="96" data-analysis="randomised" data-stat="n" data-reason="" tabindex="0" role="button">96</span>
+(<span class="binding" data-trace="binding" data-display="t-disposition" data-address="t-disposition:completed:p;group=Xanomeline Low Dose;scale=100;digits=1" data-value="26.0" data-analysis="completed" data-stat="p" data-reason="" tabindex="0" role="button">26.0</span>%) in
+the xanomeline low dose group and
+<span class="binding" data-trace="binding" data-display="t-disposition" data-address="t-disposition:completed:n;group=Xanomeline High Dose" data-value="27" data-analysis="completed" data-stat="n" data-reason="" tabindex="0" role="button">27</span> of
+<span class="binding" data-trace="binding" data-display="t-disposition" data-address="t-disposition:randomised:n;group=Xanomeline High Dose" data-value="72" data-analysis="randomised" data-stat="n" data-reason="" tabindex="0" role="button">72</span>
+(<span class="binding" data-trace="binding" data-display="t-disposition" data-address="t-disposition:completed:p;group=Xanomeline High Dose;scale=100;digits=1" data-value="37.5" data-analysis="completed" data-stat="p" data-reason="" tabindex="0" role="button">37.5</span>%) in
+the xanomeline high dose group. Premature discontinuation was therefore about twice as
+frequent in the xanomeline groups as in the placebo group, and this imbalance is the
+dominant feature of study conduct.</p>
+<p>Death was recorded as the reason for discontinuation in
+<span class="binding" data-trace="binding" data-display="t-disposition" data-address="t-disposition:disc_death:n;group=Total" data-value="3" data-analysis="disc_death" data-stat="n" data-reason="" tabindex="0" role="button">3</span> patients:
+<span class="binding" data-trace="binding" data-display="t-disposition" data-address="t-disposition:disc_death:n;group=Placebo" data-value="2" data-analysis="disc_death" data-stat="n" data-reason="" tabindex="0" role="button">2</span> receiving placebo,
+<span class="binding" data-trace="binding" data-display="t-disposition" data-address="t-disposition:disc_death:n;group=Xanomeline Low Dose" data-value="1" data-analysis="disc_death" data-stat="n" data-reason="" tabindex="0" role="button">1</span> receiving xanomeline low
+dose and <span class="binding" data-trace="binding" data-display="t-disposition" data-address="t-disposition:disc_death:n;group=Xanomeline High Dose" data-value="0" data-analysis="disc_death" data-stat="n" data-reason="" tabindex="0" role="button">0</span> receiving
+xanomeline high dose. The remaining
+<span class="binding" data-trace="binding" data-display="t-disposition" data-address="t-disposition:disc_other:n;group=Total" data-value="141" data-analysis="disc_other" data-stat="n" data-reason="" tabindex="0" role="button">141</span> discontinuations are recorded in the
+analysis dataset as other or not specified, so no further breakdown of discontinuation
+reason is available from these data; the adverse event profile that plausibly accounts
+for the imbalance is described in <span class="xref unresolved">Section 12.2</span>.</p>
+<p>Patient disposition is summarised in <span class="xref" data-trace="display" data-display="t-disposition" tabindex="0" role="button">Subject Disposition</span>. Individual
+discontinued patients, with the date and the recorded reason for discontinuation, are
+listed in <span class="xref unresolved">Section 16.2.1</span>.</p>
+</div><h4>Bindings</h4><ul class="bindings"><li><span class="mono">t-disposition:randomised:n;group=Total</span> <span class="chip chip-good">254</span></li><li><span class="mono">t-disposition:completed:n;group=Total</span> <span class="chip chip-good">110</span></li><li><span class="mono">t-disposition:completed:p;group=Total;scale=100;digits=1</span> <span class="chip chip-good">43.3</span></li><li><span class="mono">t-disposition:discontinued:n;group=Total</span> <span class="chip chip-good">144</span></li><li><span class="mono">t-disposition:discontinued:p;group=Total;scale=100;digits=1</span> <span class="chip chip-good">56.7</span></li><li><span class="mono">t-disposition:completed:n;group=Placebo</span> <span class="chip chip-good">58</span></li><li><span class="mono">t-disposition:randomised:n;group=Placebo</span> <span class="chip chip-good">86</span></li><li><span class="mono">t-disposition:completed:p;group=Placebo;scale=100;digits=1</span> <span class="chip chip-good">67.4</span></li><li><span class="mono">t-disposition:completed:n;group=Xanomeline Low Dose</span> <span class="chip chip-good">25</span></li><li><span class="mono">t-disposition:randomised:n;group=Xanomeline Low Dose</span> <span class="chip chip-good">96</span></li><li><span class="mono">t-disposition:completed:p;group=Xanomeline Low Dose;scale=100;digits=1</span> <span class="chip chip-good">26.0</span></li><li><span class="mono">t-disposition:completed:n;group=Xanomeline High Dose</span> <span class="chip chip-good">27</span></li><li><span class="mono">t-disposition:randomised:n;group=Xanomeline High Dose</span> <span class="chip chip-good">72</span></li><li><span class="mono">t-disposition:completed:p;group=Xanomeline High Dose;scale=100;digits=1</span> <span class="chip chip-good">37.5</span></li><li><span class="mono">t-disposition:disc_death:n;group=Total</span> <span class="chip chip-good">3</span></li><li><span class="mono">t-disposition:disc_death:n;group=Placebo</span> <span class="chip chip-good">2</span></li><li><span class="mono">t-disposition:disc_death:n;group=Xanomeline Low Dose</span> <span class="chip chip-good">1</span></li><li><span class="mono">t-disposition:disc_death:n;group=Xanomeline High Dose</span> <span class="chip chip-good">0</span></li><li><span class="mono">t-disposition:disc_other:n;group=Total</span> <span class="chip chip-good">141</span></li></ul><p class="sub">Displays: <a class="mono" href="../gallery/t-disposition.html">t-disposition</a></p><p class="sub">Requirements: <span class="mono">TXT-DISP-001</span></p></article><article class="card text-block" id="TXT-E3-1002"><div class="card-top"><span class="chip chip-warn">generated</span><span class="chip chip-warn" title="Excluded from assembly until approved">draft</span></div><h3><span class="mono">TXT-E3-1002</span></h3><p class="card-meta">E3 §10.1 · Disposition of Patients: Summary of Named Values</p><div class="prose"><p>In summary, {{value:randomised-n}} patients were randomised and
+{{value:treated-n}} were treated. {{value:completed-n}} patients
+({{value:completed-pct}}%) completed the study and {{value:discontinued-n}}
+discontinued prematurely. Of those treated, {{value:ae-any-n-total}} reported at
+least one adverse event, {{value:ae-excess-high-vs-placebo}} more in the high dose
+group than in the placebo group.</p>
+<p>Every number in this paragraph is a <em>named</em> value: it is declared once in
+<code>library/values/values.yaml</code>, resolved by the pipeline against the committed
+Analysis Results Data, and cited here by name. The name is the unit of reuse — the
+same value can be quoted in the disposition narrative, the safety conclusions and a
+summary slide without any of them re-addressing the underlying ARD row, and the
+build fails if any of them drifts from it.</p>
+</div><p class="sub">No bindings — this block states no results.</p><p class="sub">Displays: <a class="mono" href="../gallery/t-disposition.html">t-disposition</a>, <a class="mono" href="../gallery/t-ae-overview.html">t-ae-overview</a></p><p class="sub">Generated by <span class="mono">claude-opus-5</span></p><p class="sub">Requirements: <span class="mono">TXT-DISP-001</span> <span class="mono">TXT-VAL-006</span></p></article><article class="card text-block" id="TXT-E3-1101"><div class="card-top"><span class="chip chip-info">parameterized</span><span class="chip chip-good" title="@jwildfire 2026-07-25">approved</span></div><h3><span class="mono">TXT-E3-1101</span></h3><p class="card-meta">E3 §11.1 · Data Sets Analysed</p><div class="prose"><p>The safety analysis set comprised all patients who were randomised and received at
+least one dose of study medication. It included
+<span class="binding" data-trace="binding" data-display="t-disposition" data-address="t-disposition:treated:n;group=Total" data-value="254" data-analysis="treated" data-stat="n" data-reason="" tabindex="0" role="button">254</span> patients:
+<span class="binding" data-trace="binding" data-display="t-disposition" data-address="t-disposition:treated:n;group=Placebo" data-value="86" data-analysis="treated" data-stat="n" data-reason="" tabindex="0" role="button">86</span> in the placebo group,
+<span class="binding" data-trace="binding" data-display="t-disposition" data-address="t-disposition:treated:n;group=Xanomeline Low Dose" data-value="96" data-analysis="treated" data-stat="n" data-reason="" tabindex="0" role="button">96</span> in the xanomeline low dose
+group and <span class="binding" data-trace="binding" data-display="t-disposition" data-address="t-disposition:treated:n;group=Xanomeline High Dose" data-value="72" data-analysis="treated" data-stat="n" data-reason="" tabindex="0" role="button">72</span> in the xanomeline
+high dose group. All safety analyses in this report, and every display referenced from
+<span class="xref unresolved">Section 12</span>, are based on this analysis set, and each display identifies its
+analysis set in the header in accordance with ICH E3.</p>
+<p>Patients who were screened but not randomised are excluded from every analysis set.
+Analysis-set membership is derived in a documented, version-controlled data preparation
+step rather than assumed from the source data; that derivation, and the environment
+that executed it, are recorded in <span class="xref unresolved">Section 16.1.9</span>.</p>
+<p>No efficacy analysis set is defined for this report. The public ADaM package used as
+the data source for this demonstration contains no efficacy analysis dataset for this
+study, so the efficacy sections and the corresponding post-text displays in
+<span class="xref unresolved">Section 14.2</span> are intentionally not populated. Patients excluded from any
+analysis population would be listed in <span class="xref unresolved">Section 16.2.3</span>.</p>
+</div><h4>Bindings</h4><ul class="bindings"><li><span class="mono">t-disposition:treated:n;group=Total</span> <span class="chip chip-good">254</span></li><li><span class="mono">t-disposition:treated:n;group=Placebo</span> <span class="chip chip-good">86</span></li><li><span class="mono">t-disposition:treated:n;group=Xanomeline Low Dose</span> <span class="chip chip-good">96</span></li><li><span class="mono">t-disposition:treated:n;group=Xanomeline High Dose</span> <span class="chip chip-good">72</span></li></ul><p class="sub">Displays: <a class="mono" href="../gallery/t-disposition.html">t-disposition</a></p><p class="sub">Requirements: <span class="mono">TXT-POP-001</span></p></article><article class="card text-block" id="TXT-E3-1102"><div class="card-top"><span class="chip chip-info">parameterized</span><span class="chip chip-good" title="@jwildfire 2026-07-25">approved</span></div><h3><span class="mono">TXT-E3-1102</span></h3><p class="card-meta">E3 §11.2 · Demographic and Other Baseline Characteristics</p><div class="prose"><p>Demographic and baseline characteristics were comparable across the three treatment
+groups in the safety analysis set of
+<span class="binding" data-trace="binding" data-display="t-demographics" data-address="t-demographics:age:N;group=Total" data-value="254" data-analysis="age" data-stat="N" data-reason="" tabindex="0" role="button">254</span> patients.</p>
+<p>The study population was elderly, as expected for a mild to moderate Alzheimer&#39;s
+disease population. Mean age overall was
+<span class="binding" data-trace="binding" data-display="t-demographics" data-address="t-demographics:age:mean;group=Total;digits=1" data-value="75.1" data-analysis="age" data-stat="mean" data-reason="" tabindex="0" role="button">75.1</span> years
+(SD <span class="binding" data-trace="binding" data-display="t-demographics" data-address="t-demographics:age:sd;group=Total;digits=2" data-value="8.25" data-analysis="age" data-stat="sd" data-reason="" tabindex="0" role="button">8.25</span>), with a median of
+<span class="binding" data-trace="binding" data-display="t-demographics" data-address="t-demographics:age:median;group=Total;digits=0" data-value="77" data-analysis="age" data-stat="median" data-reason="" tabindex="0" role="button">77</span> years and a range of
+<span class="binding" data-trace="binding" data-display="t-demographics" data-address="t-demographics:age:min;group=Total" data-value="51" data-analysis="age" data-stat="min" data-reason="" tabindex="0" role="button">51</span> to
+<span class="binding" data-trace="binding" data-display="t-demographics" data-address="t-demographics:age:max;group=Total" data-value="89" data-analysis="age" data-stat="max" data-reason="" tabindex="0" role="button">89</span> years. Mean age was
+<span class="binding" data-trace="binding" data-display="t-demographics" data-address="t-demographics:age:mean;group=Placebo;digits=1" data-value="75.2" data-analysis="age" data-stat="mean" data-reason="" tabindex="0" role="button">75.2</span> years in the placebo group,
+<span class="binding" data-trace="binding" data-display="t-demographics" data-address="t-demographics:age:mean;group=Xanomeline Low Dose;digits=1" data-value="76.0" data-analysis="age" data-stat="mean" data-reason="" tabindex="0" role="button">76.0</span> years in the
+xanomeline low dose group and
+<span class="binding" data-trace="binding" data-display="t-demographics" data-address="t-demographics:age:mean;group=Xanomeline High Dose;digits=1" data-value="73.8" data-analysis="age" data-stat="mean" data-reason="" tabindex="0" role="button">73.8</span> years in the
+xanomeline high dose group.</p>
+<p>Women accounted for <span class="binding" data-trace="binding" data-display="t-demographics" data-address="t-demographics:sex:n;variable_level=F;group=Total" data-value="143" data-analysis="sex" data-stat="n" data-reason="" tabindex="0" role="button">143</span> patients
+(<span class="binding" data-trace="binding" data-display="t-demographics" data-address="t-demographics:sex:p;variable_level=F;group=Total;scale=100;digits=1" data-value="56.3" data-analysis="sex" data-stat="p" data-reason="" tabindex="0" role="button">56.3</span>%) overall, and the
+proportion of women ranged from
+<span class="binding" data-trace="binding" data-display="t-demographics" data-address="t-demographics:sex:p;variable_level=F;group=Xanomeline High Dose;scale=100;digits=1" data-value="48.6" data-analysis="sex" data-stat="p" data-reason="" tabindex="0" role="button">48.6</span>% in
+the xanomeline high dose group to
+<span class="binding" data-trace="binding" data-display="t-demographics" data-address="t-demographics:sex:p;variable_level=F;group=Placebo;scale=100;digits=1" data-value="61.6" data-analysis="sex" data-stat="p" data-reason="" tabindex="0" role="button">61.6</span>% in the placebo
+group. The population was predominantly white
+(<span class="binding" data-trace="binding" data-display="t-demographics" data-address="t-demographics:race:n;variable_level=WHITE;group=Total" data-value="230" data-analysis="race" data-stat="n" data-reason="" tabindex="0" role="button">230</span> patients,
+<span class="binding" data-trace="binding" data-display="t-demographics" data-address="t-demographics:race:p;variable_level=WHITE;group=Total;scale=100;digits=1" data-value="90.6" data-analysis="race" data-stat="p" data-reason="" tabindex="0" role="button">90.6</span>%), with
+<span class="binding" data-trace="binding" data-display="t-demographics" data-address="t-demographics:race:n;variable_level=BLACK OR AFRICAN AMERICAN;group=Total" data-value="23" data-analysis="race" data-stat="n" data-reason="" tabindex="0" role="button">23</span>
+patients reported as Black or African American. The limited racial diversity of the
+population should be considered when generalising the findings of this study.</p>
+<p>Demographic and baseline characteristics are summarised in
+<span class="xref" data-trace="display" data-display="t-demographics" tabindex="0" role="button">Demographic and Baseline Characteristics</span>; individual demographic data are listed in
+<span class="xref unresolved">Section 16.2.4</span>.</p>
+</div><h4>Bindings</h4><ul class="bindings"><li><span class="mono">t-demographics:age:N;group=Total</span> <span class="chip chip-good">254</span></li><li><span class="mono">t-demographics:age:mean;group=Total;digits=1</span> <span class="chip chip-good">75.1</span></li><li><span class="mono">t-demographics:age:sd;group=Total;digits=2</span> <span class="chip chip-good">8.25</span></li><li><span class="mono">t-demographics:age:median;group=Total;digits=0</span> <span class="chip chip-good">77</span></li><li><span class="mono">t-demographics:age:min;group=Total</span> <span class="chip chip-good">51</span></li><li><span class="mono">t-demographics:age:max;group=Total</span> <span class="chip chip-good">89</span></li><li><span class="mono">t-demographics:age:mean;group=Placebo;digits=1</span> <span class="chip chip-good">75.2</span></li><li><span class="mono">t-demographics:age:mean;group=Xanomeline Low Dose;digits=1</span> <span class="chip chip-good">76.0</span></li><li><span class="mono">t-demographics:age:mean;group=Xanomeline High Dose;digits=1</span> <span class="chip chip-good">73.8</span></li><li><span class="mono">t-demographics:sex:n;variable_level=F;group=Total</span> <span class="chip chip-good">143</span></li><li><span class="mono">t-demographics:sex:p;variable_level=F;group=Total;scale=100;digits=1</span> <span class="chip chip-good">56.3</span></li><li><span class="mono">t-demographics:sex:p;variable_level=F;group=Xanomeline High Dose;scale=100;digits=1</span> <span class="chip chip-good">48.6</span></li><li><span class="mono">t-demographics:sex:p;variable_level=F;group=Placebo;scale=100;digits=1</span> <span class="chip chip-good">61.6</span></li><li><span class="mono">t-demographics:race:n;variable_level=WHITE;group=Total</span> <span class="chip chip-good">230</span></li><li><span class="mono">t-demographics:race:p;variable_level=WHITE;group=Total;scale=100;digits=1</span> <span class="chip chip-good">90.6</span></li><li><span class="mono">t-demographics:race:n;variable_level=BLACK OR AFRICAN AMERICAN;group=Total</span> <span class="chip chip-good">23</span></li></ul><p class="sub">Displays: <a class="mono" href="../gallery/t-demographics.html">t-demographics</a></p><p class="sub">Requirements: <span class="mono">TXT-DEMO-001</span></p></article><article class="card text-block" id="TXT-SYN-1102"><div class="card-top"><span class="chip chip-info">parameterized</span><span class="chip chip-warn" title="Excluded from assembly until approved">draft</span></div><h3><span class="mono">TXT-SYN-1102</span></h3><p class="card-meta">E3 §11.2 · Safety Results</p><div class="prose"><p>Treatment-emergent adverse events were reported by {{value:ae-any-n-total}}
+patients in the safety analysis set overall. In the xanomeline high dose group they
+were reported by {{value:ae-any-pct-high}}% of the {{value:safety-n-high}} patients
+treated.</p>
+<p>The proportion reporting at least one event rose with dose:
+{{value:ae-any-n-placebo}} patients receiving placebo compared with
+{{value:ae-any-n-xanomeline}} across the two xanomeline arms combined — an excess
+of {{value:ae-excess-high-vs-placebo}} patients in the high dose arm relative to
+placebo. An overview of treatment-emergent adverse events is given in
+<span class="xref" data-trace="display" data-display="t-ae-overview" tabindex="0" role="button">Overview of Treatment-Emergent Adverse Events</span>; events by system organ class and preferred term,
+and the listing of deaths, serious adverse events and adverse events leading to
+withdrawal, accompany this synopsis in <span class="xref unresolved">Section 13</span>.</p>
+<p>The combined and difference figures above are <em>derived</em> values: the store declares
+them as structural arithmetic over other named values rather than storing an
+answer, so the assembler re-evaluates them at build time against the committed
+analysis results datasets. A derived value that no longer reproduces is a build
+failure, not a footnote.</p>
+</div><p class="sub">No bindings — this block states no results.</p><p class="sub">Displays: <a class="mono" href="../gallery/t-ae-overview.html">t-ae-overview</a></p><p class="sub">Requirements: <span class="mono">TXT-SYN-001</span></p></article><article class="card text-block" id="TXT-SYN-1103"><div class="card-top"><span class="chip chip-muted">boilerplate</span><span class="chip chip-warn" title="Excluded from assembly until approved">draft</span></div><h3><span class="mono">TXT-SYN-1103</span></h3><p class="card-meta">E3 §11.3 · Conclusion</p><div class="prose"><p>No clinical conclusion is drawn. This is a demonstration report built on a
+teaching dataset, and the only claim it makes is about its own construction: that
+the numbers in its prose, the numbers in its tables and the numbers in the full
+clinical study report assembled from the same library are the same numbers, and
+that this is enforced by the build rather than asserted by a reviewer.</p>
+</div><p class="sub">No bindings — this block states no results.</p><p class="sub">Requirements: <span class="mono">TXT-SYN-001</span></p></article><article class="card text-block" id="TXT-SYN-1200"><div class="card-top"><span class="chip chip-muted">boilerplate</span><span class="chip chip-warn" title="Excluded from assembly until approved">draft</span></div><h3><span class="mono">TXT-SYN-1200</span></h3><p class="card-meta">E3 §12 · Date of the Report</p><div class="prose"><p>This synopsis carries no fixed report date. It is regenerated from the library on
+every build, and the build stamp recorded in the provenance appendix is its date.</p>
+</div><p class="sub">No bindings — this block states no results.</p><p class="sub">Requirements: <span class="mono">TXT-SYN-001</span></p></article><article class="card text-block" id="TXT-E3-1201"><div class="card-top"><span class="chip chip-info">parameterized</span><span class="chip chip-good" title="@jwildfire 2026-07-25">approved</span></div><h3><span class="mono">TXT-E3-1201</span></h3><p class="card-meta">E3 §12.1 · Extent of Exposure</p><div class="prose"><p>Exposure to study drug was longest in the placebo group and shortest in the xanomeline
+low dose group, a direct consequence of the discontinuation pattern described in
+<span class="xref unresolved">Section 10.1</span>. The imbalance must be taken into account when interpreting crude
+adverse event frequencies.</p>
+<p>Mean duration of exposure was
+<span class="binding" data-trace="binding" data-display="t-exposure" data-address="t-exposure:duration:mean;group=Placebo;digits=1" data-value="147.8" data-analysis="duration" data-stat="mean" data-reason="" tabindex="0" role="button">147.8</span> days
+(SD <span class="binding" data-trace="binding" data-display="t-exposure" data-address="t-exposure:duration:sd;group=Placebo;digits=2" data-value="62.13" data-analysis="duration" data-stat="sd" data-reason="" tabindex="0" role="button">62.13</span>) in the placebo group,
+<span class="binding" data-trace="binding" data-display="t-exposure" data-address="t-exposure:duration:mean;group=Xanomeline Low Dose;digits=1" data-value="85.9" data-analysis="duration" data-stat="mean" data-reason="" tabindex="0" role="button">85.9</span> days
+(SD <span class="binding" data-trace="binding" data-display="t-exposure" data-address="t-exposure:duration:sd;group=Xanomeline Low Dose;digits=2" data-value="70.66" data-analysis="duration" data-stat="sd" data-reason="" tabindex="0" role="button">70.66</span>) in the
+xanomeline low dose group and
+<span class="binding" data-trace="binding" data-display="t-exposure" data-address="t-exposure:duration:mean;group=Xanomeline High Dose;digits=1" data-value="112.2" data-analysis="duration" data-stat="mean" data-reason="" tabindex="0" role="button">112.2</span> days
+(SD <span class="binding" data-trace="binding" data-display="t-exposure" data-address="t-exposure:duration:sd;group=Xanomeline High Dose;digits=2" data-value="65.52" data-analysis="duration" data-stat="sd" data-reason="" tabindex="0" role="button">65.52</span>) in the
+xanomeline high dose group. The corresponding medians were
+<span class="binding" data-trace="binding" data-display="t-exposure" data-address="t-exposure:duration:median;group=Placebo;digits=1" data-value="182.0" data-analysis="duration" data-stat="median" data-reason="" tabindex="0" role="button">182.0</span>,
+<span class="binding" data-trace="binding" data-display="t-exposure" data-address="t-exposure:duration:median;group=Xanomeline Low Dose;digits=1" data-value="62.5" data-analysis="duration" data-stat="median" data-reason="" tabindex="0" role="button">62.5</span> and
+<span class="binding" data-trace="binding" data-display="t-exposure" data-address="t-exposure:duration:median;group=Xanomeline High Dose;digits=1" data-value="96.5" data-analysis="duration" data-stat="median" data-reason="" tabindex="0" role="button">96.5</span> days.
+Individual exposure ranged from
+<span class="binding" data-trace="binding" data-display="t-exposure" data-address="t-exposure:duration:min;group=Total" data-value="0" data-analysis="duration" data-stat="min" data-reason="" tabindex="0" role="button">0</span> to
+<span class="binding" data-trace="binding" data-display="t-exposure" data-address="t-exposure:duration:max;group=Total" data-value="212" data-analysis="duration" data-stat="max" data-reason="" tabindex="0" role="button">212</span> days across the safety analysis set.</p>
+<p>Cumulative exposure thresholds show the same pattern. At least 30 days of exposure was
+achieved by <span class="binding" data-trace="binding" data-display="t-exposure" data-address="t-exposure:dur_30:n;group=Placebo" data-value="78" data-analysis="dur_30" data-stat="n" data-reason="" tabindex="0" role="button">78</span> patients
+(<span class="binding" data-trace="binding" data-display="t-exposure" data-address="t-exposure:dur_30:p;group=Placebo;scale=100;digits=1" data-value="90.7" data-analysis="dur_30" data-stat="p" data-reason="" tabindex="0" role="button">90.7</span>%) receiving placebo,
+<span class="binding" data-trace="binding" data-display="t-exposure" data-address="t-exposure:dur_30:n;group=Xanomeline Low Dose" data-value="65" data-analysis="dur_30" data-stat="n" data-reason="" tabindex="0" role="button">65</span>
+(<span class="binding" data-trace="binding" data-display="t-exposure" data-address="t-exposure:dur_30:p;group=Xanomeline Low Dose;scale=100;digits=1" data-value="67.7" data-analysis="dur_30" data-stat="p" data-reason="" tabindex="0" role="button">67.7</span>%) receiving
+xanomeline low dose and <span class="binding" data-trace="binding" data-display="t-exposure" data-address="t-exposure:dur_30:n;group=Xanomeline High Dose" data-value="67" data-analysis="dur_30" data-stat="n" data-reason="" tabindex="0" role="button">67</span>
+(<span class="binding" data-trace="binding" data-display="t-exposure" data-address="t-exposure:dur_30:p;group=Xanomeline High Dose;scale=100;digits=1" data-value="93.1" data-analysis="dur_30" data-stat="p" data-reason="" tabindex="0" role="button">93.1</span>%) receiving
+xanomeline high dose. Long-term exposure of at least 180 days was reached by
+<span class="binding" data-trace="binding" data-display="t-exposure" data-address="t-exposure:dur_180:n;group=Placebo" data-value="55" data-analysis="dur_180" data-stat="n" data-reason="" tabindex="0" role="button">55</span> patients
+(<span class="binding" data-trace="binding" data-display="t-exposure" data-address="t-exposure:dur_180:p;group=Placebo;scale=100;digits=1" data-value="64.0" data-analysis="dur_180" data-stat="p" data-reason="" tabindex="0" role="button">64.0</span>%) in the placebo group,
+against <span class="binding" data-trace="binding" data-display="t-exposure" data-address="t-exposure:dur_180:n;group=Xanomeline Low Dose" data-value="25" data-analysis="dur_180" data-stat="n" data-reason="" tabindex="0" role="button">25</span>
+(<span class="binding" data-trace="binding" data-display="t-exposure" data-address="t-exposure:dur_180:p;group=Xanomeline Low Dose;scale=100;digits=1" data-value="26.0" data-analysis="dur_180" data-stat="p" data-reason="" tabindex="0" role="button">26.0</span>%) and
+<span class="binding" data-trace="binding" data-display="t-exposure" data-address="t-exposure:dur_180:n;group=Xanomeline High Dose" data-value="26" data-analysis="dur_180" data-stat="n" data-reason="" tabindex="0" role="button">26</span>
+(<span class="binding" data-trace="binding" data-display="t-exposure" data-address="t-exposure:dur_180:p;group=Xanomeline High Dose;scale=100;digits=1" data-value="36.1" data-analysis="dur_180" data-stat="p" data-reason="" tabindex="0" role="button">36.1</span>%) in the
+low and high dose groups respectively — so fewer than half as many xanomeline patients
+as placebo patients reached the long-term exposure threshold.</p>
+<p>Extent of exposure, including total and average daily dose, is summarised in
+<span class="xref" data-trace="display" data-display="t-exposure" tabindex="0" role="button">Extent of Exposure to Study Drug</span>.</p>
+</div><h4>Bindings</h4><ul class="bindings"><li><span class="mono">t-exposure:duration:mean;group=Placebo;digits=1</span> <span class="chip chip-good">147.8</span></li><li><span class="mono">t-exposure:duration:sd;group=Placebo;digits=2</span> <span class="chip chip-good">62.13</span></li><li><span class="mono">t-exposure:duration:mean;group=Xanomeline Low Dose;digits=1</span> <span class="chip chip-good">85.9</span></li><li><span class="mono">t-exposure:duration:sd;group=Xanomeline Low Dose;digits=2</span> <span class="chip chip-good">70.66</span></li><li><span class="mono">t-exposure:duration:mean;group=Xanomeline High Dose;digits=1</span> <span class="chip chip-good">112.2</span></li><li><span class="mono">t-exposure:duration:sd;group=Xanomeline High Dose;digits=2</span> <span class="chip chip-good">65.52</span></li><li><span class="mono">t-exposure:duration:median;group=Placebo;digits=1</span> <span class="chip chip-good">182.0</span></li><li><span class="mono">t-exposure:duration:median;group=Xanomeline Low Dose;digits=1</span> <span class="chip chip-good">62.5</span></li><li><span class="mono">t-exposure:duration:median;group=Xanomeline High Dose;digits=1</span> <span class="chip chip-good">96.5</span></li><li><span class="mono">t-exposure:duration:min;group=Total</span> <span class="chip chip-good">0</span></li><li><span class="mono">t-exposure:duration:max;group=Total</span> <span class="chip chip-good">212</span></li><li><span class="mono">t-exposure:dur_30:n;group=Placebo</span> <span class="chip chip-good">78</span></li><li><span class="mono">t-exposure:dur_30:p;group=Placebo;scale=100;digits=1</span> <span class="chip chip-good">90.7</span></li><li><span class="mono">t-exposure:dur_30:n;group=Xanomeline Low Dose</span> <span class="chip chip-good">65</span></li><li><span class="mono">t-exposure:dur_30:p;group=Xanomeline Low Dose;scale=100;digits=1</span> <span class="chip chip-good">67.7</span></li><li><span class="mono">t-exposure:dur_30:n;group=Xanomeline High Dose</span> <span class="chip chip-good">67</span></li><li><span class="mono">t-exposure:dur_30:p;group=Xanomeline High Dose;scale=100;digits=1</span> <span class="chip chip-good">93.1</span></li><li><span class="mono">t-exposure:dur_180:n;group=Placebo</span> <span class="chip chip-good">55</span></li><li><span class="mono">t-exposure:dur_180:p;group=Placebo;scale=100;digits=1</span> <span class="chip chip-good">64.0</span></li><li><span class="mono">t-exposure:dur_180:n;group=Xanomeline Low Dose</span> <span class="chip chip-good">25</span></li><li><span class="mono">t-exposure:dur_180:p;group=Xanomeline Low Dose;scale=100;digits=1</span> <span class="chip chip-good">26.0</span></li><li><span class="mono">t-exposure:dur_180:n;group=Xanomeline High Dose</span> <span class="chip chip-good">26</span></li><li><span class="mono">t-exposure:dur_180:p;group=Xanomeline High Dose;scale=100;digits=1</span> <span class="chip chip-good">36.1</span></li></ul><p class="sub">Displays: <a class="mono" href="../gallery/t-exposure.html">t-exposure</a></p><p class="sub">Requirements: <span class="mono">TXT-EXP-001</span></p></article><article class="card text-block" id="TXT-E3-1221"><div class="card-top"><span class="chip chip-info">parameterized</span><span class="chip chip-good" title="@jwildfire 2026-07-25">approved</span></div><h3><span class="mono">TXT-E3-1221</span></h3><p class="card-meta">E3 §12.2.1 · Brief Summary of Adverse Events</p><div class="prose"><p>Treatment-emergent adverse events were reported by
+<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:any_ae:n;group=Total" data-value="217" data-analysis="any_ae" data-stat="n" data-reason="" tabindex="0" role="button">217</span> of the
+<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:any_ae:N;group=Total" data-value="254" data-analysis="any_ae" data-stat="N" data-reason="" tabindex="0" role="button">254</span> patients in the safety analysis set
+(<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:any_ae:p;group=Total;scale=100;digits=1" data-value="85.4" data-analysis="any_ae" data-stat="p" data-reason="" tabindex="0" role="button">85.4</span>%), covering
+<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:n_events:n;group=Total" data-value="1122" data-analysis="n_events" data-stat="n" data-reason="" tabindex="0" role="button">1122</span> individual adverse event records.</p>
+<p>The proportion of patients reporting at least one treatment-emergent adverse event
+rose with dose: <span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:any_ae:p;group=Placebo;scale=100;digits=1" data-value="75.6" data-analysis="any_ae" data-stat="p" data-reason="" tabindex="0" role="button">75.6</span>% of
+patients receiving placebo,
+<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:any_ae:p;group=Xanomeline Low Dose;scale=100;digits=1" data-value="87.5" data-analysis="any_ae" data-stat="p" data-reason="" tabindex="0" role="button">87.5</span>% receiving
+xanomeline low dose and
+<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:any_ae:p;group=Xanomeline High Dose;scale=100;digits=1" data-value="94.4" data-analysis="any_ae" data-stat="p" data-reason="" tabindex="0" role="button">94.4</span>% receiving
+xanomeline high dose. The same gradient was present, and more pronounced, for adverse
+events assessed by the investigator as related to study drug, reported by
+<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:related_ae:n;group=Placebo" data-value="43" data-analysis="related_ae" data-stat="n" data-reason="" tabindex="0" role="button">43</span> patients
+(<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:related_ae:p;group=Placebo;scale=100;digits=1" data-value="50.0" data-analysis="related_ae" data-stat="p" data-reason="" tabindex="0" role="button">50.0</span>%),
+<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:related_ae:n;group=Xanomeline Low Dose" data-value="77" data-analysis="related_ae" data-stat="n" data-reason="" tabindex="0" role="button">77</span> patients
+(<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:related_ae:p;group=Xanomeline Low Dose;scale=100;digits=1" data-value="80.2" data-analysis="related_ae" data-stat="p" data-reason="" tabindex="0" role="button">80.2</span>%) and
+<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:related_ae:n;group=Xanomeline High Dose" data-value="64" data-analysis="related_ae" data-stat="n" data-reason="" tabindex="0" role="button">64</span> patients
+(<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:related_ae:p;group=Xanomeline High Dose;scale=100;digits=1" data-value="88.9" data-analysis="related_ae" data-stat="p" data-reason="" tabindex="0" role="button">88.9</span>%)
+respectively.</p>
+<p>Most events were of mild or moderate maximum severity. Severe events were reported by
+<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:sev_severe:n;group=Placebo" data-value="5" data-analysis="sev_severe" data-stat="n" data-reason="" tabindex="0" role="button">5</span> patients
+(<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:sev_severe:p;group=Placebo;scale=100;digits=1" data-value="5.8" data-analysis="sev_severe" data-stat="p" data-reason="" tabindex="0" role="button">5.8</span>%) receiving
+placebo, <span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:sev_severe:n;group=Xanomeline Low Dose" data-value="16" data-analysis="sev_severe" data-stat="n" data-reason="" tabindex="0" role="button">16</span> patients
+(<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:sev_severe:p;group=Xanomeline Low Dose;scale=100;digits=1" data-value="16.7" data-analysis="sev_severe" data-stat="p" data-reason="" tabindex="0" role="button">16.7</span>%)
+receiving xanomeline low dose and
+<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:sev_severe:n;group=Xanomeline High Dose" data-value="8" data-analysis="sev_severe" data-stat="n" data-reason="" tabindex="0" role="button">8</span> patients
+(<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:sev_severe:p;group=Xanomeline High Dose;scale=100;digits=1" data-value="11.1" data-analysis="sev_severe" data-stat="p" data-reason="" tabindex="0" role="button">11.1</span>%)
+receiving xanomeline high dose; moderate events were reported by
+<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:sev_moderate:n;group=Total" data-value="129" data-analysis="sev_moderate" data-stat="n" data-reason="" tabindex="0" role="button">129</span> patients
+(<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:sev_moderate:p;group=Total;scale=100;digits=1" data-value="50.8" data-analysis="sev_moderate" data-stat="p" data-reason="" tabindex="0" role="button">50.8</span>%) overall.</p>
+<p>Serious adverse events were uncommon in this study. They were reported by
+<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:serious_ae:n;group=Total" data-value="3" data-analysis="serious_ae" data-stat="n" data-reason="" tabindex="0" role="button">3</span> patients
+(<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:serious_ae:p;group=Total;scale=100;digits=1" data-value="1.2" data-analysis="serious_ae" data-stat="p" data-reason="" tabindex="0" role="button">1.2</span>%) overall:
+<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:serious_ae:n;group=Placebo" data-value="0" data-analysis="serious_ae" data-stat="n" data-reason="" tabindex="0" role="button">0</span> receiving placebo,
+<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:serious_ae:n;group=Xanomeline Low Dose" data-value="2" data-analysis="serious_ae" data-stat="n" data-reason="" tabindex="0" role="button">2</span> receiving xanomeline low
+dose and <span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:serious_ae:n;group=Xanomeline High Dose" data-value="1" data-analysis="serious_ae" data-stat="n" data-reason="" tabindex="0" role="button">1</span> receiving
+xanomeline high dose. Adverse events with a fatal outcome were recorded for
+<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:fatal_ae:n;group=Total" data-value="3" data-analysis="fatal_ae" data-stat="n" data-reason="" tabindex="0" role="button">3</span> patients, of whom
+<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:fatal_ae:n;group=Placebo" data-value="2" data-analysis="fatal_ae" data-stat="n" data-reason="" tabindex="0" role="button">2</span> were receiving placebo. Deaths and
+serious adverse events are described in <span class="xref unresolved">Section 12.3</span>.</p>
+<p>An overview of treatment-emergent adverse events is presented in
+<span class="xref" data-trace="display" data-display="t-ae-overview" tabindex="0" role="button">Overview of Treatment-Emergent Adverse Events</span>. Because exposure differed substantially between the
+groups (<span class="xref unresolved">Section 12.1</span>), the crude proportions above should be read alongside
+the exposure summary.</p>
+</div><h4>Bindings</h4><ul class="bindings"><li><span class="mono">t-ae-overview:any_ae:n;group=Total</span> <span class="chip chip-good">217</span></li><li><span class="mono">t-ae-overview:any_ae:N;group=Total</span> <span class="chip chip-good">254</span></li><li><span class="mono">t-ae-overview:any_ae:p;group=Total;scale=100;digits=1</span> <span class="chip chip-good">85.4</span></li><li><span class="mono">t-ae-overview:n_events:n;group=Total</span> <span class="chip chip-good">1122</span></li><li><span class="mono">t-ae-overview:any_ae:p;group=Placebo;scale=100;digits=1</span> <span class="chip chip-good">75.6</span></li><li><span class="mono">t-ae-overview:any_ae:p;group=Xanomeline Low Dose;scale=100;digits=1</span> <span class="chip chip-good">87.5</span></li><li><span class="mono">t-ae-overview:any_ae:p;group=Xanomeline High Dose;scale=100;digits=1</span> <span class="chip chip-good">94.4</span></li><li><span class="mono">t-ae-overview:related_ae:n;group=Placebo</span> <span class="chip chip-good">43</span></li><li><span class="mono">t-ae-overview:related_ae:p;group=Placebo;scale=100;digits=1</span> <span class="chip chip-good">50.0</span></li><li><span class="mono">t-ae-overview:related_ae:n;group=Xanomeline Low Dose</span> <span class="chip chip-good">77</span></li><li><span class="mono">t-ae-overview:related_ae:p;group=Xanomeline Low Dose;scale=100;digits=1</span> <span class="chip chip-good">80.2</span></li><li><span class="mono">t-ae-overview:related_ae:n;group=Xanomeline High Dose</span> <span class="chip chip-good">64</span></li><li><span class="mono">t-ae-overview:related_ae:p;group=Xanomeline High Dose;scale=100;digits=1</span> <span class="chip chip-good">88.9</span></li><li><span class="mono">t-ae-overview:sev_severe:n;group=Placebo</span> <span class="chip chip-good">5</span></li><li><span class="mono">t-ae-overview:sev_severe:p;group=Placebo;scale=100;digits=1</span> <span class="chip chip-good">5.8</span></li><li><span class="mono">t-ae-overview:sev_severe:n;group=Xanomeline Low Dose</span> <span class="chip chip-good">16</span></li><li><span class="mono">t-ae-overview:sev_severe:p;group=Xanomeline Low Dose;scale=100;digits=1</span> <span class="chip chip-good">16.7</span></li><li><span class="mono">t-ae-overview:sev_severe:n;group=Xanomeline High Dose</span> <span class="chip chip-good">8</span></li><li><span class="mono">t-ae-overview:sev_severe:p;group=Xanomeline High Dose;scale=100;digits=1</span> <span class="chip chip-good">11.1</span></li><li><span class="mono">t-ae-overview:sev_moderate:n;group=Total</span> <span class="chip chip-good">129</span></li><li><span class="mono">t-ae-overview:sev_moderate:p;group=Total;scale=100;digits=1</span> <span class="chip chip-good">50.8</span></li><li><span class="mono">t-ae-overview:serious_ae:n;group=Total</span> <span class="chip chip-good">3</span></li><li><span class="mono">t-ae-overview:serious_ae:p;group=Total;scale=100;digits=1</span> <span class="chip chip-good">1.2</span></li><li><span class="mono">t-ae-overview:serious_ae:n;group=Placebo</span> <span class="chip chip-good">0</span></li><li><span class="mono">t-ae-overview:serious_ae:n;group=Xanomeline Low Dose</span> <span class="chip chip-good">2</span></li><li><span class="mono">t-ae-overview:serious_ae:n;group=Xanomeline High Dose</span> <span class="chip chip-good">1</span></li><li><span class="mono">t-ae-overview:fatal_ae:n;group=Total</span> <span class="chip chip-good">3</span></li><li><span class="mono">t-ae-overview:fatal_ae:n;group=Placebo</span> <span class="chip chip-good">2</span></li></ul><p class="sub">Displays: <a class="mono" href="../gallery/t-ae-overview.html">t-ae-overview</a></p><p class="sub">Requirements: <span class="mono">TXT-AE-001</span></p></article><article class="card text-block" id="TXT-E3-1222"><div class="card-top"><span class="chip chip-warn">generated</span><span class="chip chip-warn" title="Excluded from assembly until approved">draft</span></div><h3><span class="mono">TXT-E3-1222</span></h3><p class="card-meta">E3 §12.2.2 · Display of Adverse Events</p><div class="prose"><p>Treatment-emergent adverse events are summarised by system organ class and preferred
+term in <span class="xref" data-trace="display" data-display="t-ae-common" tabindex="0" role="button">Treatment-Emergent Adverse Events by System Organ Class and Preferred Term</span>. The in-text display below is a thresholded
+rendering of the same analysis results, limited to preferred terms reported by at
+least five percent of patients in any treatment group.</p>
+<p>The adverse event profile was dominated by local reactions to the transdermal system.
+General disorders and administration site conditions were the most frequently reported
+system organ class, affecting
+<span class="binding" data-trace="binding" data-display="t-ae-common" data-address="t-ae-common:by_soc_pt:n;variable=AEBODSYS;variable_level=GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS;group=Xanomeline Low Dose" data-value="51" data-analysis="by_soc_pt" data-stat="n" data-reason="" tabindex="0" role="button">51</span>
+of the
+<span class="binding" data-trace="binding" data-display="t-ae-common" data-address="t-ae-common:by_soc_pt:N;variable=AEBODSYS;variable_level=GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS;group=Xanomeline Low Dose" data-value="96" data-analysis="by_soc_pt" data-stat="N" data-reason="" tabindex="0" role="button">96</span>
+patients in the xanomeline low dose group
+(<span class="binding" data-trace="binding" data-display="t-ae-common" data-address="t-ae-common:by_soc_pt:p;variable=AEBODSYS;variable_level=GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS;group=Xanomeline Low Dose;scale=100;digits=1" data-value="53.1" data-analysis="by_soc_pt" data-stat="p" data-reason="" tabindex="0" role="button">53.1</span>%)
+and
+<span class="binding" data-trace="binding" data-display="t-ae-common" data-address="t-ae-common:by_soc_pt:p;variable=AEBODSYS;variable_level=GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS;group=Xanomeline High Dose;scale=100;digits=1" data-value="50.0" data-analysis="by_soc_pt" data-stat="p" data-reason="" tabindex="0" role="button">50.0</span>%
+of the high dose group, against
+<span class="binding" data-trace="binding" data-display="t-ae-common" data-address="t-ae-common:by_soc_pt:p;variable=AEBODSYS;variable_level=GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS;group=Placebo;scale=100;digits=1" data-value="24.4" data-analysis="by_soc_pt" data-stat="p" data-reason="" tabindex="0" role="button">24.4</span>%
+of patients receiving placebo. Skin and subcutaneous tissue disorders followed the same
+pattern with a clearer dose gradient:
+<span class="binding" data-trace="binding" data-display="t-ae-common" data-address="t-ae-common:by_soc_pt:p;variable=AEBODSYS;variable_level=SKIN AND SUBCUTANEOUS TISSUE DISORDERS;group=Placebo;scale=100;digits=1" data-value="23.3" data-analysis="by_soc_pt" data-stat="p" data-reason="" tabindex="0" role="button">23.3</span>%
+receiving placebo,
+<span class="binding" data-trace="binding" data-display="t-ae-common" data-address="t-ae-common:by_soc_pt:p;variable=AEBODSYS;variable_level=SKIN AND SUBCUTANEOUS TISSUE DISORDERS;group=Xanomeline Low Dose;scale=100;digits=1" data-value="40.6" data-analysis="by_soc_pt" data-stat="p" data-reason="" tabindex="0" role="button">40.6</span>%
+in the low dose group and
+<span class="binding" data-trace="binding" data-display="t-ae-common" data-address="t-ae-common:by_soc_pt:p;variable=AEBODSYS;variable_level=SKIN AND SUBCUTANEOUS TISSUE DISORDERS;group=Xanomeline High Dose;scale=100;digits=1" data-value="54.2" data-analysis="by_soc_pt" data-stat="p" data-reason="" tabindex="0" role="button">54.2</span>%
+in the high dose group.</p>
+<p>At preferred-term level the picture is consistent. Pruritus was the single most common
+term, reported by
+<span class="binding" data-trace="binding" data-display="t-ae-common" data-address="t-ae-common:by_soc_pt:n;variable=AEDECOD;variable_level=PRURITUS;group2=SKIN AND SUBCUTANEOUS TISSUE DISORDERS;group=Xanomeline High Dose" data-value="25" data-analysis="by_soc_pt" data-stat="n" data-reason="" tabindex="0" role="button">25</span>
+patients
+(<span class="binding" data-trace="binding" data-display="t-ae-common" data-address="t-ae-common:by_soc_pt:p;variable=AEDECOD;variable_level=PRURITUS;group2=SKIN AND SUBCUTANEOUS TISSUE DISORDERS;group=Xanomeline High Dose;scale=100;digits=1" data-value="34.7" data-analysis="by_soc_pt" data-stat="p" data-reason="" tabindex="0" role="button">34.7</span>%)
+in the high dose group against
+<span class="binding" data-trace="binding" data-display="t-ae-common" data-address="t-ae-common:by_soc_pt:p;variable=AEDECOD;variable_level=PRURITUS;group2=SKIN AND SUBCUTANEOUS TISSUE DISORDERS;group=Placebo;scale=100;digits=1" data-value="9.3" data-analysis="by_soc_pt" data-stat="p" data-reason="" tabindex="0" role="button">9.3</span>%
+receiving placebo, and application site pruritus was reported by
+<span class="binding" data-trace="binding" data-display="t-ae-common" data-address="t-ae-common:by_soc_pt:n;variable=AEDECOD;variable_level=APPLICATION SITE PRURITUS;group2=GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS;group=Xanomeline High Dose" data-value="21" data-analysis="by_soc_pt" data-stat="n" data-reason="" tabindex="0" role="button">21</span>
+patients
+(<span class="binding" data-trace="binding" data-display="t-ae-common" data-address="t-ae-common:by_soc_pt:p;variable=AEDECOD;variable_level=APPLICATION SITE PRURITUS;group2=GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS;group=Xanomeline High Dose;scale=100;digits=1" data-value="29.2" data-analysis="by_soc_pt" data-stat="p" data-reason="" tabindex="0" role="button">29.2</span>%)
+against
+<span class="binding" data-trace="binding" data-display="t-ae-common" data-address="t-ae-common:by_soc_pt:p;variable=AEDECOD;variable_level=APPLICATION SITE PRURITUS;group2=GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS;group=Placebo;scale=100;digits=1" data-value="7.0" data-analysis="by_soc_pt" data-stat="p" data-reason="" tabindex="0" role="button">7.0</span>%.
+Erythema and application site erythema showed the same direction, reported by
+<span class="binding" data-trace="binding" data-display="t-ae-common" data-address="t-ae-common:by_soc_pt:p;variable=AEDECOD;variable_level=ERYTHEMA;group2=SKIN AND SUBCUTANEOUS TISSUE DISORDERS;group=Xanomeline High Dose;scale=100;digits=1" data-value="19.4" data-analysis="by_soc_pt" data-stat="p" data-reason="" tabindex="0" role="button">19.4</span>%
+and
+<span class="binding" data-trace="binding" data-display="t-ae-common" data-address="t-ae-common:by_soc_pt:p;variable=AEDECOD;variable_level=APPLICATION SITE ERYTHEMA;group2=GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS;group=Xanomeline High Dose;scale=100;digits=1" data-value="19.4" data-analysis="by_soc_pt" data-stat="p" data-reason="" tabindex="0" role="button">19.4</span>%
+of high dose patients respectively.</p>
+<p>Outside the cutaneous and application site classes the pattern is less uniform. Nervous
+system disorders were reported by
+<span class="binding" data-trace="binding" data-display="t-ae-common" data-address="t-ae-common:by_soc_pt:p;variable=AEBODSYS;variable_level=NERVOUS SYSTEM DISORDERS;group=Xanomeline High Dose;scale=100;digits=1" data-value="31.9" data-analysis="by_soc_pt" data-stat="p" data-reason="" tabindex="0" role="button">31.9</span>%
+of high dose patients and
+<span class="binding" data-trace="binding" data-display="t-ae-common" data-address="t-ae-common:by_soc_pt:p;variable=AEBODSYS;variable_level=NERVOUS SYSTEM DISORDERS;group=Placebo;scale=100;digits=1" data-value="9.3" data-analysis="by_soc_pt" data-stat="p" data-reason="" tabindex="0" role="button">9.3</span>%
+of patients receiving placebo, the most common term being dizziness
+(<span class="binding" data-trace="binding" data-display="t-ae-common" data-address="t-ae-common:by_soc_pt:n;variable=AEDECOD;variable_level=DIZZINESS;group2=NERVOUS SYSTEM DISORDERS;group=Total" data-value="21" data-analysis="by_soc_pt" data-stat="n" data-reason="" tabindex="0" role="button">21</span>
+patients overall). Gastrointestinal disorders showed no dose relationship — reported by
+<span class="binding" data-trace="binding" data-display="t-ae-common" data-address="t-ae-common:by_soc_pt:p;variable=AEBODSYS;variable_level=GASTROINTESTINAL DISORDERS;group=Placebo;scale=100;digits=1" data-value="19.8" data-analysis="by_soc_pt" data-stat="p" data-reason="" tabindex="0" role="button">19.8</span>%
+of patients receiving placebo and
+<span class="binding" data-trace="binding" data-display="t-ae-common" data-address="t-ae-common:by_soc_pt:p;variable=AEBODSYS;variable_level=GASTROINTESTINAL DISORDERS;group=Xanomeline High Dose;scale=100;digits=1" data-value="26.4" data-analysis="by_soc_pt" data-stat="p" data-reason="" tabindex="0" role="button">26.4</span>%
+of high dose patients — and diarrhoea, its most frequent term, was in fact reported more
+often on placebo
+(<span class="binding" data-trace="binding" data-display="t-ae-common" data-address="t-ae-common:by_soc_pt:n;variable=AEDECOD;variable_level=DIARRHOEA;group2=GASTROINTESTINAL DISORDERS;group=Placebo" data-value="9" data-analysis="by_soc_pt" data-stat="n" data-reason="" tabindex="0" role="button">9</span>
+patients) than on high dose xanomeline
+(<span class="binding" data-trace="binding" data-display="t-ae-common" data-address="t-ae-common:by_soc_pt:n;variable=AEDECOD;variable_level=DIARRHOEA;group2=GASTROINTESTINAL DISORDERS;group=Xanomeline High Dose" data-value="3" data-analysis="by_soc_pt" data-stat="n" data-reason="" tabindex="0" role="button">3</span>
+patients).</p>
+</div><h4>Bindings</h4><ul class="bindings"><li><span class="mono">t-ae-common:by_soc_pt:n;variable=AEBODSYS;variable_level=GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS;group=Xanomeline Low Dose</span> <span class="chip chip-good">51</span></li><li><span class="mono">t-ae-common:by_soc_pt:N;variable=AEBODSYS;variable_level=GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS;group=Xanomeline Low Dose</span> <span class="chip chip-good">96</span></li><li><span class="mono">t-ae-common:by_soc_pt:p;variable=AEBODSYS;variable_level=GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS;group=Xanomeline Low Dose;scale=100;digits=1</span> <span class="chip chip-good">53.1</span></li><li><span class="mono">t-ae-common:by_soc_pt:p;variable=AEBODSYS;variable_level=GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS;group=Xanomeline High Dose;scale=100;digits=1</span> <span class="chip chip-good">50.0</span></li><li><span class="mono">t-ae-common:by_soc_pt:p;variable=AEBODSYS;variable_level=GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS;group=Placebo;scale=100;digits=1</span> <span class="chip chip-good">24.4</span></li><li><span class="mono">t-ae-common:by_soc_pt:p;variable=AEBODSYS;variable_level=SKIN AND SUBCUTANEOUS TISSUE DISORDERS;group=Placebo;scale=100;digits=1</span> <span class="chip chip-good">23.3</span></li><li><span class="mono">t-ae-common:by_soc_pt:p;variable=AEBODSYS;variable_level=SKIN AND SUBCUTANEOUS TISSUE DISORDERS;group=Xanomeline Low Dose;scale=100;digits=1</span> <span class="chip chip-good">40.6</span></li><li><span class="mono">t-ae-common:by_soc_pt:p;variable=AEBODSYS;variable_level=SKIN AND SUBCUTANEOUS TISSUE DISORDERS;group=Xanomeline High Dose;scale=100;digits=1</span> <span class="chip chip-good">54.2</span></li><li><span class="mono">t-ae-common:by_soc_pt:n;variable=AEDECOD;variable_level=PRURITUS;group2=SKIN AND SUBCUTANEOUS TISSUE DISORDERS;group=Xanomeline High Dose</span> <span class="chip chip-good">25</span></li><li><span class="mono">t-ae-common:by_soc_pt:p;variable=AEDECOD;variable_level=PRURITUS;group2=SKIN AND SUBCUTANEOUS TISSUE DISORDERS;group=Xanomeline High Dose;scale=100;digits=1</span> <span class="chip chip-good">34.7</span></li><li><span class="mono">t-ae-common:by_soc_pt:p;variable=AEDECOD;variable_level=PRURITUS;group2=SKIN AND SUBCUTANEOUS TISSUE DISORDERS;group=Placebo;scale=100;digits=1</span> <span class="chip chip-good">9.3</span></li><li><span class="mono">t-ae-common:by_soc_pt:n;variable=AEDECOD;variable_level=APPLICATION SITE PRURITUS;group2=GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS;group=Xanomeline High Dose</span> <span class="chip chip-good">21</span></li><li><span class="mono">t-ae-common:by_soc_pt:p;variable=AEDECOD;variable_level=APPLICATION SITE PRURITUS;group2=GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS;group=Xanomeline High Dose;scale=100;digits=1</span> <span class="chip chip-good">29.2</span></li><li><span class="mono">t-ae-common:by_soc_pt:p;variable=AEDECOD;variable_level=APPLICATION SITE PRURITUS;group2=GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS;group=Placebo;scale=100;digits=1</span> <span class="chip chip-good">7.0</span></li><li><span class="mono">t-ae-common:by_soc_pt:p;variable=AEDECOD;variable_level=ERYTHEMA;group2=SKIN AND SUBCUTANEOUS TISSUE DISORDERS;group=Xanomeline High Dose;scale=100;digits=1</span> <span class="chip chip-good">19.4</span></li><li><span class="mono">t-ae-common:by_soc_pt:p;variable=AEDECOD;variable_level=APPLICATION SITE ERYTHEMA;group2=GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS;group=Xanomeline High Dose;scale=100;digits=1</span> <span class="chip chip-good">19.4</span></li><li><span class="mono">t-ae-common:by_soc_pt:p;variable=AEBODSYS;variable_level=NERVOUS SYSTEM DISORDERS;group=Xanomeline High Dose;scale=100;digits=1</span> <span class="chip chip-good">31.9</span></li><li><span class="mono">t-ae-common:by_soc_pt:p;variable=AEBODSYS;variable_level=NERVOUS SYSTEM DISORDERS;group=Placebo;scale=100;digits=1</span> <span class="chip chip-good">9.3</span></li><li><span class="mono">t-ae-common:by_soc_pt:n;variable=AEDECOD;variable_level=DIZZINESS;group2=NERVOUS SYSTEM DISORDERS;group=Total</span> <span class="chip chip-good">21</span></li><li><span class="mono">t-ae-common:by_soc_pt:p;variable=AEBODSYS;variable_level=GASTROINTESTINAL DISORDERS;group=Placebo;scale=100;digits=1</span> <span class="chip chip-good">19.8</span></li><li><span class="mono">t-ae-common:by_soc_pt:p;variable=AEBODSYS;variable_level=GASTROINTESTINAL DISORDERS;group=Xanomeline High Dose;scale=100;digits=1</span> <span class="chip chip-good">26.4</span></li><li><span class="mono">t-ae-common:by_soc_pt:n;variable=AEDECOD;variable_level=DIARRHOEA;group2=GASTROINTESTINAL DISORDERS;group=Placebo</span> <span class="chip chip-good">9</span></li><li><span class="mono">t-ae-common:by_soc_pt:n;variable=AEDECOD;variable_level=DIARRHOEA;group2=GASTROINTESTINAL DISORDERS;group=Xanomeline High Dose</span> <span class="chip chip-good">3</span></li></ul><p class="sub">Displays: <a class="mono" href="../gallery/t-ae-common.html">t-ae-common</a></p><p class="sub">Generated by <span class="mono">claude-opus-5</span></p><p class="sub">Requirements: <span class="mono">TXT-AE-002</span></p></article><article class="card text-block" id="TXT-E3-1224"><div class="card-top"><span class="chip chip-muted">boilerplate</span><span class="chip chip-good" title="@jwildfire 2026-07-25">approved</span></div><h3><span class="mono">TXT-E3-1224</span></h3><p class="card-meta">E3 §12.2.4 · Listing of Adverse Events by Patient</p><div class="prose"><p>All treatment-emergent adverse events recorded during the study are listed by patient
+in <span class="xref unresolved">Section 16.2.7</span>. The listing gives, for each event, the patient identifier,
+treatment group, verbatim term, preferred term and system organ class, onset and
+resolution dates, maximum severity, seriousness, the investigator&#39;s assessment of
+relationship to study drug, the action taken with study drug and the outcome.</p>
+<p>Serious adverse events, adverse events with a fatal outcome and adverse events
+leading to withdrawal of study drug are additionally presented in
+<span class="xref" data-trace="display" data-display="l-ae-serious" tabindex="0" role="button">Listing of Serious Adverse Events</span>.</p>
+<p>Every listing carries the study number, the analysis set and the data cut-off date in
+its header, and identifies derived values in a conspicuous fashion, as required by
+ICH E3. Patient identifiers in listings intended for public disclosure are subject to
+the anonymisation approach described in the study&#39;s disclosure plan.</p>
+</div><p class="sub">No bindings — this block states no results.</p><p class="sub">Displays: <a class="mono" href="../gallery/l-ae-serious.html">l-ae-serious</a></p><p class="sub">Requirements: <span class="mono">TXT-AE-003</span></p></article><article class="card text-block" id="TXT-E3-1231"><div class="card-top"><span class="chip chip-warn">generated</span><span class="chip chip-warn" title="Excluded from assembly until approved">draft</span></div><h3><span class="mono">TXT-E3-1231</span></h3><p class="card-meta">E3 §12.3.1 · Listing of Deaths, Other Serious Adverse Events and Other Significant Adverse Events</p><div class="prose"><p>Adverse events with a fatal outcome were recorded for
+<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:fatal_ae:n;group=Total" data-value="3" data-analysis="fatal_ae" data-stat="n" data-reason="" tabindex="0" role="button">3</span> of the
+<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:fatal_ae:N;group=Total" data-value="254" data-analysis="fatal_ae" data-stat="N" data-reason="" tabindex="0" role="button">254</span> patients in the safety analysis set:
+<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:fatal_ae:n;group=Placebo" data-value="2" data-analysis="fatal_ae" data-stat="n" data-reason="" tabindex="0" role="button">2</span> receiving placebo,
+<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:fatal_ae:n;group=Xanomeline Low Dose" data-value="1" data-analysis="fatal_ae" data-stat="n" data-reason="" tabindex="0" role="button">1</span> receiving xanomeline low
+dose and <span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:fatal_ae:n;group=Xanomeline High Dose" data-value="0" data-analysis="fatal_ae" data-stat="n" data-reason="" tabindex="0" role="button">0</span> receiving
+xanomeline high dose. Deaths were therefore not more frequent on active treatment, and
+with this number of events no inference about an effect of treatment on mortality is
+possible.</p>
+<p>Serious adverse events were reported by
+<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:serious_ae:n;group=Total" data-value="3" data-analysis="serious_ae" data-stat="n" data-reason="" tabindex="0" role="button">3</span> patients
+(<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:serious_ae:p;group=Total;scale=100;digits=1" data-value="1.2" data-analysis="serious_ae" data-stat="p" data-reason="" tabindex="0" role="button">1.2</span>%) overall:
+<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:serious_ae:n;group=Placebo" data-value="0" data-analysis="serious_ae" data-stat="n" data-reason="" tabindex="0" role="button">0</span> patients
+(<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:serious_ae:p;group=Placebo;scale=100;digits=1" data-value="0.0" data-analysis="serious_ae" data-stat="p" data-reason="" tabindex="0" role="button">0.0</span>%) receiving
+placebo, <span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:serious_ae:n;group=Xanomeline Low Dose" data-value="2" data-analysis="serious_ae" data-stat="n" data-reason="" tabindex="0" role="button">2</span> patients
+(<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:serious_ae:p;group=Xanomeline Low Dose;scale=100;digits=1" data-value="2.1" data-analysis="serious_ae" data-stat="p" data-reason="" tabindex="0" role="button">2.1</span>%)
+receiving xanomeline low dose and
+<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:serious_ae:n;group=Xanomeline High Dose" data-value="1" data-analysis="serious_ae" data-stat="n" data-reason="" tabindex="0" role="button">1</span> patients
+(<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:serious_ae:p;group=Xanomeline High Dose;scale=100;digits=1" data-value="1.4" data-analysis="serious_ae" data-stat="p" data-reason="" tabindex="0" role="button">1.4</span>%)
+receiving xanomeline high dose. The between-group differences in serious adverse events
+are far smaller than the differences in overall adverse event frequency reported in
+<span class="xref unresolved">Section 12.2.1</span>, and the events reported were of a kind consistent with the
+comorbidity expected in an elderly population.</p>
+<p>Adverse events of severe maximum intensity — reported here as other significant adverse
+events — were more frequent on active treatment:
+<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:sev_severe:n;group=Xanomeline Low Dose" data-value="16" data-analysis="sev_severe" data-stat="n" data-reason="" tabindex="0" role="button">16</span> patients
+(<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:sev_severe:p;group=Xanomeline Low Dose;scale=100;digits=1" data-value="16.7" data-analysis="sev_severe" data-stat="p" data-reason="" tabindex="0" role="button">16.7</span>%) in
+the low dose group and <span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:sev_severe:n;group=Xanomeline High Dose" data-value="8" data-analysis="sev_severe" data-stat="n" data-reason="" tabindex="0" role="button">8</span>
+patients
+(<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:sev_severe:p;group=Xanomeline High Dose;scale=100;digits=1" data-value="11.1" data-analysis="sev_severe" data-stat="p" data-reason="" tabindex="0" role="button">11.1</span>%) in
+the high dose group, compared with
+<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:sev_severe:n;group=Placebo" data-value="5" data-analysis="sev_severe" data-stat="n" data-reason="" tabindex="0" role="button">5</span> patients
+(<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:sev_severe:p;group=Placebo;scale=100;digits=1" data-value="5.8" data-analysis="sev_severe" data-stat="p" data-reason="" tabindex="0" role="button">5.8</span>%) receiving
+placebo.</p>
+<p>Individual serious adverse events, with the patient identifier, treatment group, system
+organ class, preferred term, severity, relationship to study drug, onset and resolution
+study day and outcome, are presented in <span class="xref" data-trace="display" data-display="l-ae-serious" tabindex="0" role="button">Listing of Serious Adverse Events</span>. Narratives for
+these patients are provided in <span class="xref unresolved">Section 12.3.2</span>.</p>
+</div><h4>Bindings</h4><ul class="bindings"><li><span class="mono">t-ae-overview:fatal_ae:n;group=Total</span> <span class="chip chip-good">3</span></li><li><span class="mono">t-ae-overview:fatal_ae:N;group=Total</span> <span class="chip chip-good">254</span></li><li><span class="mono">t-ae-overview:fatal_ae:n;group=Placebo</span> <span class="chip chip-good">2</span></li><li><span class="mono">t-ae-overview:fatal_ae:n;group=Xanomeline Low Dose</span> <span class="chip chip-good">1</span></li><li><span class="mono">t-ae-overview:fatal_ae:n;group=Xanomeline High Dose</span> <span class="chip chip-good">0</span></li><li><span class="mono">t-ae-overview:serious_ae:n;group=Total</span> <span class="chip chip-good">3</span></li><li><span class="mono">t-ae-overview:serious_ae:p;group=Total;scale=100;digits=1</span> <span class="chip chip-good">1.2</span></li><li><span class="mono">t-ae-overview:serious_ae:n;group=Placebo</span> <span class="chip chip-good">0</span></li><li><span class="mono">t-ae-overview:serious_ae:p;group=Placebo;scale=100;digits=1</span> <span class="chip chip-good">0.0</span></li><li><span class="mono">t-ae-overview:serious_ae:n;group=Xanomeline Low Dose</span> <span class="chip chip-good">2</span></li><li><span class="mono">t-ae-overview:serious_ae:p;group=Xanomeline Low Dose;scale=100;digits=1</span> <span class="chip chip-good">2.1</span></li><li><span class="mono">t-ae-overview:serious_ae:n;group=Xanomeline High Dose</span> <span class="chip chip-good">1</span></li><li><span class="mono">t-ae-overview:serious_ae:p;group=Xanomeline High Dose;scale=100;digits=1</span> <span class="chip chip-good">1.4</span></li><li><span class="mono">t-ae-overview:sev_severe:n;group=Xanomeline Low Dose</span> <span class="chip chip-good">16</span></li><li><span class="mono">t-ae-overview:sev_severe:p;group=Xanomeline Low Dose;scale=100;digits=1</span> <span class="chip chip-good">16.7</span></li><li><span class="mono">t-ae-overview:sev_severe:n;group=Xanomeline High Dose</span> <span class="chip chip-good">8</span></li><li><span class="mono">t-ae-overview:sev_severe:p;group=Xanomeline High Dose;scale=100;digits=1</span> <span class="chip chip-good">11.1</span></li><li><span class="mono">t-ae-overview:sev_severe:n;group=Placebo</span> <span class="chip chip-good">5</span></li><li><span class="mono">t-ae-overview:sev_severe:p;group=Placebo;scale=100;digits=1</span> <span class="chip chip-good">5.8</span></li></ul><p class="sub">Displays: <a class="mono" href="../gallery/t-ae-overview.html">t-ae-overview</a>, <a class="mono" href="../gallery/l-ae-serious.html">l-ae-serious</a></p><p class="sub">Generated by <span class="mono">claude-opus-5</span></p><p class="sub">Requirements: <span class="mono">TXT-SAE-001</span></p></article><article class="card text-block" id="TXT-E3-1206"><div class="card-top"><span class="chip chip-warn">generated</span><span class="chip chip-warn" title="Excluded from assembly until approved">draft</span></div><h3><span class="mono">TXT-E3-1206</span></h3><p class="card-meta">E3 §12.6 · Safety Conclusions</p><div class="prose"><p>Xanomeline transdermal therapeutic system was associated with a dose-related increase
+in treatment-emergent adverse events. At least one treatment-emergent adverse event was
+reported by <span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:any_ae:p;group=Xanomeline High Dose;scale=100;digits=1" data-value="94.4" data-analysis="any_ae" data-stat="p" data-reason="" tabindex="0" role="button">94.4</span>%
+of patients in the high dose group and
+<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:any_ae:p;group=Xanomeline Low Dose;scale=100;digits=1" data-value="87.5" data-analysis="any_ae" data-stat="p" data-reason="" tabindex="0" role="button">87.5</span>% in the low
+dose group, compared with
+<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:any_ae:p;group=Placebo;scale=100;digits=1" data-value="75.6" data-analysis="any_ae" data-stat="p" data-reason="" tabindex="0" role="button">75.6</span>% receiving placebo, and
+events assessed as related to study drug followed the same gradient
+(<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:related_ae:p;group=Placebo;scale=100;digits=1" data-value="50.0" data-analysis="related_ae" data-stat="p" data-reason="" tabindex="0" role="button">50.0</span>%,
+<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:related_ae:p;group=Xanomeline Low Dose;scale=100;digits=1" data-value="80.2" data-analysis="related_ae" data-stat="p" data-reason="" tabindex="0" role="button">80.2</span>% and
+<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:related_ae:p;group=Xanomeline High Dose;scale=100;digits=1" data-value="88.9" data-analysis="related_ae" data-stat="p" data-reason="" tabindex="0" role="button">88.9</span>%
+respectively).</p>
+<p>The excess was concentrated in local, cutaneous events. Skin and subcutaneous tissue
+disorders alone were reported by
+<span class="binding" data-trace="binding" data-display="t-ae-common" data-address="t-ae-common:by_soc_pt:p;variable=AEBODSYS;variable_level=SKIN AND SUBCUTANEOUS TISSUE DISORDERS;group=Xanomeline High Dose;scale=100;digits=1" data-value="54.2" data-analysis="by_soc_pt" data-stat="p" data-reason="" tabindex="0" role="button">54.2</span>%
+of high dose patients against
+<span class="binding" data-trace="binding" data-display="t-ae-common" data-address="t-ae-common:by_soc_pt:p;variable=AEBODSYS;variable_level=SKIN AND SUBCUTANEOUS TISSUE DISORDERS;group=Placebo;scale=100;digits=1" data-value="23.3" data-analysis="by_soc_pt" data-stat="p" data-reason="" tabindex="0" role="button">23.3</span>%
+receiving placebo, and general disorders and administration site conditions by
+<span class="binding" data-trace="binding" data-display="t-ae-common" data-address="t-ae-common:by_soc_pt:p;variable=AEBODSYS;variable_level=GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS;group=Xanomeline High Dose;scale=100;digits=1" data-value="50.0" data-analysis="by_soc_pt" data-stat="p" data-reason="" tabindex="0" role="button">50.0</span>%
+against
+<span class="binding" data-trace="binding" data-display="t-ae-common" data-address="t-ae-common:by_soc_pt:p;variable=AEBODSYS;variable_level=GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS;group=Placebo;scale=100;digits=1" data-value="24.4" data-analysis="by_soc_pt" data-stat="p" data-reason="" tabindex="0" role="button">24.4</span>%,
+with pruritus and erythema at and beyond the application site the dominant preferred
+terms.</p>
+<p>Study discontinuation was correspondingly higher on active treatment:
+<span class="binding" data-trace="binding" data-display="t-disposition" data-address="t-disposition:discontinued:p;group=Xanomeline Low Dose;scale=100;digits=1" data-value="74.0" data-analysis="discontinued" data-stat="p" data-reason="" tabindex="0" role="button">74.0</span>% of
+low dose patients and
+<span class="binding" data-trace="binding" data-display="t-disposition" data-address="t-disposition:discontinued:p;group=Xanomeline High Dose;scale=100;digits=1" data-value="62.5" data-analysis="discontinued" data-stat="p" data-reason="" tabindex="0" role="button">62.5</span>% of
+high dose patients discontinued prematurely, against
+<span class="binding" data-trace="binding" data-display="t-disposition" data-address="t-disposition:discontinued:p;group=Placebo;scale=100;digits=1" data-value="32.6" data-analysis="discontinued" data-stat="p" data-reason="" tabindex="0" role="button">32.6</span>% receiving
+placebo. The analysis dataset does not record a reason for the great majority of these
+discontinuations, so the contribution of adverse events to them cannot be quantified
+from these data — but the consequence for exposure is unambiguous: mean treatment
+duration was <span class="binding" data-trace="binding" data-display="t-exposure" data-address="t-exposure:duration:mean;group=Placebo;digits=1" data-value="147.8" data-analysis="duration" data-stat="mean" data-reason="" tabindex="0" role="button">147.8</span> days on placebo
+against <span class="binding" data-trace="binding" data-display="t-exposure" data-address="t-exposure:duration:mean;group=Xanomeline Low Dose;digits=1" data-value="85.9" data-analysis="duration" data-stat="mean" data-reason="" tabindex="0" role="button">85.9</span> and
+<span class="binding" data-trace="binding" data-display="t-exposure" data-address="t-exposure:duration:mean;group=Xanomeline High Dose;digits=1" data-value="112.2" data-analysis="duration" data-stat="mean" data-reason="" tabindex="0" role="button">112.2</span> days on low and
+high dose xanomeline.</p>
+<p>Serious adverse events and deaths did not follow this pattern. Serious adverse events
+were reported by <span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:serious_ae:n;group=Total" data-value="3" data-analysis="serious_ae" data-stat="n" data-reason="" tabindex="0" role="button">3</span> patients
+(<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:serious_ae:p;group=Total;scale=100;digits=1" data-value="1.2" data-analysis="serious_ae" data-stat="p" data-reason="" tabindex="0" role="button">1.2</span>%) in the whole
+safety analysis set, and adverse events with a fatal outcome by
+<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:fatal_ae:n;group=Total" data-value="3" data-analysis="fatal_ae" data-stat="n" data-reason="" tabindex="0" role="button">3</span> patients, of whom
+<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:fatal_ae:n;group=Placebo" data-value="2" data-analysis="fatal_ae" data-stat="n" data-reason="" tabindex="0" role="button">2</span> were receiving placebo. The safety
+signal in this study is therefore one of local tolerability rather than of systemic
+serious toxicity. That conclusion is bounded by exposure: placebo patients accumulated
+substantially more time on study drug, so the crude proportions above understate rather
+than overstate the tolerability difference, and they say little about safety beyond the
+exposure actually achieved in the xanomeline groups.</p>
+<p>No efficacy data are analysed in this report, so no benefit-risk conclusion is drawn.</p>
+</div><h4>Bindings</h4><ul class="bindings"><li><span class="mono">t-ae-overview:any_ae:p;group=Xanomeline High Dose;scale=100;digits=1</span> <span class="chip chip-good">94.4</span></li><li><span class="mono">t-ae-overview:any_ae:p;group=Xanomeline Low Dose;scale=100;digits=1</span> <span class="chip chip-good">87.5</span></li><li><span class="mono">t-ae-overview:any_ae:p;group=Placebo;scale=100;digits=1</span> <span class="chip chip-good">75.6</span></li><li><span class="mono">t-ae-overview:related_ae:p;group=Placebo;scale=100;digits=1</span> <span class="chip chip-good">50.0</span></li><li><span class="mono">t-ae-overview:related_ae:p;group=Xanomeline Low Dose;scale=100;digits=1</span> <span class="chip chip-good">80.2</span></li><li><span class="mono">t-ae-overview:related_ae:p;group=Xanomeline High Dose;scale=100;digits=1</span> <span class="chip chip-good">88.9</span></li><li><span class="mono">t-ae-common:by_soc_pt:p;variable=AEBODSYS;variable_level=SKIN AND SUBCUTANEOUS TISSUE DISORDERS;group=Xanomeline High Dose;scale=100;digits=1</span> <span class="chip chip-good">54.2</span></li><li><span class="mono">t-ae-common:by_soc_pt:p;variable=AEBODSYS;variable_level=SKIN AND SUBCUTANEOUS TISSUE DISORDERS;group=Placebo;scale=100;digits=1</span> <span class="chip chip-good">23.3</span></li><li><span class="mono">t-ae-common:by_soc_pt:p;variable=AEBODSYS;variable_level=GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS;group=Xanomeline High Dose;scale=100;digits=1</span> <span class="chip chip-good">50.0</span></li><li><span class="mono">t-ae-common:by_soc_pt:p;variable=AEBODSYS;variable_level=GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS;group=Placebo;scale=100;digits=1</span> <span class="chip chip-good">24.4</span></li><li><span class="mono">t-disposition:discontinued:p;group=Xanomeline Low Dose;scale=100;digits=1</span> <span class="chip chip-good">74.0</span></li><li><span class="mono">t-disposition:discontinued:p;group=Xanomeline High Dose;scale=100;digits=1</span> <span class="chip chip-good">62.5</span></li><li><span class="mono">t-disposition:discontinued:p;group=Placebo;scale=100;digits=1</span> <span class="chip chip-good">32.6</span></li><li><span class="mono">t-exposure:duration:mean;group=Placebo;digits=1</span> <span class="chip chip-good">147.8</span></li><li><span class="mono">t-exposure:duration:mean;group=Xanomeline Low Dose;digits=1</span> <span class="chip chip-good">85.9</span></li><li><span class="mono">t-exposure:duration:mean;group=Xanomeline High Dose;digits=1</span> <span class="chip chip-good">112.2</span></li><li><span class="mono">t-ae-overview:serious_ae:n;group=Total</span> <span class="chip chip-good">3</span></li><li><span class="mono">t-ae-overview:serious_ae:p;group=Total;scale=100;digits=1</span> <span class="chip chip-good">1.2</span></li><li><span class="mono">t-ae-overview:fatal_ae:n;group=Total</span> <span class="chip chip-good">3</span></li><li><span class="mono">t-ae-overview:fatal_ae:n;group=Placebo</span> <span class="chip chip-good">2</span></li></ul><p class="sub">Displays: <a class="mono" href="../gallery/t-ae-overview.html">t-ae-overview</a>, <a class="mono" href="../gallery/t-ae-common.html">t-ae-common</a>, <a class="mono" href="../gallery/t-exposure.html">t-exposure</a>, <a class="mono" href="../gallery/t-disposition.html">t-disposition</a></p><p class="sub">Generated by <span class="mono">claude-opus-5</span></p><p class="sub">Requirements: <span class="mono">TXT-CONC-001</span></p></article><article class="card text-block" id="TXT-E3-1300"><div class="card-top"><span class="chip chip-warn">generated</span><span class="chip chip-warn" title="Excluded from assembly until approved">draft</span></div><h3><span class="mono">TXT-E3-1300</span></h3><p class="card-meta">E3 §13 · Discussion and Overall Conclusions</p><div class="prose"><p>This study evaluated the safety and tolerability of the xanomeline transdermal
+therapeutic system in an elderly population with mild to moderate Alzheimer&#39;s disease.
+<span class="binding" data-trace="binding" data-display="t-disposition" data-address="t-disposition:randomised:n;group=Total" data-value="254" data-analysis="randomised" data-stat="n" data-reason="" tabindex="0" role="button">254</span> patients were randomised and treated,
+with a mean age of <span class="binding" data-trace="binding" data-display="t-demographics" data-address="t-demographics:age:mean;group=Total;digits=1" data-value="75.1" data-analysis="age" data-stat="mean" data-reason="" tabindex="0" role="button">75.1</span> years and a
+range of <span class="binding" data-trace="binding" data-display="t-demographics" data-address="t-demographics:age:min;group=Total" data-value="51" data-analysis="age" data-stat="min" data-reason="" tabindex="0" role="button">51</span> to
+<span class="binding" data-trace="binding" data-display="t-demographics" data-address="t-demographics:age:max;group=Total" data-value="89" data-analysis="age" data-stat="max" data-reason="" tabindex="0" role="button">89</span> years. Demographic and baseline
+characteristics were comparable across the treatment groups, so the differences
+described below are unlikely to be explained by baseline imbalance.</p>
+<p>The most consequential finding is a tolerability limitation rather than a safety signal
+in the conventional sense. Only
+<span class="binding" data-trace="binding" data-display="t-disposition" data-address="t-disposition:completed:p;group=Xanomeline Low Dose;scale=100;digits=1" data-value="26.0" data-analysis="completed" data-stat="p" data-reason="" tabindex="0" role="button">26.0</span>% of
+patients in the xanomeline low dose group and
+<span class="binding" data-trace="binding" data-display="t-disposition" data-address="t-disposition:completed:p;group=Xanomeline High Dose;scale=100;digits=1" data-value="37.5" data-analysis="completed" data-stat="p" data-reason="" tabindex="0" role="button">37.5</span>% in the
+high dose group completed the study, against
+<span class="binding" data-trace="binding" data-display="t-disposition" data-address="t-disposition:completed:p;group=Placebo;scale=100;digits=1" data-value="67.4" data-analysis="completed" data-stat="p" data-reason="" tabindex="0" role="button">67.4</span>% receiving placebo —
+<span class="binding" data-trace="binding" data-display="t-disposition" data-address="t-disposition:discontinued:n;group=Xanomeline Low Dose" data-value="71" data-analysis="discontinued" data-stat="n" data-reason="" tabindex="0" role="button">71</span> and
+<span class="binding" data-trace="binding" data-display="t-disposition" data-address="t-disposition:discontinued:n;group=Xanomeline High Dose" data-value="45" data-analysis="discontinued" data-stat="n" data-reason="" tabindex="0" role="button">45</span> premature
+discontinuations respectively, against
+<span class="binding" data-trace="binding" data-display="t-disposition" data-address="t-disposition:discontinued:n;group=Placebo" data-value="28" data-analysis="discontinued" data-stat="n" data-reason="" tabindex="0" role="button">28</span> on placebo. The consequence is
+visible in exposure: mean treatment duration fell from
+<span class="binding" data-trace="binding" data-display="t-exposure" data-address="t-exposure:duration:mean;group=Placebo;digits=1" data-value="147.8" data-analysis="duration" data-stat="mean" data-reason="" tabindex="0" role="button">147.8</span> days on placebo to
+<span class="binding" data-trace="binding" data-display="t-exposure" data-address="t-exposure:duration:mean;group=Xanomeline Low Dose;digits=1" data-value="85.9" data-analysis="duration" data-stat="mean" data-reason="" tabindex="0" role="button">85.9</span> days on low dose
+xanomeline, and exposure of at least 180 days was reached by only
+<span class="binding" data-trace="binding" data-display="t-exposure" data-address="t-exposure:dur_180:p;group=Xanomeline Low Dose;scale=100;digits=1" data-value="26.0" data-analysis="dur_180" data-stat="p" data-reason="" tabindex="0" role="button">26.0</span>% of low dose
+patients and
+<span class="binding" data-trace="binding" data-display="t-exposure" data-address="t-exposure:dur_180:p;group=Xanomeline High Dose;scale=100;digits=1" data-value="36.1" data-analysis="dur_180" data-stat="p" data-reason="" tabindex="0" role="button">36.1</span>% of high
+dose patients, compared with
+<span class="binding" data-trace="binding" data-display="t-exposure" data-address="t-exposure:dur_180:p;group=Placebo;scale=100;digits=1" data-value="64.0" data-analysis="dur_180" data-stat="p" data-reason="" tabindex="0" role="button">64.0</span>% of placebo patients.</p>
+<p>The adverse events that accompany this pattern are local and cutaneous, as would be
+expected of a transdermal formulation. General disorders and administration site
+conditions were reported by
+<span class="binding" data-trace="binding" data-display="t-ae-common" data-address="t-ae-common:by_soc_pt:p;variable=AEBODSYS;variable_level=GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS;group=Xanomeline High Dose;scale=100;digits=1" data-value="50.0" data-analysis="by_soc_pt" data-stat="p" data-reason="" tabindex="0" role="button">50.0</span>%
+of high dose patients against
+<span class="binding" data-trace="binding" data-display="t-ae-common" data-address="t-ae-common:by_soc_pt:p;variable=AEBODSYS;variable_level=GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS;group=Placebo;scale=100;digits=1" data-value="24.4" data-analysis="by_soc_pt" data-stat="p" data-reason="" tabindex="0" role="button">24.4</span>%
+receiving placebo, and skin and subcutaneous tissue disorders by
+<span class="binding" data-trace="binding" data-display="t-ae-common" data-address="t-ae-common:by_soc_pt:p;variable=AEBODSYS;variable_level=SKIN AND SUBCUTANEOUS TISSUE DISORDERS;group=Xanomeline High Dose;scale=100;digits=1" data-value="54.2" data-analysis="by_soc_pt" data-stat="p" data-reason="" tabindex="0" role="button">54.2</span>%
+against
+<span class="binding" data-trace="binding" data-display="t-ae-common" data-address="t-ae-common:by_soc_pt:p;variable=AEBODSYS;variable_level=SKIN AND SUBCUTANEOUS TISSUE DISORDERS;group=Placebo;scale=100;digits=1" data-value="23.3" data-analysis="by_soc_pt" data-stat="p" data-reason="" tabindex="0" role="button">23.3</span>%,
+with pruritus and erythema the dominant preferred terms. Systemic events tell a
+different story. Nervous system disorders separated less sharply
+(<span class="binding" data-trace="binding" data-display="t-ae-common" data-address="t-ae-common:by_soc_pt:p;variable=AEBODSYS;variable_level=NERVOUS SYSTEM DISORDERS;group=Xanomeline High Dose;scale=100;digits=1" data-value="31.9" data-analysis="by_soc_pt" data-stat="p" data-reason="" tabindex="0" role="button">31.9</span>%
+against
+<span class="binding" data-trace="binding" data-display="t-ae-common" data-address="t-ae-common:by_soc_pt:p;variable=AEBODSYS;variable_level=NERVOUS SYSTEM DISORDERS;group=Placebo;scale=100;digits=1" data-value="9.3" data-analysis="by_soc_pt" data-stat="p" data-reason="" tabindex="0" role="button">9.3</span>%),
+serious adverse events were reported by only
+<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:serious_ae:n;group=Total" data-value="3" data-analysis="serious_ae" data-stat="n" data-reason="" tabindex="0" role="button">3</span> patients across the whole safety analysis
+set, and adverse events with a fatal outcome occurred in
+<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:fatal_ae:n;group=Total" data-value="3" data-analysis="fatal_ae" data-stat="n" data-reason="" tabindex="0" role="button">3</span> patients, of whom
+<span class="binding" data-trace="binding" data-display="t-ae-overview" data-address="t-ae-overview:fatal_ae:n;group=Placebo" data-value="2" data-analysis="fatal_ae" data-stat="n" data-reason="" tabindex="0" role="button">2</span> were receiving placebo.</p>
+<p>Three limitations bound the interpretation of these results. First, the imbalance in
+exposure means crude adverse event proportions are not directly comparable between
+groups: patients receiving placebo had substantially more time in which to report
+events, so the observed excess in the xanomeline groups is a conservative rather than an
+inflated description of the difference. Second, the analysis dataset records no reason
+for the great majority of discontinuations, so the causal link between the cutaneous
+events and the withdrawals — although strongly suggested by their joint distribution —
+cannot be established from these data alone; the patient narratives in
+<span class="xref unresolved">Section 12.3.2</span> and the listings in <span class="xref unresolved">Section 16.2.1</span> are the appropriate
+place to examine it. Third, the population was elderly and predominantly white
+(<span class="binding" data-trace="binding" data-display="t-demographics" data-address="t-demographics:race:p;variable_level=WHITE;group=Total;scale=100;digits=1" data-value="90.6" data-analysis="race" data-stat="p" data-reason="" tabindex="0" role="button">90.6</span>%),
+which limits generalisability, and no efficacy data are analysed in this report, so
+nothing here speaks to whether the tolerability burden is offset by clinical benefit.</p>
+<p>Within those bounds, the conclusion supported by these data is that the xanomeline
+transdermal therapeutic system at the doses studied is associated with a high rate of
+local cutaneous and application site reactions and with markedly reduced treatment
+persistence, without an accompanying increase in serious adverse events or deaths. A
+formulation or titration strategy that reduces application site reactions would be the
+logical prerequisite to any further evaluation of this route of administration in this
+population.</p>
+</div><h4>Bindings</h4><ul class="bindings"><li><span class="mono">t-disposition:randomised:n;group=Total</span> <span class="chip chip-good">254</span></li><li><span class="mono">t-demographics:age:mean;group=Total;digits=1</span> <span class="chip chip-good">75.1</span></li><li><span class="mono">t-demographics:age:min;group=Total</span> <span class="chip chip-good">51</span></li><li><span class="mono">t-demographics:age:max;group=Total</span> <span class="chip chip-good">89</span></li><li><span class="mono">t-disposition:completed:p;group=Xanomeline Low Dose;scale=100;digits=1</span> <span class="chip chip-good">26.0</span></li><li><span class="mono">t-disposition:completed:p;group=Xanomeline High Dose;scale=100;digits=1</span> <span class="chip chip-good">37.5</span></li><li><span class="mono">t-disposition:completed:p;group=Placebo;scale=100;digits=1</span> <span class="chip chip-good">67.4</span></li><li><span class="mono">t-disposition:discontinued:n;group=Xanomeline Low Dose</span> <span class="chip chip-good">71</span></li><li><span class="mono">t-disposition:discontinued:n;group=Xanomeline High Dose</span> <span class="chip chip-good">45</span></li><li><span class="mono">t-disposition:discontinued:n;group=Placebo</span> <span class="chip chip-good">28</span></li><li><span class="mono">t-exposure:duration:mean;group=Placebo;digits=1</span> <span class="chip chip-good">147.8</span></li><li><span class="mono">t-exposure:duration:mean;group=Xanomeline Low Dose;digits=1</span> <span class="chip chip-good">85.9</span></li><li><span class="mono">t-exposure:dur_180:p;group=Xanomeline Low Dose;scale=100;digits=1</span> <span class="chip chip-good">26.0</span></li><li><span class="mono">t-exposure:dur_180:p;group=Xanomeline High Dose;scale=100;digits=1</span> <span class="chip chip-good">36.1</span></li><li><span class="mono">t-exposure:dur_180:p;group=Placebo;scale=100;digits=1</span> <span class="chip chip-good">64.0</span></li><li><span class="mono">t-ae-common:by_soc_pt:p;variable=AEBODSYS;variable_level=GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS;group=Xanomeline High Dose;scale=100;digits=1</span> <span class="chip chip-good">50.0</span></li><li><span class="mono">t-ae-common:by_soc_pt:p;variable=AEBODSYS;variable_level=GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS;group=Placebo;scale=100;digits=1</span> <span class="chip chip-good">24.4</span></li><li><span class="mono">t-ae-common:by_soc_pt:p;variable=AEBODSYS;variable_level=SKIN AND SUBCUTANEOUS TISSUE DISORDERS;group=Xanomeline High Dose;scale=100;digits=1</span> <span class="chip chip-good">54.2</span></li><li><span class="mono">t-ae-common:by_soc_pt:p;variable=AEBODSYS;variable_level=SKIN AND SUBCUTANEOUS TISSUE DISORDERS;group=Placebo;scale=100;digits=1</span> <span class="chip chip-good">23.3</span></li><li><span class="mono">t-ae-common:by_soc_pt:p;variable=AEBODSYS;variable_level=NERVOUS SYSTEM DISORDERS;group=Xanomeline High Dose;scale=100;digits=1</span> <span class="chip chip-good">31.9</span></li><li><span class="mono">t-ae-common:by_soc_pt:p;variable=AEBODSYS;variable_level=NERVOUS SYSTEM DISORDERS;group=Placebo;scale=100;digits=1</span> <span class="chip chip-good">9.3</span></li><li><span class="mono">t-ae-overview:serious_ae:n;group=Total</span> <span class="chip chip-good">3</span></li><li><span class="mono">t-ae-overview:fatal_ae:n;group=Total</span> <span class="chip chip-good">3</span></li><li><span class="mono">t-ae-overview:fatal_ae:n;group=Placebo</span> <span class="chip chip-good">2</span></li><li><span class="mono">t-demographics:race:p;variable_level=WHITE;group=Total;scale=100;digits=1</span> <span class="chip chip-good">90.6</span></li></ul><p class="sub">Displays: <a class="mono" href="../gallery/t-disposition.html">t-disposition</a>, <a class="mono" href="../gallery/t-demographics.html">t-demographics</a>, <a class="mono" href="../gallery/t-exposure.html">t-exposure</a>, <a class="mono" href="../gallery/t-ae-overview.html">t-ae-overview</a>, <a class="mono" href="../gallery/t-ae-common.html">t-ae-common</a></p><p class="sub">Generated by <span class="mono">claude-opus-5</span></p><p class="sub">Requirements: <span class="mono">TXT-DISC-001</span></p></article><article class="card text-block" id="TXT-SYN-0200"><div class="card-top"><span class="chip chip-muted">boilerplate</span><span class="chip chip-warn" title="Excluded from assembly until approved">draft</span></div><h3><span class="mono">TXT-SYN-0200</span></h3><p class="card-meta">E3 §2 · Objectives</p><div class="prose"><p>The stated objectives of the CDISC pilot study were to evaluate the efficacy and
+safety of transdermal xanomeline in patients with mild to moderate Alzheimer&#39;s
+disease.</p>
+<p>The objective of <em>this</em> report is narrower and should not be mistaken for the
+study&#39;s: it is to demonstrate that a clinical study report and its synopsis can be
+assembled mechanically from analysis results datasets, a library of text blocks
+and a library of named values, such that every number in the prose is traceable to
+the row of the analysis dataset it came from. Efficacy is therefore out of scope
+here (see the efficacy sections, which are deliberately left unpopulated), and the
+demonstration is confined to safety.</p>
+</div><p class="sub">No bindings — this block states no results.</p><p class="sub">Requirements: <span class="mono">TXT-SYN-001</span></p></article><article class="card text-block" id="TXT-SYN-0300"><div class="card-top"><span class="chip chip-muted">boilerplate</span><span class="chip chip-warn" title="Excluded from assembly until approved">draft</span></div><h3><span class="mono">TXT-SYN-0300</span></h3><p class="card-meta">E3 §3 · Methodology</p><div class="prose"><p>Randomised, double-blind, placebo-controlled, parallel-group.</p>
+<p>Patients were assigned to one of three arms: placebo, xanomeline low dose, or
+xanomeline high dose.</p>
+</div><p class="sub">No bindings — this block states no results.</p><p class="sub">Requirements: <span class="mono">TXT-SYN-001</span></p></article><article class="card text-block" id="TXT-SYN-0400"><div class="card-top"><span class="chip chip-info">parameterized</span><span class="chip chip-warn" title="Excluded from assembly until approved">draft</span></div><h3><span class="mono">TXT-SYN-0400</span></h3><p class="card-meta">E3 §4 · Number of Patients (Planned and Analysed)</p><div class="prose"><p>The planned sample size is not carried in the ADaM extract this demonstration is
+built from. Of the patients actually enrolled, {{value:randomised-n}} were
+randomised and {{value:treated-n}} were treated and form the safety analysis set,
+which is the population analysed throughout this synopsis.</p>
+<p>{{value:completed-n}} patients ({{value:completed-pct}}%) completed the study and
+{{value:discontinued-n}} discontinued prematurely. Disposition by treatment group
+is given in <span class="xref" data-trace="display" data-display="t-disposition" tabindex="0" role="button">Subject Disposition</span>.</p>
+<p>Every figure in this paragraph is a binding into the named values store, not a
+typed number. The same store supplies the same figures to the disposition section
+of the full clinical study report, so the two documents cannot disagree: if the
+underlying analysis results dataset changes, both change together, and if a value
+in the store no longer re-derives from the committed dataset the build fails
+before either document is written.</p>
+</div><p class="sub">No bindings — this block states no results.</p><p class="sub">Displays: <a class="mono" href="../gallery/t-disposition.html">t-disposition</a></p><p class="sub">Requirements: <span class="mono">TXT-SYN-001</span></p></article><article class="card text-block" id="TXT-SYN-0500"><div class="card-top"><span class="chip chip-muted">boilerplate</span><span class="chip chip-warn" title="Excluded from assembly until approved">draft</span></div><h3><span class="mono">TXT-SYN-0500</span></h3><p class="card-meta">E3 §5 · Diagnosis and Main Criteria for Inclusion</p><div class="prose"><p>Patients with mild to moderate Alzheimer&#39;s disease.</p>
+<p>The full inclusion and exclusion criteria are a property of the protocol and are
+not derivable from the analysis datasets; in a real report this field is authored
+prose reviewed against the protocol, and open.csr classifies it as a boilerplate
+block for exactly that reason — it carries no bindings, so no gate can vouch for
+it, and it must be approved by a person.</p>
+</div><p class="sub">No bindings — this block states no results.</p><p class="sub">Requirements: <span class="mono">TXT-SYN-001</span></p></article><article class="card text-block" id="TXT-E3-0502"><div class="card-top"><span class="chip chip-muted">boilerplate</span><span class="chip chip-good" title="@jwildfire 2026-07-25">approved</span></div><h3><span class="mono">TXT-E3-0502</span></h3><p class="card-meta">E3 §5.2 · Ethical Conduct of the Study</p><div class="prose"><p>This study was conducted in accordance with the ethical principles that have their
+origin in the Declaration of Helsinki, and that are consistent with the
+International Council for Harmonisation Guideline for Good Clinical Practice
+(ICH E6) and the applicable regulatory requirements of the jurisdictions in which
+the study was conducted.</p>
+<p>The protocol, the protocol amendments, the patient information sheet and the
+informed consent form were reviewed and approved by the responsible independent
+ethics committee or institutional review board at each participating centre before
+any patient was screened. Substantial amendments were submitted for review and
+approved before implementation, except where an immediate change was necessary to
+eliminate a hazard to patients.</p>
+</div><p class="sub">No bindings — this block states no results.</p><p class="sub">Requirements: <span class="mono">TXT-ETH-001</span></p></article><article class="card text-block" id="TXT-E3-0503"><div class="card-top"><span class="chip chip-muted">boilerplate</span><span class="chip chip-good" title="@jwildfire 2026-07-25">approved</span></div><h3><span class="mono">TXT-E3-0503</span></h3><p class="card-meta">E3 §5.3 · Patient Information and Consent</p><div class="prose"><p>Written informed consent was obtained from every patient, or from the patient&#39;s
+legally acceptable representative where the patient was not competent to consent,
+before any study-specific procedure was performed. Because the study enrolled
+patients with mild to moderate Alzheimer&#39;s disease, the consent process explicitly
+provided for assessment of decisional capacity and, where capacity was impaired,
+for consent by a legally acceptable representative together with the assent of the
+patient.</p>
+<p>Patients and their representatives were informed of the objectives of the study,
+of the investigational nature of the treatment, of the reasonably foreseeable risks
+and inconveniences, and of their right to withdraw from the study at any time
+without penalty or loss of benefits to which they were otherwise entitled. A copy
+of the signed consent form was provided to each patient or representative. The
+patient information sheet and the sample consent form are provided in
+<span class="xref unresolved">Section 16.1.3</span>.</p>
+</div><p class="sub">No bindings — this block states no results.</p><p class="sub">Requirements: <span class="mono">TXT-ETH-001</span></p></article><article class="card text-block" id="TXT-SYN-0600"><div class="card-top"><span class="chip chip-muted">boilerplate</span><span class="chip chip-warn" title="Excluded from assembly until approved">draft</span></div><h3><span class="mono">TXT-SYN-0600</span></h3><p class="card-meta">E3 §6 · Test Product, Dose and Mode of Administration, Batch Number</p><div class="prose"><p>Xanomeline, administered transdermally as a Transdermal Therapeutic System (TTS)
+patch, at a low dose and a high dose.</p>
+<p>Dose strengths and batch numbers are properties of the protocol and the
+investigational product record and are not carried in the analysis datasets, so
+they are not reported here.</p>
+</div><p class="sub">No bindings — this block states no results.</p><p class="sub">Requirements: <span class="mono">TXT-SYN-001</span></p></article><article class="card text-block" id="TXT-SYN-0700"><div class="card-top"><span class="chip chip-info">parameterized</span><span class="chip chip-warn" title="Excluded from assembly until approved">draft</span></div><h3><span class="mono">TXT-SYN-0700</span></h3><p class="card-meta">E3 §7 · Duration of Treatment</p><div class="prose"><p>Mean duration of exposure to study drug was
+<span class="binding" data-trace="binding" data-display="t-exposure" data-address="t-exposure:duration:mean;group=Placebo;digits=1" data-value="147.8" data-analysis="duration" data-stat="mean" data-reason="" tabindex="0" role="button">147.8</span> days in the placebo group,
+<span class="binding" data-trace="binding" data-display="t-exposure" data-address="t-exposure:duration:mean;group=Xanomeline Low Dose;digits=1" data-value="85.9" data-analysis="duration" data-stat="mean" data-reason="" tabindex="0" role="button">85.9</span> days in the
+xanomeline low dose group and
+<span class="binding" data-trace="binding" data-display="t-exposure" data-address="t-exposure:duration:mean;group=Xanomeline High Dose;digits=1" data-value="112.2" data-analysis="duration" data-stat="mean" data-reason="" tabindex="0" role="button">112.2</span> days in the
+xanomeline high dose group.</p>
+<p>Exposure differed substantially between the groups, which matters for the reading
+of the safety results below: crude proportions of patients reporting an event are
+not exposure-adjusted. The extent of exposure is summarised in
+<span class="xref" data-trace="display" data-display="t-exposure" tabindex="0" role="button">Extent of Exposure to Study Drug</span>.</p>
+</div><h4>Bindings</h4><ul class="bindings"><li><span class="mono">t-exposure:duration:mean;group=Placebo;digits=1</span> <span class="chip chip-good">147.8</span></li><li><span class="mono">t-exposure:duration:mean;group=Xanomeline Low Dose;digits=1</span> <span class="chip chip-good">85.9</span></li><li><span class="mono">t-exposure:duration:mean;group=Xanomeline High Dose;digits=1</span> <span class="chip chip-good">112.2</span></li></ul><p class="sub">Displays: <a class="mono" href="../gallery/t-exposure.html">t-exposure</a></p><p class="sub">Requirements: <span class="mono">TXT-SYN-001</span></p></article><article class="card text-block" id="TXT-SYN-0800"><div class="card-top"><span class="chip chip-muted">boilerplate</span><span class="chip chip-warn" title="Excluded from assembly until approved">draft</span></div><h3><span class="mono">TXT-SYN-0800</span></h3><p class="card-meta">E3 §8 · Reference Therapy, Dose and Mode of Administration, Batch Number</p><div class="prose"><p>Matching placebo patch. Batch numbers are not carried in the analysis datasets.</p>
+</div><p class="sub">No bindings — this block states no results.</p><p class="sub">Requirements: <span class="mono">TXT-SYN-001</span></p></article><article class="card text-block" id="TXT-E3-0901"><div class="card-top"><span class="chip chip-info">parameterized</span><span class="chip chip-good" title="@jwildfire 2026-07-25">approved</span></div><h3><span class="mono">TXT-E3-0901</span></h3><p class="card-meta">E3 §9.1 · Overall Study Design and Plan: Description</p><div class="prose"><p>This was a randomised, double-blind, placebo-controlled, parallel-group study of the
+Xanomeline Transdermal Therapeutic System (TTS) in patients with mild to moderate
+Alzheimer&#39;s disease. Patients who satisfied all entry criteria at screening were
+randomised in equal allocation to one of three treatment groups — placebo,
+xanomeline low dose, or xanomeline high dose — and treated for the planned treatment
+period defined in the protocol, followed by an end-of-study evaluation.</p>
+<p>A total of <span class="binding" data-trace="binding" data-display="t-disposition" data-address="t-disposition:randomised:n;group=Total" data-value="254" data-analysis="randomised" data-stat="n" data-reason="" tabindex="0" role="button">254</span> patients were randomised
+and treated: <span class="binding" data-trace="binding" data-display="t-disposition" data-address="t-disposition:randomised:n;group=Placebo" data-value="86" data-analysis="randomised" data-stat="n" data-reason="" tabindex="0" role="button">86</span> to placebo,
+<span class="binding" data-trace="binding" data-display="t-disposition" data-address="t-disposition:randomised:n;group=Xanomeline Low Dose" data-value="96" data-analysis="randomised" data-stat="n" data-reason="" tabindex="0" role="button">96</span> to xanomeline low dose
+and <span class="binding" data-trace="binding" data-display="t-disposition" data-address="t-disposition:randomised:n;group=Xanomeline High Dose" data-value="72" data-analysis="randomised" data-stat="n" data-reason="" tabindex="0" role="button">72</span> to xanomeline
+high dose. Patients who were screened but not randomised are excluded from all
+analyses presented in this report; the derivation of the analysis populations is
+described in <span class="xref unresolved">Section 11.1</span>.</p>
+<p>Study drug was supplied as a transdermal patch applied once daily. The blind was
+maintained by supplying placebo and active patches of identical appearance, and by
+withholding the randomisation code from investigators, patients and study personnel
+involved in the conduct of the study until database lock. The randomisation scheme
+and codes are provided in <span class="xref unresolved">Section 16.1.7</span>.</p>
+</div><h4>Bindings</h4><ul class="bindings"><li><span class="mono">t-disposition:randomised:n;group=Total</span> <span class="chip chip-good">254</span></li><li><span class="mono">t-disposition:randomised:n;group=Placebo</span> <span class="chip chip-good">86</span></li><li><span class="mono">t-disposition:randomised:n;group=Xanomeline Low Dose</span> <span class="chip chip-good">96</span></li><li><span class="mono">t-disposition:randomised:n;group=Xanomeline High Dose</span> <span class="chip chip-good">72</span></li></ul><p class="sub">Displays: <a class="mono" href="../gallery/t-disposition.html">t-disposition</a></p><p class="sub">Requirements: <span class="mono">TXT-DESIGN-001</span></p></article><article class="card text-block" id="TXT-SYN-0902"><div class="card-top"><span class="chip chip-muted">boilerplate</span><span class="chip chip-warn" title="Excluded from assembly until approved">draft</span></div><h3><span class="mono">TXT-SYN-0902</span></h3><p class="card-meta">E3 §9.2 · Criteria for Evaluation: Safety</p><div class="prose"><p>Safety was evaluated from treatment-emergent adverse events, coded to system organ
+class and preferred term, and summarised by treatment group; from serious adverse
+events, deaths and adverse events leading to withdrawal; and from the extent of
+exposure to study drug.</p>
+<p>Laboratory values, vital signs and concomitant medications are collected in the
+source study and are analysed in the reference clinical study report for this
+dataset, but no analysis results datasets for them exist in this framework yet, so
+they are not evaluated here.</p>
+</div><p class="sub">No bindings — this block states no results.</p><p class="sub">Requirements: <span class="mono">TXT-SYN-001</span></p></article><article class="card text-block" id="TXT-E3-0908"><div class="card-top"><span class="chip chip-muted">boilerplate</span><span class="chip chip-good" title="@jwildfire 2026-07-25">approved</span></div><h3><span class="mono">TXT-E3-0908</span></h3><p class="card-meta">E3 §9.8 · Changes in the Conduct of the Study or Planned Analyses</p><div class="prose"><p>No changes were made to the conduct of the study after the first patient was
+randomised, other than those recorded in the protocol amendments provided in
+<span class="xref unresolved">Section 16.1.1</span>.</p>
+<p>The analyses presented in this report follow the statistical analysis plan. Every
+analysis was executed from version-controlled specifications, and each regeneration
+of a display is recorded as a numbered iteration with the specification hash, the
+input dataset hashes and the software environment that produced it. Any analysis
+performed after the statistical analysis plan was finalised is identified as post
+hoc where it appears. The complete documentation of statistical methods, including
+the specification and environment provenance for every display in this report, is
+provided in <span class="xref unresolved">Section 16.1.9</span>.</p>
+</div><p class="sub">No bindings — this block states no results.</p><p class="sub">Requirements: <span class="mono">TXT-DESIGN-001</span></p></article></div>
+<p class="sub">Gates enforced in CI (contracts §6): every binding resolves to exactly one ARD row; every digit run in rendered prose traces to a resolved binding; generated-tier blocks are excluded from assembly until a human approval lands in the frontmatter.</p>
+<aside class="trace" id="trace" hidden aria-live="polite"><div class="trace-head"><h2>Trace</h2><button type="button" class="trace-close" aria-label="Close trace panel">×</button></div><div class="trace-body"></div></aside>
+<script type="application/json" id="trace-index">{"t-disposition":{"slug":"t-disposition","title":"Subject Disposition","regulatoryId":"DST01","status":"evidenced","datasets":["adsl"],"dataHashes":{"adsl":"sha256:f9a1c3605cb277363fba0add4c4228df6a288685586575be159718696c582107"},"analysisFile":"library/tfl/t-disposition/analysis.yaml","displayFile":"library/tfl/t-disposition/display.yaml","ardFile":"outputs/t-disposition/v002/ard.json","ardHash":"sha256:26f56529e5e4b993c332b35a296957e7fcb8dcd3a8cf19ed6a3802c19bd42f89","specHash":"sha256:8c432e510cf8fe58349f0315cb25c51231c261a2276707cfd7168cd064a3d62d","commit":null,"iteration":"v002","iterations":2,"page":"../gallery/t-disposition.html","evidence":"../quality/t-disposition.html"},"t-demographics":{"slug":"t-demographics","title":"Demographic and Baseline Characteristics","regulatoryId":"DMT01","status":"evidenced","datasets":["adsl"],"dataHashes":{"adsl":"sha256:f9a1c3605cb277363fba0add4c4228df6a288685586575be159718696c582107"},"analysisFile":"library/tfl/t-demographics/analysis.yaml","displayFile":"library/tfl/t-demographics/display.yaml","ardFile":"outputs/t-demographics/v002/ard.json","ardHash":"sha256:e03ca473fd5d976fa5732f0881bea51715104a90494eb4a8ffa5104186299f6c","specHash":"sha256:0f1e9b9029b61b70bfa00f93c9f0c52050859ff26cacb67ee2fed50c39392854","commit":null,"iteration":"v002","iterations":2,"page":"../gallery/t-demographics.html","evidence":"../quality/t-demographics.html"},"t-exposure":{"slug":"t-exposure","title":"Extent of Exposure to Study Drug","regulatoryId":"EXT01","status":"evidenced","datasets":["adsl","adex"],"dataHashes":{"adsl":"sha256:f9a1c3605cb277363fba0add4c4228df6a288685586575be159718696c582107","adex":"sha256:e89d24c9364ba5a20a49a86de8428a8e4d8b35899b4d154ff83f89645c733f5f"},"analysisFile":"library/tfl/t-exposure/analysis.yaml","displayFile":"library/tfl/t-exposure/display.yaml","ardFile":"outputs/t-exposure/v002/ard.json","ardHash":"sha256:f14f5e37bcd2a6ddbbc146d05fbbf599b1362fd28d2f1c13895e0d61dadcfb4c","specHash":"sha256:dcb569bb84c890fe5d3322fbb111cdaeabd917ad388c89d10b2e754b8d322dd8","commit":null,"iteration":"v002","iterations":2,"page":"../gallery/t-exposure.html","evidence":"../quality/t-exposure.html"},"t-ae-overview":{"slug":"t-ae-overview","title":"Overview of Treatment-Emergent Adverse Events","regulatoryId":"AET01","status":"evidenced","datasets":["adsl","adae"],"dataHashes":{"adsl":"sha256:f9a1c3605cb277363fba0add4c4228df6a288685586575be159718696c582107","adae":"sha256:7d4237afdbf934742091e6b7e0a756fcba6a0e79fc9f35b578f86574baf8f7d4"},"analysisFile":"library/tfl/t-ae-overview/analysis.yaml","displayFile":"library/tfl/t-ae-overview/display.yaml","ardFile":"outputs/t-ae-overview/v002/ard.json","ardHash":"sha256:96f9dbfd9a826be61b5edbdd269eede08c59dc8f9b5748b66fa5bfdb72ded7a3","specHash":"sha256:6b0ba696f8cb4abffc3741982f36bb3bc4a47a68d84e0da1cb5cbf210c19a90a","commit":null,"iteration":"v002","iterations":2,"page":"../gallery/t-ae-overview.html","evidence":"../quality/t-ae-overview.html"},"t-ae-common":{"slug":"t-ae-common","title":"Treatment-Emergent Adverse Events by System Organ Class and Preferred Term","regulatoryId":"AET02","status":"evidenced","datasets":["adsl","adae"],"dataHashes":{"adsl":"sha256:f9a1c3605cb277363fba0add4c4228df6a288685586575be159718696c582107","adae":"sha256:7d4237afdbf934742091e6b7e0a756fcba6a0e79fc9f35b578f86574baf8f7d4"},"analysisFile":"library/tfl/t-ae-common/analysis.yaml","displayFile":"library/tfl/t-ae-common/display.yaml","ardFile":"outputs/t-ae-common/v003/ard.json","ardHash":"sha256:5f250be0ca59498ef131dbd212f5c1482226b97056718ef34802820b06adba7d","specHash":"sha256:a45e3a1f2586dd0bffa2e2f660162d958e9ae20f6eb87df9511b7d49b5c74203","commit":null,"iteration":"v003","iterations":3,"page":"../gallery/t-ae-common.html","evidence":"../quality/t-ae-common.html"},"l-ae-serious":{"slug":"l-ae-serious","title":"Listing of Serious Adverse Events","regulatoryId":"AEL01","status":"evidenced","datasets":["adsl","adae"],"dataHashes":{"adsl":"sha256:f9a1c3605cb277363fba0add4c4228df6a288685586575be159718696c582107","adae":"sha256:7d4237afdbf934742091e6b7e0a756fcba6a0e79fc9f35b578f86574baf8f7d4"},"analysisFile":"library/tfl/l-ae-serious/analysis.yaml","displayFile":"library/tfl/l-ae-serious/display.yaml","ardFile":"outputs/l-ae-serious/v002/ard.json","ardHash":"sha256:0395149df9ea9e04395bc28a568415b8cec29d736acb92dce4613453f72728b0","specHash":"sha256:a046fb1cdc11ed10d586284efeb97e30ab743f4ad394869bd83ae1bfb401d140","commit":null,"iteration":"v002","iterations":2,"page":"../gallery/l-ae-serious.html","evidence":"../quality/l-ae-serious.html"},"t-vitals":{"slug":"t-vitals","title":"Summary of Vital Signs at Baseline and End of Treatment","regulatoryId":"VST01","status":"evidenced","datasets":["adsl","advs"],"dataHashes":{"adsl":"sha256:83b1d423d2b40766af8138864699137cfb6e0ccb064ca25369c1ed7216936918","advs":"sha256:7be440388501966144aa18f3d460cc9e4bb783eb8312df196aa6dfb7502e685b"},"analysisFile":"library/tfl/t-vitals/analysis.yaml","displayFile":"library/tfl/t-vitals/display.yaml","ardFile":"outputs/t-vitals/v001/ard.json","ardHash":"sha256:88e8ee0b9d51761c4bafa4a2b13ee72b699117f76d08849535d26674ecf8e961","specHash":"sha256:2aeb25861d2864c68dec7cb56a37435df974e048d036e1a3a1b256a5604d4290","commit":null,"iteration":"v001","iterations":1,"page":"../gallery/t-vitals.html","evidence":"../quality/t-vitals.html"},"t-vitals-change":{"slug":"t-vitals-change","title":"Summary of Vital Signs Change from Baseline at End of Treatment","regulatoryId":"VST02","status":"evidenced","datasets":["adsl","advs"],"dataHashes":{"adsl":"sha256:83b1d423d2b40766af8138864699137cfb6e0ccb064ca25369c1ed7216936918","advs":"sha256:7be440388501966144aa18f3d460cc9e4bb783eb8312df196aa6dfb7502e685b"},"analysisFile":"library/tfl/t-vitals-change/analysis.yaml","displayFile":"library/tfl/t-vitals-change/display.yaml","ardFile":"outputs/t-vitals-change/v001/ard.json","ardHash":"sha256:2561647451f1514c5997684dc2d556425f683ddb34689f60dd767741d14d3777","specHash":"sha256:0d204e9c533b1d93eb583c63b8aa9eac5db5b6c58b7ea53e4609d472abbd2f6b","commit":null,"iteration":"v001","iterations":1,"page":"../gallery/t-vitals-change.html","evidence":"../quality/t-vitals-change.html"},"t-weight":{"slug":"t-weight","title":"Summary of Weight and Weight Change from Baseline at End of Treatment","regulatoryId":"VST03","status":"evidenced","datasets":["adsl","advs"],"dataHashes":{"adsl":"sha256:83b1d423d2b40766af8138864699137cfb6e0ccb064ca25369c1ed7216936918","advs":"sha256:7be440388501966144aa18f3d460cc9e4bb783eb8312df196aa6dfb7502e685b"},"analysisFile":"library/tfl/t-weight/analysis.yaml","displayFile":"library/tfl/t-weight/display.yaml","ardFile":"outputs/t-weight/v001/ard.json","ardHash":"sha256:ce01673cbf084419c92e2f3d7b0383c09aada0bd6b1283d0c9425b1b7ee03853","specHash":"sha256:14be68b3bc1d72d8c3e7ff6c067edb41004ad68be9286479c3c2e9a9891dfff3","commit":null,"iteration":"v001","iterations":1,"page":"../gallery/t-weight.html","evidence":"../quality/t-weight.html"},"t-conmeds":{"slug":"t-conmeds","title":"Summary of Concomitant Medications","regulatoryId":"CMT01","status":"evidenced","datasets":["adsl","adcm"],"dataHashes":{"adsl":"sha256:83b1d423d2b40766af8138864699137cfb6e0ccb064ca25369c1ed7216936918","adcm":"sha256:28e100aaeacdd8ed81825a2278d7e76658ba508e0306bb2d659e44ff443eee0b"},"analysisFile":"library/tfl/t-conmeds/analysis.yaml","displayFile":"library/tfl/t-conmeds/display.yaml","ardFile":"outputs/t-conmeds/v001/ard.json","ardHash":"sha256:87b879c9777a8c73321f8f9bad5b0ad516e2a7671a4fc01847434abe14c1a8b8","specHash":"sha256:5b8045eb70da88bc2f3876b8a6fc2d35c907e604991fe8e467f4f32c097c32d1","commit":null,"iteration":"v001","iterations":1,"page":"../gallery/t-conmeds.html","evidence":"../quality/t-conmeds.html"}}</script>
+<script>
+(function () {
+  var node = document.getElementById('trace-index');
+  var index = node ? JSON.parse(node.textContent) : {};
+  var panel = document.getElementById('trace');
+  if (!panel) return;
+  var body = panel.querySelector('.trace-body');
+
+  function row(label, value, mono) {
+    if (!value) return '';
+    return '<div><dt>' + label + '</dt><dd' + (mono ? ' class="mono"' : '') + '>' + value + '</dd></div>';
+  }
+  function esc(text) {
+    return String(text == null ? '' : text).replace(/[&<>"]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+    });
+  }
+  function open(el) {
+    var slug = el.getAttribute('data-display');
+    var entry = index[slug];
+    var kind = el.getAttribute('data-trace');
+    var head = '<h3>' + esc(entry ? entry.title : slug || 'Unknown display') + '</h3>';
+    if (!entry) {
+      body.innerHTML = head + '<p class="empty">No trace information for "' + esc(slug) + '" — the display has not been generated yet.</p>';
+      panel.hidden = false;
+      return;
+    }
+    var chain = '';
+    if (kind === 'binding') {
+      var reason = el.getAttribute('data-reason');
+      chain +=
+        '<dl class="facts">' +
+        row('Sentence value', esc(el.getAttribute('data-value')), true) +
+        row('Binding', esc(el.getAttribute('data-address')), true) +
+        row('Analysis', esc(el.getAttribute('data-analysis')), true) +
+        row('Statistic', esc(el.getAttribute('data-stat')), true) +
+        (reason ? row('Unresolved', esc(reason)) : '') +
+        '</dl>';
+    }
+    chain +=
+      '<dl class="facts">' +
+      row('Datasets', (entry.datasets || []).map(esc).join(', '), true) +
+      row('Analysis spec', esc(entry.analysisFile), true) +
+      row('Display spec', esc(entry.displayFile), true) +
+      row('ARD', esc(entry.ardFile), true) +
+      row('ARD hash', esc(entry.ardHash), true) +
+      row('Spec hash', esc(entry.specHash), true) +
+      row('Iteration', esc(entry.iteration), true) +
+      row('Commit', esc(entry.commit), true) +
+      '</dl>';
+    body.innerHTML = head + chain;
+    // Links are created as nodes rather than markup so the build-time link
+    // validator is never fooled by a string that only looks like an href.
+    var links = document.createElement('p');
+    links.className = 'trace-links';
+    var display = document.createElement('a');
+    display.href = entry.page;
+    display.textContent = 'Open display';
+    var evidence = document.createElement('a');
+    evidence.href = entry.evidence;
+    evidence.textContent = 'Evidence';
+    links.appendChild(display);
+    links.appendChild(document.createTextNode(' · '));
+    links.appendChild(evidence);
+    body.appendChild(links);
+    panel.hidden = false;
+  }
+
+  document.addEventListener('click', function (event) {
+    var el = event.target.closest('[data-trace]');
+    if (el) { open(el); return; }
+    if (event.target.closest('.trace-close')) panel.hidden = true;
+  });
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') panel.hidden = true;
+    if ((event.key === 'Enter' || event.key === ' ') && document.activeElement &&
+        document.activeElement.matches('[data-trace]')) {
+      event.preventDefault();
+      open(document.activeElement);
+    }
+  });
+})();
+</script></main>
+    <footer class="site-footer">
+      <p>
+        <strong>open.csr</strong> — an open-source Clinical Study Report builder. Numbers are
+        computed by versioned specs, serialized as ARDs, and bound into prose that never restates
+        them.
+      </p>
+      <p>
+        Demo data is CDISC Pilot 01 via
+        <a href="https://github.com/pharmaverse/pharmaverseadam">pharmaverseadam</a> · everything on
+        this site is precomputed and static ·
+        <a href="https://github.com/jwildfire/open.csr">source on GitHub</a> ·
+        <a href="https://jwildfire.github.io/obot.roadmap/">obot roadmap</a>.
+      </p>
+    </footer>
+    <script>
+      // Mark the nav link for this page; works at any mount depth.
+      (function () {
+        var here = location.pathname.replace(/\/$/, '/index.html');
+        var links = document.querySelectorAll('.site-nav a[href]');
+        for (var i = 0; i < links.length; i += 1) {
+          var href = links[i].getAttribute('href');
+          if (!href || href.indexOf('http') === 0) continue;
+          if (new URL(href, location.href).pathname === here) {
+            links[i].classList.add('current');
+            links[i].setAttribute('aria-current', 'page');
+          }
+        }
+      })();
+
+      // Theme toggle: OS preference by default, explicit choice remembered.
+      (function () {
+        var button = document.querySelector('.theme-toggle');
+        if (!button) return;
+        button.addEventListener('click', function () {
+          var root = document.documentElement;
+          var current =
+            root.getAttribute('data-theme') ||
+            (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+          var next = current === 'dark' ? 'light' : 'dark';
+          root.setAttribute('data-theme', next);
+          try {
+            localStorage.setItem('opencsr-theme', next);
+          } catch (e) {}
+        });
+      })();
+
+      // Tabs on the display detail pages.
+      (function () {
+        var groups = document.querySelectorAll('.tabs');
+        for (var g = 0; g < groups.length; g += 1) {
+          (function (group) {
+            var tabs = group.querySelectorAll('.tab');
+            var panels = group.querySelectorAll('.tab-panel');
+            group.addEventListener('click', function (event) {
+              var tab = event.target.closest('.tab');
+              if (!tab) return;
+              for (var i = 0; i < tabs.length; i += 1) {
+                var on = tabs[i] === tab;
+                tabs[i].classList.toggle('current', on);
+                tabs[i].setAttribute('aria-selected', on ? 'true' : 'false');
+                if (panels[i]) {
+                  panels[i].classList.toggle('current', on);
+                  panels[i].hidden = !on;
+                }
+              }
+            });
+          })(groups[g]);
+        }
+      })();
+
+      // ARD row filter.
+      (function () {
+        var inputs = document.querySelectorAll('.ard-filter');
+        for (var i = 0; i < inputs.length; i += 1) {
+          (function (input) {
+            input.addEventListener('input', function () {
+              var needle = input.value.toLowerCase();
+              var table = input.closest('.tab-panel, main').querySelector('.ard-table tbody');
+              if (!table) return;
+              var rows = table.rows;
+              for (var r = 0; r < rows.length; r += 1) {
+                rows[r].hidden = needle && rows[r].textContent.toLowerCase().indexOf(needle) === -1;
+              }
+            });
+          })(inputs[i]);
+        }
+      })();
+    </script>
+  </body>
+</html>
