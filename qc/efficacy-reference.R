@@ -273,14 +273,26 @@ km_route2 <- function(time, event) {
   # gives the EARLIER endpoint — the lower confidence limit for the median — and
   # the upper band gives the later one.
   z <- stats::qnorm(0.975)
+  # Tick marks: one per distinct time at which somebody was censored, drawn at
+  # the estimate then in force. A curve without them hides half of what a
+  # time-to-event display is reporting, so they are measured here too rather
+  # than trusted from the pipeline.
+  censor_times <- sort(unique(time[event == 0]))
+  step_at <- function(t) {
+    hit <- which(times <= t)
+    if (!length(hit)) 1 else surv[max(hit)]
+  }
   list(
     N = n_total,
     n = sum(event == 1),
     p = sum(event == 1) / n_total,
     n_censor = sum(event == 0),
+    p_censor = sum(event == 0) / n_total,
     median = first_at_or_below(surv),
-    lcl = first_at_or_below(pmax(0, surv - z * se)),
-    ucl = first_at_or_below(pmin(1, surv + z * se)),
+    median_lcl = first_at_or_below(pmax(0, surv - z * se)),
+    median_ucl = first_at_or_below(pmin(1, surv + z * se)),
+    censor_time = censor_times,
+    censor_surv = vapply(censor_times, step_at, numeric(1)),
     times = times, surv = surv, se = se
   )
 }
@@ -375,8 +387,8 @@ measure <- function() {
   time <- as.numeric(tte$AVAL)
   event <- 1 - as.numeric(tte$CNSR)
   grp <- as.character(tte$.TRT)
-  grid <- c(0, 30, 60, 90, 120, 150, 180)
-  out[["f-tte-derm"]] <- list(
+  grid <- c(0, 50, 100, 150, 200)
+  out[["f-derm-time-to-event"]] <- list(
     population_n = population_route2("SAFFL"),
     km = stats::setNames(lapply(TRT_LEVELS, function(lv) {
       k <- km_route2(time[grp == lv], event[grp == lv])
@@ -456,6 +468,35 @@ ard_stat <- function(rows, analysis, level, stat_name, variable = NULL, variable
   }
   v <- hit[[1]]$stat
   if (is.null(v)) NA_real_ else as.numeric(unlist(v))
+}
+
+#' One statistic that belongs to the study rather than to a treatment arm
+#'
+#' A log-rank test is a property of the comparison, not of a column. Its ARD rows
+#' carry no `group1_level`, so they are addressed by context and name — and the
+#' absence of a group is asserted, because a study-level statistic parked in one
+#' arm's column would publish as that arm's result.
+ard_study_stat <- function(rows, analysis, context, stat_name) {
+  hit <- Filter(function(r) {
+    identical(r$analysis, analysis) &&
+      identical(r$context, context) &&
+      identical(r$stat_name, stat_name)
+  }, rows)
+  if (length(hit) != 1) {
+    stop(
+      "ARD address matched ", length(hit), " rows, expected exactly one: ",
+      paste(analysis, context, stat_name),
+      call. = FALSE
+    )
+  }
+  if (!is.null(hit[[1]]$group1_level) && !is.na(hit[[1]]$group1_level)) {
+    stop(
+      "The ", stat_name, " of ", context, " is a study-level statistic but its ARD row ",
+      "is addressed to group '", hit[[1]]$group1_level, "'.",
+      call. = FALSE
+    )
+  }
+  as.numeric(unlist(hit[[1]]$stat))
 }
 
 `%||%` <- function(x, y) if (is.null(x)) y else x
@@ -620,28 +661,27 @@ for (slug in c("t-cibic-week8", "t-cibic-week16", "t-cibic-week24")) {
 
 # ============ the time-to-event figure =======================================
 {
-  slug <- "f-tte-derm"
+  slug <- "f-derm-time-to-event"
   cat("== ", slug, " (", record$displays[[slug]]$reference, ")\n", sep = "")
   ours <- m[[slug]]
   rows <- ard_rows(slug)
   ref <- record$displays[[slug]]
   digits <- ref$digits
-  high <- "Xanomeline High Dose"
 
   for (i in seq_along(TRT_LEVELS)) {
     lv <- TRT_LEVELS[i]
     k <- ours$km[[lv]]
     check(
       paste(slug, "| pipeline | population N |", lv),
-      ard_stat(rows, "population", lv, "N"), ours$population_n[[lv]]
+      ard_stat(rows, "km", lv, "N"), ours$population_n[[lv]]
     )
-    for (st in c("N", "n", "p", "n_censor", "median", "lcl", "ucl")) {
+    for (st in c("N", "n", "p", "n_censor", "p_censor", "median", "median_lcl", "median_ucl")) {
       check(
         paste(slug, "| pipeline | km", st, "|", lv),
-        ard_stat(rows, "km", lv, st, variable = "KM"), k[[st]]
+        ard_stat(rows, "km", lv, st), k[[st]]
       )
       want <- ref$km[[st]][[i]]
-      scaled <- if (identical(st, "p")) k[[st]] * 100 else k[[st]]
+      scaled <- if (st %in% c("p", "p_censor")) k[[st]] * 100 else k[[st]]
       check_report(
         paste(slug, "| report   | km", st, "|", lv),
         fmt(scaled, digits[[st]]), if (is.null(want)) NA_character_ else want
@@ -650,31 +690,56 @@ for (slug in c("t-cibic-week8", "t-cibic-week16", "t-cibic-week24")) {
     # The curve travels in the ARD as list-valued statistics, and it is compared
     # over its whole length rather than at its endpoints: a curve that agrees at
     # both ends can be wrong everywhere between them.
-    curve_t <- ard_stat(rows, "km", lv, "km_time", variable = "KM")
-    curve_s <- ard_stat(rows, "km", lv, "km_surv", variable = "KM")
+    curve_t <- ard_stat(rows, "km", lv, "time")
+    curve_s <- ard_stat(rows, "km", lv, "surv")
     grid <- 0:max(c(curve_t, k$times))
     check(
       paste(slug, "| pipeline | survival curve over", length(grid), "days |", lv),
       max(abs(step_eval(curve_t, curve_s, grid) - step_eval(k$times, k$surv, grid))), 0
     )
-    got_risk <- ard_stat(rows, "km", lv, "risk_n", variable = "KM")
+    # Censoring is half of what a time-to-event display reports, and the tick
+    # marks are the only place the figure shows it. Both the times and the
+    # estimate in force at each are measured independently here.
+    got_ct <- ard_stat(rows, "km", lv, "censor_time")
+    got_cs <- ard_stat(rows, "km", lv, "censor_surv")
+    check(
+      paste(slug, "| pipeline | censoring times |", lv),
+      if (length(got_ct) == length(k$censor_time)) max(abs(got_ct - k$censor_time)) else NA_real_, 0
+    )
+    check(
+      paste(slug, "| pipeline | survival at censoring |", lv),
+      if (length(got_cs) == length(k$censor_surv)) max(abs(got_cs - k$censor_surv)) else NA_real_, 0
+    )
+    # Every subject is either an event or a censoring, once.
+    check(
+      paste(slug, "| pipeline | events + censored = N |", lv),
+      ard_stat(rows, "km", lv, "n") + ard_stat(rows, "km", lv, "n_censor"),
+      ard_stat(rows, "km", lv, "N")
+    )
+    got_risk <- ard_stat(rows, "km", lv, "risk_n")
     check(
       paste(slug, "| pipeline | numbers at risk |", lv),
       if (length(got_risk) == length(k$risk_n)) max(abs(got_risk - k$risk_n)) else NA_real_, 0
     )
+    check(
+      paste(slug, "| pipeline | at-risk grid |", lv),
+      max(abs(ard_stat(rows, "km", lv, "risk_time") - ours$risk_time)), 0
+    )
   }
 
+  # The log-rank test is a property of the study, not of an arm; ard_study_stat()
+  # asserts that its ARD rows carry no treatment group at all.
   check(
     paste(slug, "| pipeline | log-rank chisq"),
-    ard_stat(rows, "km", high, "chisq", variable = "LOGRANK"), ours$logrank$chisq
+    ard_study_stat(rows, "km", "survival_test", "chisq"), ours$logrank$chisq
   )
   check(
     paste(slug, "| pipeline | log-rank df"),
-    ard_stat(rows, "km", high, "df", variable = "LOGRANK"), ours$logrank$df
+    ard_study_stat(rows, "km", "survival_test", "df"), ours$logrank$df
   )
   check(
-    paste(slug, "| pipeline | log-rank pval"),
-    ard_stat(rows, "km", high, "pval", variable = "LOGRANK"), ours$logrank$pval
+    paste(slug, "| pipeline | log-rank p_value"),
+    ard_study_stat(rows, "km", "survival_test", "p_value"), ours$logrank$pval
   )
   # The report states only "p<0.0001"; the record carries that as a ceiling
   # rather than a value, so this is an inequality, not an equality.
@@ -698,11 +763,11 @@ for (slug in c("t-cibic-week8", "t-cibic-week16", "t-cibic-week24")) {
     plain <- ref$median_ci_variants_not_published$plain[[lv]]
     check_report(
       paste(slug, "| report   | median CI (linear) lcl |", lv),
-      fmt(k$lcl, digits$lcl), plain[[1]]
+      fmt(k$median_lcl, 0), plain[[1]]
     )
     check_report(
       paste(slug, "| report   | median CI (linear) ucl |", lv),
-      fmt(k$ucl, digits$ucl), plain[[2]]
+      fmt(k$median_ucl, 0), plain[[2]]
     )
   }
   cat("   ", checks, " comparisons so far\n", sep = "")

@@ -94,6 +94,8 @@ test cites appears below — both directions are enforced by `TFL-QC-002` and
 | TFL-RND-006 | Section headings left without data rows are dropped, and indentation distinguishes headings from the rows beneath them. | Functional | `test-render.R` | Verified |
 | TFL-RND-007 | A listing renders one column per listed variable with the label declared in the display spec. | Functional | `test-render.R` | Verified |
 | TFL-FIG-001 | A display declaring a `figure:` block renders an inline, self-contained curve drawn only from the committed ARD — deterministic for a given ARD, absent when no figure is declared, and a build failure when the declared coordinate statistics are missing rather than an empty frame. | Functional | `test-displays-efficacy.R` | Verified |
+| TFL-FIG-002 | A rendered figure keeps its appearance when the site embeds it by lifting the document body and discarding the head: every drawn element carries its colour and its `fill` as SVG presentation attributes, and the stylesheet holding the dark-scheme palette travels inside the `<svg>`. A figure styled only from the document head publishes as filled black shapes, and silently. | Robustness | `test-displays-efficacy.R` | Verified |
+| TFL-SPEC-008 | An analysis spec typed `figure` and a display spec's `figure:` block must both be present or both absent, the block must name an analysis the spec defines, and an axis key YAML 1.1 resolved to a boolean is refused. A `type: figure` display with no block renders as a table and publishes silently as one. | Robustness | `test-displays-efficacy.R` | Verified |
 
 ## Iteration ledger and regeneration
 

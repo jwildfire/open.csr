@@ -167,7 +167,7 @@ post_text:
       - t-eff-adas-mmrm          # 14-3.11
       - t-eff-npix-mean          # 14-3.12
       - t-cibic-categorical      # 14-3.13
-      - f-tte-derm               # Figure 14-1
+      - f-derm-time-to-event               # Figure 14-1
 
   - section: "14.3.1"
     displays: [t-exposure, t-ae-overview, t-ae-common]

@@ -66,10 +66,11 @@ proportion_stats <- function() c("p", "prop")
 #'
 #' Reported at the boundary of their declared precision rather than rounded
 #' through it (see `format_pvalue_bound()`). `p` is not here on purpose: the
-#' engine already claims that name for a proportion and scales it to percent,
-#' which is why every display in this library names a p-value `pval`.
+#' engine already claims that name for a proportion and scales it to percent, so
+#' a p-value named `p` would be published multiplied by a hundred. The displays
+#' in this library name one `pval` or `p_value`; both are recognised.
 #' @noRd
-pvalue_stats <- function() c("pval")
+pvalue_stats <- function() c("pval", "p_value")
 
 #' SHA-256 of a file's contents
 #' @noRd

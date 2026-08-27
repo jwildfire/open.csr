@@ -31,6 +31,11 @@ default_patterns <- function() {
 #' @param value Statistic value.
 #' @param stat_name Statistic name.
 #' @param digits Named list/vector of decimals by statistic name.
+#' @param proportions Statistic names stored as proportions in \[0, 1\] and
+#'   shown as percentages. Defaults to what `{cards}` produces; a display whose
+#'   `custom.R` emits further proportions declares them in `display.yaml`'s
+#'   `format.proportions` rather than pre-scaling them in the ARD, so the ARD
+#'   keeps the statistic and the display keeps the presentation.
 #'
 #' @return A length-one character vector.
 #' @examples
@@ -38,12 +43,17 @@ default_patterns <- function() {
 #' format_stat(8.5865, "sd")     # "8.59"
 #' format_stat(8.2e-14, "pval", list(pval = 4)) # "<0.0001"
 #' @export
-format_stat <- function(value, stat_name, digits = list()) {
+format_stat <- function(value, stat_name, digits = list(), proportions = proportion_stats()) {
   if (is.null(value) || length(value) == 0) {
     return(NA_character_)
   }
   if (length(value) > 1) {
-    return(paste(vapply(value, format_stat, character(1), stat_name = stat_name, digits = digits), collapse = ", "))
+    return(paste(
+      vapply(value, format_stat, character(1),
+        stat_name = stat_name, digits = digits, proportions = proportions
+      ),
+      collapse = ", "
+    ))
   }
   if (is.na(value)) {
     return(NA_character_)
@@ -51,7 +61,7 @@ format_stat <- function(value, stat_name, digits = list()) {
   if (!is.numeric(value)) {
     return(as.character(value))
   }
-  if (stat_name %in% proportion_stats()) value <- value * 100
+  if (stat_name %in% proportions) value <- value * 100
   d <- digits[[stat_name]]
   if (is.null(d)) d <- default_digits(stat_name)
   d <- as.integer(d)
@@ -130,20 +140,21 @@ render_display <- function(ard, display_spec, variant = "post_text") {
   vcfg <- display_spec$variants[[variant]] %||% list()
   patterns <- utils::modifyList(
     default_patterns(),
-    display_spec$format[setdiff(names(display_spec$format), "digits")]
+    display_spec$format[setdiff(names(display_spec$format), c("digits", "proportions"))]
   )
   digits <- display_spec$format$digits
+  proportions <- as.character(display_spec$format$proportions %||% proportion_stats())
 
   is_listing <- nrow(rows) > 0 && all(rows$context == "listing")
   body <- if (is_listing) {
     listing_body(rows, display_spec, digits)
   } else {
-    table_body(rows, display_spec, vcfg, patterns, digits)
+    table_body(rows, display_spec, vcfg, patterns, digits, proportions)
   }
 
   title <- vcfg$title %||% display_spec$title
   gt_tbl <- build_gt(body, display_spec, vcfg, title, variant)
-  figure <- render_figure(rows, display_spec, body$columns)
+  figure <- figure_svg(rows, display_spec, vcfg)
   html <- standalone_html(gt_tbl, title, display_spec, variant, figure)
 
   structure(
@@ -215,7 +226,7 @@ expand_rows <- function(rows, display_spec, vcfg) {
       label = r$label %||% r$level %||% r$variable %||% r$analysis,
       analysis = r$analysis, variable = r$variable, variable_level = r$level,
       pattern = r$pattern %||% "n_pct", indent = r$indent %||% 0,
-      digits = r$digits
+      digits = r$digits, na_text = r$na_text
     )
   }
   out <- drop_empty_sections(out)
@@ -227,7 +238,7 @@ expand_rows <- function(rows, display_spec, vcfg) {
 plan_row <- function(label, analysis = NA_character_, variable = NA_character_,
                      variable_level = NA_character_, group2_level = NA_character_,
                      pattern = NA_character_, indent = 0, section = FALSE,
-                     digits = list()) {
+                     digits = list(), na_text = NA_character_) {
   out <- data.frame(
     label = label, analysis = analysis %||% NA_character_,
     variable = variable %||% NA_character_,
@@ -235,6 +246,7 @@ plan_row <- function(label, analysis = NA_character_, variable = NA_character_,
     group2_level = group2_level %||% NA_character_,
     pattern = pattern %||% NA_character_,
     indent = as.integer(indent), section = section,
+    na_text = na_text %||% NA_character_,
     stringsAsFactors = FALSE
   )
   out$digits <- list(digits %||% list())
@@ -335,35 +347,13 @@ passes_threshold <- function(df, min_pct) {
 }
 
 #' Drop section headings left with no data rows beneath them
-#'
-#' A heading is empty when no data row falls under it — that is, when scanning
-#' forward from it reaches the next heading at the same or a shallower indent
-#' (or the end of the table) without passing a data row. Headings nested under
-#' it are scanned through rather than treated as the end of its span, so a
-#' display can stack headings — measure, then position, then visit — and keep
-#' every level that has data somewhere beneath it. A heading whose own span
-#' holds only other empty headings is still dropped, and so is a trailing one.
 #' @noRd
 drop_empty_sections <- function(out) {
-  if (!length(out)) {
-    return(out)
-  }
-  is_section <- vapply(out, function(r) isTRUE(r$section), logical(1))
-  indent <- vapply(out, function(r) as.integer(r$indent), integer(1))
   keep <- rep(TRUE, length(out))
   for (i in seq_along(out)) {
-    if (!is_section[i]) next
-    has_data <- FALSE
-    j <- i + 1L
-    while (j <= length(out)) {
-      if (!is_section[j]) {
-        has_data <- TRUE
-        break
-      }
-      if (indent[j] <= indent[i]) break
-      j <- j + 1L
-    }
-    keep[i] <- has_data
+    if (!isTRUE(out[[i]]$section)) next
+    nxt <- if (i < length(out)) out[[i + 1]] else NULL
+    if (is.null(nxt) || isTRUE(nxt$section)) keep[i] <- FALSE
   }
   out[keep]
 }
@@ -397,24 +387,18 @@ auto_row_plan <- function(rows) {
 
 #' Build the rendered table body for a summary display
 #' @noRd
-table_body <- function(rows, display_spec, vcfg, patterns, digits) {
+table_body <- function(rows, display_spec, vcfg, patterns, digits,
+                       proportions = proportion_stats()) {
   cols <- display_columns(rows, display_spec)
   plan <- expand_rows(rows, display_spec, vcfg)
   if (is.null(plan) || nrow(plan) == 0) {
     stop("Display '", display_spec$id, "' produced no rows.", call. = FALSE)
   }
-  # A column may render a different statistic from the rest of the row — a
-  # hypothesis-test column carries one p-value per row while the treatment
-  # columns carry counts — so `columns.patterns` overrides the row's pattern for
-  # named columns only. Declared in display.yaml, like every other formatting
-  # decision; no column is special-cased in code.
-  col_patterns <- as.list(display_spec$columns$patterns %||% list())
   cells <- matrix("", nrow = nrow(plan), ncol = length(cols$levels))
   for (i in seq_len(nrow(plan))) {
     if (isTRUE(plan$section[i])) next
     for (j in seq_along(cols$levels)) {
-      pat <- col_patterns[[cols$levels[j]]] %||% plan$pattern[i]
-      cells[i, j] <- cell_value(rows, plan[i, ], cols$levels[j], patterns, digits, pat)
+      cells[i, j] <- cell_value(rows, plan[i, ], cols$levels[j], patterns, digits, proportions)
     }
   }
   tbl <- tibble::tibble(label = indent_label(plan$label, plan$indent))
@@ -436,7 +420,7 @@ indent_label <- function(label, indent) {
 #' Compute one cell by substituting formatted statistics into a pattern
 #' @noRd
 cell_value <- function(rows, plan_row, col_level, patterns, digits,
-                       pattern_name = plan_row$pattern) {
+                       proportions = proportion_stats()) {
   keep <- rows$analysis == plan_row$analysis &
     !is.na(rows$group1_level) & rows$group1_level == col_level
   if (!is.na(plan_row$variable)) keep <- keep & rows$variable == plan_row$variable
@@ -451,14 +435,23 @@ cell_value <- function(rows, plan_row, col_level, patterns, digits,
     return("")
   }
   digits <- utils::modifyList(as.list(digits), as.list(plan_row$digits[[1]] %||% list()))
-  pattern <- patterns[[pattern_name]] %||% pattern_name
+  pattern <- patterns[[plan_row$pattern]] %||% plan_row$pattern
   needed <- regmatches(pattern, gregexpr("\\{[^}]+\\}", pattern))[[1]]
   out <- pattern
   for (tok in needed) {
     nm <- substr(tok, 2, nchar(tok) - 1)
     hit <- sub$stat[sub$stat_name == nm]
-    val <- if (length(hit)) format_stat(unlist(hit[[1]]), nm, digits) else NA_character_
+    val <- if (length(hit)) format_stat(unlist(hit[[1]]), nm, digits, proportions) else NA_character_
     if (is.na(val)) {
+      # A statistic that exists but is not estimable is not the same as a cell
+      # with nothing behind it. `na_text:` lets the row say which it is — a
+      # Kaplan-Meier median that never falls below 0.5 is "NE", not blank, and a
+      # blank cell in a clinical study report is read as an omission. Without the
+      # key the old behaviour (an empty cell) is unchanged.
+      na_text <- plan_row$na_text
+      if (!is.null(na_text) && !is.na(na_text)) {
+        return(as.character(na_text))
+      }
       return("")
     }
     out <- sub(tok, val, out, fixed = TRUE)
@@ -547,9 +540,13 @@ build_gt <- function(body, display_spec, vcfg, title, variant) {
 #' display has to be openable from disk and publishable to a static site
 #' unchanged.
 #' @noRd
-standalone_html <- function(gt_tbl, title, display_spec, variant, figure = NA_character_) {
+standalone_html <- function(gt_tbl, title, display_spec, variant, figure = NULL) {
   fragment <- gt::as_raw_html(gt_tbl, inline_css = TRUE)
-  has_figure <- length(figure) == 1 && !is.na(figure)
+  # The site embeds this document by lifting its <body> and discarding <head>
+  # (sanitizeEmbeddedHtml in scripts/site-lib.mjs), so the plot carries its own
+  # styling inside the <svg> rather than relying on a rule up here. See the note
+  # in figure_svg().
+  has_figure <- !is.null(figure) && length(figure) == 1 && !is.na(figure)
   css <- paste(
     "body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;",
     "margin:0;padding:24px;background:#ffffff;color:#111827;}",
@@ -558,7 +555,7 @@ standalone_html <- function(gt_tbl, title, display_spec, variant, figure = NA_ch
     "table{border-collapse:collapse;}",
     "@media (prefers-color-scheme: dark){body{background:#0b0f19;color:#e5e7eb;}",
     ".meta{color:#9ca3af;}}",
-    if (has_figure) figure_css(length(figure_palette()$light)) else "",
+    if (has_figure) ".opencsr-figure{margin:0 auto 20px;}" else "",
     sep = ""
   )
   paste0(
@@ -568,7 +565,7 @@ standalone_html <- function(gt_tbl, title, display_spec, variant, figure = NA_ch
     "<p class=\"meta\">", html_escape(display_spec$id), " &middot; ", html_escape(variant),
     " variant &middot; study ", html_escape(display_spec$study),
     " &middot; data cut-off ", html_escape(display_spec$cutoff), "</p>\n",
-    if (has_figure) paste0(figure, "\n") else "",
+    if (has_figure) paste0("<figure class=\"opencsr-figure-block\">", figure, "</figure>\n") else "",
     fragment,
     "\n</main>\n</body>\n</html>\n"
   )

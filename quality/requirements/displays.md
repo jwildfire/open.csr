@@ -224,7 +224,7 @@ Where the reference is silent, the display's own footnotes say so — see
 | CIBIC+ at Week 8 (LOCF) | `t-cibic-week8` | EFF03 | Table 14-3.04 | ADQSCIBC |
 | CIBIC+ at Week 16 (LOCF) | `t-cibic-week16` | EFF04 | Table 14-3.06 | ADQSCIBC |
 | CIBIC+ Categorical Analysis (LOCF) | `t-cibic-categorical` | EFF05 | Table 14-3.13 | ADQSCIBC |
-| Time to First Dermatologic Event | `f-tte-derm` | TTE01 | Figure 14-1 | ADTTE |
+| Time to Dermatologic Event | `f-derm-time-to-event` | AEF01 | Figure 14-1 | ADTTE |
 
 | ID | Requirement | Type | Verification | Status |
 |---|---|---|---|---|

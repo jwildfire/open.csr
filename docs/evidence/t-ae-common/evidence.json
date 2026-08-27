@@ -1,6 +1,6 @@
 {
   "module": "t-ae-common",
-  "generated": "2026-08-27T12:22:29.260Z",
+  "generated": "2026-08-27T05:04:25.057Z",
   "records": [
     {
       "requirementIds": [
@@ -88,9 +88,9 @@
     },
     {
       "requirementIds": [
-        "DSP-EFF-001"
+        "DSP-CIBIC-001"
       ],
-      "title": "DSP-EFF-001: efficacy descriptive statistics match the vendored ADaM computed directly (#1)",
+      "title": "DSP-CIBIC-001: the CIBIC+ summary tables reproduce the published tables cell for cell (#1)",
       "suite": "r-unit",
       "passed": true,
       "file": "test-displays-efficacy.R",
@@ -100,9 +100,9 @@
     },
     {
       "requirementIds": [
-        "DSP-EFF-002"
+        "DSP-CIBIC-002"
       ],
-      "title": "DSP-EFF-002: the ANCOVA statistics reproduce the reference report exactly (#1)",
+      "title": "DSP-CIBIC-002: the analysis of covariance reproduces the published model results (#1)",
       "suite": "r-unit",
       "passed": true,
       "file": "test-displays-efficacy.R",
@@ -112,9 +112,9 @@
     },
     {
       "requirementIds": [
-        "DSP-EFF-003"
+        "DSP-CIBIC-003"
       ],
-      "title": "DSP-EFF-003: the completers display separates population size from records summarised (#1)",
+      "title": "DSP-CIBIC-003: the column heading is the analysis set and the n row is the visit (#1)",
       "suite": "r-unit",
       "passed": true,
       "file": "test-displays-efficacy.R",
@@ -124,9 +124,9 @@
     },
     {
       "requirementIds": [
-        "DSP-EFF-004"
+        "DSP-CIBIC-004"
       ],
-      "title": "DSP-EFF-004: the over-time display's two imputation lanes select different records (#1)",
+      "title": "DSP-CIBIC-004: the categorical analysis reports every category at every visit and partitions it (#1)",
       "suite": "r-unit",
       "passed": true,
       "file": "test-displays-efficacy.R",
@@ -136,9 +136,9 @@
     },
     {
       "requirementIds": [
-        "DSP-EFF-005"
+        "DSP-CIBIC-005"
       ],
-      "title": "DSP-EFF-005: the repeated-measures fit reproduces the reference report's PROC MIXED output (#1)",
+      "title": "DSP-CIBIC-005: the categorical p-values are the published row-mean-scores CMH values (#1)",
       "suite": "r-unit",
       "passed": true,
       "file": "test-displays-efficacy.R",
@@ -148,9 +148,9 @@
     },
     {
       "requirementIds": [
-        "DSP-EFF-006"
+        "DSP-TTE-001"
       ],
-      "title": "DSP-EFF-006: the repeated-measures LS means are the visit-averaged treatment effect (#1)",
+      "title": "DSP-TTE-001: the time-to-event display reproduces the published narrative (#1)",
       "suite": "r-unit",
       "passed": true,
       "file": "test-displays-efficacy.R",
@@ -160,9 +160,9 @@
     },
     {
       "requirementIds": [
-        "DSP-EFF-007"
+        "DSP-TTE-002"
       ],
-      "title": "DSP-EFF-007: the NPI-X endpoint follows the analysis plan, not the shipped NPTOTMN parameter (#1)",
+      "title": "DSP-TTE-002: the survival figure is drawn from the ARD and cannot disagree with it (#1)",
       "suite": "r-unit",
       "passed": true,
       "file": "test-displays-efficacy.R",
@@ -172,132 +172,12 @@
     },
     {
       "requirementIds": [
-        "DSP-EFF-008"
+        "DSP-TTE-003"
       ],
-      "title": "DSP-EFF-008: a derived subject record refuses a carry column that varies inside the subject (#1)",
+      "title": "DSP-TTE-003: the annotated test is addressed into the ARD and reported at its precision (#1)",
       "suite": "r-unit",
       "passed": true,
       "file": "test-displays-efficacy.R",
-      "issueRefs": [
-        1
-      ]
-    },
-    {
-      "requirementIds": [
-        "DSP-EFF-009"
-      ],
-      "title": "DSP-EFF-009: every rendered efficacy cell matches the reference report bar the five declared (#1)",
-      "suite": "r-unit",
-      "passed": true,
-      "file": "test-displays-efficacy.R",
-      "issueRefs": [
-        1
-      ]
-    },
-    {
-      "requirementIds": [
-        "DSP-EOS-001"
-      ],
-      "title": "DSP-EOS-001: the completion-status rows partition each treatment group (#1)",
-      "suite": "r-unit",
-      "passed": true,
-      "file": "test-displays.R",
-      "issueRefs": [
-        1
-      ]
-    },
-    {
-      "requirementIds": [
-        "DSP-EOS-002"
-      ],
-      "title": "DSP-EOS-002: the early-termination reasons partition the early terminations (#1)",
-      "suite": "r-unit",
-      "passed": true,
-      "file": "test-displays.R",
-      "issueRefs": [
-        1
-      ]
-    },
-    {
-      "requirementIds": [
-        "DSP-EOS-003"
-      ],
-      "title": "DSP-EOS-003: a p-value appears on exactly the rows the analysis plan names (#1)",
-      "suite": "r-unit",
-      "passed": true,
-      "file": "test-displays.R",
-      "issueRefs": [
-        1
-      ]
-    },
-    {
-      "requirementIds": [
-        "DSP-EOS-004"
-      ],
-      "title": "DSP-EOS-004: every percentage is based on the treatment group, not the discontinuations (#1)",
-      "suite": "r-unit",
-      "passed": true,
-      "file": "test-displays.R",
-      "issueRefs": [
-        1
-      ]
-    },
-    {
-      "requirementIds": [
-        "DSP-POP-001"
-      ],
-      "title": "DSP-POP-001: the population rows match the study's own flags in ADSL (#1)",
-      "suite": "r-unit",
-      "passed": true,
-      "file": "test-displays.R",
-      "issueRefs": [
-        1
-      ]
-    },
-    {
-      "requirementIds": [
-        "DSP-POP-002"
-      ],
-      "title": "DSP-POP-002: completion rows use COMP24FL and the complement of DISCONFL (#1)",
-      "suite": "r-unit",
-      "passed": true,
-      "file": "test-displays.R",
-      "issueRefs": [
-        1
-      ]
-    },
-    {
-      "requirementIds": [
-        "DSP-POP-003"
-      ],
-      "title": "DSP-POP-003: the display reads the packaging that states the flags it reports (#1)",
-      "suite": "r-unit",
-      "passed": true,
-      "file": "test-displays.R",
-      "issueRefs": [
-        1
-      ]
-    },
-    {
-      "requirementIds": [
-        "DSP-POP-004"
-      ],
-      "title": "DSP-POP-004: planned and actual treatment agree for every subject (#1)",
-      "suite": "r-unit",
-      "passed": true,
-      "file": "test-displays.R",
-      "issueRefs": [
-        1
-      ]
-    },
-    {
-      "requirementIds": [
-        "DSP-REF-001"
-      ],
-      "title": "DSP-REF-001: both displays publish the figures the pilot's own report printed (#1)",
-      "suite": "r-unit",
-      "passed": true,
-      "file": "test-displays.R",
       "issueRefs": [
         1
       ]

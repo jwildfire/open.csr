@@ -189,88 +189,132 @@ test_that("DSP-CIBIC-005: the categorical p-values are the published row-mean-sc
 })
 
 test_that("DSP-TTE-001: the time-to-event display reproduces the published narrative (#1)", {
-  disp <- fixture_display("f-tte-derm")
-  km <- efficacy_record()[["f-tte-derm"]]$km
+  disp <- fixture_display("f-derm-time-to-event")
+  km <- efficacy_record()[["f-derm-time-to-event"]]$km
   for (i in seq_along(ARMS)) {
     arm <- ARMS[i]
-    expect_identical(cell(disp, "At risk at day 0", arm), km$N[[i]], info = arm)
+    # The column heading carries the analysis-set size; the rows carry the split.
+    expect_identical(unname(disp$columns$n[[i]]), as.numeric(km$N[[i]]), info = arm)
     expect_identical(
-      cell(disp, "With a dermatologic event", arm),
+      cell(disp, "Subjects with a dermatologic event, n (%)", arm),
       paste0(km$n[[i]], " (", km$p[[i]], "%)"), info = arm
     )
-    expect_identical(cell(disp, "Censored", arm), km$n_censor[[i]], info = arm)
+    expect_identical(
+      cell(disp, "Censored, n (%)", arm),
+      paste0(km$n_censor[[i]], " (", km$p_censor[[i]], "%)"), info = arm
+    )
     # Every subject at risk either had an event or was censored.
     expect_identical(
       as.numeric(km$n[[i]]) + as.numeric(km$n_censor[[i]]), as.numeric(km$N[[i]])
     )
     med <- km$median[[i]]
+    cellv <- cell(disp, "Median time to event, days (95% CI)", arm)
     if (is.null(med)) {
-      # The placebo median was not reached; an empty cell is the honest report.
-      expect_identical(cell(disp, "Median", arm), "", info = arm)
-      expect_identical(cell(disp, "95% CI", arm), "", info = arm)
+      # The placebo curve never reached 0.5. "NE" says the statistic is not
+      # estimable; a blank cell would be read as an omission.
+      expect_identical(cellv, "NE", info = arm)
     } else {
-      expect_identical(cell(disp, "Median", arm), med, info = arm)
       expect_identical(
-        cell(disp, "95% CI", arm), paste0("(", km$lcl[[i]], "; ", km$ucl[[i]], ")"),
-        info = arm
+        cellv, paste0(med, " (", km$median_lcl[[i]], ", ", km$median_ucl[[i]], ")"), info = arm
       )
     }
   }
 })
 
 test_that("DSP-TTE-002: the survival figure is drawn from the ARD and cannot disagree with it (#1)", {
-  disp <- fixture_display("f-tte-derm")
+  disp <- fixture_display("f-derm-time-to-event")
   svg <- disp$figure
+  spec <- read_display_spec("f-derm-time-to-event")
+  fig <- spec$figure
   expect_type(svg, "character")
-  expect_match(svg, "<svg class=\"opencsr-figure\"")
+  expect_match(svg, "class=\"opencsr-figure\"", fixed = TRUE)
 
   paths <- regmatches(svg, gregexpr("<path class=\"series s[0-9]+\" d=\"[^\"]+\"", svg))[[1]]
   expect_length(paths, length(ARMS))
 
-  ard <- fixture_ard("f-tte-derm")
+  # The plot frame, so a drawn coordinate can be checked against the ARD.
+  x0 <- 74
+  x1 <- fig$width - 22
+  y0 <- 46
+  y1 <- fig$height - 62
+
+  ard <- fixture_ard("f-derm-time-to-event")
+  stat <- function(name, arm) {
+    unlist(ard$rows$stat[
+      ard$rows$stat_name == name & !is.na(ard$rows$group1_level) &
+        ard$rows$group1_level == arm
+    ][[1]])
+  }
   for (i in seq_along(ARMS)) {
     d <- sub('.*d="([^"]+)".*', "\\1", paths[i])
     # Survival is non-increasing, so the drawn y coordinate — which grows
     # downward — must never move back up.
-    ys <- as.numeric(regmatches(d, gregexpr("(?<=V )[0-9.]+", d, perl = TRUE))[[1]])
+    ys <- as.numeric(regmatches(d, gregexpr("(?<=V)[0-9.]+", d, perl = TRUE))[[1]])
     expect_gt(length(ys), 10)
     expect_true(all(diff(ys) >= 0), info = ARMS[i])
 
     # The curve ends where the ARD says it ends: the frame maps survival 1 to the
     # top of the plot and 0 to its foot, so the last vertex is a statement about
     # a committed number, not a drawing choice.
-    surv <- unlist(ard$rows$stat[
-      ard$rows$stat_name == "km_surv" & ard$rows$group1_level == ARMS[i]
-    ][[1]])
-    expect_equal(utils::tail(ys, 1), 14 + (1 - utils::tail(surv, 1)) * 300, tolerance = 0.01)
+    surv <- stat("surv", ARMS[i])
+    expect_equal(
+      utils::tail(ys, 1), y1 - utils::tail(surv, 1) * (y1 - y0),
+      tolerance = 0.01, info = ARMS[i]
+    )
 
-    # The numbers-at-risk strip prints the ARD's counts.
-    risk <- unlist(ard$rows$stat[
-      ard$rows$stat_name == "risk_n" & ard$rows$group1_level == ARMS[i]
-    ][[1]])
-    for (n in risk) expect_match(svg, paste0(">", n, "</text>"), fixed = FALSE)
+    # One tick mark per censored subject's time, at the ARD's coordinates.
+    ct <- stat("censor_time", ARMS[i])
+    expect_gt(length(ct), 0)
+
+    # The numbers-at-risk strip prints the ARD's counts, in the ARD's order, at
+    # the abscissa the ARD's declared times map to.
+    risk_t <- stat("risk_time", ARMS[i])
+    risk_n <- stat("risk_n", ARMS[i])
+    expect_equal(risk_t, as.numeric(read_analysis_spec("f-derm-time-to-event")$analyses$km$risk_times))
+    for (j in seq_along(risk_t)) {
+      want_x <- x0 + (risk_t[j] - fig$x_axis$min) /
+        (fig$x_axis$max - fig$x_axis$min) * (x1 - x0)
+      expect_match(
+        svg,
+        paste0("x=\"", sprintf("%.2f", want_x), "\" y=\"[0-9.]+\" text-anchor=\"middle\"",
+               "[^>]*>", risk_n[j], "</text>"),
+        info = paste(ARMS[i], risk_t[j])
+      )
+    }
   }
 })
 
-test_that("DSP-TTE-003: a p-value below the display's precision is reported at the boundary, not as zero (#1)", {
-  disp <- fixture_display("f-tte-derm")
-  high <- "Xanomeline High Dose"
-  expect_identical(cell(disp, "p-value", high), "<0.0001")
-  expect_identical(cell(disp, "Degrees of freedom", high), "2")
+test_that("DSP-TTE-003: the annotated test is addressed into the ARD and reported at its precision (#1)", {
+  disp <- fixture_display("f-derm-time-to-event")
+  # Chi-square and degrees of freedom travel with the p-value so a reader can
+  # check it rather than take it on trust; the p-value itself is reported at the
+  # boundary of the declared precision, never rounded through it to zero.
+  expect_match(disp$figure, "Log-rank chi-square 60.27 on 2 df, p &lt;0.0001", fixed = TRUE)
 
   # The ARD keeps the probability itself: the boundary is presentation, and the
   # number stays addressable and strictly positive.
-  ard <- fixture_ard("f-tte-derm")
-  p <- unlist(ard$rows$stat[
-    ard$rows$variable == "LOGRANK" & ard$rows$stat_name == "pval"
-  ][[1]])
+  ard <- fixture_ard("f-derm-time-to-event")
+  p <- ard_binding(ard, "km:p_value")
   expect_gt(p, 0)
   expect_lt(p, 1e-4)
+
+  # The test is a property of the study, not of a treatment arm: parking it in
+  # one arm's column would publish a study-level statistic as that arm's.
+  lr <- ard$rows[ard$rows$context == "survival_test", , drop = FALSE]
+  expect_gt(nrow(lr), 0)
+  expect_true(all(is.na(lr$group1_level)))
+
+  # An annotation whose address no longer resolves is a build failure, not a
+  # stale number left on the face of a figure.
+  spec <- read_display_spec("f-derm-time-to-event")
+  stripped <- ard
+  stripped$rows <- ard$rows[ard$rows$stat_name != "p_value", , drop = FALSE]
+  expect_error(render_display(stripped, spec), "resolved 0 ARD rows")
 })
 
-test_that("TFL-FIG-001: a figure is drawn only from its ARD, and an unusable series fails the build (#1)", {
-  spec <- read_display_spec("f-tte-derm")
-  ard <- fixture_ard("f-tte-derm")
+test_that("TFL-FIG-001: a figure is drawn only from its ARD, and a missing series fails the build (#1)", {
+  spec <- read_display_spec("f-derm-time-to-event")
+  ard <- fixture_ard("f-derm-time-to-event")
 
   # Same ARD, same spec, same picture: rendering is a function of the committed
   # analysis results dataset and nothing else.
@@ -279,11 +323,69 @@ test_that("TFL-FIG-001: a figure is drawn only from its ARD, and an unusable ser
   )
 
   stripped <- ard
-  stripped$rows <- ard$rows[!ard$rows$stat_name %in% c("km_time", "km_surv"), , drop = FALSE]
-  expect_error(render_display(stripped, spec), "carries no usable")
+  stripped$rows <- ard$rows[!(ard$rows$stat_name %in% c("time", "surv") &
+    ard$rows$group1_level == "Placebo"), , drop = FALSE]
+  expect_error(render_display(stripped, spec), "the ARD has no")
+
+  # A strip whose counts do not line up with its times is refused rather than
+  # drawn short.
+  short <- ard
+  keep <- !(short$rows$stat_name == "risk_n" & short$rows$group1_level == "Placebo")
+  trimmed <- short$rows[!keep, , drop = FALSE]
+  trimmed$stat[[1]] <- trimmed$stat[[1]][1:2]
+  short$rows <- rbind(short$rows[keep, , drop = FALSE], trimmed)
+  expect_error(render_display(short, spec), "reported a different number of counts")
 
   # A display that declares no figure gets none, rather than an empty frame.
-  expect_true(is.na(render_display(fixture_ard("t-disposition"), read_display_spec("t-disposition"))$figure))
+  expect_null(render_display(fixture_ard("t-disposition"), read_display_spec("t-disposition"))$figure)
+})
+
+test_that("TFL-FIG-002: a figure keeps its appearance when the site strips the document head (#1)", {
+  # The site embeds a rendered display by lifting its <body> and discarding
+  # <head> (sanitizeEmbeddedHtml in scripts/site-lib.mjs). A figure that leaves
+  # its styling up there arrives with no `fill:none` and no strokes, so every
+  # survival curve publishes as a filled black wedge — and nothing errors while
+  # it happens. Each drawn element therefore carries its appearance as a
+  # presentation attribute as well as a class.
+  disp <- fixture_display("f-derm-time-to-event")
+  body <- sub("(?s).*<body>", "", disp$html, perl = TRUE)
+  expect_false(grepl("<head", body, fixed = TRUE))
+
+  paths <- regmatches(body, gregexpr("<path[^>]*>", body))[[1]]
+  expect_length(paths, length(ARMS))
+  for (pth in paths) {
+    expect_match(pth, "fill=\"none\"", fixed = TRUE)
+    expect_match(pth, "stroke=\"#[0-9A-Fa-f]{6}\"")
+  }
+  # The stylesheet that carries the dark-scheme palette travels inside the
+  # <svg>, so it survives the same lift.
+  svgpart <- regmatches(body, regexpr("(?s)<svg.*</svg>", body, perl = TRUE))
+  expect_match(svgpart, "prefers-color-scheme: dark", fixed = TRUE)
+})
+
+test_that("TFL-SPEC-008: a figure display and its figure block must agree, or the build fails (#1)", {
+  # A `type: figure` display with no plot renders as a table and publishes
+  # silently as one. Both halves of the mismatch are refused.
+  a <- read_analysis_spec("f-derm-time-to-event")
+  d <- read_display_spec("f-derm-time-to-event")
+
+  no_block <- d
+  no_block$figure <- NULL
+  expect_error(check_specs_consistent(a, no_block), "would render as a table")
+
+  as_table <- a
+  as_table$type <- "table"
+  expect_error(check_specs_consistent(as_table, d), "never be numbered as one")
+
+  wrong_analysis <- d
+  wrong_analysis$figure$analysis <- "nope"
+  expect_error(check_specs_consistent(a, wrong_analysis), "references unknown analysis")
+
+  # YAML 1.1 reads a bare `y:` key as the boolean true, so an axis written `y:`
+  # arrives named "TRUE" and looks absent.
+  boolean_axis <- d$figure
+  names(boolean_axis)[names(boolean_axis) == "y_axis"] <- "TRUE"
+  expect_error(validate_figure_block(boolean_axis, "t-x"), "reads bare `y`")
 })
 
 test_that("TFL-FMT-004: p-values are reported at the boundary of their declared precision (#1)", {

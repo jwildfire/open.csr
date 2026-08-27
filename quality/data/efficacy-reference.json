@@ -1874,10 +1874,10 @@
         }
       }
     },
-    "f-tte-derm": {
+    "f-derm-time-to-event": {
       "reference": "Figure 14-1",
       "title": "Time to Dermatologic Event by Treatment Group",
-      "selection": "SAFFL='Y' and PARAMCD='TTDE'; event = 1 - CNSR",
+      "selection": "SAFFL='Y' and PARAMCD='TTDE'; event = CNSR != 1",
       "columns": [
         "Placebo",
         "Xanomeline Low Dose",
@@ -1888,10 +1888,11 @@
         "n": 0,
         "p": 0,
         "n_censor": 0,
+        "p_censor": 0,
         "median": 0,
-        "lcl": 0,
-        "ucl": 0,
-        "pval": 4
+        "median_lcl": 0,
+        "median_ucl": 0,
+        "p_value": 4
       },
       "quoted_from": "The report's narrative, Section 12.3.3: '74% (n = 62) of xanomeline low dose and 73% (n = 61) of xanomeline high dose subjects with at least one event of special interest compared to 34% (n = 29) of placebo subjects ... a median time of 33 days in the xanomeline low dose group (95% CI: 27 - 48 days) and 36 days in the xanomeline high dose group (95% CI: 24 - 46 days) compared to placebo, in which the median time to first event was not estimable ... significantly different (p<0.0001)'.",
       "km": {
@@ -1915,20 +1916,31 @@
           "22",
           "23"
         ],
+        "p_censor": [
+          "66",
+          "26",
+          "27"
+        ],
         "median": [
           null,
           "33",
           "36"
         ],
-        "lcl": [
+        "median_lcl": [
           null,
           "27",
           "24"
         ],
-        "ucl": [
+        "median_ucl": [
           null,
           "48",
           "46"
+        ]
+      },
+      "derived_not_published": {
+        "note": "The report prints the event rate and the number censored, not the censored percentage. `km.p_censor` is the complement of the published event rate, recorded here so the display's second row has something to be checked against, and labelled so nobody mistakes it for a transcribed figure.",
+        "keys": [
+          "km.p_censor"
         ]
       },
       "logrank": {

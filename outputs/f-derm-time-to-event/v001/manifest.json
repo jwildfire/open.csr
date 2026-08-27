@@ -1,15 +1,15 @@
 {
-  "display": "f-tte-derm",
+  "display": "f-derm-time-to-event",
   "version": "v001",
-  "created": "2026-08-27T04:03:33Z",
+  "created": "2026-08-27T05:00:35Z",
   "actor": "@jwildfire",
-  "change_request": "Initial generation of TTE01 from CDISCPILOT01 Figure 14-1 and the analysis results metadata for Figure_14-1, which carries the procedure that produced it.",
-  "regulatory_id": "TTE01",
+  "change_request": "Initial generation of Figure 14-1: Kaplan-Meier estimates of time to first dermatologic event, from the study own analysis results metadata (define.xml ResultDisplay Figure_14-1, PROC LIFETEST) and SAP section 11.2.",
+  "regulatory_id": "AEF01",
   "git_commit": null,
-  "spec_hash": "sha256:c9feed698d358a501c8e7c9feb154bd17fd52fb362f63c2b3406d79f792f9ce8",
-  "display_hash": "sha256:1282cdb78a8bca4d809139d207304b4e109b91cf4e9023809f43f113a0082069",
-  "ard_hash": "sha256:5fc3f31be75767c19c89127a69e18566b3637ef0fff5e391862bb078c222f0e7",
-  "ard_rows": 39,
+  "spec_hash": "sha256:dd67fc12f07b9385d20a849745d6d24fa38adb36470696468d5de7b4fe62d0c0",
+  "display_hash": "sha256:a900fd7b08f074adb3842866f5e8cea6910d922cfd091d544e844d86fd3fdd68",
+  "ard_hash": "sha256:2b6232813ba9ddffd6410358197a5766675e5ac754b8acd6cd9cad203b23ba9a",
+  "ard_rows": 51,
   "ard_warnings": 0,
   "ard_errors": 0,
   "datasets": ["adsl", "adtte"],
@@ -50,8 +50,8 @@
     "post_text": {
       "file": "table.html",
       "rtf": "table.rtf",
-      "rtf_hash": "sha256:0b88f02d4702450311cc99fdb7e6779ee4f227de088b834749839b6d714809d7",
-      "n_rows": 11
+      "rtf_hash": "sha256:f13a708e4c79b4a86b0a8b4d2c3edebbcd3e38b069602f0f87898147a213819a",
+      "n_rows": 3
     }
   }
 }

@@ -1,67 +1,7 @@
 {
   "module": "quality",
-  "generated": "2026-08-27T12:22:29.260Z",
+  "generated": "2026-08-27T05:04:25.057Z",
   "records": [
-    {
-      "requirementIds": [
-        "QC-SITE-013"
-      ],
-      "title": "a display and the documents that place it QC-SITE-013: a display no document places says so rather than showing an empty row (#42)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "tests/unit/site-render.test.js",
-      "issueRefs": [
-        42
-      ]
-    },
-    {
-      "requirementIds": [
-        "QC-SITE-013"
-      ],
-      "title": "a display and the documents that place it QC-SITE-013: the display page lists every document that places it, and its number there (#42)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "tests/unit/site-render.test.js",
-      "issueRefs": [
-        42
-      ]
-    },
-    {
-      "requirementIds": [
-        "QC-SITE-013"
-      ],
-      "title": "a display and the documents that place it QC-SITE-013: the gallery card names the documents that place each display (#42)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "tests/unit/site-render.test.js",
-      "issueRefs": [
-        42
-      ]
-    },
-    {
-      "requirementIds": [
-        "QC-SITE-013"
-      ],
-      "title": "a display and the documents that place it QC-SITE-013: the index reads the whole library, and records what each document calls a display (#42)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "tests/unit/site-render.test.js",
-      "issueRefs": [
-        42
-      ]
-    },
-    {
-      "requirementIds": [
-        "QC-SITE-014"
-      ],
-      "title": "a display and the documents that place it QC-SITE-014: a display placed in a document hyperlinks to its entry in the store (#42)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "tests/unit/site-render.test.js",
-      "issueRefs": [
-        42
-      ]
-    },
     {
       "requirementIds": [
         "QC-DEMO-035"
@@ -150,36 +90,24 @@
       "requirementIds": [
         "QC-DEMO-025"
       ],
-      "title": "a document contents in the tree QC-DEMO-025: a document's contents sit immediately after it, so the open one is the one shown (#40)",
+      "title": "a document contents in the tree QC-DEMO-025: a node with children carries a keyboard-reachable disclosure control (#1)",
       "suite": "js-unit",
       "passed": true,
       "file": "tests/unit/site-demo.test.js",
       "issueRefs": [
-        40
+        1
       ]
     },
     {
       "requirementIds": [
         "QC-DEMO-025"
       ],
-      "title": "a document contents in the tree QC-DEMO-025: an unbuilt document contributes no contents and still no control (#40)",
+      "title": "a document contents in the tree QC-DEMO-025: a node with nothing beneath it gets no chevron at all (#1)",
       "suite": "js-unit",
       "passed": true,
       "file": "tests/unit/site-demo.test.js",
       "issueRefs": [
-        40
-      ]
-    },
-    {
-      "requirementIds": [
-        "QC-DEMO-025"
-      ],
-      "title": "a document contents in the tree QC-DEMO-025: no document carries a disclosure control — selection alone opens its contents (#40)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "tests/unit/site-demo.test.js",
-      "issueRefs": [
-        40
+        1
       ]
     },
     {
@@ -204,30 +132,6 @@
       "file": "tests/unit/site-demo.test.js",
       "issueRefs": [
         1
-      ]
-    },
-    {
-      "requirementIds": [
-        "QC-SITE-012"
-      ],
-      "title": "a document's contents follow the selection and nothing else QC-SITE-012: no rule survives that could hide the open document's contents (#40)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "tests/unit/site-css.test.js",
-      "issueRefs": [
-        40
-      ]
-    },
-    {
-      "requirementIds": [
-        "QC-SITE-012"
-      ],
-      "title": "a document's contents follow the selection and nothing else QC-SITE-012: the current document reveals its contents, and only the current one (#40)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "tests/unit/site-css.test.js",
-      "issueRefs": [
-        40
       ]
     },
     {
@@ -1732,42 +1636,6 @@
     },
     {
       "requirementIds": [
-        "QC-DEMO-020"
-      ],
-      "title": "the explorer wiring QC-DEMO-020: the group-level collapse the tree still needs is untouched (#40)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "tests/unit/site-demo.test.js",
-      "issueRefs": [
-        40
-      ]
-    },
-    {
-      "requirementIds": [
-        "QC-DEMO-025"
-      ],
-      "title": "the explorer wiring QC-DEMO-025: the client holds no per-document expansion state at all (#40)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "tests/unit/site-demo.test.js",
-      "issueRefs": [
-        40
-      ]
-    },
-    {
-      "requirementIds": [
-        "QC-DEMO-031"
-      ],
-      "title": "the explorer wiring QC-DEMO-031: a deep link into another document opens that document (#40)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "tests/unit/site-demo.test.js",
-      "issueRefs": [
-        40
-      ]
-    },
-    {
-      "requirementIds": [
         "QC-DEMO-018"
       ],
       "title": "the navigation tree QC-DEMO-018: more than one document is listed, and an unbuilt one says so (#1)",
@@ -1794,12 +1662,12 @@
       "requirementIds": [
         "QC-DEMO-019"
       ],
-      "title": "the navigation tree QC-DEMO-019: a display records EVERY document that uses it, not just the report (#42)",
+      "title": "the navigation tree QC-DEMO-019: a display records the documents that use it rather than living inside one (#1)",
       "suite": "js-unit",
       "passed": true,
       "file": "tests/unit/site-demo.test.js",
       "issueRefs": [
-        42
+        1
       ]
     },
     {
@@ -1812,18 +1680,6 @@
       "file": "tests/unit/site-demo.test.js",
       "issueRefs": [
         1
-      ]
-    },
-    {
-      "requirementIds": [
-        "QC-DEMO-019"
-      ],
-      "title": "the navigation tree QC-DEMO-019: the sidebar states no display number, because four assemblies disagree (#42)",
-      "suite": "js-unit",
-      "passed": true,
-      "file": "tests/unit/site-demo.test.js",
-      "issueRefs": [
-        42
       ]
     },
     {
@@ -2392,9 +2248,9 @@
     },
     {
       "requirementIds": [
-        "DSP-EFF-001"
+        "DSP-CIBIC-001"
       ],
-      "title": "DSP-EFF-001: efficacy descriptive statistics match the vendored ADaM computed directly (#1)",
+      "title": "DSP-CIBIC-001: the CIBIC+ summary tables reproduce the published tables cell for cell (#1)",
       "suite": "r-unit",
       "passed": true,
       "file": "test-displays-efficacy.R",
@@ -2404,9 +2260,9 @@
     },
     {
       "requirementIds": [
-        "DSP-EFF-002"
+        "DSP-CIBIC-002"
       ],
-      "title": "DSP-EFF-002: the ANCOVA statistics reproduce the reference report exactly (#1)",
+      "title": "DSP-CIBIC-002: the analysis of covariance reproduces the published model results (#1)",
       "suite": "r-unit",
       "passed": true,
       "file": "test-displays-efficacy.R",
@@ -2416,9 +2272,9 @@
     },
     {
       "requirementIds": [
-        "DSP-EFF-003"
+        "DSP-CIBIC-003"
       ],
-      "title": "DSP-EFF-003: the completers display separates population size from records summarised (#1)",
+      "title": "DSP-CIBIC-003: the column heading is the analysis set and the n row is the visit (#1)",
       "suite": "r-unit",
       "passed": true,
       "file": "test-displays-efficacy.R",
@@ -2428,9 +2284,9 @@
     },
     {
       "requirementIds": [
-        "DSP-EFF-004"
+        "DSP-CIBIC-004"
       ],
-      "title": "DSP-EFF-004: the over-time display's two imputation lanes select different records (#1)",
+      "title": "DSP-CIBIC-004: the categorical analysis reports every category at every visit and partitions it (#1)",
       "suite": "r-unit",
       "passed": true,
       "file": "test-displays-efficacy.R",
@@ -2440,9 +2296,9 @@
     },
     {
       "requirementIds": [
-        "DSP-EFF-005"
+        "DSP-CIBIC-005"
       ],
-      "title": "DSP-EFF-005: the repeated-measures fit reproduces the reference report's PROC MIXED output (#1)",
+      "title": "DSP-CIBIC-005: the categorical p-values are the published row-mean-scores CMH values (#1)",
       "suite": "r-unit",
       "passed": true,
       "file": "test-displays-efficacy.R",
@@ -2452,9 +2308,9 @@
     },
     {
       "requirementIds": [
-        "DSP-EFF-006"
+        "DSP-TTE-001"
       ],
-      "title": "DSP-EFF-006: the repeated-measures LS means are the visit-averaged treatment effect (#1)",
+      "title": "DSP-TTE-001: the time-to-event display reproduces the published narrative (#1)",
       "suite": "r-unit",
       "passed": true,
       "file": "test-displays-efficacy.R",
@@ -2464,9 +2320,9 @@
     },
     {
       "requirementIds": [
-        "DSP-EFF-007"
+        "DSP-TTE-002"
       ],
-      "title": "DSP-EFF-007: the NPI-X endpoint follows the analysis plan, not the shipped NPTOTMN parameter (#1)",
+      "title": "DSP-TTE-002: the survival figure is drawn from the ARD and cannot disagree with it (#1)",
       "suite": "r-unit",
       "passed": true,
       "file": "test-displays-efficacy.R",
@@ -2476,132 +2332,12 @@
     },
     {
       "requirementIds": [
-        "DSP-EFF-008"
+        "DSP-TTE-003"
       ],
-      "title": "DSP-EFF-008: a derived subject record refuses a carry column that varies inside the subject (#1)",
+      "title": "DSP-TTE-003: the annotated test is addressed into the ARD and reported at its precision (#1)",
       "suite": "r-unit",
       "passed": true,
       "file": "test-displays-efficacy.R",
-      "issueRefs": [
-        1
-      ]
-    },
-    {
-      "requirementIds": [
-        "DSP-EFF-009"
-      ],
-      "title": "DSP-EFF-009: every rendered efficacy cell matches the reference report bar the five declared (#1)",
-      "suite": "r-unit",
-      "passed": true,
-      "file": "test-displays-efficacy.R",
-      "issueRefs": [
-        1
-      ]
-    },
-    {
-      "requirementIds": [
-        "DSP-EOS-001"
-      ],
-      "title": "DSP-EOS-001: the completion-status rows partition each treatment group (#1)",
-      "suite": "r-unit",
-      "passed": true,
-      "file": "test-displays.R",
-      "issueRefs": [
-        1
-      ]
-    },
-    {
-      "requirementIds": [
-        "DSP-EOS-002"
-      ],
-      "title": "DSP-EOS-002: the early-termination reasons partition the early terminations (#1)",
-      "suite": "r-unit",
-      "passed": true,
-      "file": "test-displays.R",
-      "issueRefs": [
-        1
-      ]
-    },
-    {
-      "requirementIds": [
-        "DSP-EOS-003"
-      ],
-      "title": "DSP-EOS-003: a p-value appears on exactly the rows the analysis plan names (#1)",
-      "suite": "r-unit",
-      "passed": true,
-      "file": "test-displays.R",
-      "issueRefs": [
-        1
-      ]
-    },
-    {
-      "requirementIds": [
-        "DSP-EOS-004"
-      ],
-      "title": "DSP-EOS-004: every percentage is based on the treatment group, not the discontinuations (#1)",
-      "suite": "r-unit",
-      "passed": true,
-      "file": "test-displays.R",
-      "issueRefs": [
-        1
-      ]
-    },
-    {
-      "requirementIds": [
-        "DSP-POP-001"
-      ],
-      "title": "DSP-POP-001: the population rows match the study's own flags in ADSL (#1)",
-      "suite": "r-unit",
-      "passed": true,
-      "file": "test-displays.R",
-      "issueRefs": [
-        1
-      ]
-    },
-    {
-      "requirementIds": [
-        "DSP-POP-002"
-      ],
-      "title": "DSP-POP-002: completion rows use COMP24FL and the complement of DISCONFL (#1)",
-      "suite": "r-unit",
-      "passed": true,
-      "file": "test-displays.R",
-      "issueRefs": [
-        1
-      ]
-    },
-    {
-      "requirementIds": [
-        "DSP-POP-003"
-      ],
-      "title": "DSP-POP-003: the display reads the packaging that states the flags it reports (#1)",
-      "suite": "r-unit",
-      "passed": true,
-      "file": "test-displays.R",
-      "issueRefs": [
-        1
-      ]
-    },
-    {
-      "requirementIds": [
-        "DSP-POP-004"
-      ],
-      "title": "DSP-POP-004: planned and actual treatment agree for every subject (#1)",
-      "suite": "r-unit",
-      "passed": true,
-      "file": "test-displays.R",
-      "issueRefs": [
-        1
-      ]
-    },
-    {
-      "requirementIds": [
-        "DSP-REF-001"
-      ],
-      "title": "DSP-REF-001: both displays publish the figures the pilot's own report printed (#1)",
-      "suite": "r-unit",
-      "passed": true,
-      "file": "test-displays.R",
       "issueRefs": [
         1
       ]
