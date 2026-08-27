@@ -1,0 +1,43 @@
+id: t-cibic-week16
+title: "CIBIC+ — Summary at Week 16 — LOCF"
+study: CDISCPILOT01
+population_label: "Efficacy Analysis Set"
+cutoff: "2014-07-01"
+source: "Source: adqscibc, adsl (CDISCPILOT01 ADaM package, phuse-org/phuse-scripts). Data cut-off: 2014-07-01."
+footnotes:
+  - "A supporting analysis at an earlier time point. The primary endpoint is CIBIC+ at Week 24."
+  - "The Clinician's Interview-Based Impression of Change plus caregiver input (CIBIC+) is scored 1 (marked improvement) to 7 (marked worsening); 4 is no change. A higher score is a worse outcome."
+  - "Values are last observation carried forward within the analysis window (ADQSCIBC ANL01FL = 'Y')."
+  - "Column headings are the size of the efficacy analysis set; n is the number of subjects with a value at this visit."
+  - "Model: analysis of covariance with treatment and site group as factors. The dose-response p-value tests a non-zero coefficient for treatment entered as randomised dose (0, 54 or 81 mg), and is a single model-level result, printed once."
+  - "Pairwise comparisons treat treatment as a categorical variable and are not adjusted for multiplicity. The study's analysis plan directs that they not be interpreted unless the dose-response test is significant."
+columns:
+  order: [Placebo, "Xanomeline Low Dose", "Xanomeline High Dose"]
+format:
+  digits:
+    N: 0
+    mean: 1
+    sd: 2
+    median: 1
+    min: 0
+    max: 0
+    pval: 3
+    diff: 1
+    se: 2
+    lcl: 1
+    ucl: 1
+rows:
+  - { label: "Week 16", section: true }
+  - { analysis: score, variable: AVAL, pattern: "{N}", label: "n", indent: 1 }
+  - { analysis: score, variable: AVAL, pattern: mean_sd, label: "Mean (SD)", indent: 1 }
+  - { analysis: score, variable: AVAL, pattern: "{median} ({min}; {max})", label: "Median (Range)", indent: 1 }
+  - { label: "Analysis of covariance", section: true }
+  - { analysis: ancova, variable: DOSE_RESPONSE, pattern: "{pval}", label: "p-value (dose response)", indent: 1 }
+  - { analysis: ancova, variable: XAN_VS_PBO, pattern: "{pval}", label: "p-value (Xanomeline − Placebo)", indent: 1 }
+  - { analysis: ancova, variable: XAN_VS_PBO, pattern: "{diff} ({se})", label: "Difference of LS means (SE)", indent: 2 }
+  - { analysis: ancova, variable: XAN_VS_PBO, pattern: "({lcl}; {ucl})", label: "95% CI", indent: 2 }
+  - { analysis: ancova, variable: HIGH_VS_LOW, pattern: "{pval}", label: "p-value (Xanomeline High − Xanomeline Low)", indent: 1 }
+  - { analysis: ancova, variable: HIGH_VS_LOW, pattern: "{diff} ({se})", label: "Difference of LS means (SE)", indent: 2 }
+  - { analysis: ancova, variable: HIGH_VS_LOW, pattern: "({lcl}; {ucl})", label: "95% CI", indent: 2 }
+variants:
+  post_text: {}

@@ -1,0 +1,27 @@
+id: t-cibic-week8
+title: "CIBIC+ — Summary at Week 8 — LOCF"
+regulatory_id: EFF03
+type: table
+dataset: adqscibc
+analysis_set: efficacy
+denominator: adsl
+sources: phuse
+group:
+  - TRT01A
+total: false
+analyses:
+  - name: population
+    method: subject_count
+    custom: ard_population_n
+    label: "Subjects in the efficacy analysis set"
+  - name: score
+    method: continuous
+    label: "CIBIC+ score at Week 8 (LOCF)"
+    variables: [AVAL]
+    filter: "PARAMCD == 'CIBICVAL' & AVISIT == 'Week 8' & ANL01FL == 'Y'"
+  - name: ancova
+    method: continuous
+    custom: ard_ancova
+    label: "Analysis of covariance with treatment and site group as factors"
+    variables: [AVAL]
+    filter: "PARAMCD == 'CIBICVAL' & AVISIT == 'Week 8' & ANL01FL == 'Y'"
