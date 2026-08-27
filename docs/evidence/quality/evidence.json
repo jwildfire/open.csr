@@ -1,6 +1,6 @@
 {
   "module": "quality",
-  "generated": "2026-08-27T12:02:31.721Z",
+  "generated": "2026-08-27T12:07:41.258Z",
   "records": [
     {
       "requirementIds": [
@@ -2383,6 +2383,114 @@
         "DSP-ALL-002"
       ],
       "title": "DSP-ALL-002: every display declares a regulatory identifier and a source line (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-EOS-001"
+      ],
+      "title": "DSP-EOS-001: the completion-status rows partition each treatment group (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-EOS-002"
+      ],
+      "title": "DSP-EOS-002: the early-termination reasons partition the early terminations (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-EOS-003"
+      ],
+      "title": "DSP-EOS-003: a p-value appears on exactly the rows the analysis plan names (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-EOS-004"
+      ],
+      "title": "DSP-EOS-004: every percentage is based on the treatment group, not the discontinuations (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-POP-001"
+      ],
+      "title": "DSP-POP-001: the population rows match the study's own flags in ADSL (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-POP-002"
+      ],
+      "title": "DSP-POP-002: completion rows use COMP24FL and the complement of DISCONFL (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-POP-003"
+      ],
+      "title": "DSP-POP-003: the display reads the packaging that states the flags it reports (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-POP-004"
+      ],
+      "title": "DSP-POP-004: planned and actual treatment agree for every subject (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-REF-001"
+      ],
+      "title": "DSP-REF-001: both displays publish the figures the pilot's own report printed (#1)",
       "suite": "r-unit",
       "passed": true,
       "file": "test-displays.R",
