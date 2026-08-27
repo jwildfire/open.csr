@@ -1,0 +1,31 @@
+id: f-derm-time-to-event
+title: "Time to Dermatologic Event by Treatment Group"
+regulatory_id: AEF01
+type: figure
+# ADTTE is the study's own time-to-event dataset, and only the CDISC pilot's own
+# ADaM package ships it. `sources: phuse` takes the whole study from that
+# packaging so the denominators, the arms and the event times come from one
+# coherent submission rather than two — the pilot's ADSL puts 86 / 84 / 84
+# subjects in the three arms, which is what the reference report reports.
+sources: phuse
+dataset: adtte
+analysis_set: safety
+denominator: adsl
+group:
+  - TRT01A
+total: false
+analyses:
+  - name: km
+    method: figure
+    custom: km_time_to_event
+    label: "Kaplan-Meier estimates of time to first dermatologic event"
+    # define.xml, Figure_14-1: ParamCD "TTDE", AnalysisVariables AVAL and CNSR,
+    # `time aval*cnsr(1)` — CNSR = 1 is the censoring value.
+    param: TTDE
+    time_var: AVAL
+    censor_var: CNSR
+    censor_value: 1
+    # The grid for the numbers-at-risk strip. Declared here so the counts the
+    # figure prints are committed statistics in the ARD, checkable against it,
+    # rather than arithmetic the renderer does on its way to the page.
+    risk_times: [0, 50, 100, 150, 200]

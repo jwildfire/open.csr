@@ -25,12 +25,16 @@ import {
   buildQualitySummary,
   artifactFileName,
   buildTraceIndex,
-  loadCsr,
+  displayUsage,
+  builtDocuments,
+  loadDocuments,
   loadDisplays,
   loadEvidence,
   loadRequirements,
+  requirementsFor,
   loadTextBlocks,
   renderCsrReader,
+  renderTraceChrome,
   renderDocPage,
   renderDocsIndex,
   renderDisplayPage,
@@ -62,6 +66,7 @@ import {
   buildNavTree,
   renderAppBar,
   renderAppPage,
+  renderDocumentsPane,
   renderSidebar,
   renderTablesPane,
   renderTemplatesPane,
@@ -103,8 +108,26 @@ if (existsSync(assetsDir)) {
 
 const displays = loadDisplays(rootDir, config);
 const textBlocks = loadTextBlocks(rootDir, config);
-const csr = loadCsr(rootDir);
+// Every template object in library/templates/ that has been assembled, plus any
+// document the config declares as planned. The site follows the library: a third
+// template object acquires a reader page, a template page, a nav entry and a
+// home-page row from this one call (#32).
+const documents = loadDocuments(rootDir, config);
+const openDocuments = builtDocuments(documents);
+const csr = documents.find((doc) => doc.primary) || { json: null, html: null };
+for (const doc of openDocuments) {
+  if (!doc.declared) {
+    warnings.push(
+      `${doc.templateId}: assembled from library/templates/ but not declared in ` +
+        'site/config.json — publishing it with the title and blurb from its own template model.'
+    );
+  }
+}
 const traceIndex = buildTraceIndex(displays);
+// Which documents place each display, over the whole library rather than over
+// the primary document. Read by the gallery, by each display's own page, and by
+// the explorer, so all three agree about where a display appears (#42).
+const usage = displayUsage(documents);
 // The values store and, from the last assembly, the verdict of the gate that
 // re-derived it — the pane states whether the numbers still match their sources
 // rather than implying it (#129 B).
@@ -156,7 +179,7 @@ const quality = buildQualitySummary({ modules: qualityModules, rootDir });
 page(path.join(buildDir, 'index.html'), {
   title: `${config.siteTitle} — ${config.tagline}`,
   description: config.description,
-  content: renderHome({ config, displays, textBlocks, quality })
+  content: renderHome({ config, displays, textBlocks, quality, documents })
 });
 
 // --- TFL Gallery ------------------------------------------------------------
@@ -167,7 +190,7 @@ page(path.join(buildDir, 'gallery', 'index.html'), {
   description:
     'Every display in the library: analysis spec, display spec, ARD, rendered output, and the ' +
     'iteration timeline of every regeneration.',
-  content: renderGallery({ config, displays })
+  content: renderGallery({ config, displays, usage })
 });
 
 // Rendered once, used twice: as the /gallery/<slug>.html permalink and as a
@@ -175,14 +198,19 @@ page(path.join(buildDir, 'gallery', 'index.html'), {
 // the same string.
 const displayFragments = displays.map((display) => {
   const evidence = loadEvidence(rootDir, display.module);
-  const requirements = loadRequirements(rootDir, display.module).requirements || {};
+  // The per-display file carries the WHOLE matrix; `prefixes` is what says which
+  // rows are this display's. Without this the page lists all 49 for everything.
+  const requirements = requirementsFor(
+    loadRequirements(rootDir, display.module).requirements,
+    display.prefixes
+  );
   return {
     slug: display.slug,
     title: display.title,
     regulatoryId: display.regulatoryId,
     type: display.type,
     status: display.status,
-    html: renderDisplayPage({ config, display, evidence, requirements })
+    html: renderDisplayPage({ config, display, evidence, requirements, usedIn: usage.get(display.slug) })
   };
 });
 
@@ -224,15 +252,31 @@ if (!csr.json && !csr.html) {
     'docs/assembled/csr.json is missing — the CSR Reader renders its "not assembled yet" state.'
   );
 }
-const readerContent = renderCsrReader({ config, csr, displays, ards, traceIndex, textBlocks });
-page(path.join(buildDir, 'reader', 'index.html'), {
-  title: `CSR Reader · ${config.siteTitle}`,
-  root: '../',
-  description:
-    'The assembled Clinical Study Report with a trace panel: click any bound number or display ' +
-    'to follow the data → ARD → display → sentence chain.',
-  content: readerContent
-});
+
+// One reader page per assembled document, from one renderer and one list. The
+// primary document keeps /reader/; the rest are sibling files in the same
+// directory, so every reader sits one level down and the ../gallery, ../text and
+// ../quality links the trace index emits resolve for all of them.
+for (const doc of openDocuments.length ? openDocuments : [csr]) {
+  page(path.join(buildDir, ...(doc.readerPath || 'reader/index.html').split('/')), {
+    title: `${doc.title || 'CSR Reader'} · ${config.siteTitle}`,
+    root: '../',
+    description:
+      `The assembled ${doc.title || 'Clinical Study Report'} with a trace panel: click any bound ` +
+      'number or display to follow the data → ARD → display → sentence chain.' +
+      (doc.prose?.draft ? ' Its prose blocks are unapproved drafts.' : ''),
+    content: renderCsrReader({
+      config,
+      csr: doc,
+      displays,
+      ards,
+      traceIndex,
+      textBlocks,
+      documents,
+      root: '../'
+    })
+  });
+}
 
 // --- Text Library -----------------------------------------------------------
 
@@ -248,21 +292,28 @@ page(path.join(buildDir, 'text', 'index.html'), {
 // The template model comes from template-lib, the same tested loaders the
 // assembler uses — so the pane's numbering is the document's numbering (D6)
 // rather than a second implementation of it.
-const templateDir = path.join(rootDir, config.template?.dir || 'library/templates/ich-e3');
-const template = {
-  dir: path.relative(rootDir, templateDir).replaceAll('\\', '/'),
-  sections: existsSync(path.join(templateDir, config.template?.sections || 'sections.yaml'))
-    ? loadSections(path.join(templateDir, config.template?.sections || 'sections.yaml'))
-    : null,
-  assembly: existsSync(path.join(templateDir, config.template?.assembly || 'assembly.yaml'))
-    ? loadAssembly(path.join(templateDir, config.template?.assembly || 'assembly.yaml'))
-    : null
+const templateFor = (doc) => {
+  const dir = path.join(rootDir, doc.template?.dir || 'library/templates/ich-e3');
+  return {
+    id: doc.templateId,
+    dir: path.relative(rootDir, dir).replaceAll('\\', '/'),
+    sections: existsSync(path.join(dir, 'sections.yaml'))
+      ? loadSections(path.join(dir, 'sections.yaml'))
+      : null,
+    assembly: existsSync(path.join(dir, 'assembly.yaml'))
+      ? loadAssembly(path.join(dir, 'assembly.yaml'))
+      : null
+  };
 };
-if (!template.sections?.sections?.length) {
-  warnings.push(
-    `${template.dir}/sections.yaml is missing or empty — the Templates pane renders its ` +
-      '"not committed yet" state.'
-  );
+const templates = new Map(openDocuments.map((doc) => [doc.id, templateFor(doc)]));
+const template = templates.get(csr.id) || templateFor(csr);
+for (const [id, entry] of templates) {
+  if (!entry.sections?.sections?.length) {
+    warnings.push(
+      `${entry.dir}/sections.yaml is missing or empty — the Templates page for ${id} renders its ` +
+        '"not committed yet" state.'
+    );
+  }
 }
 
 // --- Text status ------------------------------------------------------------
@@ -331,17 +382,52 @@ const displayContext = displays.map((display) => ({
 // every block the build mounted an editor for (#129 C, open.csr#15). The
 // standalone /reader/ page keeps the read-only render — there is no editor there
 // to adopt, and an affordance that opens nothing is worse than none.
-const readerAppContent = renderCsrReader({
-  config,
-  csr,
-  displays,
-  ards,
-  traceIndex,
-  textBlocks,
-  editable: new Set(textBlocks.filter((block) => block.exists !== false).map((block) => block.id))
+//
+// One panel per assembled document, from the same renderer and the same list
+// that produces the standalone reader pages (#36). The pane follows the library:
+// a third template object becomes a third panel here with no change below this
+// line. Each document renders WITHOUT its own trace panel — one shared panel is
+// hoisted into the pane, because `id="trace"` can only mean one element.
+const editableBlocks = new Set(
+  textBlocks.filter((block) => block.exists !== false).map((block) => block.id)
+);
+const readerDocuments = openDocuments.length ? openDocuments : [csr];
+const documentEntries = readerDocuments.map((doc) => ({
+  // A tree with nothing assembled still renders the pane: the fallback document
+  // is the CSR's own "not assembled yet" state, and it needs a key like any other.
+  id: doc.id || 'csr',
+  // The basename of this document's standalone reader page: `index` for the
+  // primary, the template id for every other object. It is what a link between
+  // panes names, so the panel answers to it as well as to the document id.
+  file: path.basename(doc.readerPath || 'reader/index.html', '.html'),
+  title: doc.title,
+  html: renderCsrReader({
+    config,
+    csr: doc,
+    displays,
+    ards,
+    traceIndex,
+    textBlocks,
+    documents,
+    trace: false,
+    root: '../',
+    editable: editableBlocks
+  })
+}));
+const readerAppContent = renderDocumentsPane({
+  entries: documentEntries,
+  selected: csr.id,
+  trace: renderTraceChrome(traceIndex)
 });
 
-const templatesContent = renderTemplatesPane({ config, template, displays });
+const templatesContent = renderTemplatesPane({
+  config,
+  template,
+  displays,
+  documents,
+  current: csr.id,
+  root: '../'
+});
 const valuesContent = renderValuesPane({
   store: valueStore,
   usage: valueUsageIndex,
@@ -372,7 +458,11 @@ const navTree = buildNavTree({
   csr: csr.json,
   displays,
   textBlocks,
-  values: valueStore?.values || []
+  values: valueStore?.values || [],
+  documents,
+  current: csr.id,
+  rendered: documentEntries.map((entry) => entry.id),
+  root: '../'
 });
 
 page(path.join(buildDir, 'demo', 'index.html'), {
@@ -411,14 +501,27 @@ page(path.join(buildDir, 'values', 'index.html'), {
   content: valuesContent
 });
 
-page(path.join(buildDir, 'templates', 'index.html'), {
-  title: `Report template · ${config.siteTitle}`,
-  root: '../',
-  description:
-    'The ICH E3 document model as data: the full section skeleton, what this report puts in each ' +
-    'section, and the 14.x numbering derived from assembly order.',
-  content: templatesContent
-});
+// One template page per document, same renderer, same list.
+for (const doc of openDocuments.length ? openDocuments : [csr]) {
+  page(path.join(buildDir, ...(doc.templatePath || 'templates/index.html').split('/')), {
+    title: `${doc.title || 'Report template'} · template · ${config.siteTitle}`,
+    root: '../',
+    description:
+      `The ${doc.title || 'ICH E3'} document model as data: the full section skeleton, what this ` +
+      'report puts in each section, and the display numbering derived from assembly order.',
+    content:
+      doc.id === csr.id
+        ? templatesContent
+        : renderTemplatesPane({
+            config,
+            template: templates.get(doc.id),
+            displays,
+            documents,
+            current: doc.id,
+            root: '../'
+          })
+  });
+}
 
 // The demo client and its pure core, copied verbatim — no bundler, no external
 // anything (contracts §9). It is the only script the site loads from a file:

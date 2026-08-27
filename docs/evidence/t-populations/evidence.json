@@ -1,0 +1,111 @@
+{
+  "module": "t-populations",
+  "generated": "2026-08-27T14:58:26.704Z",
+  "records": [
+    {
+      "requirementIds": [
+        "DSP-ALL-001"
+      ],
+      "title": "DSP-ALL-001: every display renders a table that actually contains numbers (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-ALL-002"
+      ],
+      "title": "DSP-ALL-002: every display declares a regulatory identifier and a source line (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-POP-001"
+      ],
+      "title": "DSP-POP-001: the population rows match the study's own flags in ADSL (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-POP-002"
+      ],
+      "title": "DSP-POP-002: completion rows use COMP24FL and the complement of DISCONFL (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-POP-003"
+      ],
+      "title": "DSP-POP-003: the display reads the packaging that states the flags it reports (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-POP-004"
+      ],
+      "title": "DSP-POP-004: planned and actual treatment agree for every subject (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-REF-001"
+      ],
+      "title": "DSP-REF-001: both displays publish the figures the pilot's own report printed (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    }
+  ],
+  "traceability": {
+    "adamDatasets": [
+      "adsl"
+    ],
+    "adamHashes": {
+      "adsl": "sha256:6534192e6ae2a8789015148d2068ecdd8421791ea6d7f9cc307fef1db97945f9"
+    },
+    "ardFile": "outputs/t-populations/v002/ard.json",
+    "ardHash": "sha256:61a333a1dc8074996bb9aa8114931d8093626da5a9c92ada5a5aea63ebfa6626",
+    "displayFile": "library/tfl/t-populations/display.yaml",
+    "specHash": "sha256:c8dbaff2d4a4cad9b25ac1dcad574d029394f9730e76116bd44b52f60af38414",
+    "iteration": "v002",
+    "sourceCommit": null
+  },
+  "environment": {
+    "os": "Darwin 23.6.0",
+    "node": "v24.14.0",
+    "vitest": null,
+    "r": "4.3.3"
+  },
+  "run": null
+}

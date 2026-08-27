@@ -655,6 +655,15 @@ pre.ascii {
   margin-bottom: 0.6rem;
 }
 
+/* Which documents place this display. Named rather than counted: "in the report
+   and the abbreviated report" is the fact a reader wants, and a count is not
+   it (#42). No number here — four assemblies would each give a different one. */
+.card-used-in {
+  font-size: 0.76rem;
+  color: var(--muted);
+  margin-bottom: 0.6rem;
+}
+
 .card-facts {
   font-size: 0.74rem;
   color: var(--faint);
@@ -1033,6 +1042,93 @@ ol.loop li span:last-child {
   color: var(--muted);
 }
 
+/* Document switcher — the template library is plural, so every reader and every
+   template page carries a route to its siblings. One strip, one renderer: a
+   third template object joins it without a line of new CSS. */
+
+.doc-switch {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0 0 1.1rem;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.doc-switch-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--faint);
+  margin-right: 0.35rem;
+}
+
+.doc-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--rule-strong);
+  border-radius: 999px;
+  font-size: 0.88rem;
+  line-height: 1.3;
+  text-decoration: none;
+  color: var(--muted);
+  background: var(--card);
+}
+
+.doc-tab:hover {
+  color: var(--accent);
+  border-color: var(--accent-rule);
+}
+
+.doc-tab.current {
+  color: var(--ink);
+  background: var(--accent-soft);
+  border-color: var(--accent-rule);
+  font-weight: 600;
+}
+
+.doc-flag {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.05rem 0.4rem;
+  border-radius: 999px;
+  background: var(--paper-2);
+  color: var(--muted);
+}
+
+.doc-flag.warn {
+  background: var(--warn-bg);
+  color: var(--warn);
+}
+
+/* Where the prose in this document stands. Stated on the page that shows it,
+   because "assembled" is not "reviewed" and only one of the two is visible. */
+
+.prose-state {
+  margin-bottom: 1.4rem;
+}
+
+.prose-state.ok {
+  font-size: 0.86rem;
+  color: var(--muted);
+}
+
+.doc-card .card-top {
+  margin-bottom: 0.5rem;
+}
+
+/* A nav item that lives on another page: a real link, no selection state. */
+
+.nav-item.is-elsewhere .nav-label {
+  text-decoration: underline;
+  text-decoration-color: var(--rule-strong);
+  text-underline-offset: 2px;
+}
+
 /* Reader */
 
 .reader {
@@ -1117,6 +1213,16 @@ ol.loop li span:last-child {
   font-size: 0.7rem;
   color: var(--faint);
   margin-top: -0.4rem;
+}
+
+/* A placed display's way back to the display store, deliberately identical to
+   the text block's way back to the Text Library: same size, same colour, same
+   position under the object it names. One gesture, two libraries (#42). */
+.display-ref {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--faint);
+  margin: 0.35rem 0 0;
 }
 
 .not-populated {
@@ -1872,13 +1978,23 @@ span.xref.unresolved {
    and labels the pane (aria-labelledby). Suppressed in presentation rather than
    removed from the markup, because the panes not drifting from their permalinks
    is worth more than the four elements this hides. */
-.app-pane > .page-head {
+.app-pane > .page-head,
+.app-document-panel > .page-head {
   display: none;
 }
 
 .app-pane > .page-head h1,
 .app-pane > .page-head h2 {
   font-size: 1.5rem;
+}
+
+/* Documents pane: one panel per assembled document, one visible (#36). The
+   panel is the reader's own fragment, so the rule above has to reach one level
+   further in — the document's page head is the same redundant chrome here that
+   it was when the pane held a single document, and which document is showing is
+   said by the switcher strip at the top of the panel and by the explorer. */
+.app-document-panel[hidden] {
+  display: none;
 }
 
 /* Tables pane: the picker is a row of displays, the stage shows one. */
@@ -2246,9 +2362,11 @@ body.app-page .app-bar {
   padding: 0 1.5rem;
 }
 
-/* A document's own contents, as the level below it. Shown for the selected
-   document only — sixteen sections per document is a list worth having in the
-   tree, and every document's list at once is not. */
+/* A document's own contents, as the level below it, and the whole of the tree's
+   second state — which is to say there isn't one. Every document renders its
+   section list; the open document's is the one shown, because it is the list
+   sitting next to the current item. Sixteen sections per document is worth
+   having in the tree, and four documents' worth at once is not (#40). */
 .nav-sections {
   display: none;
   list-style: none;
@@ -2660,49 +2778,25 @@ body.app-page .app-bar {
   border: 0;
 }
 
-/* Only nodes that HAVE children carry a control; the rest are flat rows, which
-   is what makes the chevron mean something when it appears. */
-.nav-node.has-children {
-  position: relative;
-}
+/* A document node is a flat row. It used to carry its own disclosure button, and
+   that button was the bug (#40): expansion and selection were two states, and a
+   document could be "expanded" while a different one was open. The rule that
+   decides whether a document's contents are visible now lives in one place, up
+   at `.nav-item[data-current] + .nav-sections`, and there is nothing down here
+   that can override it. */
 
-.nav-twisty {
-  position: absolute;
-  left: 0;
-  top: 0.28rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 1rem;
-  height: 1.05rem;
+/* The documents that place a display, on the display's own page. This is the
+   one surface where a display number is safe to print: each is stated beside the
+   assembly that assigned it, so "Table 14.3.1.1" and "Table 13.1" read as two
+   documents' names for one display rather than as a contradiction (#42). */
+.used-in {
+  list-style: none;
+  margin: 0;
   padding: 0;
-  border: 0;
-  border-radius: var(--radius-sm);
-  background: none;
-  color: var(--faint);
-  cursor: pointer;
 }
 
-.nav-twisty:hover {
-  color: var(--ink);
-  background: var(--paper-2);
-}
-
-.nav-twisty:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 1px;
-}
-
-.nav-twisty .nav-caret {
-  transform: rotate(90deg);
-}
-
-.nav-node.is-collapsed .nav-twisty .nav-caret {
-  transform: rotate(0deg);
-}
-
-.nav-node.is-collapsed .nav-sections {
-  display: none;
+.used-in li + li {
+  margin-top: 0.2rem;
 }
 
 /* A group with nothing in it is a heading: no control, no hover affordance. */

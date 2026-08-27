@@ -1,0 +1,13 @@
+display: t-eff-adas-overtime
+iterations:
+- version: v001
+  created: '2026-08-27T03:52:26Z'
+  actor: obot worker W0137
+  change_request: First generation of the over-time summary (reference report Table
+    14-3.10).
+  git_commit: ''
+  spec_hash: sha256:37f6ffad430e7d6da5cdc7f273ced45902f6ca9850b7abb07d14d45ac224341a
+  display_hash: sha256:cc82b9a1359e9f859ec2909372b35bd75e31daeea2e4ce91319e942ebefbd088
+  ard_hash: sha256:41c5098a56eb5a21aba42355dec6f921d58464f6fce198e1e5795add52080e7e
+  ard_rows: 459
+

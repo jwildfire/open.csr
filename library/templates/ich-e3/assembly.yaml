@@ -30,11 +30,14 @@ study:
   design: "Randomised, double-blind, placebo-controlled, parallel-group"
   treatment_groups: ["Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"]
   primary_analysis_set: "Safety Analysis Set"
-  data_source: "pharmaverseadam (CDISCPILOT01 ADaM)"
+  data_source: "CDISCPILOT01 ADaM — pharmaverseadam, and the CDISC pilot's own package (phuse-org/phuse-scripts)"
   scope_note: >-
-    Safety-focused demonstration. No efficacy ADaM exists for CDISCPILOT01 in
-    pharmaverseadam, so Sections 11.4 and 14.2 are intentionally unpopulated
-    (design decision D12); deriving an ADQSADAS-class dataset is roadmap v0.3.
+    Safety and efficacy demonstration. The safety displays are built from
+    pharmaverseadam; the efficacy displays in Section 14.2 are built from the
+    CDISC pilot's own ADaM package, vendored from phuse-org/phuse-scripts, which
+    is the only packaging of CDISCPILOT01 that carries the efficacy domains
+    (design decision D12). Section 11.4 remains unpopulated: its narrative
+    analysis of efficacy is not yet written.
 
 # Where the assembler writes the auto-generated provenance appendix.
 provenance_section: "16.1.9"
@@ -98,11 +101,58 @@ slots:
 # on. Assigned numbers may never collide with a section number in sections.yaml —
 # the assembler treats a collision as a build failure (RPT-ASM-004).
 post_text:
+  # t-populations and t-end-of-study rebuild the reference report's Tables 14-1.01
+  # and 14-1.02, which that report prints FIRST in this section. They are appended
+  # rather than placed first, so they assign as 14.1.3 and 14.1.4 here and their
+  # numbers deliberately do not match the reference's. Ordering Section 14 to match
+  # the reference is a one-line reorder of this list and nothing else — no display
+  # specification, no prose, no test names a number (D6) — but it renumbers
+  # t-disposition and t-demographics, which belong to no single display's work.
+  # Whoever owns Section 14 as a whole should make that call once, not a worker
+  # landing two tables.
   - section: "14.1"
-    displays: [t-disposition, t-demographics]
+    displays: [t-disposition, t-demographics, t-populations, t-end-of-study]
+
+  # Efficacy. Ordered as the CDISCPILOT01 reference report orders its own
+  # Section 14.3 efficacy displays — the two Week-24 primaries first, then the
+  # other visits, then the subgroups, then the over-time summary, the supportive
+  # repeated-measures analysis and the secondary endpoint. The assigned numbers
+  # here are 14.2.1 onwards and have nothing to do with the reference report's
+  # 14-3.xx labels: identity is the slug, the number is assigned from this order
+  # at build time (D6).
+  - section: "14.2"
+    # The efficacy displays, in the order the reference report prints them:
+    # ADAS-Cog and CIBIC+ alternate through Tables 14-3.01 to 14-3.06, then the
+    # ADAS-Cog subgroups and supportive analyses, then the CIBIC+ categorical
+    # analysis at 14-3.13, then the study's one figure. Numbers are assigned from
+    # this order at build time (D6) and appear in no source file, so a display
+    # added between two of these renumbers the rest by itself.
+    #
+    # Merge note: the ADAS-Cog set and the CIBIC+/time-to-event set arrived on
+    # separate branches, each adding its own "14.2" block. Git merged them into
+    # TWO entries with the same section number and no conflict — clean, and
+    # wrong. This is the single interleaved list.
+    displays:
+      - t-eff-adas-wk24          # 14-3.01
+      - t-cibic-week24           # 14-3.02
+      - t-eff-adas-wk8           # 14-3.03
+      - t-cibic-week8            # 14-3.04
+      - t-eff-adas-wk16          # 14-3.05
+      - t-cibic-week16           # 14-3.06
+      - t-eff-adas-wk24-completers  # 14-3.07
+      - t-eff-adas-wk24-male     # 14-3.08
+      - t-eff-adas-wk24-female   # 14-3.09
+      - t-eff-adas-overtime      # 14-3.10
+      - t-eff-adas-mmrm          # 14-3.11
+      - t-eff-npix-mean          # 14-3.12
+      - t-cibic-categorical      # 14-3.13
+      - f-derm-time-to-event               # Figure 14-1
 
   - section: "14.3.1"
     displays: [t-exposure, t-ae-overview, t-ae-common]
 
   - section: "14.3.2"
     displays: [l-ae-serious]
+
+  - section: "14.3.5"
+    displays: [t-vitals, t-vitals-change, t-weight, t-conmeds]

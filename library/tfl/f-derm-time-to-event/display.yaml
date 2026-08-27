@@ -1,0 +1,76 @@
+id: f-derm-time-to-event
+title: "Time to Dermatologic Event by Treatment Group"
+study: CDISCPILOT01
+population_label: "Safety Analysis Set"
+cutoff: "2014-07-01"
+source: "Source: adtte, adsl (CDISC pilot ADaM package, vendored from phuse-org/phuse-scripts). Data cut-off: 2014-07-01."
+footnotes:
+  - "Dermatologic events are the adverse events the study flagged as its first customised query, CQ01NAM = 'DERMATOLOGIC EVENTS'; ADTTE carries one record per subject for the first such treatment-emergent event."
+  - "Subjects without a dermatologic event are censored at their study completion date (CNSR = 1); the event time is the day of the first event (CNSR = 0)."
+  - "Survival probability is the Kaplan-Meier product-limit estimate of remaining free of a dermatologic event. Tick marks on a curve are censored subjects, and the counts beneath it are the subjects still at risk at each of those days."
+  - "The median and its 95% confidence limits use the linear transformation, reproducing the limits in the reference report; NE means the curve never reached 0.5 and the median is not estimable."
+  - "The test annotated on the figure is the log-rank test of equality across the three treatment groups. Its chi-square and degrees of freedom are stated alongside the p-value so the p-value can be checked rather than taken on trust; the reference report states only that the difference was significant. A p-value smaller than the precision this display declares is reported at that boundary — '<0.0001' — rather than rounded to '0.0000', which would assert a probability of zero. The unrounded value is retained in the analysis results dataset."
+  - "The curve, the tick marks, the numbers at risk and the annotated test are drawn from the same committed analysis results dataset as the table beneath them, so no number on this page is a second calculation of another."
+columns:
+  order: [Placebo, "Xanomeline Low Dose", "Xanomeline High Dose"]
+format:
+  digits:
+    p: 0
+    n_censor: 0
+    p_censor: 0
+    median: 0
+    median_lcl: 0
+    median_ucl: 0
+    chisq: 2
+    df: 0
+    p_value: 4
+  # `p_censor` is a proportion this display's custom.R computes, so it is
+  # declared here rather than pre-scaled in the ARD (contract §3).
+  proportions: [p, prop, p_censor]
+  median_ci: "{median} ({median_lcl}, {median_ucl})"
+rows:
+  - { analysis: km, pattern: n_pct, label: "Subjects with a dermatologic event, n (%)" }
+  - { analysis: km, pattern: "{n_censor} ({p_censor}%)", label: "Censored, n (%)" }
+  - { analysis: km, pattern: median_ci, label: "Median time to event, days (95% CI)",
+      na_text: "NE" }
+figure:
+  analysis: km
+  plot_title: "Product-Limit Survival Function Estimates"
+  width: 900
+  height: 460
+  x_axis:
+    label: "Time to Dermatologic Event or End of Study (days)"
+    min: 0
+    max: 200
+    ticks: [0, 50, 100, 150, 200]
+  y_axis:
+    label: "Survival Probability"
+    min: 0
+    max: 1
+    ticks: [0, 0.2, 0.4, 0.6, 0.8, 1.0]
+    digits: 1
+  stats:
+    time: time
+    value: surv
+    censor_time: censor_time
+    censor_value: censor_surv
+  # Series are named and ordered here; their colours and dash patterns come from
+  # the engine's palette, which is colour-vision-safe and has a dark-scheme
+  # counterpart. A hex value written here would be presentation masquerading as
+  # part of the display's definition.
+  series:
+    - level: Placebo
+    - level: "Xanomeline Low Dose"
+    - level: "Xanomeline High Dose"
+  at_risk:
+    times: risk_time
+    counts: risk_n
+    label: "Number at risk"
+  annotation:
+    bindings:
+      chisq: "km:chisq"
+      df: "km:df"
+      p: "km:p_value"
+    template: "Log-rank chi-square {chisq} on {df} df, p {p}"
+variants:
+  post_text: {}

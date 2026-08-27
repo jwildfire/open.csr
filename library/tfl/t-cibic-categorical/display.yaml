@@ -1,0 +1,41 @@
+id: t-cibic-categorical
+title: "CIBIC+ — Categorical Analysis — LOCF"
+study: CDISCPILOT01
+population_label: "Efficacy Analysis Set"
+cutoff: "2014-07-01"
+source: "Source: adqscibc, adsl (CDISCPILOT01 ADaM package, phuse-org/phuse-scripts). Data cut-off: 2014-07-01."
+footnotes:
+  - "An analysis not specified in the protocol, treating the CIBIC+ score as a categorical rather than a continuous variable."
+  - "The seven categories are the CIBIC+ scale as the study's statistical analysis plan defines it (Appendix 1, section 14.1.2): 1 = marked improvement through 7 = marked worsening, with 4 = no change. Every category is reported at every visit, including those no subject was scored in."
+  - "Values are last observation carried forward within the analysis window (ADQSCIBC ANL01FL = 'Y')."
+  - "Column headings are the size of the efficacy analysis set; n is the number of subjects with a value at the visit, and percentages are of that n."
+  - "The p-value is an overall comparison of the three treatment groups by the Cochran-Mantel-Haenszel row-mean-scores statistic on 2 degrees of freedom, stratified by site group. It is a single test per visit, printed once."
+columns:
+  order: [Placebo, "Xanomeline Low Dose", "Xanomeline High Dose"]
+format:
+  digits:
+    "N": 0
+    "n": 0
+    p: 0
+    pval: 4
+rows:
+  - { label: "Week 8", section: true }
+  - { analysis: cat_week8, variable: CIBICCAT, pattern: "{N}", label: "n", indent: 1 }
+  - { analysis: cat_week8, variable: CIBICCAT, levels: all, pattern: n_pct, indent: 1,
+      level_order: ["Marked improvement", "Moderate improvement", "Minimal improvement",
+                    "No change", "Minimal worsening", "Moderate worsening", "Marked worsening"] }
+  - { analysis: cmh_week8, variable: CMH, pattern: "{pval}", label: "p-value", indent: 1 }
+  - { label: "Week 16", section: true }
+  - { analysis: cat_week16, variable: CIBICCAT, pattern: "{N}", label: "n", indent: 1 }
+  - { analysis: cat_week16, variable: CIBICCAT, levels: all, pattern: n_pct, indent: 1,
+      level_order: ["Marked improvement", "Moderate improvement", "Minimal improvement",
+                    "No change", "Minimal worsening", "Moderate worsening", "Marked worsening"] }
+  - { analysis: cmh_week16, variable: CMH, pattern: "{pval}", label: "p-value", indent: 1 }
+  - { label: "Week 24", section: true }
+  - { analysis: cat_week24, variable: CIBICCAT, pattern: "{N}", label: "n", indent: 1 }
+  - { analysis: cat_week24, variable: CIBICCAT, levels: all, pattern: n_pct, indent: 1,
+      level_order: ["Marked improvement", "Moderate improvement", "Minimal improvement",
+                    "No change", "Minimal worsening", "Moderate worsening", "Marked worsening"] }
+  - { analysis: cmh_week24, variable: CMH, pattern: "{pval}", label: "p-value", indent: 1 }
+variants:
+  post_text: {}

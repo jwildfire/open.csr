@@ -88,6 +88,11 @@ validate_analysis_spec <- function(spec) {
     stop("`total: true` requires a grouping variable.", call. = FALSE)
   }
   spec$denominator <- spec$denominator %||% "adsl"
+  spec$sources <- normalise_sources(spec$sources)
+  # Resolving the registry here turns an unknown source id or an unknown
+  # dataset name into a spec-validation error, at the point the spec is read,
+  # rather than a prepare_data() error three calls later.
+  data_sources(spec$sources)
   if (!length(spec$analyses)) {
     stop("analysis spec must declare at least one entry under `analyses`.", call. = FALSE)
   }
@@ -159,12 +164,13 @@ validate_display_spec <- function(spec) {
   if (!"post_text" %in% names(spec$variants)) {
     spec$variants$post_text <- list()
   }
+  spec$figure <- validate_figure_block(spec$figure, spec$id)
   spec$rows <- lapply(seq_along(spec$rows), function(i) {
     r <- spec$rows[[i]]
     if (is.null(r$analysis) && !isTRUE(r$section)) {
       stop("display rows[[", i, "]] needs `analysis:` unless it is a `section:` row.", call. = FALSE)
     }
-    for (key in c("analysis", "variable", "level", "label", "pattern")) {
+    for (key in c("analysis", "variable", "level", "label", "pattern", "na_text")) {
       v <- r[[key]]
       if (!is.null(v) && !is.character(v)) {
         stop(
@@ -178,6 +184,155 @@ validate_display_spec <- function(spec) {
     r
   })
   spec
+}
+
+#' Validate a display spec's `figure:` block
+#'
+#' Contract §3. A figure is drawn from the ARD and from nothing else, so every
+#' choice a reader could mistake for data — which analysis supplies the curve,
+#' which statistic is the abscissa, the axis limits, the drawing order — is
+#' declared here rather than inferred at render time. Axis limits are optional
+#' and fall back to the data range; everything else is required, because a figure
+#' with a guessed series list is a figure nobody specified.
+#'
+#' Appearance is deliberately *not* declarable. The series are named and ordered
+#' here; their colours and dash patterns come from [figure_palette()], which has
+#' a dark-scheme counterpart and is colour-vision-safe. A hex value in a display
+#' specification would be a presentation choice masquerading as part of the
+#' display's definition.
+#'
+#' @param figure The raw `figure` value parsed from YAML, or `NULL`.
+#' @param id Display id, for error messages.
+#' @return The normalised block, or `NULL` when the display is not a figure.
+#' @noRd
+validate_figure_block <- function(figure, id) {
+  if (is.null(figure)) {
+    return(NULL)
+  }
+  if (!is.list(figure)) {
+    stop("display spec `figure` must be a mapping.", call. = FALSE)
+  }
+  req <- function(key, value) {
+    if (!is.character(value) || length(value) != 1 || !nzchar(value)) {
+      stop(
+        "display '", id, "': `figure.", key, "` must be a non-empty string.",
+        call. = FALSE
+      )
+    }
+    value
+  }
+  # YAML 1.1 reads a bare `y:` key as the boolean true, so a `y:` axis arrives
+  # under the name "TRUE" and the axis looks absent. The axes are therefore named
+  # `x_axis`/`y_axis`, and a key that survived the coercion is reported as what it
+  # is rather than as a missing mapping.
+  bad_keys <- intersect(names(figure), c("TRUE", "FALSE"))
+  if (length(bad_keys)) {
+    stop(
+      "display '", id, "': the `figure:` block has a key named '", bad_keys[1],
+      "'. YAML 1.1 reads bare `y`, `n`, `yes`, `no`, `on` and `off` as booleans ",
+      "- the axes are `x_axis:` and `y_axis:`.",
+      call. = FALSE
+    )
+  }
+  figure$analysis <- req("analysis", figure$analysis)
+  for (axis in c("x_axis", "y_axis")) {
+    ax <- figure[[axis]]
+    if (!is.list(ax)) {
+      stop("display '", id, "': `figure.", axis, "` must be a mapping.", call. = FALSE)
+    }
+    ax$label <- req(paste0(axis, ".label"), ax$label)
+    for (key in c("min", "max")) {
+      if (!is.null(ax[[key]])) ax[[key]] <- as.numeric(ax[[key]])
+    }
+    if (!is.null(ax$ticks)) ax$ticks <- as.numeric(unlist(ax$ticks))
+    if (!is.null(ax$min) && !is.null(ax$max) && ax$min >= ax$max) {
+      stop(
+        "display '", id, "': `figure.", axis, "` has min >= max (",
+        ax$min, " >= ", ax$max, ").",
+        call. = FALSE
+      )
+    }
+    figure[[axis]] <- ax
+  }
+  if (!length(figure$series)) {
+    stop(
+      "display '", id, "': `figure.series` must list at least one series; a ",
+      "figure that infers its own series is not a specified figure.",
+      call. = FALSE
+    )
+  }
+  figure$series <- lapply(seq_along(figure$series), function(i) {
+    s <- figure$series[[i]]
+    if (!is.list(s)) {
+      stop("display '", id, "': `figure.series[[", i, "]]` must be a mapping.", call. = FALSE)
+    }
+    s$level <- req(paste0("series[[", i, "]].level"), s$level)
+    s$label <- s$label %||% s$level
+    s
+  })
+  levels <- vapply(figure$series, function(s) s$level, character(1))
+  if (anyDuplicated(levels)) {
+    stop("display '", id, "': `figure.series` names a level twice.", call. = FALSE)
+  }
+  stats <- figure$stats %||% list()
+  figure$stats <- list(
+    time = as.character(stats$time %||% "time"),
+    value = as.character(stats$value %||% "surv"),
+    censor_time = if (is.null(stats$censor_time)) NULL else as.character(stats$censor_time),
+    censor_value = if (is.null(stats$censor_value)) NULL else as.character(stats$censor_value)
+  )
+  if (!is.null(figure$at_risk)) {
+    ar <- figure$at_risk
+    if (!is.list(ar)) {
+      stop("display '", id, "': `figure.at_risk` must be a mapping.", call. = FALSE)
+    }
+    # The strip prints committed statistics, so it names them; a strip that let
+    # the renderer derive its own counts would be a second calculation of the
+    # risk set with nothing to check it against.
+    ar$times <- req("at_risk.times", ar$times)
+    ar$counts <- req("at_risk.counts", ar$counts)
+    ar$label <- as.character(ar$label %||% "Number at risk")
+    figure$at_risk <- ar
+  }
+  if (!is.null(figure$annotation)) {
+    a <- figure$annotation
+    if (!is.list(a)) {
+      stop("display '", id, "': `figure.annotation` must be a mapping.", call. = FALSE)
+    }
+    # One address per token. Every annotated number is addressed into the ARD, so
+    # an annotation cannot state a result the analysis does not hold.
+    if (is.null(a$bindings) && !is.null(a$binding)) {
+      a$bindings <- list(value = a$binding)
+    }
+    if (!is.list(a$bindings) || !length(a$bindings) || is.null(names(a$bindings))) {
+      stop(
+        "display '", id, "': `figure.annotation` must declare `bindings:` as a ",
+        "mapping of template token to ARD address, so every annotated value ",
+        "comes from the analysis rather than from prose.",
+        call. = FALSE
+      )
+    }
+    a$bindings <- lapply(a$bindings, as.character)
+    a$template <- as.character(a$template %||% "{value}")
+    missing_tok <- names(a$bindings)[
+      !vapply(names(a$bindings), function(nm) {
+        grepl(paste0("{", nm, "}"), a$template, fixed = TRUE)
+      }, logical(1))
+    ]
+    if (length(missing_tok)) {
+      stop(
+        "display '", id, "': `figure.annotation.template` has no '{",
+        missing_tok[1], "}' token for the binding of that name.",
+        call. = FALSE
+      )
+    }
+    a$binding <- NULL
+    figure$annotation <- a
+  }
+  figure$width <- as.numeric(figure$width %||% 900)
+  figure$height <- as.numeric(figure$height %||% 460)
+  figure$plot_title <- if (is.null(figure$plot_title)) NULL else as.character(figure$plot_title)
+  figure
 }
 
 #' Assert that a display spec is consistent with its analysis spec
@@ -203,5 +358,84 @@ check_specs_consistent <- function(analysis_spec, display_spec) {
       )
     }
   }
+  # A `type: figure` display that declares no plot renders as a table and would
+  # publish silently as one; a plot on a display that is not typed as a figure
+  # would never reach the figure numbering. Both are spec errors, not warnings.
+  is_figure <- identical(analysis_spec$type, "figure")
+  has_block <- !is.null(display_spec$figure)
+  if (is_figure && !has_block) {
+    stop(
+      "analysis.yaml declares `type: figure` but display.yaml has no `figure:` ",
+      "block, so '", analysis_spec$id, "' would render as a table.",
+      call. = FALSE
+    )
+  }
+  if (!is_figure && has_block) {
+    stop(
+      "display.yaml declares a `figure:` block but analysis.yaml types '",
+      analysis_spec$id, "' as '", analysis_spec$type,
+      "', so the figure would never be numbered as one.",
+      call. = FALSE
+    )
+  }
+  if (has_block && !display_spec$figure$analysis %in% known) {
+    stop(
+      "display.yaml `figure.analysis` references unknown analysis '",
+      display_spec$figure$analysis, "'; analysis.yaml defines: ",
+      paste(known, collapse = ", "), ".",
+      call. = FALSE
+    )
+  }
   invisible(TRUE)
+}
+
+#' Normalise an analysis spec's `sources:` key
+#'
+#' A display may name the packaging of the study its numbers come from
+#' (contract §2). Three shapes are accepted, matching [data_sources()]:
+#' absent/`NULL` (the default registry), a single source id (`sources: phuse`),
+#' or a per-dataset mapping (`sources: {adsl: phuse}`). YAML parses the mapping
+#' as a list, so it is flattened to the named character vector `data_sources()`
+#' expects, and validated here rather than at prepare time so a typo is a spec
+#' error with the spec's own vocabulary in the message.
+#'
+#' @param sources The raw `sources` value from `analysis.yaml`.
+#' @return `NULL`, a length-one unnamed character vector, or a fully named
+#'   character vector.
+#' @noRd
+normalise_sources <- function(sources) {
+  if (is.null(sources) || identical(sources, "")) {
+    return(NULL)
+  }
+  if (is.list(sources)) {
+    if (!length(sources)) {
+      return(NULL)
+    }
+    nms <- names(sources)
+    if (is.null(nms) || any(!nzchar(nms))) {
+      stop(
+        "analysis spec `sources` mapping must name every dataset, ",
+        "for example `sources: {adsl: phuse}`.",
+        call. = FALSE
+      )
+    }
+    flat <- vapply(sources, function(x) {
+      if (length(x) != 1 || !is.character(x)) {
+        stop("analysis spec `sources` values must each be a single source id.", call. = FALSE)
+      }
+      x
+    }, character(1))
+    return(stats::setNames(unname(flat), nms))
+  }
+  if (!is.character(sources)) {
+    stop(
+      "analysis spec `sources` must be a source id or a dataset-to-source mapping; got ",
+      class(sources)[1], ".",
+      call. = FALSE
+    )
+  }
+  if (length(sources) != 1 || !is.null(names(sources))) {
+    return(sources)
+  }
+  sources
 }

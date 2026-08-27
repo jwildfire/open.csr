@@ -1,0 +1,57 @@
+{
+  "display": "t-cibic-week24",
+  "version": "v003",
+  "created": "2026-08-27T03:53:36Z",
+  "actor": "@jwildfire",
+  "change_request": "Correct the digit plan so the pipeline reads it. The entry `N: 0` was resolved by YAML 1.1 as the boolean key FALSE, so the display declared a precision for N that no renderer ever saw; the key is now quoted. No statistic moves - the engine default for a count is the same zero decimals the specification asked for - and this regeneration is the proof of that.",
+  "regulatory_id": "EFF02",
+  "git_commit": null,
+  "spec_hash": "sha256:190d1760455c525851b8e46bcdc832e327d003c61819565c98dfaf7430dd231b",
+  "display_hash": "sha256:c326ce82ba6f2f3b91fcd7939de5e653079d38b62137791e47efcd19f2824143",
+  "ard_hash": "sha256:e45ea110bc927ace905df1a936852ab4bd937e9c2577e3a544552730690985d2",
+  "ard_rows": 43,
+  "ard_warnings": 0,
+  "ard_errors": 0,
+  "datasets": ["adsl", "adqscibc"],
+  "data": [
+    {
+      "dataset": "adsl",
+      "hash": "sha256:6534192e6ae2a8789015148d2068ecdd8421791ea6d7f9cc307fef1db97945f9",
+      "n_row": 254,
+      "n_col": 53,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    },
+    {
+      "dataset": "adqscibc",
+      "hash": "sha256:2af92608855a146509d9c39acf5afea33dceffc23cc24efde28a36f5771d5ea8",
+      "n_row": 730,
+      "n_col": 37,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    }
+  ],
+  "environment": {
+    "r": "4.3.3",
+    "os": "Darwin 23.6.0",
+    "packages": {
+      "cards": "0.6.1",
+      "cardx": "0.2.5",
+      "gtsummary": "2.3.0",
+      "gt": "1.0.0",
+      "dplyr": "1.1.4",
+      "pharmaverseadam": "1.1.0",
+      "jsonlite": "2.0.0",
+      "yaml": "2.3.10",
+      "digest": "0.6.37"
+    }
+  },
+  "variants": {
+    "post_text": {
+      "file": "table.html",
+      "rtf": "table.rtf",
+      "rtf_hash": "sha256:73649eaf774bd72777179cc064b7e3bf682100426a1550ff9f49a8c0cf08fd06",
+      "n_rows": 12
+    }
+  }
+}

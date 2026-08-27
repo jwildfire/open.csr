@@ -1,0 +1,9 @@
+{
+  "display": "t-populations",
+  "version": "v002",
+  "updated": "2026-08-27T03:44:48Z",
+  "path": "outputs/t-populations/v002",
+  "ard": "outputs/t-populations/v002/ard.json",
+  "table": "outputs/t-populations/v002/table.html",
+  "variants": ["post_text", "in_text"]
+}

@@ -15,7 +15,8 @@ import {
   isTab,
   parseAppHash,
   resolveAppLink,
-  resolveDisplay
+  resolveDisplay,
+  resolveDocument
 } from './core.js';
 import { initEditors } from './editor.js';
 import { initReaderEditors } from './reader-edit.js';
@@ -32,6 +33,13 @@ if (app) {
   const displaySlugs = [...app.querySelectorAll('[data-app-display-panel]')].map((el) =>
     el.getAttribute('data-app-display-panel')
   );
+  // Every document the page rendered, by id and by the basename of its own
+  // reader page. The explorer names documents; a link between panes names pages;
+  // both resolve to the same panel (#36).
+  const documentEntries = [...app.querySelectorAll('[data-app-document-panel]')].map((el) => ({
+    id: el.getAttribute('data-app-document-panel'),
+    file: el.getAttribute('data-app-document-file')
+  }));
 
   let contextIndex = { study: '', displays: {} };
   try {
@@ -44,11 +52,15 @@ if (app) {
   const nav = document.querySelector('[data-app-nav]');
   let state = { tab: DEFAULT_TAB, doc: null, display: null, block: null, focus: null };
 
-  // Which nodes the visitor has collapsed (open.csr #10). Held for the browser
-  // session rather than forever: a tree shape is a working state, not a
-  // preference, and it should not outlive the visit that produced it. Keys are
-  // `group:<id>` and `node:<group>/<id>` so a document and a group can never
-  // collide.
+  // Which GROUPS the visitor has collapsed (open.csr #10, narrowed by #40).
+  // Held for the browser session rather than forever: a tree shape is a working
+  // state, not a preference, and it should not outlive the visit that produced
+  // it. Keys are `group:<id>`.
+  //
+  // Documents used to be in here too, under `node:<group>/<id>`. That was the
+  // second state — a document could be "expanded" without being the open one —
+  // and #40 removed it rather than trying to keep it in step with the selection.
+  // A stale `node:` key from an older session is inert: nothing reads it.
   const COLLAPSE_KEY = 'opencsr.nav.collapsed';
   const collapsed = new Set(readCollapsed());
 
@@ -108,15 +120,9 @@ if (app) {
       }
       root.classList.toggle('is-active', id === state.tab);
     }
-    // Node-level collapse survives navigation the same way.
-    for (const node of nav.querySelectorAll('[data-nav-node]')) {
-      const group = node.querySelector('[data-nav-toggle]')?.getAttribute('data-nav-group') || '';
-      const key = `node:${group}/${node.getAttribute('data-nav-node')}`;
-      const isCollapsed = collapsed.has(key);
-      node.classList.toggle('is-collapsed', isCollapsed);
-      const toggle = node.querySelector('[data-nav-toggle]');
-      if (toggle) toggle.setAttribute('aria-expanded', isCollapsed ? 'false' : 'true');
-    }
+    // Documents have no expansion state of their own to restore: marking the
+    // current item below is what puts a document's contents on screen, and the
+    // stylesheet does the rest (#40).
     for (const item of nav.querySelectorAll('[data-nav-item]')) {
       const on =
         item.getAttribute('data-nav-group') === state.tab &&
@@ -132,10 +138,14 @@ if (app) {
     if (state.tab === 'documents') markSection(state.focus);
   }
 
+  // A section slug belongs to a DOCUMENT, not to the page: the report and the
+  // synopsis both model `objectives`. Marking by slug alone would light up the
+  // heading in a document the visitor is not reading (#36).
   function markSection(id) {
     if (!nav) return;
     for (const link of nav.querySelectorAll('[data-nav-section]')) {
-      link.classList.toggle('current', !!id && link.getAttribute('data-nav-section') === id);
+      const mine = !state.doc || link.getAttribute('data-nav-doc') === state.doc;
+      link.classList.toggle('current', !!id && mine && link.getAttribute('data-nav-section') === id);
     }
   }
 
@@ -158,6 +168,31 @@ if (app) {
       parts.push(`<span class="ac-slug">${state.block}</span>`);
     }
     contextEl.innerHTML = parts.join('<span class="ac-sep" aria-hidden="true">·</span>');
+  }
+
+  // One document visible at a time, the same rule the Displays pane already
+  // follows. Returns the id actually shown, so the caller can write the resolved
+  // document back into the selection — a hash then always names a document that
+  // exists rather than the page basename a link happened to carry.
+  function showDocument(id) {
+    const resolved = resolveDocument(id, documentEntries);
+    for (const panel of app.querySelectorAll('[data-app-document-panel]')) {
+      panel.hidden = panel.getAttribute('data-app-document-panel') !== resolved;
+    }
+    return resolved;
+  }
+
+  // The element the current document panel owns, or the app's own if the
+  // Documents view is not the one showing.
+  //
+  // Section slugs are a DOCUMENT's namespace, not the page's: the CSR and the
+  // synopsis both model `objectives`, and they are different headings. Scoping
+  // the lookup to the visible panel is what keeps a deep link into the synopsis
+  // from landing in the report (#36).
+  function scope() {
+    if (state.tab !== 'documents') return app;
+    const panel = app.querySelector('[data-app-document-panel]:not([hidden])');
+    return panel || app;
   }
 
   function showDisplay(slug) {
@@ -197,7 +232,11 @@ if (app) {
   // lands immediately, which is the better reading experience anyway.
   function scrollToFocus(focus) {
     if (!focus) return;
+    const within = scope();
     const target =
+      within.querySelector(`#${cssEscape(focus)}`) ||
+      within.querySelector(`[data-app-block="${cssEscape(focus)}"]`) ||
+      within.querySelector(`[name="${cssEscape(focus)}"]`) ||
       app.querySelector(`#${cssEscape(focus)}`) ||
       app.querySelector(`[data-app-block="${cssEscape(focus)}"]`) ||
       app.querySelector(`[name="${cssEscape(focus)}"]`);
@@ -220,6 +259,7 @@ if (app) {
 
   function render({ push = false } = {}) {
     showTab(state.tab);
+    state.doc = showDocument(state.doc);
     state.display = showDisplay(state.display);
     markBlock(state.block);
     showNav();
@@ -267,21 +307,9 @@ if (app) {
   // --- the explorer ------------------------------------------------------
   if (nav) {
     nav.addEventListener('click', (event) => {
-      // A node's own disclosure control: expand or collapse, and nothing else.
-      // It sits beside the item rather than inside it precisely so that this
-      // click is not also a selection (#10).
-      const nodeToggle = event.target.closest('[data-nav-toggle]');
-      if (nodeToggle) {
-        event.preventDefault();
-        const node = nodeToggle.closest('[data-nav-node]');
-        const isCollapsed = node.classList.toggle('is-collapsed');
-        nodeToggle.setAttribute('aria-expanded', isCollapsed ? 'false' : 'true');
-        setCollapsed(
-          `node:${nodeToggle.getAttribute('data-nav-group')}/${node.getAttribute('data-nav-node')}`,
-          isCollapsed
-        );
-        return;
-      }
+      // There is no per-document disclosure control to handle: selecting a
+      // document is what opens its contents, and that is the item branch at the
+      // bottom of this handler (#40).
       const toggle = event.target.closest('[data-nav-group-toggle]');
       if (toggle) {
         const root = toggle.closest('[data-nav-group-root]');

@@ -25,6 +25,15 @@
       "blurb": "The ICH E3 report assembled from the text library and the display library."
     },
     {
+      "id": "e3-synopsis",
+      "title": "Study Synopsis",
+      "abbr": "Synopsis",
+      "template": "e3-synopsis",
+      "source": "docs/assembled/e3-synopsis.json",
+      "status": "built",
+      "blurb": "The ICH E3 Annex I synopsis of the same study, assembled from the same ARDs and the same values store as the report. Its prose is unreviewed draft."
+    },
+    {
       "id": "sap",
       "title": "Statistical Analysis Plan",
       "abbr": "SAP",
@@ -32,6 +41,24 @@
       "source": null,
       "status": "planned",
       "blurb": "Planned. Needs a SAP template in library/templates/ before it can assemble."
+    },
+    {
+      "id": "display-package",
+      "title": "Post-Text Display Package",
+      "abbr": "DISPLAYS",
+      "template": "display-package",
+      "source": "docs/assembled/display-package.json",
+      "status": "built",
+      "blurb": "Every post-text table, listing and figure the report carries, in the report's own numbering and without the narrative around them — the bundle a reviewer opens when they want the displays and not the prose."
+    },
+    {
+      "id": "e3-abbreviated",
+      "title": "Abbreviated Clinical Study Report (ICH E3)",
+      "abbr": "ABBREVIATED",
+      "template": "e3-abbreviated",
+      "source": "docs/assembled/e3-abbreviated.json",
+      "status": "built",
+      "blurb": "The same prose and the same displays as the full report, in the shorter document model ICH E3 allows for a study not intended to support an efficacy claim — the reuse case that proves two reports of one study cannot drift apart a display at a time."
     }
   ],
   "components": [
@@ -86,7 +113,7 @@
       "title": "Report Template Library",
       "matrix": "templates.md",
       "status": "planned",
-      "blurb": "ICH E3 encoded as data \u2014 the 16-section skeleton, assembly slots, 14.x numbering, and the auto-generated 16.1.9 provenance appendix.",
+      "blurb": "ICH E3 encoded as data — the 16-section skeleton, assembly slots, 14.x numbering, and the auto-generated 16.1.9 provenance appendix.",
       "prefixes": [
         "RPT"
       ],
@@ -151,23 +178,6 @@
   ],
   "displays": [
     {
-      "module": "t-disposition",
-      "slug": "t-disposition",
-      "title": "Subject Disposition",
-      "regulatoryId": "DST01",
-      "type": "table",
-      "e3Section": "14.1",
-      "matrix": "displays.md",
-      "status": "planned",
-      "datasets": [
-        "adsl"
-      ],
-      "blurb": "Screened, randomised, treated, completed and discontinued counts with reasons for discontinuation, over the ITT set.",
-      "prefixes": [
-        "DSP-DISP"
-      ]
-    },
-    {
       "module": "t-demographics",
       "slug": "t-demographics",
       "title": "Demographic and Baseline Characteristics",
@@ -185,21 +195,308 @@
       ]
     },
     {
-      "module": "t-exposure",
-      "slug": "t-exposure",
-      "title": "Extent of Exposure to Study Drug",
-      "regulatoryId": "EXT01",
+      "module": "t-disposition",
+      "slug": "t-disposition",
+      "title": "Subject Disposition",
+      "regulatoryId": "DST01",
       "type": "table",
-      "e3Section": "14.3.1",
+      "e3Section": "14.1",
       "matrix": "displays.md",
       "status": "planned",
       "datasets": [
-        "adex",
         "adsl"
       ],
-      "blurb": "Duration and cumulative dose of study treatment by arm.",
+      "blurb": "Screened, randomised, treated, completed and discontinued counts with reasons for discontinuation, over the ITT set.",
       "prefixes": [
-        "DSP-EXP"
+        "DSP-DISP"
+      ]
+    },
+    {
+      "module": "t-populations",
+      "slug": "t-populations",
+      "title": "Summary of Populations",
+      "regulatoryId": "DST02",
+      "type": "table",
+      "e3Section": "14.1",
+      "matrix": "displays.md",
+      "status": "planned",
+      "datasets": [
+        "adsl"
+      ],
+      "blurb": "How many subjects each analysis is run on — ITT, safety and efficacy — by planned treatment group, with percentages over the group's randomised N. The denominator every other display's N is checked against.",
+      "prefixes": [
+        "DSP-POP",
+        "DSP-REF"
+      ]
+    },
+    {
+      "module": "t-end-of-study",
+      "slug": "t-end-of-study",
+      "title": "Summary of End of Study Data",
+      "regulatoryId": "DST03",
+      "type": "table",
+      "e3Section": "14.1",
+      "matrix": "displays.md",
+      "status": "planned",
+      "datasets": [
+        "adsl"
+      ],
+      "blurb": "Who finished and who left, with the reason. Nine reasons for early termination plus a missing-reason row, partitioning the early terminations exactly, and a p-value on only the three rows the analysis plan names.",
+      "prefixes": [
+        "DSP-EOS",
+        "DSP-REF"
+      ]
+    },
+    {
+      "module": "f-derm-time-to-event",
+      "slug": "f-derm-time-to-event",
+      "title": "Time to Dermatologic Event by Treatment Group",
+      "regulatoryId": "AEF01",
+      "type": "figure",
+      "e3Section": "14.2",
+      "matrix": "displays.md",
+      "status": "planned",
+      "datasets": [
+        "adtte",
+        "adsl"
+      ],
+      "blurb": "The study's only figure: Kaplan-Meier curves for time to a first dermatologic event, by treatment group, with medians, confidence limits and a log-rank test. Xanomeline is delivered transdermally, so this is the tolerability question the delivery route raises.",
+      "prefixes": [
+        "DSP-TTE"
+      ]
+    },
+    {
+      "module": "t-cibic-week24",
+      "slug": "t-cibic-week24",
+      "title": "Primary Endpoint Analysis: CIBIC+ — Summary at Week 24 — LOCF",
+      "regulatoryId": "EFF02",
+      "type": "table",
+      "e3Section": "14.2",
+      "matrix": "displays.md",
+      "status": "planned",
+      "datasets": [
+        "adqscibc",
+        "adsl"
+      ],
+      "blurb": "The study's other primary endpoint: the clinician's global impression of change at Week 24, with the same ANCOVA structure as the ADAS-Cog table beside it.",
+      "prefixes": [
+        "DSP-CIBIC"
+      ]
+    },
+    {
+      "module": "t-cibic-week8",
+      "slug": "t-cibic-week8",
+      "title": "CIBIC+ — Summary at Week 8 — LOCF",
+      "regulatoryId": "EFF03",
+      "type": "table",
+      "e3Section": "14.2",
+      "matrix": "displays.md",
+      "status": "planned",
+      "datasets": [
+        "adqscibc",
+        "adsl"
+      ],
+      "blurb": "The CIBIC+ global impression read at Week 8, same model.",
+      "prefixes": [
+        "DSP-CIBIC"
+      ]
+    },
+    {
+      "module": "t-cibic-week16",
+      "slug": "t-cibic-week16",
+      "title": "CIBIC+ — Summary at Week 16 — LOCF",
+      "regulatoryId": "EFF04",
+      "type": "table",
+      "e3Section": "14.2",
+      "matrix": "displays.md",
+      "status": "planned",
+      "datasets": [
+        "adqscibc",
+        "adsl"
+      ],
+      "blurb": "The CIBIC+ global impression read at Week 16, same model.",
+      "prefixes": [
+        "DSP-CIBIC"
+      ]
+    },
+    {
+      "module": "t-cibic-categorical",
+      "slug": "t-cibic-categorical",
+      "title": "CIBIC+ — Categorical Analysis — LOCF",
+      "regulatoryId": "EFF05",
+      "type": "table",
+      "e3Section": "14.2",
+      "matrix": "displays.md",
+      "status": "planned",
+      "datasets": [
+        "adqscibc",
+        "adsl"
+      ],
+      "blurb": "CIBIC+ as categories rather than a mean — how many subjects fell in each impression band at three visits, with a stratified Cochran-Mantel-Haenszel test across treatment groups.",
+      "prefixes": [
+        "DSP-CIBIC"
+      ]
+    },
+    {
+      "module": "t-eff-adas-wk24",
+      "slug": "t-eff-adas-wk24",
+      "title": "Primary Endpoint Analysis: ADAS-Cog (11) - Change from Baseline to Week 24 - LOCF",
+      "regulatoryId": "EFT01",
+      "type": "table",
+      "e3Section": "14.2",
+      "matrix": "displays.md",
+      "status": "planned",
+      "datasets": [
+        "adqsadas",
+        "adsl"
+      ],
+      "blurb": "The study's primary efficacy result: change in ADAS-Cog (11) from baseline to Week 24, with the ANCOVA dose response and both pairwise comparisons against placebo.",
+      "prefixes": [
+        "DSP-EFF"
+      ]
+    },
+    {
+      "module": "t-eff-adas-wk8",
+      "slug": "t-eff-adas-wk8",
+      "title": "ADAS-Cog (11) - Change from Baseline to Week 8 - LOCF",
+      "regulatoryId": "EFT02",
+      "type": "table",
+      "e3Section": "14.2",
+      "matrix": "displays.md",
+      "status": "planned",
+      "datasets": [
+        "adqsadas",
+        "adsl"
+      ],
+      "blurb": "The same primary analysis read at Week 8, with the same model and the same last-observation-carried-forward rule.",
+      "prefixes": [
+        "DSP-EFF"
+      ]
+    },
+    {
+      "module": "t-eff-adas-wk16",
+      "slug": "t-eff-adas-wk16",
+      "title": "ADAS-Cog (11) - Change from Baseline to Week 16 - LOCF",
+      "regulatoryId": "EFT03",
+      "type": "table",
+      "e3Section": "14.2",
+      "matrix": "displays.md",
+      "status": "planned",
+      "datasets": [
+        "adqsadas",
+        "adsl"
+      ],
+      "blurb": "The same primary analysis read at Week 16 — the middle of the three scheduled reads.",
+      "prefixes": [
+        "DSP-EFF"
+      ]
+    },
+    {
+      "module": "t-eff-adas-wk24-completers",
+      "slug": "t-eff-adas-wk24-completers",
+      "title": "ADAS-Cog (11) - Change from Baseline to Week 24 - Completers at Week 24, Observed Cases, Windowed",
+      "regulatoryId": "EFT04",
+      "type": "table",
+      "e3Section": "14.2",
+      "matrix": "displays.md",
+      "status": "planned",
+      "datasets": [
+        "adqsadas",
+        "adsl"
+      ],
+      "blurb": "Week 24 restricted to subjects who completed it, observed cases only, with no value carried forward. The sensitivity analysis against the primary table's imputation.",
+      "prefixes": [
+        "DSP-EFF"
+      ]
+    },
+    {
+      "module": "t-eff-adas-wk24-male",
+      "slug": "t-eff-adas-wk24-male",
+      "title": "ADAS-Cog (11) - Change from Baseline to Week 24 in Male Subjects - LOCF",
+      "regulatoryId": "EFT05",
+      "type": "table",
+      "e3Section": "14.2",
+      "matrix": "displays.md",
+      "status": "planned",
+      "datasets": [
+        "adqsadas",
+        "adsl"
+      ],
+      "blurb": "The Week 24 primary analysis in male subjects alone. Subgroup, not a separate endpoint.",
+      "prefixes": [
+        "DSP-EFF"
+      ]
+    },
+    {
+      "module": "t-eff-adas-wk24-female",
+      "slug": "t-eff-adas-wk24-female",
+      "title": "ADAS-Cog (11) - Change from Baseline to Week 24 in Female Subjects - LOCF",
+      "regulatoryId": "EFT06",
+      "type": "table",
+      "e3Section": "14.2",
+      "matrix": "displays.md",
+      "status": "planned",
+      "datasets": [
+        "adqsadas",
+        "adsl"
+      ],
+      "blurb": "The Week 24 primary analysis in female subjects alone. Subgroup, not a separate endpoint.",
+      "prefixes": [
+        "DSP-EFF"
+      ]
+    },
+    {
+      "module": "t-eff-adas-overtime",
+      "slug": "t-eff-adas-overtime",
+      "title": "ADAS-Cog (11) - Mean and Mean Change from Baseline over Time",
+      "regulatoryId": "EFT07",
+      "type": "table",
+      "e3Section": "14.2",
+      "matrix": "displays.md",
+      "status": "planned",
+      "datasets": [
+        "adqsadas",
+        "adsl"
+      ],
+      "blurb": "ADAS-Cog scores and their change from baseline at every scheduled visit, so the shape of the trajectory is visible rather than just its endpoints. Presented with treatment across the columns.",
+      "prefixes": [
+        "DSP-EFF"
+      ]
+    },
+    {
+      "module": "t-eff-adas-mmrm",
+      "slug": "t-eff-adas-mmrm",
+      "title": "ADAS-Cog (11) - Repeated Measures Analysis of Change from Baseline to Week 24",
+      "regulatoryId": "EFT08",
+      "type": "table",
+      "e3Section": "14.2",
+      "matrix": "displays.md",
+      "status": "planned",
+      "datasets": [
+        "adqsadas",
+        "adsl"
+      ],
+      "blurb": "The supportive repeated-measures analysis: a mixed model with an unstructured within-subject covariance, which handles a missed visit through the covariance rather than by carrying a value forward. Its fit reproduces the reference report's own PROC MIXED output to six significant figures.",
+      "prefixes": [
+        "DSP-EFF"
+      ]
+    },
+    {
+      "module": "t-eff-npix-mean",
+      "slug": "t-eff-npix-mean",
+      "title": "Mean NPI-X Total Score from Week 4 through Week 24 - Windowed",
+      "regulatoryId": "EFT09",
+      "type": "table",
+      "e3Section": "14.2",
+      "matrix": "displays.md",
+      "status": "planned",
+      "datasets": [
+        "adqsnpix",
+        "adsl"
+      ],
+      "blurb": "The secondary endpoint — mean NPI-X total score across the Weeks 4 to 24 window. The one display where the study's analysis metadata and its own published report disagree about which score to use, and the footnotes say which side was taken.",
+      "prefixes": [
+        "DSP-EFF"
       ]
     },
     {
@@ -239,6 +536,24 @@
       ]
     },
     {
+      "module": "t-exposure",
+      "slug": "t-exposure",
+      "title": "Extent of Exposure to Study Drug",
+      "regulatoryId": "EXT01",
+      "type": "table",
+      "e3Section": "14.3.1",
+      "matrix": "displays.md",
+      "status": "planned",
+      "datasets": [
+        "adex",
+        "adsl"
+      ],
+      "blurb": "Duration and cumulative dose of study treatment by arm.",
+      "prefixes": [
+        "DSP-EXP"
+      ]
+    },
+    {
       "module": "l-ae-serious",
       "slug": "l-ae-serious",
       "title": "Listing of Serious Adverse Events",
@@ -253,6 +568,82 @@
       "blurb": "Subject-level listing of serious adverse events with onset, severity, outcome and relationship.",
       "prefixes": [
         "DSP-SAE"
+      ]
+    },
+    {
+      "module": "t-conmeds",
+      "slug": "t-conmeds",
+      "title": "Summary of Concomitant Medications",
+      "regulatoryId": "CMT01",
+      "type": "table",
+      "e3Section": "14.3.5",
+      "matrix": "displays.md",
+      "status": "planned",
+      "datasets": [
+        "adcm",
+        "adsl"
+      ],
+      "blurb": "Subjects taking at least one concomitant medication, and subject counts by therapeutic class and coded medication.",
+      "prefixes": [
+        "DSP-CM",
+        "DSP-VWC"
+      ]
+    },
+    {
+      "module": "t-vitals",
+      "slug": "t-vitals",
+      "title": "Summary of Vital Signs at Baseline and End of Treatment",
+      "regulatoryId": "VST01",
+      "type": "table",
+      "e3Section": "14.3.5",
+      "matrix": "displays.md",
+      "status": "planned",
+      "datasets": [
+        "advs",
+        "adsl"
+      ],
+      "blurb": "Blood pressure and pulse in three positions, at baseline, Week 24 and end of treatment, by planned treatment.",
+      "prefixes": [
+        "DSP-VS",
+        "DSP-VWC"
+      ]
+    },
+    {
+      "module": "t-vitals-change",
+      "slug": "t-vitals-change",
+      "title": "Summary of Vital Signs Change from Baseline at End of Treatment",
+      "regulatoryId": "VST02",
+      "type": "table",
+      "e3Section": "14.3.5",
+      "matrix": "displays.md",
+      "status": "planned",
+      "datasets": [
+        "advs",
+        "adsl"
+      ],
+      "blurb": "The same measurements as a change from each subject's own observed Week 0 value.",
+      "prefixes": [
+        "DSP-VSC",
+        "DSP-VWC"
+      ]
+    },
+    {
+      "module": "t-weight",
+      "slug": "t-weight",
+      "title": "Summary of Weight and Weight Change from Baseline at End of Treatment",
+      "regulatoryId": "VST03",
+      "type": "table",
+      "e3Section": "14.3.5",
+      "matrix": "displays.md",
+      "status": "planned",
+      "datasets": [
+        "advs",
+        "adsl"
+      ],
+      "blurb": "Weight and weight change from baseline at Week 24 and end of treatment.",
+      "prefixes": [
+        "DSP-WT",
+        "DSP-VWC"
       ]
     }
   ],
@@ -395,6 +786,11 @@
   },
   "docs": [
     {
+      "file": "docs/design/framework.md",
+      "title": "The data design framework",
+      "group": "Design"
+    },
+    {
       "file": "docs/design/design.md",
       "title": "Design",
       "group": "Design"
@@ -411,7 +807,7 @@
     },
     {
       "file": "docs/design/webr-spike.md",
-      "title": "webR spike \u2014 regenerating in the browser",
+      "title": "webR spike — regenerating in the browser",
       "group": "Design"
     },
     {
@@ -421,27 +817,27 @@
     },
     {
       "file": "research/sections/01_existing-tools.md",
-      "title": "01 \u00b7 The CSR-automation landscape",
+      "title": "01 · The CSR-automation landscape",
       "group": "Research"
     },
     {
       "file": "research/sections/02_ars-ard-standards.md",
-      "title": "02 \u00b7 CDISC ARS and the ARD ecosystem",
+      "title": "02 · CDISC ARS and the ARD ecosystem",
       "group": "Research"
     },
     {
       "file": "research/sections/03_tlg-pharmaverse-practice.md",
-      "title": "03 \u00b7 Pharmaverse TLG practice",
+      "title": "03 · Pharmaverse TLG practice",
       "group": "Research"
     },
     {
       "file": "research/sections/04_csr-document-standards.md",
-      "title": "04 \u00b7 CSR document standards",
+      "title": "04 · CSR document standards",
       "group": "Research"
     },
     {
       "file": "research/sections/05_safetyviz-evidence-framework.md",
-      "title": "05 \u00b7 The safety.viz evidence framework",
+      "title": "05 · The safety.viz evidence framework",
       "group": "Research"
     }
   ]

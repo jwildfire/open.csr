@@ -1,0 +1,177 @@
+{
+  "study": "CDISCPILOT01",
+  "sources": {
+    "phuse": "phuse-org/phuse-scripts:data/adam (CDISC pilot submission ADaM package)",
+    "pharmaverseadam": "pharmaverseadam (pharmaverse re-derivation from SDTM)"
+  },
+  "environment": {
+    "pharmaverseadam": "1.1.0",
+    "r": "4.3.3",
+    "os": "Darwin"
+  },
+  "comparison_rule": "Values compared as text after normalising empty string to NA. ADSL is aligned on USUBJID after removing the 52 pharmaverseadam screen failures; ADAE is aligned on USUBJID+AESEQ.",
+  "adsl": {
+    "n_subjects": {
+      "phuse": 254,
+      "pharmaverseadam": 254
+    },
+    "subjects_identical": true,
+    "screen_failures": {
+      "phuse": 0,
+      "pharmaverseadam": 52
+    },
+    "variables": {
+      "AGE": {
+        "n_diff": 0
+      },
+      "SEX": {
+        "n_diff": 0
+      },
+      "RACE": {
+        "n_diff": 0
+      },
+      "ETHNIC": {
+        "n_diff": 0
+      },
+      "AGEGR1": {
+        "n_diff": 254,
+        "pairs": {
+          "<65 > 18-64": 33,
+          ">80 > >64": 77,
+          "65-80 > >64": 144
+        }
+      },
+      "ARM": {
+        "n_diff": 0
+      },
+      "TRT01P": {
+        "n_diff": 0
+      },
+      "TRT01A": {
+        "n_diff": 12,
+        "pairs": {
+          "Xanomeline High Dose > Xanomeline Low Dose": 12
+        }
+      },
+      "SITEID": {
+        "n_diff": 0
+      },
+      "SAFFL": {
+        "n_diff": 0
+      },
+      "TRTSDT": {
+        "n_diff": 0
+      },
+      "TRTEDT": {
+        "n_diff": 6,
+        "pairs": {
+          "2013-05-13 > <NA>": 1,
+          "2013-07-12 > <NA>": 1,
+          "2013-07-14 > 2013-04-04": 1,
+          "2014-03-07 > 2014-01-25": 1,
+          "2014-05-11 > 2013-12-18": 1,
+          "2014-06-02 > 2013-12-30": 1
+        }
+      },
+      "DTHFL": {
+        "n_diff": 0
+      }
+    },
+    "population_flags_only_in_phuse": ["COMP16FL", "COMP24FL", "COMP8FL", "DISCONFL", "DSRAEFL", "EFFFL", "ITTFL"],
+    "discontinuation_reason_only_in_phuse": ["DCDECOD", "DCREASCD"],
+    "baseline_vitals": {
+      "WEIGHT": {
+        "phuse_var": "WEIGHTBL",
+        "n_phuse": 253,
+        "n_pharmaverseadam": 254,
+        "n_over_0_01": 194,
+        "max_abs_delta": 0.05
+      },
+      "HEIGHT": {
+        "phuse_var": "HEIGHTBL",
+        "n_phuse": 254,
+        "n_pharmaverseadam": 254,
+        "n_over_0_01": 192,
+        "max_abs_delta": 0.05
+      },
+      "BMI": {
+        "phuse_var": "BMIBL",
+        "n_phuse": 253,
+        "n_pharmaverseadam": 254,
+        "n_over_0_01": 192,
+        "max_abs_delta": 0.069403
+      }
+    }
+  },
+  "adae": {
+    "n_records": {
+      "phuse": 1191,
+      "pharmaverseadam": 1191
+    },
+    "n_subjects": {
+      "phuse": 225,
+      "pharmaverseadam": 225
+    },
+    "keys_identical": true,
+    "variables": {
+      "AETERM": {
+        "n_diff": 0
+      },
+      "AEDECOD": {
+        "n_diff": 0
+      },
+      "AEBODSYS": {
+        "n_diff": 0
+      },
+      "AESOC": {
+        "n_diff": 0
+      },
+      "AESEV": {
+        "n_diff": 0
+      },
+      "AESER": {
+        "n_diff": 0
+      },
+      "AEREL": {
+        "n_diff": 0
+      },
+      "AEOUT": {
+        "n_diff": 0
+      },
+      "TRTEMFL": {
+        "n_diff": 69,
+        "pairs": {
+          "N > <NA>": 65,
+          "Y > <NA>": 4
+        }
+      },
+      "AENDY": {
+        "n_diff": 0
+      }
+    }
+  },
+  "advs": {
+    "n_records": {
+      "phuse": 32139,
+      "pharmaverseadam": 65032
+    },
+    "parameters": {
+      "phuse": ["DIABP", "HEIGHT", "PULSE", "SYSBP", "TEMP", "WEIGHT"],
+      "pharmaverseadam": ["BMI", "BSA", "DIABP", "HEIGHT", "MAP", "PULSE", "SYSBP", "TEMP", "WEIGHT"]
+    },
+    "derived_records_pharmaverseadam": 23084,
+    "derived_records_phuse": 0
+  },
+  "adcm": {
+    "in_cdiscpilot01_folder": false,
+    "in_study_define_xml": false,
+    "n_records": {
+      "CDISCPILOT01": 3625,
+      "CDISCPILOT02": 3885
+    },
+    "relabelled_subjects": 118,
+    "remapped_subjects_found_in_adsl": 229,
+    "remapped_subjects_matching_adsl_age_sex_arm": 229,
+    "adsl_subjects_with_no_record": 25
+  }
+}

@@ -1,0 +1,14 @@
+display: t-weight
+iterations:
+- version: v001
+  created: '2026-08-27T04:10:09Z'
+  actor: '@w-vitals'
+  change_request: 'Initial generation of VST03, targeting Table 14-7.03 of the reference
+    clinical study report: weight and weight change from baseline at Week 24 and end
+    of treatment.'
+  git_commit: ''
+  spec_hash: sha256:14be68b3bc1d72d8c3e7ff6c067edb41004ad68be9286479c3c2e9a9891dfff3
+  display_hash: sha256:c1a16fd08c4c081a335923ab9efb7260cfb7e031db4384c9695c301dfa64e0a3
+  ard_hash: sha256:ce01673cbf084419c92e2f3d7b0383c09aada0bd6b1283d0c9425b1b7ee03853
+  ard_rows: 129
+

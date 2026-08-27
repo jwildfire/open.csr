@@ -1,0 +1,13 @@
+display: t-eff-adas-wk24-completers
+iterations:
+- version: v001
+  created: '2026-08-27T03:41:22Z'
+  actor: obot worker W0137
+  change_request: 'Complete the preserved specification: first generation of numbers
+    and rendered output.'
+  git_commit: ''
+  spec_hash: sha256:09b745393b790b3d3fe47b5fa5dc6172d368d476e5a89e02dfb03d668c83cbeb
+  display_hash: sha256:4cf74d8b96155eb9b2da498fa61cb953216d457fa0ccacec5aecfe19a77cebcf
+  ard_hash: sha256:fd50f5c9be5ffcbb6dd43ea6292ec537dfe788af95071b3f18bfbbbc0f84e643
+  ard_rows: 95
+

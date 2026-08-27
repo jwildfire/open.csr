@@ -1,0 +1,71 @@
+id: t-eff-adas-overtime
+title: "ADAS-Cog (11) - Mean and Mean Change from Baseline over Time"
+regulatory_id: EFT07
+type: table
+dataset: adqsadas
+analysis_set: efficacy
+denominator: adsl
+sources: phuse
+group:
+  - TRTP
+total: false
+# Each visit is its own analysis entry because each one summarises a different
+# record set, and the two imputation lanes summarise different record sets at
+# the same visit:
+#
+#   windowed  ANL01FL == 'Y' and the record is not an LOCF carry-forward. Only
+#             assessments that actually fell in the visit window; a subject who
+#             missed it contributes nothing.
+#   LOCF      ANL01FL == 'Y', carry-forward records included. Every subject
+#             contributes, so n is the full column N at every visit.
+#
+# Visits are selected by AVISITN rather than AVISIT so the selection cannot be
+# broken by whitespace in a character label.
+analyses:
+  - name: population
+    method: continuous
+    custom: population_n
+    label: "Subjects in the analysis population"
+    filter: "PARAMCD == 'ACTOT'"
+
+  - name: baseline
+    method: continuous
+    label: "ADAS-Cog (11) total score at baseline"
+    variables: [AVAL]
+    filter: "PARAMCD == 'ACTOT' & AVISITN == 0"
+
+  - name: wk8_win
+    method: continuous
+    label: "Week 8, windowed: score, the baseline it is compared with, and the change"
+    variables: [AVAL, BASE, CHG]
+    filter: "PARAMCD == 'ACTOT' & ANL01FL == 'Y' & AVISITN == 8 & !(DTYPE %in% 'LOCF')"
+
+  - name: wk16_win
+    method: continuous
+    label: "Week 16, windowed: score, the baseline it is compared with, and the change"
+    variables: [AVAL, BASE, CHG]
+    filter: "PARAMCD == 'ACTOT' & ANL01FL == 'Y' & AVISITN == 16 & !(DTYPE %in% 'LOCF')"
+
+  - name: wk24_win
+    method: continuous
+    label: "Week 24, windowed: score, the baseline it is compared with, and the change"
+    variables: [AVAL, BASE, CHG]
+    filter: "PARAMCD == 'ACTOT' & ANL01FL == 'Y' & AVISITN == 24 & !(DTYPE %in% 'LOCF')"
+
+  - name: wk8_locf
+    method: continuous
+    label: "Week 8, LOCF: score, the baseline it is compared with, and the change"
+    variables: [AVAL, BASE, CHG]
+    filter: "PARAMCD == 'ACTOT' & ANL01FL == 'Y' & AVISITN == 8"
+
+  - name: wk16_locf
+    method: continuous
+    label: "Week 16, LOCF: score, the baseline it is compared with, and the change"
+    variables: [AVAL, BASE, CHG]
+    filter: "PARAMCD == 'ACTOT' & ANL01FL == 'Y' & AVISITN == 16"
+
+  - name: wk24_locf
+    method: continuous
+    label: "Week 24, LOCF: score, the baseline it is compared with, and the change"
+    variables: [AVAL, BASE, CHG]
+    filter: "PARAMCD == 'ACTOT' & ANL01FL == 'Y' & AVISITN == 24"

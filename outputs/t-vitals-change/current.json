@@ -1,0 +1,9 @@
+{
+  "display": "t-vitals-change",
+  "version": "v001",
+  "updated": "2026-08-27T04:06:03Z",
+  "path": "outputs/t-vitals-change/v001",
+  "ard": "outputs/t-vitals-change/v001/ard.json",
+  "table": "outputs/t-vitals-change/v001/table.html",
+  "variants": "post_text"
+}

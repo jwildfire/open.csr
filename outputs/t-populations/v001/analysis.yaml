@@ -1,0 +1,43 @@
+id: t-populations
+title: "Summary of Populations"
+regulatory_id: DST02
+type: table
+dataset: adsl
+analysis_set: itt
+denominator: adsl
+# The analysis populations this table reports are stated by the study, not
+# derived: ITTFL, SAFFL and EFFFL are carried in the CDISC pilot's own ADSL and
+# do not exist in the {pharmaverseadam} re-derivation of the same study.
+sources: phuse
+# Planned treatment, as in the reference report: every column N and every
+# denominator here is a randomised group, not a treated one. In this ADSL
+# TRT01P and TRT01A agree for all 254 subjects (asserted by DSP-POP-004).
+group:
+  - TRT01P
+total: true
+analyses:
+  - name: itt
+    method: subject_count
+    label: "Intent-To-Treat (ITT)"
+    variable: ITTFL
+    filter: "ITTFL == 'Y'"
+  - name: safety
+    method: subject_count
+    label: "Safety"
+    variable: SAFFL
+    filter: "SAFFL == 'Y'"
+  - name: efficacy
+    method: subject_count
+    label: "Efficacy"
+    variable: EFFFL
+    filter: "EFFFL == 'Y'"
+  - name: complete_wk24
+    method: subject_count
+    label: "Complete Week 24"
+    variable: COMP24FL
+    filter: "COMP24FL == 'Y'"
+  - name: complete_study
+    method: subject_count
+    label: "Complete Study"
+    variable: COMPLFL
+    filter: "COMPLFL == 'Y'"

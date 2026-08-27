@@ -1,0 +1,113 @@
+{
+  "module": "t-conmeds",
+  "generated": "2026-08-27T14:58:26.704Z",
+  "records": [
+    {
+      "requirementIds": [
+        "DSP-ALL-001"
+      ],
+      "title": "DSP-ALL-001: every display renders a table that actually contains numbers (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-ALL-002"
+      ],
+      "title": "DSP-ALL-002: every display declares a regulatory identifier and a source line (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-CM-001"
+      ],
+      "title": "DSP-CM-001: concomitant medication counts match ADCM computed directly (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-vitals.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-CM-002"
+      ],
+      "title": "DSP-CM-002: a subject counted for a medication is counted for its class (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-vitals.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-CM-003"
+      ],
+      "title": "DSP-CM-003: the in-text variant applies the 5% threshold its spec declares (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-vitals.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-VWC-001"
+      ],
+      "title": "DSP-VWC-001: all four displays group by planned treatment over the safety analysis set (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-vitals.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-VWC-002"
+      ],
+      "title": "DSP-VWC-002: the committed three-route agreement record is green and describes this iteration (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-vitals.R",
+      "issueRefs": [
+        1
+      ]
+    }
+  ],
+  "traceability": {
+    "adamDatasets": [
+      "adcm",
+      "adsl"
+    ],
+    "adamHashes": {
+      "adsl": "sha256:83b1d423d2b40766af8138864699137cfb6e0ccb064ca25369c1ed7216936918",
+      "adcm": "sha256:28e100aaeacdd8ed81825a2278d7e76658ba508e0306bb2d659e44ff443eee0b"
+    },
+    "ardFile": "outputs/t-conmeds/v001/ard.json",
+    "ardHash": "sha256:87b879c9777a8c73321f8f9bad5b0ad516e2a7671a4fc01847434abe14c1a8b8",
+    "displayFile": "library/tfl/t-conmeds/display.yaml",
+    "specHash": "sha256:5b8045eb70da88bc2f3876b8a6fc2d35c907e604991fe8e467f4f32c097c32d1",
+    "iteration": "v001",
+    "sourceCommit": null
+  },
+  "environment": {
+    "os": "Darwin 23.6.0",
+    "node": "v24.14.0",
+    "vitest": null,
+    "r": "4.3.3"
+  },
+  "run": null
+}

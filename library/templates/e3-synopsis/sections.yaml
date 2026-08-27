@@ -1,0 +1,202 @@
+# ------------------------------------------------------------------------------
+# ICH E3 Annex I — machine-readable Study Synopsis document model
+# ------------------------------------------------------------------------------
+# Source of structure: ICH Harmonised Tripartite Guideline E3, "Structure and
+# Content of Clinical Study Reports", Step 4, 30 November 1995 — Section 2
+# ("Synopsis") and Annex I, which prints the synopsis as a labelled form. The
+# field names below are E3's own. Nothing here is copied from a sponsor template,
+# from a CRO template, or from any of the R Consortium Submissions Working Group
+# pilot repositories: pilots 1, 2 and 3 are GPL-3.0 (one-way incompatible with
+# this Apache-2.0 project in the direction we would need), and pilots 4, 5-dev, 6,
+# the ADRG automation pipeline and most of the eCTD "-to-fda" packages carry no
+# licence at all. See reports/2026-08-26-csr-template-objects.html on the hub.
+#
+# Why a SECOND template object exists at all: the Report Template Library was
+# built as a generic pair — a document model plus a per-report assembly — but
+# until now it held exactly one instance, so nothing proved the pair was generic
+# rather than an ICH E3 file with two names. The synopsis is the smallest real
+# document that exercises every part of the framework (sections, assembly, text
+# blocks, named values, in-text displays, a post-text index, and the generated
+# provenance appendix) against the same study, from the same ARDs, with the same
+# gates. If a number in this synopsis disagrees with the same number in the full
+# CSR, the build fails — that is the point of assembling both from one library.
+#
+# Schema: identical to library/templates/ich-e3/sections.yaml (contracts.md §7).
+#   number   dotted section number. Unique. Level derived from dot depth.
+#   title    heading text.
+#   slug     stable kebab-case identity. Unique. Never renumber a slug.
+#   content  zero or more of: text | in_text_display | post_text_index |
+#            generated_provenance. An empty list is a structural heading.
+#   note     optional guidance carried with the structure.
+#
+# Sections 1 to 12 are E3 Annex I's own fields, in E3's own order. Sections 13
+# and 14 are open.csr's, and are marked as such: E3 does not attach displays or a
+# provenance appendix to a synopsis, but this framework cannot assemble a
+# document without somewhere to put them, and burying them would be worse than
+# declaring them.
+# ------------------------------------------------------------------------------
+model:
+  id: e3-synopsis
+  title: "ICH E3 Annex I Study Synopsis"
+  version: "1.0.0"
+  source: "ICH E3 (1995), Step 4 — Section 2 and Annex I"
+  reference: "https://database.ich.org/sites/default/files/E3_Guideline.pdf"
+  note: >-
+    E3 Section 2 asks for a brief synopsis, usually limited to three pages, that
+    summarises the study and includes numerical data. Annex I prints the field
+    list as a form; this file encodes that form as a document model so the same
+    assembler that builds the full CSR can build the synopsis.
+
+sections:
+  # -------------------------------------------------- 1 administrative header
+  - number: "1"
+    title: "Administrative Information"
+    slug: administrative
+    content: []
+    note: >-
+      Annex I's header block. E3 prints these as labelled cells rather than as
+      numbered sections; open.csr numbers them so each field is separately
+      addressable by an assembly, a text block and a cross-reference.
+
+  - number: "1.1"
+    title: "Name of Sponsor, Finished Product and Active Ingredient"
+    slug: sponsor-product
+    content: [text]
+
+  - number: "1.2"
+    title: "Title of Study"
+    slug: study-title
+    content: [text]
+
+  - number: "1.3"
+    title: "Investigators and Study Centres"
+    slug: investigators-centres
+    content: [text]
+
+  - number: "1.4"
+    title: "Publication (Reference)"
+    slug: publication
+    content: [text]
+
+  - number: "1.5"
+    title: "Studied Period"
+    slug: studied-period
+    content: [text]
+    note: "E3 asks for date of first enrolment and date of last completed."
+
+  - number: "1.6"
+    title: "Phase of Development"
+    slug: phase
+    content: [text]
+
+  # ---------------------------------------------------------------- 2 to 3
+  - number: "2"
+    title: "Objectives"
+    slug: objectives
+    content: [text]
+
+  - number: "3"
+    title: "Methodology"
+    slug: methodology
+    content: [text]
+
+  # ------------------------------------------------------------- 4 patients
+  - number: "4"
+    title: "Number of Patients (Planned and Analysed)"
+    slug: number-of-patients
+    content: [text, in_text_display]
+    note: >-
+      The one Annex I field E3 explicitly requires to carry numbers. In open.csr
+      every number here is a binding into a committed ARD, so it is the same
+      number the disposition table shows and the same number the full CSR quotes.
+
+  - number: "5"
+    title: "Diagnosis and Main Criteria for Inclusion"
+    slug: diagnosis-inclusion
+    content: [text]
+
+  - number: "6"
+    title: "Test Product, Dose and Mode of Administration, Batch Number"
+    slug: test-product
+    content: [text]
+
+  - number: "7"
+    title: "Duration of Treatment"
+    slug: duration-of-treatment
+    content: [text, in_text_display]
+
+  - number: "8"
+    title: "Reference Therapy, Dose and Mode of Administration, Batch Number"
+    slug: reference-therapy
+    content: [text]
+
+  # ------------------------------------------------------- 9 criteria
+  - number: "9"
+    title: "Criteria for Evaluation"
+    slug: criteria
+    content: []
+
+  - number: "9.1"
+    title: "Efficacy"
+    slug: criteria-efficacy
+    content: [text]
+
+  - number: "9.2"
+    title: "Safety"
+    slug: criteria-safety
+    content: [text]
+
+  - number: "10"
+    title: "Statistical Methods"
+    slug: statistical-methods
+    content: [text]
+
+  # -------------------------------------------- 11 summary and conclusions
+  - number: "11"
+    title: "Summary — Conclusions"
+    slug: summary-conclusions
+    content: []
+
+  - number: "11.1"
+    title: "Efficacy Results"
+    slug: efficacy-results
+    content: [text]
+
+  - number: "11.2"
+    title: "Safety Results"
+    slug: safety-results
+    content: [text, in_text_display]
+
+  - number: "11.3"
+    title: "Conclusion"
+    slug: conclusion
+    content: [text]
+
+  - number: "12"
+    title: "Date of the Report"
+    slug: report-date
+    content: [text]
+
+  # --------------------------------------------------- 13 to 14 open.csr's own
+  - number: "13"
+    title: "Supporting Displays"
+    slug: supporting-displays
+    content: [post_text_index]
+    note: >-
+      NOT an E3 Annex I field. A synopsis is normally circulated with the report
+      that contains its tables; assembled on its own it has nowhere to point, so
+      open.csr attaches the supporting displays as a post-text index. Display
+      numbers here are assigned from post_text order exactly as they are in the
+      full CSR (design decision D6), which is why the same display can be
+      "Table 14.1.1" in the CSR and "Table 13.1" here without either file
+      changing: identity is the slug, the number is a build-time assignment.
+
+  - number: "14"
+    title: "Provenance of the Assembled Synopsis"
+    slug: provenance
+    content: [generated_provenance]
+    note: >-
+      NOT an E3 Annex I field. The assembler-generated appendix recording, per
+      display, which ARD the numbers came from and how it was produced. In the
+      full CSR this content goes to E3 Section 16.1.9 (Documentation of
+      Statistical Methods); a synopsis has no Section 16, so it is declared here.

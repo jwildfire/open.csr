@@ -13,7 +13,7 @@ pipeline/                 R package `opencsr` (DESCRIPTION, NAMESPACE, R/, tests
 library/tfl/<slug>/       analysis.yaml, display.yaml, [custom.R], iterations.yaml
 library/text/<ID>.md      text blocks (YAML frontmatter + prose)
 library/values/values.yaml named-value declarations (§11)
-library/templates/ich-e3/ sections.yaml, assembly.yaml
+library/templates/<id>/   sections.yaml, assembly.yaml (one directory per template object)
 outputs/<slug>/vNNN/      spec snapshots, ard.json, table.html + table.rtf (per variant), manifest.json
 outputs/<slug>/current.json
 outputs/values/values.json generated values store (§11)
@@ -89,13 +89,28 @@ variants:
 
 ## 4. Prepared datasets (data-prep layer)
 
-`opencsr::prepare_data()` returns a named list of tibbles derived from `{pharmaverseadam}`, with documented derivations (D12):
+`opencsr::prepare_data(datasets, source_pkg, sources)` returns a named list of tibbles for one study, CDISCPILOT01, drawn from two packagings of it and prepared with documented derivations (D12).
+
+**Sources.** `data_sources()` maps each dataset name to `"pharmaverseadam"` or `"phuse"`. The default registry is fixed: `adsl`, `adae`, `adex`, `adlb`, `advs` from `{pharmaverseadam}`; `adqsadas`, `adqscibc`, `adqsnpix`, `adlbc`, `adlbh`, `adlbhy`, `adtte`, `adcm` from the vendored CDISC pilot package. `sources = "phuse"` or `sources = "pharmaverseadam"` takes everything from one; a named vector overrides per dataset. An unknown dataset name is an error listing the known ones — never an empty frame.
+
+**Vendored data.** `pipeline/inst/extdata/phuse-cdiscpilot01/` holds eleven gzipped `.xpt` files from `phuse-org/phuse-scripts` (MIT), with `PROVENANCE.json` recording the upstream repository, the pinned commit, and each file's upstream path, git blob SHA-1, SHA-256 and byte count, plus the upstream licence text. `qc/vendor-phuse-data.R` writes it and `--check` verifies it; nothing else may edit it.
+
+**Derivations, `{pharmaverseadam}` lane:**
 
 - Screen failures (`ARM == "Screen Failure"`) excluded from all analysis datasets.
-- `SAFFL` used as shipped; `ITTFL` derived (randomized, non-screen-failure); `EFFFL` not derived in v0 (no efficacy data).
+- `SAFFL` used as shipped; `ITTFL` derived (randomized, non-screen-failure); `EFFFL` **not derived and not guessed** — this packaging states no efficacy analysis set, so `analysis_set: efficacy` fails here, naming the missing flag.
 - **`DISCREAS`** is a *derived* discontinuation reason, deliberately not named `DCSREAS`: pharmaverseadam's ADSL ships neither `DCSREAS` nor `DCDECOD`, so the derivation collapses to Death (from `DTHFL`) versus Other/Not specified, and must not borrow the CDISC variable's semantics. Surfaced as a display footnote, asserted by a test.
-- Datasets: `adsl`, `adae`, `adlb`, `advs`, `adex`.
-- Attaches a manifest: `list(dataset, n_row, n_col, hash, source_pkg, source_version)` per dataset, where `hash = digest::digest(df, algo = "sha256")`.
+- `BLWT`/`BLHT`/`BLBMI` merged from the ADVS baseline records.
+
+**Derivations, PHUSE lane:** the study states its own `SAFFL`/`ITTFL`/`EFFFL` (blank recoded to `"N"`), its own baseline weight/height/BMI on ADSL, and its own three age groups (`<65`, `65-80`, `>80`); none of these is re-derived. `COMPLFL` is the complement of the study's `DISCONFL`. `DISCREAS` is derived to the *same two levels* as the other lane so a display specified against one source renders against the other; `DCDECOD` and `DCREASCD` are carried through untouched for a display that wants the collected reason. Screen-failure absence is asserted, not assumed. ADCM's relabelling of even-numbered sites into a synthetic `CDISCPILOT02` is reversed, and every remapped subject must match ADSL on age, sex and actual arm or the preparation fails.
+
+**Both lanes:** `TRT01A` on every non-ADSL dataset is taken from the prepared ADSL by `USUBJID`, never from the dataset's own `TRTA`/`TRTP`.
+
+**Analysis sets:** `safety` → `SAFFL`, `itt` → `ITTFL`, `efficacy` → `EFFFL`, `completers` → `COMPLFL`, `all` → no filter.
+
+**Manifest:** `list(dataset, n_row, n_col, hash, source_pkg, source_version)` per dataset, where `hash = digest::digest(df, algo = "sha256")`. For a `{pharmaverseadam}` dataset the last pair is the package and its version; for a PHUSE dataset it is `"phuse-org/phuse-scripts:data/adam"` and the pinned upstream commit.
+
+**Source agreement:** the two packagings overlap on ADSL, ADAE and ADVS and do not agree on all of it. Every divergence is recorded in `quality/data/source-agreement.json` and reproduced by `qc/source-agreement.R`, which exits non-zero when any measured fact stops matching the record. The record's `environment` block — the R version, OS and `{pharmaverseadam}` version that measured — is recorded and printed but never compared: a version bump that moves no measured fact is news, not a failure, and one that moves a fact still fails on the fact it moved.
 
 ## 5. `ard.json` — the ARD serialization (owned schema, D5)
 
@@ -164,9 +179,13 @@ Binding syntax: `{{ard:<binding address>}}` (§5). Rendering resolves against `o
 
 **CI gates (D7):** (a) every binding resolves to exactly one ARD row; (b) every digit run in *rendered* prose traces to a resolved binding — except inside inline code, markdown links, and an explicit `allow_digits` frontmatter list (E3 section numbers, citations, protocol IDs); (c) `generated`-tier blocks with `approval.state != approved` are excluded from assembly and reported.
 
-## 7. Template model — `library/templates/ich-e3/`
+## 7. Template model — `library/templates/<id>/`
 
-`sections.yaml`: full ICH E3 skeleton.
+One directory per **template object**. A directory containing a `sections.yaml` is a template object; the assembler discovers them from disk and `--template <id>` selects one (`--all` builds every one). `ich-e3` is the default and writes `docs/assembled/csr.{json,html}`; any other id writes under its own name.
+
+`sections.yaml`: the document model — what this kind of document IS. `library/templates/ich-e3/sections.yaml` is the full ICH E3 skeleton; `library/templates/e3-synopsis/sections.yaml` is the ICH E3 Annex I synopsis; `library/templates/display-package/sections.yaml` is the post-text displays on their own; `library/templates/e3-abbreviated/sections.yaml` is the reduced report E3's Introduction contemplates.
+
+A document model may be a **restriction** of another: the display package and the abbreviated report declare only sections that exist in `ich-e3`, each carrying the number, title, slug and content declaration it has there, unchanged. Nothing in the loader enforces that — it is a property of those two files, checked by `tests/unit/assemble-template-subsets.test.js` — but it is what lets a restricted model reuse the full report's prose without a single edit: the cross-references in that prose resolve because the referenced sections are retained.
 
 ```yaml
 sections:
@@ -188,7 +207,9 @@ post_text:
   - { section: "14.3.1", displays: [t-ae-overview, t-ae-common] }
 ```
 
-Numbering (D6): the assembler assigns `14.x` positions from `post_text` order and rewrites display titles at render time. Slugs are identity; numbers are derived.
+Numbering (D6): the assembler assigns post-text positions from `post_text` order and rewrites display titles at render time. Slugs are identity; numbers are derived — the same display is `Table 14.1.1` in the clinical study report and `Table 13.1` in the synopsis from one unchanged specification.
+
+Gate scope: gates judge the document being assembled, over the blocks its assembly claims. A block written for the full E3 report may cross-reference Section 16.2.1 and must not be failed against a synopsis model that has no Section 16. A block the Text Library holds but this build did not assemble is reported in `gates.warnings`, so "not gated" cannot pass for "gated and clean".
 
 ## 8. Evidence contract
 

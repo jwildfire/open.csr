@@ -160,11 +160,22 @@ Four decisions this encodes:
 
 1. **The study is the root.** Everything under it belongs to it. A second study
    becomes a second root, not a second application.
-2. **Documents is a collection, not a page.** The CSR is one document; a SAP is
-   another; an ISS would be a third. The registry lives in
-   `site/config.json` → `documents`, so adding one is a config edit. Documents
-   that have no template yet are listed and marked `planned` rather than hidden,
-   because the point is to show the shape.
+2. **Documents is a collection, not a page.** The CSR is one document; the ICH E3
+   Annex I synopsis is another; a SAP would be a third. The registry is
+   `library/templates/` itself (#32): every template object the assembler has
+   built becomes a document here, with its own reader page, its own document-model
+   page and its own entry in this tree, without being named anywhere in the site
+   build. `site/config.json` → `documents` carries editorial metadata — a nicer
+   title, an abbreviation, a blurb — and the documents that are *planned* and so
+   have no template object to discover. It is a merge, never a gate: a template
+   object the config has never heard of still publishes, titled from its own
+   model, with a build warning naming it. Planned documents are listed and marked
+   rather than hidden, because the point is to show the shape.
+
+   The app renders one document at a time. The document on screen keeps its
+   section tree and its in-app selection; every other document is an ordinary
+   link to its own reader page, so it works with JavaScript off and never offers
+   a selection that would resolve to nothing.
 3. **Displays sit beside documents, not inside one.** The same display can be
    referenced by more than one document — the AE overview belongs in the CSR and
    would belong in an ISS. So a display records *which documents use it* instead
@@ -207,6 +218,91 @@ when spec editing produces a diff that needs somewhere to live.
 ## 7. What this does not change
 
 The panes themselves, the shared selection, the link-interception rule, and the standalone permalinks are all unchanged — this is a shell replacement, not a rewrite. `/gallery/`, `/reader/`, `/text/` and now `/templates/` remain the addressable permalinks and the destinations the evidence pages and trace panels link to.
+
+## 8. Revision: one state, not two (2026-08-26)
+
+§6 gave every explorer node with children a disclosure button, on the reasoning
+that expanding a node and selecting it are different intentions. In the tree that
+shipped they are not, and holding them apart is what made the sidebar wrong.
+
+The Documents view has exactly one document open at a time — that is the pane's
+rule, not the tree's — so "is this document's contents showing?" already had an
+answer. The disclosure button gave it a second one, remembered per node for the
+browsing session and never reconciled with the first. The stylesheet only ever
+revealed the section list next to the *current* document, so the two answers
+produced two visible faults: the arrow on a document that was not open moved and
+revealed nothing, and the arrow on the document that *was* open hid its contents.
+@jwildfire, on the live demo: *"Sidebar logic is slightly wonky. you can toggle
+without showing the controls."*
+
+The fix is a subtraction rather than a cleverer arrow. The open document shows
+its table of contents; every other document shows its title alone; selecting a
+different document moves the table of contents with it. What is left is one rule,
+`.nav-item[data-current] + .nav-sections`, and no second control able to disagree
+with it. The button, its `is-collapsed` class, its per-node `sessionStorage` key
+and its stylesheet rules all left with it.
+
+Three things deliberately did not change:
+
+- **Group-level collapse stays.** Which collection you are looking at —
+  DOCUMENTS, DISPLAYS, TEXT, VALUES — is a genuinely separate question from which
+  document is open, it has its own caret, and it is remembered for the browsing
+  session. That state was never wonky.
+- **The unpopulated-section greying stays.** A section a template declares but
+  does not populate renders dimmed, navigable and tooltipped. That is the
+  framework telling the truth about the difference between declaring and filling,
+  and this revision does not touch it.
+- **Deep links still open the document they name.** `#tab=documents&doc=…&focus=…`
+  resolves the document, swaps the panel and moves the tree's contents with it
+  before the scroll is attempted — the order in `render()` is what makes a link
+  into a document you are not reading work at all.
+
+Removing four buttons from the tab order costs a keyboard user nothing: the
+document links were always focusable, and activating one is now the whole of
+opening its contents.
+
+## 9. Revision: the sidebar stops knowing about the CSR (2026-08-26)
+
+The same pass turned up two more places where the shared surfaces still assumed
+one document, both of them the assumption §6 was written under and #36 removed
+from the shell.
+
+**A display listed the documents that use it, and could only ever list one.**
+`usedIn` was an array — someone anticipated more than one document — built from
+the primary document's `displayIndex` alone, so with four template objects in the
+library three of them were invisible to it. It is now built by `displayUsage()`
+over the whole library, and it carries what each document CALLS the display, not
+just that it uses it. That index feeds three surfaces at once, so the gallery, a
+display's own page and the explorer cannot disagree about where a display
+appears.
+
+**The explorer stated a display number, and four assemblies disagree about it.**
+The framework's own contract is that a display is identified by its slug and the
+number belongs to the assembly: `sections.yaml` is the document model,
+`assembly.yaml` is what a given report puts in it, and that split is what makes
+the numbering claim possible at all. The AE overview is `Table 14.3.1.2` in the
+report and `Table 13.4` in the synopsis. So a number on the explorer — a surface
+that serves every document at once — is one report's fact printed on a
+document-agnostic place, and removing it is the framework being applied rather
+than a matter of taste.
+
+Numbers stay wherever the assembly is unambiguous:
+
+- **Inside a document**, where the assembly that assigned the number is the one
+  you are reading.
+- **On the display's own store page**, where every document is listed and each
+  number is stated beside the document that assigned it. That is what makes
+  `14.3.1.2` and `13.4` on the same page read as two documents' names for one
+  display rather than as a contradiction — and it is the only reason a number is
+  safe on a shared surface at all.
+
+**A display in a document now links to its store entry**, mirroring the text
+block's link to the Text Library exactly: a trailing reference line under the
+object, naming it, linking to its own library page. The href is written in the
+form `resolveAppLink` parses, so inside the demo it is absorbed into a pane
+switch and on the standalone reader page it navigates — one link, both
+behaviours. The point of the mirroring is that a reader learns one gesture rather
+than two.
 
 ---
 

@@ -32,18 +32,34 @@ needed <- unique(c("adsl", unlist(lapply(specs, function(s) c(s$dataset, s$denom
 message("Preparing data: ", paste(needed, collapse = ", "))
 data <- prepare_data(datasets = needed)
 
-# ---- five displays, one iteration each --------------------------------------
+# ---- nine displays, one iteration each --------------------------------------
 
-initial <- c("t-demographics", "t-disposition", "t-exposure", "t-ae-overview", "l-ae-serious")
+initial <- c(
+  "t-demographics", "t-disposition", "t-exposure", "t-ae-overview", "l-ae-serious",
+  # The vital signs, weight and concomitant-medication group. Their change
+  # requests read differently from the five above because they were written
+  # against a document that already exists: each names the table of the reference
+  # clinical study report it targets, so the ledger records what the display was
+  # for, not just that it was generated.
+  "t-vitals", "t-vitals-change", "t-weight", "t-conmeds"
+)
+targets <- c(
+  "t-vitals" = "Table 14-7.01",
+  "t-vitals-change" = "Table 14-7.02",
+  "t-weight" = "Table 14-7.03",
+  "t-conmeds" = "Table 14-7.04"
+)
 for (slug in initial) {
-  m <- regenerate(
-    slug, root,
-    change_request = paste0(
-      "Initial generation of ", read_analysis_spec(slug, root)$regulatory_id,
-      " from the statistical analysis plan shell."
-    ),
-    actor = "@jwildfire", data = data
-  )
+  id <- read_analysis_spec(slug, root)$regulatory_id
+  request <- if (slug %in% names(targets)) {
+    paste0(
+      "Initial generation of ", id, ", targeting ", targets[[slug]],
+      " of the reference clinical study report for this study."
+    )
+  } else {
+    paste0("Initial generation of ", id, " from the statistical analysis plan shell.")
+  }
+  m <- regenerate(slug, root, change_request = request, actor = "@jwildfire", data = data)
   message(sprintf("%-16s %s  %d ARD rows", slug, m$version, m$ard_rows))
 }
 

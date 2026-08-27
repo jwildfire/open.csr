@@ -1,0 +1,1985 @@
+{
+  "_comment": [
+    "The CDISCPILOT01 reference report's own published values for the nine efficacy",
+    "displays in this library. This is route C of the qualification: a measurement of",
+    "the same quantities by SAS, by different people, in 2006-2007, sharing no code",
+    "with open.csr and no code with the independent recomputation in",
+    "qc/efficacy-agreement.R.",
+    "",
+    "These are numeric facts extracted mechanically from the source PDF with",
+    "pdftotext, not transcribed by hand, because a hand-copied reference value that",
+    "happens to match a wrong computation qualifies nothing.",
+    "",
+    "Provenance: cdiscpilot01.pdf as published in phuse-org/phuse-scripts at",
+    "data/adam/TDF_ADaM_v1.0/cdiscpilot_docs/. Section 14 displays, pages 49-60.",
+    "Those pages are CDISC-authored: the Eli Lilly copyright in that document covers",
+    "pages 154-409 (the protocol and the sample case report form) and no page in the",
+    "range used here carries it. Only the numbers are recorded; no page is reproduced.",
+    "",
+    "Key layout for the ANCOVA-style tables: 'baseline', 'mid' (the on-treatment",
+    "visit, or the Weeks 4-24 mean for NPI-X) and 'change' sections each carry n,",
+    "mean, sd, median, min and max as one value per treatment column, in the order",
+    "Placebo, Xanomeline Low Dose, Xanomeline High Dose. Pairs are (estimate, se) or",
+    "(lower, upper). For 14-3.10 each visit row is the thirteen values the reference",
+    "prints in order: n, mean, sd, median, min, max, baseline mean, baseline sd,",
+    "change mean, change sd, change median, change min, change max."
+  ],
+  "schema": "opencsr/efficacy-reference/v1",
+  "note": "The values the sponsor's own clinical study report printed for the CIBIC+ and time-to-event displays of CDISCPILOT01. This file is not a re-implementation of open.csr's arithmetic — it is a transcription of a document produced in 2006, in SAS, by someone else. It is the third measurement in this display group's qualification: the pipeline computes a number, qc/efficacy-reference.R computes the same number a second way from the raw vendored data, and both are compared with what the report published. Two agreeing implementations can be wrong together; neither can talk this file into agreeing with them.",
+  "source": {
+    "document": "cdiscpilot01.pdf",
+    "repository": "phuse-org/phuse-scripts",
+    "path": "data/adam/TDF_ADaM_v1.0/cdiscpilot_docs/cdiscpilot01.pdf",
+    "sha256": "0cab016c76abb3dcaef31110611c95dbd9cd00df083b35e6d28fd69fca0d842d",
+    "pages_used": "49-60",
+    "extraction": "pdftotext -layout, parsed mechanically; no hand transcription",
+    "licence_note": "Pages 154-409 of this document carry an Eli Lilly copyright and are not used, quoted or reproduced here. Pages 49-60 and 416-487 are CDISC-authored."
+  },
+  "reference": {
+    "document": "Clinical Study Report, CDISC SDTM/ADaM Pilot Project, protocol CDISCPILOT01 (H2Q-MC-LZZT), final 27 June 2006",
+    "displays": "Section 14: Table 14-3.02 (page header 'Primary Endpoint Analysis: CIBIC+ - Summary at Week 24 - LOCF'), Table 14-3.04, Table 14-3.06, Table 14-3.13, Figure 14-1",
+    "analysis_results_metadata": "The study's define.xml carries Analysis Results Metadata (adamref:AnalysisResultDisplays) for Table_14-3.02 and Figure_14-1, including the selection criteria and the original SAS. Both are transcribed into the displays' custom.R.",
+    "provenance": "The report, its statistical analysis plan (Appendix 9) and its define.xml were read from cdisc-org/sdtm-adam-pilot-project for what they STATE about the study. No data was taken from there, and none from RConsortium/submissions-pilot*. Every number open.csr computes comes from the MIT-licensed phuse-org/phuse-scripts package vendored under pipeline/inst/extdata/phuse-cdiscpilot01/.",
+    "transcription_notes": [
+      "Table 14-3.06 and Table 14-3.13 carry page footers reading 'Population: Completers' and 'Population: Safety'. Both are wrong in the source document: the column headings on those pages are 79/81/74, which is the efficacy analysis set, and the row counts reproduce EFFFL = 'Y' exactly. The footers are 2006 copy-paste errors and are not reproduced.",
+      "Table 14-3.13's footnote reads 'CMH test (Pearson Chi-Square)'. The p-values it prints are the CMH ROW MEAN SCORES DIFFER statistic on 2 degrees of freedom, not the general-association statistic on 8 that the parenthetical suggests; the general-association statistic gives 0.4782, 0.7699 and 0.8685 on the same data. The published values are what this record carries.",
+      "Where the report prints a bare '0' for a category no subject fell into, open.csr renders '0 (0%)'. The statistics are identical; only the presentation of an empty cell differs.",
+      "Figure 14-1's medians and confidence limits are quoted from the report's narrative (Section 12.3.3), which states them to the day. The figure image itself is not machine-readable in the published PDF."
+    ]
+  },
+  "displays": {
+    "t-eff-adas-wk24": {
+      "page": 49,
+      "table": "14-3.01",
+      "cells": {
+        "column_N": [
+          79,
+          81,
+          74
+        ],
+        "baseline.n": [
+          79,
+          81,
+          74
+        ],
+        "baseline.mean": [
+          24.1,
+          24.4,
+          21.3
+        ],
+        "baseline.sd": [
+          12.19,
+          12.92,
+          11.74
+        ],
+        "baseline.median": [
+          21.0,
+          21.0,
+          18.0
+        ],
+        "baseline.min": [
+          5.0,
+          5.0,
+          3.0
+        ],
+        "baseline.max": [
+          61.0,
+          57.0,
+          57.0
+        ],
+        "mid.n": [
+          79,
+          81,
+          74
+        ],
+        "mid.mean": [
+          26.7,
+          26.4,
+          22.8
+        ],
+        "mid.sd": [
+          13.79,
+          13.18,
+          12.48
+        ],
+        "mid.median": [
+          24.0,
+          25.0,
+          20.0
+        ],
+        "mid.min": [
+          5.0,
+          6.0,
+          3.0
+        ],
+        "mid.max": [
+          62.0,
+          62.0,
+          62.0
+        ],
+        "change.n": [
+          79,
+          81,
+          74
+        ],
+        "change.mean": [
+          2.5,
+          2.0,
+          1.5
+        ],
+        "change.sd": [
+          5.8,
+          5.55,
+          4.26
+        ],
+        "change.median": [
+          2.0,
+          2.0,
+          1.0
+        ],
+        "change.min": [
+          -11.0,
+          -11.0,
+          -7.0
+        ],
+        "change.max": [
+          16.0,
+          17.0,
+          13.0
+        ],
+        "p_dose": 0.245,
+        "p_xan_placebo": [
+          0.569,
+          0.233
+        ],
+        "diff_xan_placebo": [
+          [
+            -0.5,
+            0.82
+          ],
+          [
+            -1.0,
+            0.84
+          ]
+        ],
+        "ci_xan_placebo": [
+          [
+            -2.1,
+            1.1
+          ],
+          [
+            -2.7,
+            0.7
+          ]
+        ],
+        "p_high_low": 0.52,
+        "diff_high_low": [
+          [
+            -0.5,
+            0.84
+          ]
+        ],
+        "ci_high_low": [
+          [
+            -2.2,
+            1.1
+          ]
+        ]
+      }
+    },
+    "t-eff-adas-wk8": {
+      "page": 51,
+      "table": "14-3.03",
+      "cells": {
+        "column_N": [
+          79,
+          81,
+          74
+        ],
+        "baseline.n": [
+          79,
+          81,
+          74
+        ],
+        "baseline.mean": [
+          24.1,
+          24.4,
+          21.3
+        ],
+        "baseline.sd": [
+          12.19,
+          12.92,
+          11.74
+        ],
+        "baseline.median": [
+          21.0,
+          21.0,
+          18.0
+        ],
+        "baseline.min": [
+          5.0,
+          5.0,
+          3.0
+        ],
+        "baseline.max": [
+          61.0,
+          57.0,
+          57.0
+        ],
+        "mid.n": [
+          79,
+          81,
+          74
+        ],
+        "mid.mean": [
+          25.0,
+          26.2,
+          22.3
+        ],
+        "mid.sd": [
+          13.1,
+          12.98,
+          12.41
+        ],
+        "mid.median": [
+          22.0,
+          25.0,
+          19.0
+        ],
+        "mid.min": [
+          5.0,
+          5.0,
+          2.0
+        ],
+        "mid.max": [
+          62.0,
+          62.0,
+          62.0
+        ],
+        "change.n": [
+          79,
+          81,
+          74
+        ],
+        "change.mean": [
+          0.8,
+          1.8,
+          1.0
+        ],
+        "change.sd": [
+          4.81,
+          4.14,
+          3.62
+        ],
+        "change.median": [
+          1.0,
+          2.0,
+          1.0
+        ],
+        "change.min": [
+          -12.0,
+          -12.0,
+          -8.0
+        ],
+        "change.max": [
+          16.0,
+          14.0,
+          13.0
+        ],
+        "p_dose": 0.497,
+        "p_xan_placebo": [
+          0.099,
+          0.751
+        ],
+        "diff_xan_placebo": [
+          [
+            1.1,
+            0.65
+          ],
+          [
+            0.2,
+            0.67
+          ]
+        ],
+        "ci_xan_placebo": [
+          [
+            -0.2,
+            2.4
+          ],
+          [
+            -1.1,
+            1.5
+          ]
+        ],
+        "p_high_low": 0.195,
+        "diff_high_low": [
+          [
+            -0.9,
+            0.66
+          ]
+        ],
+        "ci_high_low": [
+          [
+            -2.2,
+            0.4
+          ]
+        ]
+      }
+    },
+    "t-eff-adas-wk16": {
+      "page": 53,
+      "table": "14-3.05",
+      "cells": {
+        "column_N": [
+          79,
+          81,
+          74
+        ],
+        "baseline.n": [
+          79,
+          81,
+          74
+        ],
+        "baseline.mean": [
+          24.1,
+          24.4,
+          21.3
+        ],
+        "baseline.sd": [
+          12.19,
+          12.92,
+          11.74
+        ],
+        "baseline.median": [
+          21.0,
+          21.0,
+          18.0
+        ],
+        "baseline.min": [
+          5.0,
+          5.0,
+          3.0
+        ],
+        "baseline.max": [
+          61.0,
+          57.0,
+          57.0
+        ],
+        "mid.n": [
+          79,
+          81,
+          74
+        ],
+        "mid.mean": [
+          26.1,
+          26.0,
+          22.5
+        ],
+        "mid.sd": [
+          14.16,
+          13.05,
+          12.33
+        ],
+        "mid.median": [
+          23.0,
+          25.0,
+          20.0
+        ],
+        "mid.min": [
+          5.0,
+          5.0,
+          4.0
+        ],
+        "mid.max": [
+          63.0,
+          62.0,
+          62.0
+        ],
+        "change.n": [
+          79,
+          81,
+          74
+        ],
+        "change.mean": [
+          2.0,
+          1.6,
+          1.2
+        ],
+        "change.sd": [
+          5.89,
+          4.1,
+          4.33
+        ],
+        "change.median": [
+          2.0,
+          2.0,
+          1.0
+        ],
+        "change.min": [
+          -17.0,
+          -9.0,
+          -11.0
+        ],
+        "change.max": [
+          23.0,
+          14.0,
+          13.0
+        ],
+        "p_dose": 0.412,
+        "p_xan_placebo": [
+          0.724,
+          0.392
+        ],
+        "diff_xan_placebo": [
+          [
+            -0.3,
+            0.77
+          ],
+          [
+            -0.7,
+            0.79
+          ]
+        ],
+        "ci_xan_placebo": [
+          [
+            -1.8,
+            1.2
+          ],
+          [
+            -2.2,
+            0.9
+          ]
+        ],
+        "p_high_low": 0.606,
+        "diff_high_low": [
+          [
+            -0.4,
+            0.78
+          ]
+        ],
+        "ci_high_low": [
+          [
+            -1.9,
+            1.1
+          ]
+        ]
+      }
+    },
+    "t-eff-adas-wk24-completers": {
+      "page": 55,
+      "table": "14-3.07",
+      "cells": {
+        "column_N": [
+          60,
+          28,
+          30
+        ],
+        "baseline.n": [
+          59,
+          27,
+          30
+        ],
+        "baseline.mean": [
+          23.2,
+          24.0,
+          20.5
+        ],
+        "baseline.sd": [
+          11.74,
+          13.89,
+          11.5
+        ],
+        "baseline.median": [
+          21.0,
+          20.0,
+          18.0
+        ],
+        "baseline.min": [
+          5.0,
+          5.0,
+          3.0
+        ],
+        "baseline.max": [
+          51.0,
+          57.0,
+          49.0
+        ],
+        "mid.n": [
+          59,
+          27,
+          30
+        ],
+        "mid.mean": [
+          25.3,
+          24.1,
+          21.8
+        ],
+        "mid.sd": [
+          13.32,
+          11.87,
+          12.6
+        ],
+        "mid.median": [
+          23.0,
+          22.0,
+          18.5
+        ],
+        "mid.min": [
+          5.0,
+          8.0,
+          3.0
+        ],
+        "mid.max": [
+          58.0,
+          51.0,
+          44.0
+        ],
+        "change.n": [
+          59,
+          27,
+          30
+        ],
+        "change.mean": [
+          2.1,
+          0.1,
+          1.3
+        ],
+        "change.sd": [
+          5.89,
+          5.86,
+          4.51
+        ],
+        "change.median": [
+          2.0,
+          1.0,
+          1.0
+        ],
+        "change.min": [
+          -11.0,
+          -11.0,
+          -7.0
+        ],
+        "change.max": [
+          16.0,
+          12.0,
+          13.0
+        ],
+        "p_dose": 0.234,
+        "p_xan_placebo": [
+          0.105,
+          0.461
+        ],
+        "diff_xan_placebo": [
+          [
+            -2.1,
+            1.26
+          ],
+          [
+            -0.9,
+            1.22
+          ]
+        ],
+        "ci_xan_placebo": [
+          [
+            -4.6,
+            0.4
+          ],
+          [
+            -3.3,
+            1.5
+          ]
+        ],
+        "p_high_low": 0.43,
+        "diff_high_low": [
+          [
+            1.2,
+            1.47
+          ]
+        ],
+        "ci_high_low": [
+          [
+            -1.8,
+            4.1
+          ]
+        ]
+      }
+    },
+    "t-eff-adas-wk24-male": {
+      "page": 56,
+      "table": "14-3.08",
+      "cells": {
+        "column_N": [
+          33,
+          34,
+          39
+        ],
+        "baseline.n": [
+          33,
+          34,
+          39
+        ],
+        "baseline.mean": [
+          22.8,
+          23.3,
+          20.8
+        ],
+        "baseline.sd": [
+          13.45,
+          14.03,
+          11.11
+        ],
+        "baseline.median": [
+          19.0,
+          21.5,
+          17.0
+        ],
+        "baseline.min": [
+          5.0,
+          7.0,
+          3.0
+        ],
+        "baseline.max": [
+          61.0,
+          57.0,
+          51.0
+        ],
+        "mid.n": [
+          33,
+          34,
+          39
+        ],
+        "mid.mean": [
+          24.7,
+          25.7,
+          22.7
+        ],
+        "mid.sd": [
+          13.89,
+          14.72,
+          12.32
+        ],
+        "mid.median": [
+          20.0,
+          24.0,
+          21.0
+        ],
+        "mid.min": [
+          5.0,
+          6.0,
+          3.0
+        ],
+        "mid.max": [
+          62.0,
+          57.0,
+          51.0
+        ],
+        "change.n": [
+          33,
+          34,
+          39
+        ],
+        "change.mean": [
+          1.9,
+          2.5,
+          1.8
+        ],
+        "change.sd": [
+          6.14,
+          5.61,
+          3.77
+        ],
+        "change.median": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "change.min": [
+          -11.0,
+          -6.0,
+          -7.0
+        ],
+        "change.max": [
+          16.0,
+          14.0,
+          13.0
+        ],
+        "p_dose": 0.873,
+        "p_xan_placebo": [
+          0.712,
+          0.915
+        ],
+        "diff_xan_placebo": [
+          [
+            0.5,
+            1.3
+          ],
+          [
+            0.1,
+            1.25
+          ]
+        ],
+        "ci_xan_placebo": [
+          [
+            -2.1,
+            3.1
+          ],
+          [
+            -2.4,
+            2.6
+          ]
+        ],
+        "p_high_low": 0.783,
+        "diff_high_low": [
+          [
+            -0.3,
+            1.26
+          ]
+        ],
+        "ci_high_low": [
+          [
+            -2.9,
+            2.2
+          ]
+        ]
+      }
+    },
+    "t-eff-adas-wk24-female": {
+      "page": 57,
+      "table": "14-3.09",
+      "cells": {
+        "column_N": [
+          46,
+          47,
+          35
+        ],
+        "baseline.n": [
+          46,
+          47,
+          35
+        ],
+        "baseline.mean": [
+          25.1,
+          25.2,
+          21.8
+        ],
+        "baseline.sd": [
+          11.25,
+          12.15,
+          12.54
+        ],
+        "baseline.median": [
+          23.5,
+          21.0,
+          18.0
+        ],
+        "baseline.min": [
+          5.0,
+          5.0,
+          5.0
+        ],
+        "baseline.max": [
+          51.0,
+          55.0,
+          57.0
+        ],
+        "mid.n": [
+          46,
+          47,
+          35
+        ],
+        "mid.mean": [
+          28.1,
+          26.9,
+          22.9
+        ],
+        "mid.sd": [
+          13.7,
+          12.09,
+          12.84
+        ],
+        "mid.median": [
+          24.0,
+          25.0,
+          19.0
+        ],
+        "mid.min": [
+          8.0,
+          8.0,
+          4.0
+        ],
+        "mid.max": [
+          59.0,
+          62.0,
+          62.0
+        ],
+        "change.n": [
+          46,
+          47,
+          35
+        ],
+        "change.mean": [
+          3.0,
+          1.7,
+          1.1
+        ],
+        "change.sd": [
+          5.57,
+          5.54,
+          4.77
+        ],
+        "change.median": [
+          3.0,
+          2.0,
+          0.0
+        ],
+        "change.min": [
+          -8.0,
+          -11.0,
+          -7.0
+        ],
+        "change.max": [
+          16.0,
+          17.0,
+          13.0
+        ],
+        "p_dose": 0.094,
+        "p_xan_placebo": [
+          0.16,
+          0.135
+        ],
+        "diff_xan_placebo": [
+          [
+            -1.6,
+            1.1
+          ],
+          [
+            -1.8,
+            1.2
+          ]
+        ],
+        "ci_xan_placebo": [
+          [
+            -3.7,
+            0.6
+          ],
+          [
+            -4.2,
+            0.6
+          ]
+        ],
+        "p_high_low": 0.843,
+        "diff_high_low": [
+          [
+            -0.2,
+            1.21
+          ]
+        ],
+        "ci_high_low": [
+          [
+            -2.6,
+            2.2
+          ]
+        ]
+      }
+    },
+    "t-eff-adas-overtime": {
+      "page": 58,
+      "table": "14-3.10",
+      "cells": {
+        "Placebo": {
+          "Baseline": [
+            79.0,
+            24.1,
+            12.19,
+            21.0,
+            5.0,
+            61.0
+          ],
+          "Week 8 (Windowed)": [
+            79.0,
+            25.0,
+            13.1,
+            22.0,
+            5.0,
+            62.0,
+            24.1,
+            12.19,
+            0.8,
+            4.81,
+            1.0,
+            -12.0,
+            16.0
+          ],
+          "Week 16 (Windowed)": [
+            68.0,
+            25.1,
+            13.42,
+            21.0,
+            5.0,
+            63.0,
+            23.4,
+            11.32,
+            1.7,
+            5.92,
+            2.0,
+            -17.0,
+            23.0
+          ],
+          "Week 24 (Windowed)": [
+            65.0,
+            25.7,
+            13.9,
+            23.0,
+            5.0,
+            59.0,
+            23.6,
+            12.13,
+            2.1,
+            5.99,
+            2.0,
+            -11.0,
+            16.0
+          ],
+          "Week 8 LOCF": [
+            79.0,
+            25.0,
+            13.1,
+            22.0,
+            5.0,
+            62.0,
+            24.1,
+            12.19,
+            0.8,
+            4.81,
+            1.0,
+            -12.0,
+            16.0
+          ],
+          "Week 16 LOCF": [
+            79.0,
+            26.1,
+            14.16,
+            23.0,
+            5.0,
+            63.0,
+            24.1,
+            12.19,
+            2.0,
+            5.89,
+            2.0,
+            -17.0,
+            23.0
+          ],
+          "Week 24 LOCF": [
+            79.0,
+            26.7,
+            13.79,
+            24.0,
+            5.0,
+            62.0,
+            24.1,
+            12.19,
+            2.5,
+            5.8,
+            2.0,
+            -11.0,
+            16.0
+          ]
+        },
+        "Xanomeline Low Dose": {
+          "Baseline": [
+            81.0,
+            24.4,
+            12.92,
+            21.0,
+            5.0,
+            57.0
+          ],
+          "Week 8 (Windowed)": [
+            81.0,
+            26.2,
+            12.98,
+            25.0,
+            5.0,
+            62.0,
+            24.4,
+            12.92,
+            1.8,
+            4.14,
+            2.0,
+            -12.0,
+            14.0
+          ],
+          "Week 16 (Windowed)": [
+            42.0,
+            26.2,
+            12.23,
+            25.0,
+            8.0,
+            53.0,
+            25.0,
+            12.52,
+            1.2,
+            4.33,
+            1.0,
+            -8.0,
+            13.0
+          ],
+          "Week 24 (Windowed)": [
+            49.0,
+            25.6,
+            13.81,
+            24.0,
+            7.0,
+            57.0,
+            24.4,
+            13.76,
+            1.3,
+            6.05,
+            1.0,
+            -11.0,
+            17.0
+          ],
+          "Week 8 LOCF": [
+            81.0,
+            26.2,
+            12.98,
+            25.0,
+            5.0,
+            62.0,
+            24.4,
+            12.92,
+            1.8,
+            4.14,
+            2.0,
+            -12.0,
+            14.0
+          ],
+          "Week 16 LOCF": [
+            81.0,
+            26.0,
+            13.05,
+            25.0,
+            5.0,
+            62.0,
+            24.4,
+            12.92,
+            1.6,
+            4.1,
+            2.0,
+            -9.0,
+            14.0
+          ],
+          "Week 24 LOCF": [
+            81.0,
+            26.4,
+            13.18,
+            25.0,
+            6.0,
+            62.0,
+            24.4,
+            12.92,
+            2.0,
+            5.55,
+            2.0,
+            -11.0,
+            17.0
+          ]
+        },
+        "Xanomeline High Dose": {
+          "Baseline": [
+            74.0,
+            21.3,
+            11.74,
+            18.0,
+            3.0,
+            57.0
+          ],
+          "Week 8 (Windowed)": [
+            74.0,
+            22.3,
+            12.41,
+            19.0,
+            2.0,
+            62.0,
+            21.3,
+            11.74,
+            1.0,
+            3.62,
+            1.0,
+            -8.0,
+            13.0
+          ],
+          "Week 16 (Windowed)": [
+            40.0,
+            21.9,
+            12.39,
+            19.5,
+            4.0,
+            49.0,
+            21.1,
+            11.79,
+            0.8,
+            4.92,
+            1.0,
+            -11.0,
+            10.0
+          ],
+          "Week 24 (Windowed)": [
+            41.0,
+            21.8,
+            12.38,
+            19.0,
+            3.0,
+            45.0,
+            20.1,
+            11.13,
+            1.7,
+            4.74,
+            1.0,
+            -7.0,
+            13.0
+          ],
+          "Week 8 LOCF": [
+            74.0,
+            22.3,
+            12.41,
+            19.0,
+            2.0,
+            62.0,
+            21.3,
+            11.74,
+            1.0,
+            3.62,
+            1.0,
+            -8.0,
+            13.0
+          ],
+          "Week 16 LOCF": [
+            74.0,
+            22.5,
+            12.33,
+            20.0,
+            4.0,
+            62.0,
+            21.3,
+            11.74,
+            1.2,
+            4.33,
+            1.0,
+            -11.0,
+            13.0
+          ],
+          "Week 24 LOCF": [
+            74.0,
+            22.8,
+            12.48,
+            20.0,
+            3.0,
+            62.0,
+            21.3,
+            11.74,
+            1.5,
+            4.26,
+            1.0,
+            -7.0,
+            13.0
+          ]
+        }
+      }
+    },
+    "t-eff-adas-mmrm": {
+      "page": 59,
+      "table": "14-3.11",
+      "cells": {
+        "lsmean": [
+          [
+            1.6,
+            0.49
+          ],
+          [
+            1.5,
+            0.52
+          ],
+          [
+            1.1,
+            0.56
+          ]
+        ],
+        "p_xan_placebo": [
+          0.955,
+          0.556
+        ],
+        "diff_xan_placebo": [
+          [
+            -0.0,
+            0.7
+          ],
+          [
+            -0.4,
+            0.72
+          ]
+        ],
+        "ci_xan_placebo": [
+          [
+            -1.4,
+            1.3
+          ],
+          [
+            -1.9,
+            1.0
+          ]
+        ],
+        "p_high_low": 0.606,
+        "diff_high_low": [
+          [
+            -0.4,
+            0.75
+          ]
+        ],
+        "ci_high_low": [
+          [
+            -1.9,
+            1.1
+          ]
+        ],
+        "column_N": [
+          79,
+          81,
+          74
+        ]
+      }
+    },
+    "t-eff-npix-mean": {
+      "page": 60,
+      "table": "14-3.12",
+      "cells": {
+        "column_N": [
+          79,
+          81,
+          74
+        ],
+        "baseline.n": [
+          79,
+          81,
+          74
+        ],
+        "baseline.mean": [
+          9.5,
+          8.7,
+          11.9
+        ],
+        "baseline.sd": [
+          12.1,
+          9.82,
+          13.7
+        ],
+        "baseline.median": [
+          5.0,
+          4.0,
+          8.0
+        ],
+        "baseline.min": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "baseline.max": [
+          66.0,
+          32.0,
+          61.0
+        ],
+        "mid.n": [
+          78,
+          75,
+          69
+        ],
+        "mid.mean": [
+          9.3,
+          9.1,
+          9.6
+        ],
+        "mid.sd": [
+          11.18,
+          12.1,
+          11.6
+        ],
+        "mid.median": [
+          5.5,
+          3.8,
+          4.4
+        ],
+        "mid.min": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "mid.max": [
+          65.0,
+          51.0,
+          46.0
+        ],
+        "p_dose": 0.637,
+        "p_xan_placebo": [
+          0.76,
+          0.517
+        ],
+        "diff_xan_placebo": [
+          [
+            0.3,
+            1.13
+          ],
+          [
+            -0.7,
+            1.15
+          ]
+        ],
+        "ci_xan_placebo": [
+          [
+            -1.9,
+            2.6
+          ],
+          [
+            -3.0,
+            1.5
+          ]
+        ],
+        "p_high_low": 0.35,
+        "diff_high_low": [
+          [
+            -1.1,
+            1.17
+          ]
+        ],
+        "ci_high_low": [
+          [
+            -3.4,
+            1.2
+          ]
+        ]
+      }
+    },
+    "t-cibic-week24": {
+      "reference": "Table 14-3.02",
+      "title": "Primary Endpoint Analysis: CIBIC+ - Summary at Week 24 - LOCF",
+      "selection": "EFFFL='Y' and ANL01FL='Y' and AVISIT='Week 24' and PARAMCD='CIBICVAL'",
+      "visit": "Week 24",
+      "columns": [
+        "Placebo",
+        "Xanomeline Low Dose",
+        "Xanomeline High Dose"
+      ],
+      "digits": {
+        "N": 0,
+        "mean": 1,
+        "sd": 2,
+        "median": 1,
+        "min": 0,
+        "max": 0,
+        "pval": 3,
+        "diff": 1,
+        "se": 2,
+        "lcl": 1,
+        "ucl": 1
+      },
+      "population_n": [
+        "79",
+        "81",
+        "74"
+      ],
+      "summary": {
+        "N": [
+          "79",
+          "81",
+          "74"
+        ],
+        "mean": [
+          "4.3",
+          "4.2",
+          "4.3"
+        ],
+        "sd": [
+          "0.77",
+          "0.79",
+          "0.81"
+        ],
+        "median": [
+          "4.0",
+          "4.0",
+          "4.0"
+        ],
+        "min": [
+          "2",
+          "2",
+          "3"
+        ],
+        "max": [
+          "6",
+          "6",
+          "6"
+        ]
+      },
+      "ancova": {
+        "dose_response": {
+          "pval": "0.960"
+        },
+        "xan_vs_pbo": {
+          "Xanomeline Low Dose": {
+            "pval": "0.489",
+            "diff": "-0.1",
+            "se": "0.13",
+            "lcl": "-0.3",
+            "ucl": "0.2"
+          },
+          "Xanomeline High Dose": {
+            "pval": "0.799",
+            "diff": "0.0",
+            "se": "0.13",
+            "lcl": "-0.2",
+            "ucl": "0.3"
+          }
+        },
+        "high_vs_low": {
+          "pval": "0.349",
+          "diff": "0.1",
+          "se": "0.13",
+          "lcl": "-0.1",
+          "ucl": "0.4"
+        }
+      }
+    },
+    "t-cibic-week8": {
+      "reference": "Table 14-3.04",
+      "title": "CIBIC+ - Summary at Week 8 - LOCF",
+      "selection": "EFFFL='Y' and ANL01FL='Y' and AVISIT='Week 8' and PARAMCD='CIBICVAL'",
+      "visit": "Week 8",
+      "columns": [
+        "Placebo",
+        "Xanomeline Low Dose",
+        "Xanomeline High Dose"
+      ],
+      "digits": {
+        "N": 0,
+        "mean": 1,
+        "sd": 2,
+        "median": 1,
+        "min": 0,
+        "max": 0,
+        "pval": 3,
+        "diff": 1,
+        "se": 2,
+        "lcl": 1,
+        "ucl": 1
+      },
+      "population_n": [
+        "79",
+        "81",
+        "74"
+      ],
+      "summary": {
+        "N": [
+          "77",
+          "81",
+          "73"
+        ],
+        "mean": [
+          "3.9",
+          "4.0",
+          "4.1"
+        ],
+        "sd": [
+          "0.73",
+          "0.72",
+          "0.75"
+        ],
+        "median": [
+          "4.0",
+          "4.0",
+          "4.0"
+        ],
+        "min": [
+          "2",
+          "2",
+          "2"
+        ],
+        "max": [
+          "6",
+          "6",
+          "6"
+        ]
+      },
+      "ancova": {
+        "dose_response": {
+          "pval": "0.167"
+        },
+        "xan_vs_pbo": {
+          "Xanomeline Low Dose": {
+            "pval": "0.754",
+            "diff": "0.0",
+            "se": "0.12",
+            "lcl": "-0.2",
+            "ucl": "0.3"
+          },
+          "Xanomeline High Dose": {
+            "pval": "0.128",
+            "diff": "0.2",
+            "se": "0.12",
+            "lcl": "-0.1",
+            "ucl": "0.4"
+          }
+        },
+        "high_vs_low": {
+          "pval": "0.218",
+          "diff": "0.1",
+          "se": "0.12",
+          "lcl": "-0.1",
+          "ucl": "0.4"
+        }
+      }
+    },
+    "t-cibic-week16": {
+      "reference": "Table 14-3.06",
+      "title": "CIBIC+ - Summary at Week 16 - LOCF",
+      "selection": "EFFFL='Y' and ANL01FL='Y' and AVISIT='Week 16' and PARAMCD='CIBICVAL'",
+      "visit": "Week 16",
+      "columns": [
+        "Placebo",
+        "Xanomeline Low Dose",
+        "Xanomeline High Dose"
+      ],
+      "digits": {
+        "N": 0,
+        "mean": 1,
+        "sd": 2,
+        "median": 1,
+        "min": 0,
+        "max": 0,
+        "pval": 3,
+        "diff": 1,
+        "se": 2,
+        "lcl": 1,
+        "ucl": 1
+      },
+      "population_n": [
+        "79",
+        "81",
+        "74"
+      ],
+      "summary": {
+        "N": [
+          "79",
+          "81",
+          "74"
+        ],
+        "mean": [
+          "4.2",
+          "4.0",
+          "4.0"
+        ],
+        "sd": [
+          "0.70",
+          "0.77",
+          "0.75"
+        ],
+        "median": [
+          "4.0",
+          "4.0",
+          "4.0"
+        ],
+        "min": [
+          "3",
+          "2",
+          "2"
+        ],
+        "max": [
+          "6",
+          "6",
+          "5"
+        ]
+      },
+      "ancova": {
+        "dose_response": {
+          "pval": "0.214"
+        },
+        "xan_vs_pbo": {
+          "Xanomeline Low Dose": {
+            "pval": "0.219",
+            "diff": "-0.1",
+            "se": "0.12",
+            "lcl": "-0.4",
+            "ucl": "0.1"
+          },
+          "Xanomeline High Dose": {
+            "pval": "0.272",
+            "diff": "-0.1",
+            "se": "0.12",
+            "lcl": "-0.4",
+            "ucl": "0.1"
+          }
+        },
+        "high_vs_low": {
+          "pval": "0.916",
+          "diff": "0.0",
+          "se": "0.12",
+          "lcl": "-0.2",
+          "ucl": "0.2"
+        }
+      }
+    },
+    "t-cibic-categorical": {
+      "reference": "Table 14-3.13",
+      "title": "CIBIC+ - Categorical Analysis - LOCF",
+      "selection": "EFFFL='Y' and ANL01FL='Y' and PARAMCD='CIBICVAL', by AVISIT",
+      "columns": [
+        "Placebo",
+        "Xanomeline Low Dose",
+        "Xanomeline High Dose"
+      ],
+      "digits": {
+        "N": 0,
+        "n": 0,
+        "p": 0,
+        "pval": 4
+      },
+      "population_n": [
+        "79",
+        "81",
+        "74"
+      ],
+      "categories": [
+        "Marked improvement",
+        "Moderate improvement",
+        "Minimal improvement",
+        "No change",
+        "Minimal worsening",
+        "Moderate worsening",
+        "Marked worsening"
+      ],
+      "visits": {
+        "Week 8": {
+          "N": [
+            "77",
+            "81",
+            "73"
+          ],
+          "n": {
+            "Placebo": [
+              "0",
+              "1",
+              "19",
+              "45",
+              "10",
+              "2",
+              "0"
+            ],
+            "Xanomeline Low Dose": [
+              "0",
+              "2",
+              "16",
+              "48",
+              "14",
+              "1",
+              "0"
+            ],
+            "Xanomeline High Dose": [
+              "0",
+              "1",
+              "13",
+              "38",
+              "20",
+              "1",
+              "0"
+            ]
+          },
+          "p": {
+            "Placebo": [
+              null,
+              "1",
+              "25",
+              "58",
+              "13",
+              "3",
+              null
+            ],
+            "Xanomeline Low Dose": [
+              null,
+              "2",
+              "20",
+              "59",
+              "17",
+              "1",
+              null
+            ],
+            "Xanomeline High Dose": [
+              null,
+              "1",
+              "18",
+              "52",
+              "27",
+              "1",
+              null
+            ]
+          },
+          "cmh_pval": "0.2727"
+        },
+        "Week 16": {
+          "N": [
+            "79",
+            "81",
+            "74"
+          ],
+          "n": {
+            "Placebo": [
+              "0",
+              "0",
+              "12",
+              "41",
+              "25",
+              "1",
+              "0"
+            ],
+            "Xanomeline Low Dose": [
+              "0",
+              "3",
+              "12",
+              "46",
+              "19",
+              "1",
+              "0"
+            ],
+            "Xanomeline High Dose": [
+              "0",
+              "2",
+              "13",
+              "39",
+              "20",
+              "0",
+              "0"
+            ]
+          },
+          "p": {
+            "Placebo": [
+              null,
+              null,
+              "15",
+              "52",
+              "32",
+              "1",
+              null
+            ],
+            "Xanomeline Low Dose": [
+              null,
+              "4",
+              "15",
+              "57",
+              "23",
+              "1",
+              null
+            ],
+            "Xanomeline High Dose": [
+              null,
+              "3",
+              "18",
+              "53",
+              "27",
+              null,
+              null
+            ]
+          },
+          "cmh_pval": "0.4003"
+        },
+        "Week 24": {
+          "N": [
+            "79",
+            "81",
+            "74"
+          ],
+          "n": {
+            "Placebo": [
+              "0",
+              "1",
+              "9",
+              "38",
+              "28",
+              "3",
+              "0"
+            ],
+            "Xanomeline Low Dose": [
+              "0",
+              "1",
+              "14",
+              "37",
+              "27",
+              "2",
+              "0"
+            ],
+            "Xanomeline High Dose": [
+              "0",
+              "0",
+              "11",
+              "33",
+              "25",
+              "5",
+              "0"
+            ]
+          },
+          "p": {
+            "Placebo": [
+              null,
+              "1",
+              "11",
+              "48",
+              "35",
+              "4",
+              null
+            ],
+            "Xanomeline Low Dose": [
+              null,
+              "1",
+              "17",
+              "46",
+              "33",
+              "2",
+              null
+            ],
+            "Xanomeline High Dose": [
+              null,
+              null,
+              "15",
+              "45",
+              "34",
+              "7",
+              null
+            ]
+          },
+          "cmh_pval": "0.6180"
+        }
+      },
+      "cmh_variants_not_published": {
+        "note": "Recorded so the choice of statistic is inspectable. Only row_mean_scores reproduces the published p-values.",
+        "general_association": {
+          "Week 8": "0.4782",
+          "Week 16": "0.7699",
+          "Week 24": "0.8685"
+        },
+        "row_mean_scores": {
+          "Week 8": "0.2727",
+          "Week 16": "0.4003",
+          "Week 24": "0.6180"
+        },
+        "nonzero_correlation": {
+          "Week 8": "0.1309",
+          "Week 16": "0.2641",
+          "Week 24": "0.8123"
+        }
+      }
+    },
+    "f-derm-time-to-event": {
+      "reference": "Figure 14-1",
+      "title": "Time to Dermatologic Event by Treatment Group",
+      "selection": "SAFFL='Y' and PARAMCD='TTDE'; event = CNSR != 1",
+      "columns": [
+        "Placebo",
+        "Xanomeline Low Dose",
+        "Xanomeline High Dose"
+      ],
+      "digits": {
+        "N": 0,
+        "n": 0,
+        "p": 0,
+        "n_censor": 0,
+        "p_censor": 0,
+        "median": 0,
+        "median_lcl": 0,
+        "median_ucl": 0,
+        "p_value": 4
+      },
+      "quoted_from": "The report's narrative, Section 12.3.3: '74% (n = 62) of xanomeline low dose and 73% (n = 61) of xanomeline high dose subjects with at least one event of special interest compared to 34% (n = 29) of placebo subjects ... a median time of 33 days in the xanomeline low dose group (95% CI: 27 - 48 days) and 36 days in the xanomeline high dose group (95% CI: 24 - 46 days) compared to placebo, in which the median time to first event was not estimable ... significantly different (p<0.0001)'.",
+      "km": {
+        "N": [
+          "86",
+          "84",
+          "84"
+        ],
+        "n": [
+          "29",
+          "62",
+          "61"
+        ],
+        "p": [
+          "34",
+          "74",
+          "73"
+        ],
+        "n_censor": [
+          "57",
+          "22",
+          "23"
+        ],
+        "p_censor": [
+          "66",
+          "26",
+          "27"
+        ],
+        "median": [
+          null,
+          "33",
+          "36"
+        ],
+        "median_lcl": [
+          null,
+          "27",
+          "24"
+        ],
+        "median_ucl": [
+          null,
+          "48",
+          "46"
+        ]
+      },
+      "derived_not_published": {
+        "note": "The report prints the event rate and the number censored, not the censored percentage. `km.p_censor` is the complement of the published event rate, recorded here so the display's second row has something to be checked against, and labelled so nobody mistakes it for a transcribed figure.",
+        "keys": [
+          "km.p_censor"
+        ]
+      },
+      "logrank": {
+        "published": "p<0.0001",
+        "max_pval": 0.0001
+      },
+      "median_ci_variants_not_published": {
+        "note": "SAS's quantile confidence limits depend on the transformation in force and the three do not agree here. Only the linear form reproduces both published intervals, which is why the display declares it. Recorded so the choice is inspectable rather than asserted.",
+        "plain": {
+          "Xanomeline Low Dose": [
+            "27",
+            "48"
+          ],
+          "Xanomeline High Dose": [
+            "24",
+            "46"
+          ]
+        },
+        "log_log": {
+          "Xanomeline Low Dose": [
+            "27",
+            "48"
+          ],
+          "Xanomeline High Dose": [
+            "23",
+            "46"
+          ]
+        },
+        "log": {
+          "Xanomeline Low Dose": [
+            "28",
+            "51"
+          ],
+          "Xanomeline High Dose": [
+            "25",
+            "47"
+          ]
+        }
+      }
+    }
+  }
+}

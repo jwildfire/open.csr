@@ -1,7 +1,151 @@
 {
   "module": "quality",
-  "generated": "2026-07-27T04:44:02.378Z",
+  "generated": "2026-08-27T14:58:26.704Z",
   "records": [
+    {
+      "requirementIds": [
+        "QC-SITE-013"
+      ],
+      "title": "a display and the documents that place it QC-SITE-013: a display no document places says so rather than showing an empty row (#42)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-render.test.js",
+      "issueRefs": [
+        42
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-SITE-013"
+      ],
+      "title": "a display and the documents that place it QC-SITE-013: the display page lists every document that places it, and its number there (#42)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-render.test.js",
+      "issueRefs": [
+        42
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-SITE-013"
+      ],
+      "title": "a display and the documents that place it QC-SITE-013: the gallery card names the documents that place each display (#42)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-render.test.js",
+      "issueRefs": [
+        42
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-SITE-013"
+      ],
+      "title": "a display and the documents that place it QC-SITE-013: the index reads the whole library, and records what each document calls a display (#42)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-render.test.js",
+      "issueRefs": [
+        42
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-SITE-014"
+      ],
+      "title": "a display and the documents that place it QC-SITE-014: a display placed in a document hyperlinks to its entry in the store (#42)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-render.test.js",
+      "issueRefs": [
+        42
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-SITE-015"
+      ],
+      "title": "a display page lists its own requirements QC-SITE-015: a display declaring no prefixes lists none rather than all of them (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/display-requirements.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-SITE-015"
+      ],
+      "title": "a display page lists its own requirements QC-SITE-015: a display page lists only the requirements matching its declared prefixes (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/display-requirements.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-SITE-015"
+      ],
+      "title": "a display page lists its own requirements QC-SITE-015: an empty matrix stays empty (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/display-requirements.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-SITE-015"
+      ],
+      "title": "a display page lists its own requirements QC-SITE-015: every declared prefix is kept, not just the first (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/display-requirements.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-SITE-015"
+      ],
+      "title": "a display page lists its own requirements QC-SITE-015: the whole prefix must match, so DSP-AE never catches DSP-AEX (#1)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/display-requirements.test.js",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-035"
+      ],
+      "title": "a document carries its own disclosure into the pane QC-DEMO-035: a reader rendered for a pane emits no trace panel of its own (#36)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-documents.test.js",
+      "issueRefs": [
+        36
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-035"
+      ],
+      "title": "a document carries its own disclosure into the pane QC-DEMO-035: each panel states its own prose state, so a draft reads as draft in the app (#36)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-documents.test.js",
+      "issueRefs": [
+        36
+      ]
+    },
     {
       "requirementIds": [
         "QC-DEMO-023"
@@ -66,24 +210,36 @@
       "requirementIds": [
         "QC-DEMO-025"
       ],
-      "title": "a document contents in the tree QC-DEMO-025: a node with children carries a keyboard-reachable disclosure control (#1)",
+      "title": "a document contents in the tree QC-DEMO-025: a document's contents sit immediately after it, so the open one is the one shown (#40)",
       "suite": "js-unit",
       "passed": true,
       "file": "tests/unit/site-demo.test.js",
       "issueRefs": [
-        1
+        40
       ]
     },
     {
       "requirementIds": [
         "QC-DEMO-025"
       ],
-      "title": "a document contents in the tree QC-DEMO-025: a node with nothing beneath it gets no chevron at all (#1)",
+      "title": "a document contents in the tree QC-DEMO-025: an unbuilt document contributes no contents and still no control (#40)",
       "suite": "js-unit",
       "passed": true,
       "file": "tests/unit/site-demo.test.js",
       "issueRefs": [
-        1
+        40
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-025"
+      ],
+      "title": "a document contents in the tree QC-DEMO-025: no document carries a disclosure control — selection alone opens its contents (#40)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        40
       ]
     },
     {
@@ -108,6 +264,150 @@
       "file": "tests/unit/site-demo.test.js",
       "issueRefs": [
         1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-SITE-012"
+      ],
+      "title": "a document's contents follow the selection and nothing else QC-SITE-012: no rule survives that could hide the open document's contents (#40)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-css.test.js",
+      "issueRefs": [
+        40
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-SITE-012"
+      ],
+      "title": "a document's contents follow the selection and nothing else QC-SITE-012: the current document reveals its contents, and only the current one (#40)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-css.test.js",
+      "issueRefs": [
+        40
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-030"
+      ],
+      "title": "a link to a reader page is a pane crossing QC-DEMO-030: a reader crossing carries the heading named in its fragment (#36)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        36
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-030"
+      ],
+      "title": "a link to a reader page is a pane crossing QC-DEMO-030: every document's reader page resolves to the Documents view naming it (#36)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        36
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-030"
+      ],
+      "title": "a link to a reader page is a pane crossing QC-DEMO-030: pages outside the reader directory are still left to navigate (#36)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        36
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-033"
+      ],
+      "title": "a rendered document is selectable, not somewhere else QC-DEMO-033: a document the page did NOT render stays a link out (#36)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        36
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-033"
+      ],
+      "title": "a rendered document is selectable, not somewhere else QC-DEMO-033: a document the page rendered is an ordinary selection (#36)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        36
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-033"
+      ],
+      "title": "a rendered document is selectable, not somewhere else QC-DEMO-033: an unbuilt document is not selectable however the page was built (#36)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        36
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-033"
+      ],
+      "title": "a rendered document is selectable, not somewhere else QC-DEMO-033: it keeps its permalink, so the node works with JavaScript off (#36)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        36
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-034"
+      ],
+      "title": "a rendered document is selectable, not somewhere else QC-DEMO-034: a document the page did not render contributes no sections (#36)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        36
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-034"
+      ],
+      "title": "a rendered document is selectable, not somewhere else QC-DEMO-034: every rendered document contributes its own sections, named for it (#36)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        36
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-035"
+      ],
+      "title": "a rendered document is selectable, not somewhere else QC-DEMO-035: a draft document is flagged in the tree beside the one that is not (#36)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        36
       ]
     },
     {
@@ -144,6 +444,54 @@
       "file": "tests/unit/site-render.test.js",
       "issueRefs": [
         1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-SITE-010"
+      ],
+      "title": "draft prose is disclosed where it is read QC-SITE-010: an unreviewed document says so above its first section (#32)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-documents.test.js",
+      "issueRefs": [
+        32
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-SITE-010"
+      ],
+      "title": "draft prose is disclosed where it is read QC-SITE-010: prose state is read off the assembled document, not asserted (#32)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-documents.test.js",
+      "issueRefs": [
+        32
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-SITE-010"
+      ],
+      "title": "draft prose is disclosed where it is read QC-SITE-010: the notice is on the rendered reader, before the document body (#32)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-documents.test.js",
+      "issueRefs": [
+        32
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-SITE-010"
+      ],
+      "title": "draft prose is disclosed where it is read QC-SITE-010: the switcher and the sidebar carry the same flag as the page (#32)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-documents.test.js",
+      "issueRefs": [
+        32
       ]
     },
     {
@@ -1300,6 +1648,186 @@
     },
     {
       "requirementIds": [
+        "QC-SITE-009"
+      ],
+      "title": "the document set QC-SITE-009: a document not on screen is a link out, not a dead selection (#32)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-documents.test.js",
+      "issueRefs": [
+        32
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-SITE-009"
+      ],
+      "title": "the document set QC-SITE-009: a planned document with no template object keeps its place (#32)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-documents.test.js",
+      "issueRefs": [
+        32
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-SITE-009"
+      ],
+      "title": "the document set QC-SITE-009: an undeclared template object is titled from its own model (#32)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-documents.test.js",
+      "issueRefs": [
+        32
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-SITE-009"
+      ],
+      "title": "the document set QC-SITE-009: every assembled template object becomes a document, declared or not (#32)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-documents.test.js",
+      "issueRefs": [
+        32
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-SITE-009"
+      ],
+      "title": "the document set QC-SITE-009: the home page lists the documents and links both of a document's pages (#32)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-documents.test.js",
+      "issueRefs": [
+        32
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-SITE-009"
+      ],
+      "title": "the document set QC-SITE-009: the primary document keeps the published URLs and the rest sit beside it (#32)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-documents.test.js",
+      "issueRefs": [
+        32
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-SITE-009"
+      ],
+      "title": "the document set QC-SITE-009: the switcher offers every other document from any document (#32)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-documents.test.js",
+      "issueRefs": [
+        32
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-032"
+      ],
+      "title": "the Documents pane QC-DEMO-032: a document may be requested by its reader page's name (#36)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        36
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-032"
+      ],
+      "title": "the Documents pane QC-DEMO-032: an unknown request opens the first document rather than none (#36)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        36
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-032"
+      ],
+      "title": "the Documents pane QC-DEMO-032: exactly one panel is visible, and it is the one requested (#36)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        36
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-032"
+      ],
+      "title": "the Documents pane QC-DEMO-032: one panel per document, keyed by id and by reader-page name (#36)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        36
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-032"
+      ],
+      "title": "the Documents pane QC-DEMO-032: one trace panel above the set, never one per document (#36)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        36
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-020"
+      ],
+      "title": "the explorer wiring QC-DEMO-020: the group-level collapse the tree still needs is untouched (#40)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        40
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-025"
+      ],
+      "title": "the explorer wiring QC-DEMO-025: the client holds no per-document expansion state at all (#40)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        40
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-031"
+      ],
+      "title": "the explorer wiring QC-DEMO-031: a deep link into another document opens that document (#40)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        40
+      ]
+    },
+    {
+      "requirementIds": [
         "QC-DEMO-018"
       ],
       "title": "the navigation tree QC-DEMO-018: more than one document is listed, and an unbuilt one says so (#1)",
@@ -1326,12 +1854,12 @@
       "requirementIds": [
         "QC-DEMO-019"
       ],
-      "title": "the navigation tree QC-DEMO-019: a display records the documents that use it rather than living inside one (#1)",
+      "title": "the navigation tree QC-DEMO-019: a display records EVERY document that uses it, not just the report (#42)",
       "suite": "js-unit",
       "passed": true,
       "file": "tests/unit/site-demo.test.js",
       "issueRefs": [
-        1
+        42
       ]
     },
     {
@@ -1344,6 +1872,18 @@
       "file": "tests/unit/site-demo.test.js",
       "issueRefs": [
         1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-019"
+      ],
+      "title": "the navigation tree QC-DEMO-019: the sidebar states no display number, because four assemblies disagree (#42)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        42
       ]
     },
     {
@@ -1416,6 +1956,30 @@
       "file": "tests/unit/site-demo.test.js",
       "issueRefs": [
         1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-SITE-009"
+      ],
+      "title": "the repository this site is built from QC-SITE-009: this repo's own library is plural and every object is assembled (#32)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-documents.test.js",
+      "issueRefs": [
+        32
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-SITE-010"
+      ],
+      "title": "the repository this site is built from QC-SITE-010: the committed synopsis is unreviewed, and nothing in the site pretends otherwise (#32)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-documents.test.js",
+      "issueRefs": [
+        32
       ]
     },
     {
@@ -1744,6 +2308,42 @@
     },
     {
       "requirementIds": [
+        "QC-SITE-011"
+      ],
+      "title": "two documents, one set of analytics QC-SITE-011: a display two documents both place is the same artifact in both (#36)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-documents.test.js",
+      "issueRefs": [
+        36
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-SITE-011"
+      ],
+      "title": "two documents, one set of analytics QC-SITE-011: only the per-document display NUMBER differs, and that is by design (#36)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-documents.test.js",
+      "issueRefs": [
+        36
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-SITE-011"
+      ],
+      "title": "two documents, one set of analytics QC-SITE-011: two documents cannot disagree about a named value (#36)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-documents.test.js",
+      "issueRefs": [
+        36
+      ]
+    },
+    {
+      "requirementIds": [
         "QC-UNRES-001"
       ],
       "title": "unresolved requirement IDs — the safety.viz blind spot QC-UNRES-001: an ID referenced by a test but defined in no matrix is reported (#1)",
@@ -1788,6 +2388,42 @@
       "file": "tests/unit/requirements-matrix.test.js",
       "issueRefs": [
         1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-031"
+      ],
+      "title": "which document the pane shows QC-DEMO-031: a document resolves from its id or from its reader page's name (#36)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        36
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-031"
+      ],
+      "title": "which document the pane shows QC-DEMO-031: a plain list of ids is accepted, so the caller need not build pairs (#36)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        36
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-031"
+      ],
+      "title": "which document the pane shows QC-DEMO-031: an unknown or absent document falls back to the first rendered one (#36)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        36
       ]
     },
     {
@@ -1876,7 +2512,7 @@
   "environment": {
     "os": "Darwin 23.6.0",
     "node": "v24.14.0",
-    "vitest": "2.1.9",
+    "vitest": null,
     "r": "4.3.3"
   },
   "run": null

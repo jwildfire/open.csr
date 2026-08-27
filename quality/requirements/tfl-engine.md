@@ -25,6 +25,16 @@ test cites appears below — both directions are enforced by `TFL-QC-002` and
 | TFL-PREP-005 | Every prepared dataset is described in a manifest with row/column counts, a SHA-256 content hash, and the source package and version. | Traceability | `test-data-prep.R` | Verified |
 | TFL-PREP-006 | The analysis-set registry maps `analysis_set` keys onto population flags and rejects unknown sets and datasets lacking the required flag. | Functional | `test-data-prep.R` | Verified |
 | TFL-PREP-007 | Treatment arms are ordered by dose, not alphabetically, in every prepared dataset. | Functional | `test-data-prep.R` | Verified |
+| TFL-PREP-008 | Every vendored PHUSE file matches the SHA-256 and byte count recorded in `PROVENANCE.json`, which pins the upstream repository, commit, per-file git blob SHA-1 and MIT licence. | Traceability | `test-data-phuse.R` | Verified |
+| TFL-PREP-009 | `prepare_data()` exposes the whole CDISCPILOT01 ADaM package — the ten datasets the study's `define.xml` documents, plus PHUSE's added `adcm` — and rejects an unknown dataset name by listing the known ones. | Functional | `test-data-phuse.R` | Verified |
+| TFL-PREP-010 | `TRT01A` on every non-ADSL dataset is taken from the prepared ADSL rather than the dataset's own `TRTA`/`TRTP`, so no display can group on an arm the subject-level table disagrees with. | Functional | `test-data-phuse.R` | Verified |
+| TFL-PREP-011 | On the PHUSE source the study's own `SAFFL`/`ITTFL`/`EFFFL` and baseline vitals are used as stated rather than re-derived, screen-failure absence is asserted rather than assumed, and `AGEGR1` carries the study's three age groups. | Functional | `test-data-phuse.R` | Verified |
+| TFL-PREP-012 | ADCM's relabelling of even-numbered sites into a synthetic second study is reversed, and every remapped subject is proven to be the same subject by age, sex and actual treatment before the remap is accepted. | Robustness | `test-data-phuse.R` | Verified |
+| TFL-PREP-013 | The manifest records the upstream repository path and pinned commit for every PHUSE-sourced dataset, in the same `source_pkg`/`source_version` pair a package uses. | Traceability | `test-data-phuse.R` | Verified |
+| TFL-PREP-014 | Adding the PHUSE package moves no domain `{pharmaverseadam}` already served, so every dataset the committed displays read is unchanged. | Regression | `test-data-phuse.R` | Verified |
+| TFL-PREP-015 | The analysis-set registry resolves `efficacy` to `EFFFL`; a source that states no efficacy set fails by naming the missing flag rather than returning every subject. | Functional | `test-data-phuse.R` | Verified |
+| TFL-PREP-016 | A display declaring a packaging in its `sources:` block is refused prepared data built from a different one, naming the datasets that disagree, rather than silently rendering against data its specification did not ask for. | Robustness | `test-displays-efficacy.R` | Verified |
+| TFL-SRC-001 | The two packagings of CDISCPILOT01 are measured against each other on the domains they share, and every divergence matches the record committed at `quality/data/source-agreement.json`; an unrecorded divergence fails the build. | Quality evidence | `test-data-phuse.R`, `qc/source-agreement.R` | Verified |
 
 ## Specification validation
 
@@ -36,6 +46,7 @@ test cites appears below — both directions are enforced by `TFL-QC-002` and
 | TFL-SPEC-004 | Row-plan keys that YAML 1.1 silently coerces to booleans (bare `n`, `y`, `no`, `on`, `off`) are rejected with an explanation rather than rendered as `FALSE`. | Robustness | `test-spec-validation.R` | Verified |
 | TFL-SPEC-005 | A display row referencing an analysis the analysis spec does not define, or an id mismatch between the two specs, fails the build. | Functional | `test-spec-validation.R` | Verified |
 | TFL-SPEC-006 | Every display committed to `library/tfl/` validates, has matching ids, and declares a `post_text` variant. | Functional | `test-spec-validation.R` | Verified |
+| TFL-SPEC-007 | Spec map KEYS that YAML 1.1 resolves to booleans are rejected naming the file and the path. A digit plan written `N: 0` parses cleanly and means `FALSE: 0`, so the declared precision would never reach the renderer; the failure is loud instead. | Robustness | `test-displays-efficacy.R` | Verified |
 
 ## ARD construction
 
@@ -69,6 +80,7 @@ test cites appears below — both directions are enforced by `TFL-QC-002` and
 | TFL-FMT-001 | Rounding is half away from zero (SAS behaviour), not R's round-half-to-even, and is stable against binary representation error. | Regulatory | `test-formatting.R` | Verified |
 | TFL-FMT-002 | Proportions are scaled to percent and every statistic is rendered at its declared precision, including trailing zeros. | Functional | `test-formatting.R` | Verified |
 | TFL-FMT-003 | The digit plan is declarative: a display-level plan applies by default and a row-level plan overrides it for variables with different collected precision. | Functional | `test-formatting.R` | Verified |
+| TFL-FMT-004 | A p-value too small or too large to print at its declared precision is reported at the boundary (`<0.0001`, `>0.9999`) rather than rounded to `0.0000` or `1.0000`; the unrounded probability stays in the ARD, and proportions are unaffected. | Regulatory | `test-displays-efficacy.R` | Verified |
 
 ## Rendering
 
@@ -81,6 +93,9 @@ test cites appears below — both directions are enforced by `TFL-QC-002` and
 | TFL-RND-005 | Rendering a variant the display does not declare is an error. | Robustness | `test-render.R` | Verified |
 | TFL-RND-006 | Section headings left without data rows are dropped, and indentation distinguishes headings from the rows beneath them. | Functional | `test-render.R` | Verified |
 | TFL-RND-007 | A listing renders one column per listed variable with the label declared in the display spec. | Functional | `test-render.R` | Verified |
+| TFL-FIG-001 | A display declaring a `figure:` block renders an inline, self-contained curve drawn only from the committed ARD — deterministic for a given ARD, absent when no figure is declared, and a build failure when the declared coordinate statistics are missing rather than an empty frame. | Functional | `test-displays-efficacy.R` | Verified |
+| TFL-FIG-002 | A rendered figure keeps its appearance when the site embeds it by lifting the document body and discarding the head: every drawn element carries its colour and its `fill` as SVG presentation attributes, and the stylesheet holding the dark-scheme palette travels inside the `<svg>`. A figure styled only from the document head publishes as filled black shapes, and silently. | Robustness | `test-displays-efficacy.R` | Verified |
+| TFL-SPEC-008 | An analysis spec typed `figure` and a display spec's `figure:` block must both be present or both absent, the block must name an analysis the spec defines, and an axis key YAML 1.1 resolved to a boolean is refused. A `type: figure` display with no block renders as a table and publishes silently as one. | Robustness | `test-displays-efficacy.R` | Verified |
 
 ## Iteration ledger and regeneration
 

@@ -1,0 +1,68 @@
+id: t-weight
+title: "Summary of Weight and Weight Change from Baseline at End of Treatment"
+study: CDISCPILOT01
+population_label: "Safety Analysis Set"
+cutoff: "2014-07-01"
+source: "Source: advs, adsl (pharmaverseadam). Data cut-off: 2014-07-01."
+footnotes:
+  - "Treatment groups are PLANNED treatment (TRT01P). Twelve subjects in this study received a treatment other than the one they were randomised to; grouping by actual treatment (TRT01A) would give column sizes of 86, 96 and 72."
+  - "Baseline is the subject's observed Week 0 weight. Change from baseline is that subject's value minus that baseline, so a subject with no Week 0 weight contributes to the weight rows but not to the change rows."
+  - "End of treatment is the last observed weight at a planned visit after Week 0 up to and including Week 24. Unscheduled visits, the Week 26 follow-up visit and records derived by averaging or carry-forward are never selected."
+  - "n is the number of subjects contributing a measurement; N in the column header is the number of subjects in the safety analysis set."
+columns:
+  order: [Placebo, "Xanomeline Low Dose", "Xanomeline High Dose"]
+format:
+  digits:
+    # `N:` and `n:` are deliberately absent. R's YAML reader resolves BOTH bare
+    # `N` and bare `n` to the boolean FALSE, so declaring the two together is a
+    # duplicate-key parse error, and declaring either one alone silently keys the
+    # digit plan under "FALSE" instead of the statistic. Counts default to zero
+    # decimals in default_digits(), which is what this display wants anyway.
+    p: 1
+    mean: 1
+    sd: 2
+    median: 1
+    min: 1
+    max: 1
+rows:
+  - { label: "Weight (kg)", section: true }
+
+  - { label: "Baseline", section: true, indent: 1 }
+  - { analysis: wt_bl, variable: AVAL, pattern: "{N}", label: "n", indent: 2 }
+  - { analysis: wt_bl, variable: AVAL, pattern: mean_sd, label: "Mean (SD)", indent: 2 }
+  - { analysis: wt_bl, variable: AVAL, pattern: median, label: "Median", indent: 2 }
+  - { analysis: wt_bl, variable: AVAL, pattern: range, label: "Min, Max", indent: 2 }
+
+  - { label: "Week 24", section: true, indent: 1 }
+  - { analysis: wt_wk24, variable: AVAL, pattern: "{N}", label: "n", indent: 2 }
+  - { analysis: wt_wk24, variable: AVAL, pattern: mean_sd, label: "Mean (SD)", indent: 2 }
+  - { analysis: wt_wk24, variable: AVAL, pattern: median, label: "Median", indent: 2 }
+  - { analysis: wt_wk24, variable: AVAL, pattern: range, label: "Min, Max", indent: 2 }
+
+  - { label: "End of treatment", section: true, indent: 1 }
+  - { analysis: wt_eot, variable: AVAL, pattern: "{N}", label: "n", indent: 2 }
+  - { analysis: wt_eot, variable: AVAL, pattern: mean_sd, label: "Mean (SD)", indent: 2 }
+  - { analysis: wt_eot, variable: AVAL, pattern: median, label: "Median", indent: 2 }
+  - { analysis: wt_eot, variable: AVAL, pattern: range, label: "Min, Max", indent: 2 }
+
+  - { label: "Weight change from baseline (kg)", section: true }
+
+  - { label: "Week 24", section: true, indent: 1 }
+  - { analysis: chg_wk24, variable: CHGBL, pattern: "{N}", label: "n", indent: 2 }
+  - { analysis: chg_wk24, variable: CHGBL, pattern: mean_sd, label: "Mean (SD)", indent: 2 }
+  - { analysis: chg_wk24, variable: CHGBL, pattern: median, label: "Median", indent: 2 }
+  - { analysis: chg_wk24, variable: CHGBL, pattern: range, label: "Min, Max", indent: 2 }
+
+  - { label: "End of treatment", section: true, indent: 1 }
+  - { analysis: chg_eot, variable: CHGBL, pattern: "{N}", label: "n", indent: 2 }
+  - { analysis: chg_eot, variable: CHGBL, pattern: mean_sd, label: "Mean (SD)", indent: 2 }
+  - { analysis: chg_eot, variable: CHGBL, pattern: median, label: "Median", indent: 2 }
+  - { analysis: chg_eot, variable: CHGBL, pattern: range, label: "Min, Max", indent: 2 }
+variants:
+  # post_text only. The reference report's in-text weight table is a genuine
+  # reduction of this one -- baseline and change means, nothing else -- and a
+  # variant cannot express that: `variants` can retitle, add footnotes and apply a
+  # percentage threshold, and none of those subsets rows of a continuous summary.
+  # An in_text variant here would have been this whole table under a title that
+  # said "summary", which is worse than not having one.
+  post_text: {}

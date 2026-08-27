@@ -1,0 +1,115 @@
+{
+  "study": "CDISCPILOT01",
+  "comparison_rule": "Route A is the committed ARD. Route B recomputes every statistic from the vendored .xpt.gz in base R without loading {opencsr}, with the ANCOVA solved by an explicit design matrix and QR rather than lm(). Route C is the CDISC pilot's own published Section 14 tables. A and B are compared at full double precision (tolerance 1e-8); A and C at the precision the reference printed, after half-up rounding.",
+  "environment": {
+    "r": "4.3.3",
+    "os": "Darwin"
+  },
+  "route_A_vs_B": {
+    "values_compared": 750,
+    "values_agreeing": 750
+  },
+  "route_A_vs_C": {
+    "values_compared": 769,
+    "values_agreeing": 764
+  },
+  "known_reference_differences": {
+    "t-eff-adas-mmrm": "Kenward-Roger degrees of freedom and Prasad-Rao-Jeske-Kackar-Harville standard errors are not implemented. Five of this display's cells differ from the reference at the last digit shown: the three p-values by 0.001, the high-dose LS mean SE (0.55 against 0.56) and one CI bound (-1.8 against -1.9). The model itself matches: same 539 observations, all six covariance parameters to six significant figures, REML criterion to ten."
+  },
+  "npix_nptotmn_divergence": {
+    "sap_literal_subjects": 222,
+    "nptotmn_subjects": 210,
+    "omitted_by_nptotmn": 12,
+    "added_by_nptotmn": 0,
+    "omitted_assessment_counts": {
+      "1": 11,
+      "2": 1
+    },
+    "nptotmn_n": [76, 69, 65]
+  },
+  "mmrm_model": {
+    "n_obs": 539,
+    "n_subjects": 234,
+    "df_residual": 517,
+    "reml_criterion": 3087.84303493981,
+    "covariance": [16.821548567167, 11.205966527587, 28.258279608306, 11.885208033049, 14.445165021109, 31.394438227851]
+  },
+  "displays": {
+    "t-eff-adas-wk24": {
+      "regulatory_id": null,
+      "reference_table": "14-3.01",
+      "reference_cells_differing": []
+    },
+    "t-eff-adas-wk8": {
+      "regulatory_id": null,
+      "reference_table": "14-3.03",
+      "reference_cells_differing": []
+    },
+    "t-eff-adas-wk16": {
+      "regulatory_id": null,
+      "reference_table": "14-3.05",
+      "reference_cells_differing": []
+    },
+    "t-eff-adas-wk24-completers": {
+      "regulatory_id": null,
+      "reference_table": "14-3.07",
+      "reference_cells_differing": []
+    },
+    "t-eff-adas-wk24-male": {
+      "regulatory_id": null,
+      "reference_table": "14-3.08",
+      "reference_cells_differing": []
+    },
+    "t-eff-adas-wk24-female": {
+      "regulatory_id": null,
+      "reference_table": "14-3.09",
+      "reference_cells_differing": []
+    },
+    "t-eff-adas-overtime": {
+      "regulatory_id": null,
+      "reference_table": "14-3.10",
+      "reference_cells_differing": []
+    },
+    "t-eff-adas-mmrm": {
+      "regulatory_id": null,
+      "reference_table": "14-3.11",
+      "reference_cells_differing": [
+        "lsmean[6]: 0.55 here, 0.56 in the reference",
+        "p_xan_placebo[1]: 0.954 here, 0.955 in the reference",
+        "p_xan_placebo[2]: 0.555 here, 0.556 in the reference",
+        "ci_xan_placebo[3]: -1.8 here, -1.9 in the reference",
+        "p_high_low[1]: 0.605 here, 0.606 in the reference"
+      ]
+    },
+    "t-eff-npix-mean": {
+      "regulatory_id": null,
+      "reference_table": "14-3.12",
+      "reference_cells_differing": []
+    },
+    "t-cibic-week24": {
+      "regulatory_id": null,
+      "reference_table": null,
+      "reference_cells_differing": []
+    },
+    "t-cibic-week8": {
+      "regulatory_id": null,
+      "reference_table": null,
+      "reference_cells_differing": []
+    },
+    "t-cibic-week16": {
+      "regulatory_id": null,
+      "reference_table": null,
+      "reference_cells_differing": []
+    },
+    "t-cibic-categorical": {
+      "regulatory_id": null,
+      "reference_table": null,
+      "reference_cells_differing": []
+    },
+    "f-derm-time-to-event": {
+      "regulatory_id": null,
+      "reference_table": null,
+      "reference_cells_differing": []
+    }
+  }
+}

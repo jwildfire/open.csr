@@ -113,11 +113,12 @@ regenerate <- function(slug, root = csr_root(), change_request = "Initial genera
   }
 
   needed <- unique(c("adsl", analysis_spec$dataset, analysis_spec$denominator))
-  if (is.null(data)) data <- prepare_data(datasets = needed)
+  if (is.null(data)) data <- prepare_data(datasets = needed, sources = analysis_spec$sources)
   missing <- setdiff(needed, names(data))
   if (length(missing)) {
     stop("Prepared data is missing dataset(s): ", paste(missing, collapse = ", "), call. = FALSE)
   }
+  check_data_sources(data, analysis_spec, needed, slug)
 
   custom_env <- source_custom(display_dir(slug, root))
   rows <- build_ard(analysis_spec, data, custom_env)
@@ -229,15 +230,76 @@ append_iteration <- function(slug, manifest, root = csr_root()) {
 #' @export
 regenerate_all <- function(slugs = display_slugs(root), root = csr_root(),
                            change_request = "Initial generation.", actor = "@jwildfire") {
-  specs <- lapply(slugs, function(s) read_analysis_spec(s, root))
-  needed <- unique(c("adsl", unlist(lapply(specs, function(s) c(s$dataset, s$denominator)))))
-  data <- prepare_data(datasets = needed)
-  out <- lapply(slugs, function(s) {
-    m <- regenerate(s, root, change_request = change_request, actor = actor, data = data)
-    tibble::tibble(
-      display = m$display, version = m$version, ard_rows = m$ard_rows,
-      ard_errors = m$ard_errors
-    )
-  })
+  specs <- stats::setNames(lapply(slugs, function(s) read_analysis_spec(s, root)), slugs)
+  # Displays no longer all read the same packaging of the study, so data is
+  # prepared once per distinct `sources:` declaration rather than once overall.
+  # Sharing one prepared list across every display would either force every
+  # display onto one source or hand a display the wrong one; regenerate()
+  # refuses the latter, so this grouping is what keeps the batch working.
+  key <- vapply(specs, function(s) source_signature(s$sources), character(1))
+  out <- list()
+  for (k in unique(key)) {
+    batch <- slugs[key == k]
+    needed <- unique(c("adsl", unlist(lapply(specs[batch], function(s) c(s$dataset, s$denominator)))))
+    data <- prepare_data(datasets = needed, sources = specs[[batch[1]]]$sources)
+    for (s in batch) {
+      m <- regenerate(s, root, change_request = change_request, actor = actor, data = data)
+      out[[length(out) + 1]] <- tibble::tibble(
+        display = m$display, version = m$version, ard_rows = m$ard_rows,
+        ard_errors = m$ard_errors
+      )
+    }
+  }
   invisible(do.call(rbind, out))
+}
+
+#' Stable key for an analysis spec's `sources:` declaration
+#' @noRd
+source_signature <- function(sources) {
+  sources <- normalise_sources(sources)
+  if (is.null(sources)) {
+    return("<default>")
+  }
+  if (is.null(names(sources))) {
+    return(paste0("<all>=", sources))
+  }
+  paste(paste0(names(sources), "=", unname(sources))[order(names(sources))], collapse = ",")
+}
+
+#' Refuse prepared data that came from a different packaging of the study
+#'
+#' [regenerate()] accepts a prepared data list so a batch does not re-read every
+#' dataset per display. That shortcut is also a way to render a display against
+#' inputs its spec never asked for, which would be a silent wrong answer rather
+#' than a failure: the iteration would be written, the manifest would look
+#' complete, and only the numbers would be wrong. The registry stamped by
+#' [prepare_data()] is compared with the one the spec resolves to, per dataset,
+#' and any disagreement stops the regeneration before anything is written.
+#' @noRd
+check_data_sources <- function(data, analysis_spec, needed, slug) {
+  wanted <- data_sources(analysis_spec$sources)
+  got <- tryCatch(data_sources_used(data), error = function(e) NULL)
+  if (is.null(got)) {
+    stop(
+      "regenerate('", slug, "'): the supplied `data` carries no source stamp, ",
+      "so it cannot be shown to match the spec's `sources:`. Pass a list from ",
+      "prepare_data().",
+      call. = FALSE
+    )
+  }
+  disagree <- needed[vapply(needed, function(nm) {
+    !identical(unname(got[[nm]]), unname(wanted[[nm]]))
+  }, logical(1))]
+  if (length(disagree)) {
+    stop(
+      "regenerate('", slug, "'): the supplied `data` was prepared from a different ",
+      "source than the spec declares — ",
+      paste(vapply(disagree, function(nm) {
+        paste0(nm, ": spec wants '", wanted[[nm]], "', data holds '", got[[nm]], "'")
+      }, character(1)), collapse = "; "),
+      ".",
+      call. = FALSE
+    )
+  }
+  invisible(TRUE)
 }

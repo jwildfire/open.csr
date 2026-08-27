@@ -30,7 +30,16 @@ node scripts/site.mjs           # everything -> site/_build/
 
 ## Data
 
-`{pharmaverseadam}` CDISCPILOT01 only (xanomeline Alzheimer's study, safety-focused). Screen failures are excluded and population flags derived in the tested `prepare_data()` layer — never assume a flag exists on the raw dataset. There is no CDISCPILOT01 efficacy ADaM; efficacy displays are out of scope until one is derived (design D12).
+CDISCPILOT01 (xanomeline Alzheimer's study) from two packagings, chosen per dataset by `data_sources()` — see design D12 and contracts §4.
+
+- `{pharmaverseadam}`: `adsl`, `adae`, `adex`, `adlb`, `advs`. The only source of `adex`. Screen failures present and excluded in `prepare_data()`; no `ITTFL`/`EFFFL`; no efficacy domains.
+- The CDISC pilot's own ADaM package, vendored under `pipeline/inst/extdata/phuse-cdiscpilot01/` from `phuse-org/phuse-scripts` (MIT): `adqsadas`, `adqscibc`, `adqsnpix`, `adlbc`, `adlbh`, `adlbhy`, `adtte`, `adcm` (plus its own `adsl`/`adae`/`advs`, reachable with `sources = "phuse"`).
+
+Never assume a flag exists on the raw dataset — population flags are derived or asserted in the tested `prepare_data()` layer, and which lane you are on decides which. The default registry deliberately leaves every domain `{pharmaverseadam}` already served where it was, because the two packagings disagree on figures the displays publish; run `Rscript qc/source-agreement.R` to see exactly where.
+
+Efficacy data is available and five efficacy displays are specified against it (`t-cibic-week8`, `t-cibic-week16`, `t-cibic-week24`, `t-cibic-categorical`, `f-derm-time-to-event`). The study's own analysis results metadata in its `define.xml` is the reference for specifying another — do not invent an analysis. Where the reference is genuinely silent, engineer a defensible one and say so in the display's own footnotes and in `quality/requirements/displays.md`, so a reader can tell a transcribed definition from one open.csr chose.
+
+An efficacy display is qualified differently from a safety display: `Rscript qc/efficacy-reference.R` recomputes every published statistic from the vendored data without loading `{opencsr}` and compares it with both the committed ARDs and the study's own published values in `quality/data/efficacy-reference.json`. It exits non-zero on disagreement and CI runs it. That file is a transcription of a 2006 document — never rewrite it from a computation.
 
 ## Workspace conventions
 

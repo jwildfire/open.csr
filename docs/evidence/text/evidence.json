@@ -1,6 +1,6 @@
 {
   "module": "text",
-  "generated": "2026-07-27T04:44:02.378Z",
+  "generated": "2026-08-27T14:58:26.704Z",
   "records": [
     {
       "requirementIds": [
@@ -1903,6 +1903,276 @@
       ],
       "reviewedBy": null,
       "reviewedAt": null
+    },
+    {
+      "requirementIds": [
+        "TXT-SYN-001",
+        "TXT-SYN-0101"
+      ],
+      "title": "TXT-SYN-001: TXT-SYN-0101 boilerplate block reviewed (#1)",
+      "suite": "text-review",
+      "passed": false,
+      "file": "library/text/TXT-SYN-0101.md",
+      "issueRefs": [
+        1
+      ],
+      "reviewedBy": null,
+      "reviewedAt": null
+    },
+    {
+      "requirementIds": [
+        "TXT-SYN-001",
+        "TXT-SYN-0102"
+      ],
+      "title": "TXT-SYN-001: TXT-SYN-0102 boilerplate block reviewed (#1)",
+      "suite": "text-review",
+      "passed": false,
+      "file": "library/text/TXT-SYN-0102.md",
+      "issueRefs": [
+        1
+      ],
+      "reviewedBy": null,
+      "reviewedAt": null
+    },
+    {
+      "requirementIds": [
+        "TXT-SYN-001",
+        "TXT-SYN-0103"
+      ],
+      "title": "TXT-SYN-001: TXT-SYN-0103 boilerplate block reviewed (#1)",
+      "suite": "text-review",
+      "passed": false,
+      "file": "library/text/TXT-SYN-0103.md",
+      "issueRefs": [
+        1
+      ],
+      "reviewedBy": null,
+      "reviewedAt": null
+    },
+    {
+      "requirementIds": [
+        "TXT-SYN-001",
+        "TXT-SYN-0104"
+      ],
+      "title": "TXT-SYN-001: TXT-SYN-0104 boilerplate block reviewed (#1)",
+      "suite": "text-review",
+      "passed": false,
+      "file": "library/text/TXT-SYN-0104.md",
+      "issueRefs": [
+        1
+      ],
+      "reviewedBy": null,
+      "reviewedAt": null
+    },
+    {
+      "requirementIds": [
+        "TXT-SYN-001",
+        "TXT-SYN-0105"
+      ],
+      "title": "TXT-SYN-001: TXT-SYN-0105 boilerplate block reviewed (#1)",
+      "suite": "text-review",
+      "passed": false,
+      "file": "library/text/TXT-SYN-0105.md",
+      "issueRefs": [
+        1
+      ],
+      "reviewedBy": null,
+      "reviewedAt": null
+    },
+    {
+      "requirementIds": [
+        "TXT-SYN-001",
+        "TXT-SYN-0106"
+      ],
+      "title": "TXT-SYN-001: TXT-SYN-0106 boilerplate block reviewed (#1)",
+      "suite": "text-review",
+      "passed": false,
+      "file": "library/text/TXT-SYN-0106.md",
+      "issueRefs": [
+        1
+      ],
+      "reviewedBy": null,
+      "reviewedAt": null
+    },
+    {
+      "requirementIds": [
+        "TXT-SYN-001",
+        "TXT-SYN-0200"
+      ],
+      "title": "TXT-SYN-001: TXT-SYN-0200 boilerplate block reviewed (#1)",
+      "suite": "text-review",
+      "passed": false,
+      "file": "library/text/TXT-SYN-0200.md",
+      "issueRefs": [
+        1
+      ],
+      "reviewedBy": null,
+      "reviewedAt": null
+    },
+    {
+      "requirementIds": [
+        "TXT-SYN-001",
+        "TXT-SYN-0300"
+      ],
+      "title": "TXT-SYN-001: TXT-SYN-0300 boilerplate block reviewed (#1)",
+      "suite": "text-review",
+      "passed": false,
+      "file": "library/text/TXT-SYN-0300.md",
+      "issueRefs": [
+        1
+      ],
+      "reviewedBy": null,
+      "reviewedAt": null
+    },
+    {
+      "requirementIds": [
+        "TXT-SYN-001",
+        "TXT-SYN-0400"
+      ],
+      "title": "TXT-SYN-001: TXT-SYN-0400 parameterized block reviewed (#1)",
+      "suite": "text-review",
+      "passed": false,
+      "file": "library/text/TXT-SYN-0400.md",
+      "issueRefs": [
+        1
+      ],
+      "reviewedBy": null,
+      "reviewedAt": null
+    },
+    {
+      "requirementIds": [
+        "TXT-SYN-001",
+        "TXT-SYN-0500"
+      ],
+      "title": "TXT-SYN-001: TXT-SYN-0500 boilerplate block reviewed (#1)",
+      "suite": "text-review",
+      "passed": false,
+      "file": "library/text/TXT-SYN-0500.md",
+      "issueRefs": [
+        1
+      ],
+      "reviewedBy": null,
+      "reviewedAt": null
+    },
+    {
+      "requirementIds": [
+        "TXT-SYN-001",
+        "TXT-SYN-0600"
+      ],
+      "title": "TXT-SYN-001: TXT-SYN-0600 boilerplate block reviewed (#1)",
+      "suite": "text-review",
+      "passed": false,
+      "file": "library/text/TXT-SYN-0600.md",
+      "issueRefs": [
+        1
+      ],
+      "reviewedBy": null,
+      "reviewedAt": null
+    },
+    {
+      "requirementIds": [
+        "TXT-SYN-001",
+        "TXT-SYN-0700"
+      ],
+      "title": "TXT-SYN-001: TXT-SYN-0700 parameterized block reviewed (#1)",
+      "suite": "text-review",
+      "passed": false,
+      "file": "library/text/TXT-SYN-0700.md",
+      "issueRefs": [
+        1
+      ],
+      "reviewedBy": null,
+      "reviewedAt": null
+    },
+    {
+      "requirementIds": [
+        "TXT-SYN-001",
+        "TXT-SYN-0800"
+      ],
+      "title": "TXT-SYN-001: TXT-SYN-0800 boilerplate block reviewed (#1)",
+      "suite": "text-review",
+      "passed": false,
+      "file": "library/text/TXT-SYN-0800.md",
+      "issueRefs": [
+        1
+      ],
+      "reviewedBy": null,
+      "reviewedAt": null
+    },
+    {
+      "requirementIds": [
+        "TXT-SYN-001",
+        "TXT-SYN-0902"
+      ],
+      "title": "TXT-SYN-001: TXT-SYN-0902 boilerplate block reviewed (#1)",
+      "suite": "text-review",
+      "passed": false,
+      "file": "library/text/TXT-SYN-0902.md",
+      "issueRefs": [
+        1
+      ],
+      "reviewedBy": null,
+      "reviewedAt": null
+    },
+    {
+      "requirementIds": [
+        "TXT-SYN-001",
+        "TXT-SYN-1000"
+      ],
+      "title": "TXT-SYN-001: TXT-SYN-1000 boilerplate block reviewed (#1)",
+      "suite": "text-review",
+      "passed": false,
+      "file": "library/text/TXT-SYN-1000.md",
+      "issueRefs": [
+        1
+      ],
+      "reviewedBy": null,
+      "reviewedAt": null
+    },
+    {
+      "requirementIds": [
+        "TXT-SYN-001",
+        "TXT-SYN-1102"
+      ],
+      "title": "TXT-SYN-001: TXT-SYN-1102 parameterized block reviewed (#1)",
+      "suite": "text-review",
+      "passed": false,
+      "file": "library/text/TXT-SYN-1102.md",
+      "issueRefs": [
+        1
+      ],
+      "reviewedBy": null,
+      "reviewedAt": null
+    },
+    {
+      "requirementIds": [
+        "TXT-SYN-001",
+        "TXT-SYN-1103"
+      ],
+      "title": "TXT-SYN-001: TXT-SYN-1103 boilerplate block reviewed (#1)",
+      "suite": "text-review",
+      "passed": false,
+      "file": "library/text/TXT-SYN-1103.md",
+      "issueRefs": [
+        1
+      ],
+      "reviewedBy": null,
+      "reviewedAt": null
+    },
+    {
+      "requirementIds": [
+        "TXT-SYN-001",
+        "TXT-SYN-1200"
+      ],
+      "title": "TXT-SYN-001: TXT-SYN-1200 boilerplate block reviewed (#1)",
+      "suite": "text-review",
+      "passed": false,
+      "file": "library/text/TXT-SYN-1200.md",
+      "issueRefs": [
+        1
+      ],
+      "reviewedBy": null,
+      "reviewedAt": null
     }
   ],
   "traceability": {
@@ -1918,7 +2188,7 @@
   "environment": {
     "os": "Darwin 23.6.0",
     "node": "v24.14.0",
-    "vitest": "2.1.9",
+    "vitest": null,
     "r": "4.3.3"
   },
   "run": null

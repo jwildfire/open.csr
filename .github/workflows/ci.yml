@@ -53,11 +53,14 @@ jobs:
       - name: Evidence sets are fresh
         run: node scripts/evidence.mjs --check --no-run
 
-      - name: Assemble the CSR (enforces the D7 gates)
+      - name: Assemble every template object (enforces the D7 gates)
         # Re-assembles from library/ + outputs/ so the binding-resolution,
         # numeric-fidelity, cross-reference and approval gates run on every PR.
-        # Non-zero exit on any gate failure.
-        run: node scripts/assemble.mjs
+        # `--all` covers every template object in library/templates/, not only the
+        # default clinical study report: a template that is never assembled in CI
+        # is a directory, not a template, and would rot unnoticed (#28).
+        # Non-zero exit if any gate fails in any document.
+        run: node scripts/assemble.mjs --all
 
       - name: Build the demo site
         run: node scripts/site.mjs
@@ -94,8 +97,55 @@ jobs:
             any::cardx
             any::r2rtf
 
+      - name: Vendored CDISCPILOT01 data matches its provenance record
+        # The eleven .xpt.gz under pipeline/inst/extdata/ are a third-party data
+        # package. Their SHA-256 digests are recorded; a silent change to any of
+        # them would change published figures, so it fails the build (#39).
+        run: Rscript qc/vendor-phuse-data.R --check
+
       - name: Run the testthat suite
         run: Rscript qc/run-tests.R
+
+      - name: The two packagings of CDISCPILOT01 diverge only where recorded
+        # Second measurement of the facts TFL-SRC-001 asserts, by a route that
+        # never loads {opencsr}. Non-zero when the sources move relative to each
+        # other, or when the committed record stops describing them (#39).
+        run: Rscript qc/source-agreement.R
+
+      - name: The populations and end-of-study tables agree with the pilot's own report
+        # Third measurement of every cell t-populations and t-end-of-study
+        # publish, against the clinical study report the CDISC pilot published in
+        # 2006 from SAS programs sharing no code with this repository. Compares a
+        # from-scratch recomputation, the committed rendered HTML and the
+        # transcribed report; any two disagreeing is non-zero (DSP-REF-001).
+        #
+        # The fidelity of the transcription itself is checked by
+        # `--verify-transcription`, which is deliberately NOT run here: it needs
+        # the network and pdftotext, and a build that fails because a third-party
+        # download was slow teaches people to ignore the build. Run it by hand
+        # whenever quality/data/reference-report-agreement.json is edited.
+        run: Rscript qc/reference-report-agreement.R
+
+      - name: The reference-report comparison can still fail
+        # A green check nobody has seen fail is not evidence. Perturbs each of the
+        # three routes in turn and requires the comparison to catch each one.
+        run: Rscript qc/reference-report-agreement.R --self-test
+
+      - name: The efficacy displays agree with an independent recomputation and with the reference report
+        # Every figure in the nine efficacy displays, measured a second time by a
+        # route that never loads {opencsr} and solves the ANCOVA by an explicit
+        # QR rather than lm(), and a third time against the CDISC pilot's own
+        # published Section 14 tables. Non-zero when any of the three moves, or
+        # when the set of declared differences from the reference changes.
+        run: Rscript qc/efficacy-agreement.R
+
+      - name: The efficacy displays agree with the study's own report
+        # Third measurement of every published CIBIC+ and time-to-event
+        # statistic: recomputed from the vendored .xpt.gz without loading
+        # {opencsr}, compared with the committed ARDs to full precision and with
+        # the transcribed 2006 report at the declared digits. Non-zero on any
+        # disagreement (#44).
+        run: Rscript qc/efficacy-reference.R
 
       - name: Committed R results match this run
         # run-tests.R rewrites qc/testthat-results.json; anything but a
@@ -121,6 +171,38 @@ jobs:
               process.exit(1);
             }
             console.log(`OK — ${b.size} R test records match the commit.`);
+          '
+
+      # Route B of the vital signs / weight / concomitant-medication qualification:
+      # every publishable statistic in those four committed ARDs, recomputed from
+      # the raw pharmaverseadam datasets by code that shares nothing with the
+      # pipeline, and compared both with the pipeline and with what the sponsor's
+      # 2006 clinical study report printed. Exits non-zero on any disagreement.
+      - name: Vital signs, weight and concomitant medications agree on three routes
+        run: Rscript qc/vitals-conmeds-agreement.R
+
+      - name: Committed agreement record matches this run
+        run: |
+          node -e '
+            const fs = require("node:fs");
+            const { execSync } = require("node:child_process");
+            const path = "quality/data/vitals-conmeds-agreement.json";
+            const fresh = JSON.parse(fs.readFileSync(path, "utf8"));
+            const committed = JSON.parse(execSync(`git show HEAD:${path}`, { encoding: "utf8" }));
+            const shape = (d) => JSON.stringify({
+              ok: d.ok,
+              comparisons: d.comparisons,
+              displays: (d.displays || []).map((x) => [
+                x.display, x.version, x.publishable_statistics, x.recomputed, x.unchecked
+              ])
+            });
+            if (shape(fresh) !== shape(committed)) {
+              console.error(path + " is stale:");
+              console.error("  commit:   " + shape(committed));
+              console.error("  this run: " + shape(fresh));
+              process.exit(1);
+            }
+            console.log(`OK — ${fresh.comparisons} comparisons match the commit.`);
           '
 
       - name: Upload the R results

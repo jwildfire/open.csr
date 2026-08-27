@@ -1,0 +1,176 @@
+# ------------------------------------------------------------------------------
+# assembly.yaml — the abbreviated clinical study report for the open.csr
+# demonstration study, CDISCPILOT01.
+# ------------------------------------------------------------------------------
+# sections.yaml in this directory says what an abbreviated ICH E3 report IS. This
+# file says what THIS report puts in it — and the answer is: everything the full
+# report puts in a slot this model retains.
+#
+# EVERY SLOT AND POST-TEXT ENTRY BELOW IS COPIED FROM
+# library/templates/ich-e3/assembly.yaml. Same fifteen text blocks in the same
+# fourteen sections, same in-text placements, same post-text order, same six
+# displays under the same numbers. Not a sentence was written for this document,
+# and no display was re-specified for it. The two reports differ in their
+# DOCUMENT MODEL, not in what they say — which is the property this template
+# object exists to demonstrate, and the reason it cost nothing to add.
+#
+# IT IS A SUBSET, NOT A COPY, AND THE DIFFERENCE IS ONE SECTION DEEP. The full
+# report carries ten displays; this one carries six. The four it does not carry
+# are the vital signs, weight and concomitant-medication displays, which the full
+# report and the display package place under 14.3.5 — a subsection this model does
+# not declare, because it also does not declare E3 Sections 12.4 and 12.5. A
+# display cannot be placed in a section the model has not got, so the omission
+# follows from the document model rather than from a second opinion about the
+# displays. That is the same demonstration, not an exception to it. RPT-ABR-005
+# asserts the subset relation, so this paragraph cannot go quietly out of date the
+# next time the full report gains a display.
+#
+# That is not true of every second document. The synopsis needed eighteen new text
+# blocks, because the report's prose cross-references E3 section numbers a
+# synopsis has not got (Section 16.2.1, Section 14.2, Section 12.3.2). An
+# abbreviated report keeps E3's numbering, so every one of those cross-references
+# resolves against this model unchanged — and the model retains the referenced
+# sections precisely so that they do.
+#
+# WHAT A READER SEES THAT THE FULL REPORT DOES NOT GIVE THEM. Seventy-five
+# headings instead of one hundred and nineteen, with the efficacy-analysis
+# apparatus absent rather than present-and-empty. The populated sections are the
+# same populated sections; what changes is how much unfilled structure surrounds
+# them.
+#
+# All three documents in this library bind the same named values from
+# library/values/values.yaml, re-derived against the committed ARDs at build time,
+# so none of them can quote a quantity the others contradict.
+# ------------------------------------------------------------------------------
+template: e3-abbreviated
+
+study:
+  id: CDISCPILOT01
+  title: >-
+    Safety and Efficacy of the Xanomeline Transdermal Therapeutic System (TTS) in
+    Patients with Mild to Moderate Alzheimer's Disease
+  short_title: "Xanomeline TTS in Mild to Moderate Alzheimer's Disease"
+  phase: "Phase 2"
+  indication: "Mild to moderate Alzheimer's disease"
+  product: "Xanomeline Transdermal Therapeutic System (TTS)"
+  sponsor: "open.csr demonstration report (CDISC pilot study data)"
+  cutoff: "2014-07-01"
+  design: "Randomised, double-blind, placebo-controlled, parallel-group"
+  treatment_groups: ["Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"]
+  primary_analysis_set: "Safety Analysis Set"
+  data_source: "CDISCPILOT01 ADaM — pharmaverseadam for the safety spine, and the CDISC pilot's own package (phuse-org/phuse-scripts) for Section 14.2"
+  scope_note: >-
+    The abbreviated form of the clinical study report for this study: the same
+    prose and the same displays, in a document model with the efficacy-analysis
+    apparatus and the uncited appendices removed. Section 14.2 carries the
+    fourteen efficacy displays the full report carries — the ADAS-Cog programme,
+    the CIBIC+ analyses, the NPI-X secondary endpoint and the study's one figure.
+    It was declared and empty only for as long as no efficacy analysis dataset
+    existed for this study in the demonstration data (design decision D12), which
+    stopped being true when the CDISC pilot's own ADaM package was vendored.
+
+# Unchanged from the full report: E3 reserves 16.1.9 for the documentation of
+# statistical methods, and this model retains it.
+provenance_section: "16.1.9"
+
+# ---------------------------------------------------------------------- narrative
+# Identical to library/templates/ich-e3/assembly.yaml. If a block is added to the
+# report, adding it here is a one-line diff; if the two ever need to diverge, the
+# divergence will be visible as a diff between two files that are otherwise the
+# same.
+slots:
+  - section: "5.2"
+    text: [TXT-E3-0502]
+
+  - section: "5.3"
+    text: [TXT-E3-0503]
+
+  - section: "9.1"
+    text: [TXT-E3-0901]
+
+  - section: "9.8"
+    text: [TXT-E3-0908]
+
+  - section: "10.1"
+    text: [TXT-E3-1001, TXT-E3-1002]
+    displays: [t-disposition]
+
+  - section: "11.1"
+    text: [TXT-E3-1101]
+
+  - section: "11.2"
+    text: [TXT-E3-1102]
+    displays: [t-demographics]
+
+  - section: "12.1"
+    text: [TXT-E3-1201]
+    displays: [t-exposure]
+
+  - section: "12.2.1"
+    text: [TXT-E3-1221]
+    displays: [t-ae-overview]
+
+  - section: "12.2.2"
+    text: [TXT-E3-1222]
+    displays: [t-ae-common]
+
+  - section: "12.2.4"
+    text: [TXT-E3-1224]
+
+  - section: "12.3.1"
+    text: [TXT-E3-1231]
+    displays: [l-ae-serious]
+
+  - section: "12.6"
+    text: [TXT-E3-1206]
+
+  - section: "13"
+    text: [TXT-E3-1300]
+
+# ---------------------------------------------------------------------- post-text
+# Identical to the full report's, so the abbreviated report and the full report
+# agree display by display: Table 14.1.1 is Table 14.1.1 in both.
+post_text:
+  # t-populations and t-end-of-study rebuild the reference report's Tables 14-1.01
+  # and 14-1.02, which that report prints FIRST in this section. They are appended
+  # rather than placed first, so they assign as 14.1.3 and 14.1.4 here and their
+  # numbers deliberately do not match the reference's. Ordering Section 14 to match
+  # the reference is a one-line reorder of this list and nothing else — no display
+  # specification, no prose, no test names a number (D6) — but it renumbers
+  # t-disposition and t-demographics, which belong to no single display's work.
+  # Whoever owns Section 14 as a whole should make that call once, not a worker
+  # landing two tables.
+  - section: "14.1"
+    displays: [t-disposition, t-demographics, t-populations, t-end-of-study]
+
+  # Mirrors library/templates/ich-e3/assembly.yaml. Same displays, same order,
+  # so both reports assign the same numbers and neither is re-specified.
+  # The efficacy displays, in the order the reference report prints them, and the
+  # same order as library/templates/ich-e3/assembly.yaml — which is what makes the
+  # assigned numbers identical across every document that carries them.
+  #
+  # Merge note: the ADAS-Cog set and the CIBIC+/time-to-event set arrived on
+  # separate branches, each adding its own "14.2" block. Git merged them into TWO
+  # entries with the same section number and raised no conflict.
+  - section: "14.2"
+    displays:
+      - t-eff-adas-wk24          # 14-3.01
+      - t-cibic-week24           # 14-3.02
+      - t-eff-adas-wk8           # 14-3.03
+      - t-cibic-week8            # 14-3.04
+      - t-eff-adas-wk16          # 14-3.05
+      - t-cibic-week16           # 14-3.06
+      - t-eff-adas-wk24-completers  # 14-3.07
+      - t-eff-adas-wk24-male     # 14-3.08
+      - t-eff-adas-wk24-female   # 14-3.09
+      - t-eff-adas-overtime      # 14-3.10
+      - t-eff-adas-mmrm          # 14-3.11
+      - t-eff-npix-mean          # 14-3.12
+      - t-cibic-categorical      # 14-3.13
+      - f-derm-time-to-event               # Figure 14-1
+
+  - section: "14.3.1"
+    displays: [t-exposure, t-ae-overview, t-ae-common]
+
+  - section: "14.3.2"
+    displays: [l-ae-serious]

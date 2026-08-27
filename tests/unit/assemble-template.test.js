@@ -11,11 +11,19 @@ import {
   validateSections,
 } from '../../scripts/template-lib.mjs';
 import { loadTextLibrary } from '../../scripts/text-lib.mjs';
-import { ASSEMBLY_YAML, LIBRARY_DIR, SECTIONS_YAML, fixtureArds } from './text-test-helpers.js';
+import {
+  ASSEMBLY_YAML,
+  LIBRARY_DIR,
+  SECTIONS_YAML,
+  fixtureArds,
+  librarySlugs,
+} from './text-test-helpers.js';
 
 const model = loadSections(SECTIONS_YAML);
 const assembly = loadAssembly(ASSEMBLY_YAML);
-const displaySlugs = [...fixtureArds().keys()];
+// The assembly references the display LIBRARY, not the fixture ARDs: a display
+// added since the fixtures were written still exists.
+const displaySlugs = librarySlugs();
 const textIds = [...loadTextLibrary(LIBRARY_DIR).keys()];
 
 describe('ICH E3 document model', () => {
@@ -151,8 +159,12 @@ describe('Assembly configuration', () => {
   it('RPT-ASM-007: the assembly claims only sections the demonstration populates, and declares its scope (#1)', () => {
     expect(assembly.study.id).toBe('CDISCPILOT01');
     expect(assembly.study.cutoff).toBe('2014-07-01');
-    expect(assembly.study.scope_note).toMatch(/no efficacy ADaM/i);
-    expect(assembly.postText.map((p) => p.section)).not.toContain('14.2');
+    expect(assembly.study.scope_note).toMatch(/efficacy/i);
+    // Section 14.2 is populated now that the efficacy displays exist; 11.4, whose
+    // narrative analysis of efficacy is still unwritten, is the section that
+    // remains declared and empty.
+    expect(assembly.postText.map((p) => p.section)).toContain('14.2');
+    expect(assembly.slots.map((s) => s.section)).not.toContain('11.4');
     expect(assembly.provenanceSection).toBe('16.1.9');
   });
 });

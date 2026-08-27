@@ -1,0 +1,108 @@
+# ------------------------------------------------------------------------------
+# assembly.yaml — the post-text display package for the open.csr demonstration
+# study, CDISCPILOT01.
+# ------------------------------------------------------------------------------
+# sections.yaml in this directory says what a display package IS. This file says
+# what THIS package contains: six displays, in the order the full clinical study
+# report puts them in, and nothing else.
+#
+# THERE IS NO `slots:` BLOCK, AND THAT IS THE POINT. A display package carries no
+# narrative, so this assembly claims no text block at all. Every block in the Text
+# Library is therefore reported by the assembler as "in the Text Library but not
+# assembled into display-package; not gated by this build" — thirty-three warning
+# lines that are all true. The alternative, staying quiet about them, would let
+# "not gated" pass for "gated and clean" (RPT-LIB-004).
+#
+# The `study` block is identical to the one in ich-e3 and e3-synopsis: the same
+# study, the same cut-off, the same analysis set. All three documents bind the
+# same named values from library/values/values.yaml, re-derived against the
+# committed ARDs at build time, so none of them can quote a quantity the others
+# contradict.
+#
+# The post-text order is identical to the report's, so the assigned numbers are
+# identical to the report's: Table 14.1.1 here is Table 14.1.1 there. That is a
+# consequence of D6, not an exception to it — reorder the lists below and the
+# package renumbers itself without a display specification, a piece of prose or a
+# test changing.
+# ------------------------------------------------------------------------------
+template: display-package
+
+study:
+  id: CDISCPILOT01
+  title: >-
+    Safety and Efficacy of the Xanomeline Transdermal Therapeutic System (TTS) in
+    Patients with Mild to Moderate Alzheimer's Disease
+  short_title: "Xanomeline TTS in Mild to Moderate Alzheimer's Disease"
+  phase: "Phase 2"
+  indication: "Mild to moderate Alzheimer's disease"
+  product: "Xanomeline Transdermal Therapeutic System (TTS)"
+  sponsor: "open.csr demonstration report (CDISC pilot study data)"
+  cutoff: "2014-07-01"
+  design: "Randomised, double-blind, placebo-controlled, parallel-group"
+  treatment_groups: ["Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"]
+  primary_analysis_set: "Safety Analysis Set"
+  data_source: "CDISCPILOT01 ADaM — pharmaverseadam, and the CDISC pilot's own package (phuse-org/phuse-scripts)"
+  scope_note: >-
+    The post-text displays of the clinical study report for this study, delivered
+    on their own for review before the report is written. No narrative: every
+    number here is the rendering of a committed analysis results dataset, and the
+    appendix records which one. Section 14.2 carries the whole efficacy set — the
+    ADAS-Cog programme, the CIBIC+ analyses, the NPI-X secondary endpoint and the
+    study's one figure — from the study's own ADaM package; abnormal laboratory
+    values (Section 14.3.4) are declared and still empty.
+
+# E3 already reserves 16.1.9 for the documentation of statistical methods, so the
+# generated provenance appendix goes where the full report puts it.
+provenance_section: "16.1.9"
+
+# ------------------------------------------------------------- post-text displays
+# Numbers are assigned from this order at build time and appear nowhere in source
+# (D6). The order matches library/templates/ich-e3/assembly.yaml exactly, so the
+# package and the report agree display by display.
+post_text:
+  # t-populations and t-end-of-study rebuild the reference report's Tables 14-1.01
+  # and 14-1.02, which that report prints FIRST in this section. They are appended
+  # rather than placed first, so they assign as 14.1.3 and 14.1.4 here and their
+  # numbers deliberately do not match the reference's. Ordering Section 14 to match
+  # the reference is a one-line reorder of this list and nothing else — no display
+  # specification, no prose, no test names a number (D6) — but it renumbers
+  # t-disposition and t-demographics, which belong to no single display's work.
+  # Whoever owns Section 14 as a whole should make that call once, not a worker
+  # landing two tables.
+  - section: "14.1"
+    displays: [t-disposition, t-demographics, t-populations, t-end-of-study]
+
+  # Same nine displays, same order, as library/templates/ich-e3/assembly.yaml —
+  # which is what makes the package's assigned numbers identical to the report's.
+  # The efficacy displays, in the order the reference report prints them, and the
+  # same order as library/templates/ich-e3/assembly.yaml — which is what makes the
+  # assigned numbers identical across every document that carries them.
+  #
+  # Merge note: the ADAS-Cog set and the CIBIC+/time-to-event set arrived on
+  # separate branches, each adding its own "14.2" block. Git merged them into TWO
+  # entries with the same section number and raised no conflict.
+  - section: "14.2"
+    displays:
+      - t-eff-adas-wk24          # 14-3.01
+      - t-cibic-week24           # 14-3.02
+      - t-eff-adas-wk8           # 14-3.03
+      - t-cibic-week8            # 14-3.04
+      - t-eff-adas-wk16          # 14-3.05
+      - t-cibic-week16           # 14-3.06
+      - t-eff-adas-wk24-completers  # 14-3.07
+      - t-eff-adas-wk24-male     # 14-3.08
+      - t-eff-adas-wk24-female   # 14-3.09
+      - t-eff-adas-overtime      # 14-3.10
+      - t-eff-adas-mmrm          # 14-3.11
+      - t-eff-npix-mean          # 14-3.12
+      - t-cibic-categorical      # 14-3.13
+      - f-derm-time-to-event               # Figure 14-1
+
+  - section: "14.3.1"
+    displays: [t-exposure, t-ae-overview, t-ae-common]
+
+  - section: "14.3.2"
+    displays: [l-ae-serious]
+
+  - section: "14.3.5"
+    displays: [t-vitals, t-vitals-change, t-weight, t-conmeds]

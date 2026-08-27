@@ -1,6 +1,6 @@
 {
   "module": "traceability",
-  "generated": "2026-07-27T04:44:02.378Z",
+  "generated": "2026-08-27T14:58:26.704Z",
   "records": [
     {
       "requirementIds": [
@@ -292,7 +292,7 @@
   "environment": {
     "os": "Darwin 23.6.0",
     "node": "v24.14.0",
-    "vitest": "2.1.9",
+    "vitest": null,
     "r": "4.3.3"
   },
   "run": null

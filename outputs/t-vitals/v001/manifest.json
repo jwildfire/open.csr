@@ -1,0 +1,57 @@
+{
+  "display": "t-vitals",
+  "version": "v001",
+  "created": "2026-08-27T04:06:01Z",
+  "actor": "@jwildfire",
+  "change_request": "Initial generation of VST01, targeting Table 14-7.01 of the reference clinical study report for this study.",
+  "regulatory_id": "VST01",
+  "git_commit": null,
+  "spec_hash": "sha256:2aeb25861d2864c68dec7cb56a37435df974e048d036e1a3a1b256a5604d4290",
+  "display_hash": "sha256:faa409af7dbd05b5409f52ae6c23560eb497e6a4db308db4647ba54ad93b9ef7",
+  "ard_hash": "sha256:88e8ee0b9d51761c4bafa4a2b13ee72b699117f76d08849535d26674ecf8e961",
+  "ard_rows": 657,
+  "ard_warnings": 0,
+  "ard_errors": 0,
+  "datasets": ["adsl", "advs"],
+  "data": [
+    {
+      "dataset": "adsl",
+      "hash": "sha256:83b1d423d2b40766af8138864699137cfb6e0ccb064ca25369c1ed7216936918",
+      "n_row": 254,
+      "n_col": 60,
+      "source_pkg": "pharmaverseadam",
+      "source_version": "1.1.0"
+    },
+    {
+      "dataset": "advs",
+      "hash": "sha256:7be440388501966144aa18f3d460cc9e4bb783eb8312df196aa6dfb7502e685b",
+      "n_row": 65032,
+      "n_col": 108,
+      "source_pkg": "pharmaverseadam",
+      "source_version": "1.1.0"
+    }
+  ],
+  "environment": {
+    "r": "4.3.3",
+    "os": "Darwin 23.6.0",
+    "packages": {
+      "cards": "0.6.1",
+      "cardx": "0.2.5",
+      "gtsummary": "2.3.0",
+      "gt": "1.0.0",
+      "dplyr": "1.1.4",
+      "pharmaverseadam": "1.1.0",
+      "jsonlite": "2.0.0",
+      "yaml": "2.3.10",
+      "digest": "0.6.37"
+    }
+  },
+  "variants": {
+    "post_text": {
+      "file": "table.html",
+      "rtf": "table.rtf",
+      "rtf_hash": "sha256:4c45051023e7ffc78bcad61085fbad256e70d7697a9467cb60fa5e641e9a5875",
+      "n_rows": 147
+    }
+  }
+}

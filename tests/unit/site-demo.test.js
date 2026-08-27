@@ -23,7 +23,8 @@ import {
   isTab,
   parseAppHash,
   resolveAppLink,
-  resolveDisplay
+  resolveDisplay,
+  resolveDocument
 } from '../../site/demo/core.js';
 import {
   APP_TABS,
@@ -34,6 +35,7 @@ import {
   renderAppPage,
   renderSidebar,
   navChildrenId,
+  renderDocumentsPane,
   renderTablesPane,
   renderTemplatesPane,
   renderValuesPane
@@ -132,8 +134,11 @@ describe('pane crossings', () => {
     const current = { tab: 'displays', doc: null, display: 't-ae-common', block: null, focus: null };
     const next = applySelection(current, resolveAppLink('../reader/index.html'));
     expect(next).toEqual({
+      // The crossing DOES name a document — `reader/index.html` is the primary
+      // document's page (#36) — and it names no display, which is the property
+      // under test: the display already selected survives the move.
       tab: 'documents',
-      doc: null,
+      doc: 'index',
       display: 't-ae-common',
       block: null,
       focus: null
@@ -406,6 +411,7 @@ describe('the navigation tree', () => {
   };
   const displays = [
     { slug: 't-ae-overview', title: 'AE Overview', status: 'evidenced' },
+    { slug: 't-disposition', title: 'Disposition', status: 'built' },
     { slug: 't-unused', title: 'Not in any document', status: 'built' }
   ];
   const textBlocks = [
@@ -421,6 +427,32 @@ describe('the navigation tree', () => {
     { id: 'TXT-GONE', title: 'Missing on disk', exists: false }
   ];
   const csr = { displayIndex: [{ slug: 't-ae-overview', number: '14.3.1.2', label: 'Table' }] };
+  // The library as the shell now holds it (#37): four assemblies, three of them
+  // invisible to anything that reads `csr` alone.
+  const libraryDocuments = [
+    {
+      id: 'csr',
+      title: 'Clinical Study Report',
+      status: 'built',
+      readerPath: 'reader/index.html',
+      json: { displayIndex: [{ slug: 't-ae-overview', number: '14.3.1.2', label: 'Table' }] }
+    },
+    {
+      id: 'e3-synopsis',
+      title: 'Study Synopsis',
+      status: 'built',
+      readerPath: 'reader/e3-synopsis.html',
+      json: { displayIndex: [{ slug: 't-disposition', number: '13.2', label: 'Table' }] }
+    },
+    {
+      id: 'e3-abbreviated',
+      title: 'Abbreviated Clinical Study Report',
+      status: 'built',
+      readerPath: 'reader/e3-abbreviated.html',
+      json: { displayIndex: [{ slug: 't-ae-overview', number: '14.3.1.2', label: 'Table' }] }
+    },
+    { id: 'sap', title: 'Statistical Analysis Plan', status: 'planned', json: null }
+  ];
 
   test('QC-DEMO-018: the study is the root, and documents, displays, text and values hang off it (#1)', () => {
     const tree = buildNavTree({ config, csr, displays, textBlocks });
@@ -440,18 +472,38 @@ describe('the navigation tree', () => {
     expect(documents[1].status).toBe('planned');
   });
 
-  test('QC-DEMO-019: a display records the documents that use it rather than living inside one (#1)', () => {
+  test('QC-DEMO-019: a display records EVERY document that uses it, not just the report (#42)', () => {
     // A display can be referenced by more than one document, so displays are a
-    // peer collection of documents, not a child of one.
-    const tree = buildNavTree({ config, csr, displays, textBlocks });
+    // peer collection of documents, not a child of one. `usedIn` was built from
+    // the CSR's index alone and could only ever hold one name — the same
+    // single-document assumption #37 took out of the shell, one layer down.
+    const tree = buildNavTree({ config, csr, displays, textBlocks, documents: libraryDocuments });
     const items = tree.groups[1].items;
-    expect(items.find((item) => item.id === 't-ae-overview')).toMatchObject({
-      number: '14.3.1.2',
-      usedIn: ['CSR']
-    });
+    expect(items.find((item) => item.id === 't-ae-overview').usedIn).toEqual([
+      'Clinical Study Report',
+      'Abbreviated Clinical Study Report'
+    ]);
+    // Placed by one document only.
+    expect(items.find((item) => item.id === 't-disposition').usedIn).toEqual(['Study Synopsis']);
     // Registered, generated, and in no document yet — still listed, with nothing
     // claiming it.
     expect(items.find((item) => item.id === 't-unused').usedIn).toEqual([]);
+  });
+
+  test('QC-DEMO-019: the sidebar states no display number, because four assemblies disagree (#42)', () => {
+    // A display is identified by its slug; the number belongs to the assembly.
+    // The explorer serves every document at once, so a number there is one
+    // report's fact printed on a document-agnostic surface — and the CSR's
+    // 14.3.1.2 is the synopsis's 13.2.
+    const tree = buildNavTree({ config, csr, displays, textBlocks, documents: libraryDocuments });
+    for (const item of tree.groups[1].items) expect(item.number).toBeNull();
+    const html = renderSidebar({ tree, active: 'displays', selected: { display: 't-ae-overview' } });
+    expect(html).toContain('data-nav-item="t-ae-overview"');
+    expect(html).not.toContain('14.3.1.2');
+    expect(html).not.toContain('13.2');
+    // Documents and text blocks keep their numbers: a section number belongs to
+    // the document it is in, and only one document is open.
+    expect(html).toContain('<span class="nav-num">');
   });
 
   test('QC-DEMO-019: a text block that is not on disk is left out, and a draft is flagged (#1)', () => {
@@ -574,22 +626,51 @@ describe('a document contents in the tree', () => {
     expect((html.match(/class="nav-sections"/g) || []).length).toBe(1);
   });
 
-  // --- expand / collapse (open.csr #10) ------------------------------------
+  // --- one state, not two (open.csr #40) -----------------------------------
+  //
+  // The tree used to carry expansion AND selection: one document was open, and
+  // every document also had its own disclosure arrow with its own remembered
+  // collapse flag. The two never agreed — the arrow on a document that was not
+  // open moved and revealed nothing, and the arrow on the one that was open hid
+  // the contents the tree exists to list. The fix was a subtraction: the open
+  // document shows its contents, the rest show their titles, and there is no
+  // second control to disagree with the first.
 
-  test('QC-DEMO-025: a node with children carries a keyboard-reachable disclosure control (#1)', () => {
+  test('QC-DEMO-025: no document carries a disclosure control — selection alone opens its contents (#40)', () => {
     const tree = buildNavTree({ config, csr, displays: [], textBlocks: [] });
     const html = renderSidebar({ tree, active: 'documents', selected: { doc: 'csr' } });
-    // A real button, not a styled span: it has to be reachable by Tab and
-    // operable by Enter and Space without the app implementing key handling.
-    expect(html).toContain('<button type="button" class="nav-twisty" data-nav-toggle="csr"');
-    expect(html).toContain(`aria-controls="${navChildrenId('documents', 'csr')}"`);
-    expect(html).toContain(`<ul class="nav-sections" id="${navChildrenId('documents', 'csr')}">`);
-    // Named for a screen reader; the chevron itself is decorative.
-    expect(html).toContain('Show or hide the contents of Clinical Study Report');
-    expect(html).toMatch(/data-nav-toggle="csr"[^>]*aria-expanded="true"/);
+    // The document has sections, and before #40 that is exactly what earned it a
+    // twisty. Now nothing does: a node's contents follow from whether it is the
+    // open document, so a control that answers the same question a second time
+    // can only ever answer it differently.
+    expect(html).toContain('data-nav-section="safety-evaluation"');
+    expect(html).not.toContain('nav-twisty');
+    expect(html).not.toContain('data-nav-toggle');
+    expect(html).not.toContain('data-nav-node');
+    expect(html).not.toContain('Show or hide the contents of');
+    // The group carets are a different question — which collection are you
+    // looking at — and they stay.
+    expect(html).toContain('data-nav-group-toggle="documents"');
   });
 
-  test('QC-DEMO-025: a node with nothing beneath it gets no chevron at all (#1)', () => {
+  test('QC-DEMO-025: a document\'s contents sit immediately after it, so the open one is the one shown (#40)', () => {
+    const tree = buildNavTree({ config, csr, displays: [], textBlocks: [] });
+    const html = renderSidebar({ tree, active: 'documents', selected: { doc: 'csr' } });
+    // The whole rule is now one adjacent-sibling selector in the stylesheet:
+    // `.nav-item[data-current] + .nav-sections`. That only holds if the section
+    // list is the element straight after the document's own link, with nothing
+    // — a disclosure button included — between them.
+    expect(html).toMatch(
+      new RegExp(
+        `data-nav-item="csr" data-current="true"[\\s\\S]*?</a><ul class="nav-sections" ` +
+          `id="${navChildrenId('documents', 'csr')}">`
+      )
+    );
+    // Exactly one document is current. Two would be two states again.
+    expect((html.match(/data-current="true"/g) || []).length).toBe(1);
+  });
+
+  test('QC-DEMO-025: an unbuilt document contributes no contents and still no control (#40)', () => {
     const tree = buildNavTree({
       config,
       csr,
@@ -597,12 +678,11 @@ describe('a document contents in the tree', () => {
       textBlocks: []
     });
     const html = renderSidebar({ tree, active: 'displays', selected: { display: 't-ae-overview' } });
-    // The display has no children, so it is a flat row: an affordance that
-    // expands nothing is worse than no affordance.
     expect(html).toContain('data-nav-item="t-ae-overview"');
-    expect(html).not.toContain('data-nav-toggle="t-ae-overview"');
-    // The unbuilt document likewise contributes no sections and no control.
-    expect(html).not.toContain('data-nav-toggle="sap"');
+    expect(html).toContain('data-nav-item="sap"');
+    // No sections beneath either, and no control beside either.
+    expect(html).not.toContain('nav-twisty');
+    expect(html).not.toContain(`id="${navChildrenId('documents', 'sap')}"`);
   });
 
   test('QC-DEMO-026: an unpopulated section is dimmed and keeps its explanatory tooltip (#1)', () => {
@@ -718,5 +798,324 @@ describe('the Values pane', () => {
     // Selecting a value focuses it in the pane rather than introducing a fourth
     // selection key: the pane is one list, and `focus` already means that.
     expect(html).toContain('href="#tab=values&amp;focus=randomised-n"');
+  });
+});
+
+// ---------------------------------------------------------------------------
+// The Documents pane holds the LIBRARY, not one member of it (open.csr #36)
+// ---------------------------------------------------------------------------
+//
+// #33 made the site follow `library/templates/`, so a third template object
+// acquires a reader page, a template page, a nav entry and a home-page row for
+// free. The demo app was the layer that move did not reach: it rendered one
+// document and made every other one a link OUT of the app —
+//
+//     <a class="nav-item is-elsewhere" href="../reader/e3-synopsis.html">
+//
+// The tests below guard the generalisation rather than "the synopsis renders".
+// Every fixture holds THREE documents on purpose: a suite that exercised the two
+// this repo happens to hold would pass just as well against a shell with the
+// synopsis wired in by hand.
+
+describe('a link to a reader page is a pane crossing', () => {
+  test('QC-DEMO-030: every document\'s reader page resolves to the Documents view naming it (#36)', () => {
+    // The primary document keeps /reader/index.html, so it is named `index`;
+    // every other template object is a sibling file named after itself.
+    expect(resolveAppLink('../reader/index.html')).toEqual({
+      tab: 'documents',
+      doc: 'index',
+      focus: null
+    });
+    expect(resolveAppLink('../reader/e3-synopsis.html')).toEqual({
+      tab: 'documents',
+      doc: 'e3-synopsis',
+      focus: null
+    });
+    // A template object nothing in the suite knows about resolves the same way.
+    expect(resolveAppLink('reader/post-text.html')?.doc).toBe('post-text');
+    expect(resolveAppLink('../../reader/post-text.html')?.doc).toBe('post-text');
+  });
+
+  test('QC-DEMO-030: a reader crossing carries the heading named in its fragment (#36)', () => {
+    expect(resolveAppLink('../reader/e3-synopsis.html#objectives')).toEqual({
+      tab: 'documents',
+      doc: 'e3-synopsis',
+      focus: 'objectives'
+    });
+  });
+
+  test('QC-DEMO-030: pages outside the reader directory are still left to navigate (#36)', () => {
+    // The rule is scoped to reader/*.html; widening it would swallow the
+    // Quality and Design surfaces, which are separate surfaces on purpose.
+    expect(resolveAppLink('../quality/traceability.html')).toBe(null);
+    expect(resolveAppLink('../reader/e3-synopsis/index.html')).toBe(null);
+    expect(resolveAppLink('../reader/E3-Synopsis.html')).toBe(null);
+  });
+});
+
+describe('which document the pane shows', () => {
+  const rendered = [
+    { id: 'csr', file: 'index' },
+    { id: 'e3-synopsis', file: 'e3-synopsis' },
+    { id: 'third', file: 'third' }
+  ];
+
+  test('QC-DEMO-031: a document resolves from its id or from its reader page\'s name (#36)', () => {
+    // The explorer names documents; a link between panes names pages. Both mean
+    // the same document, so both resolve here rather than at every caller.
+    expect(resolveDocument('e3-synopsis', rendered)).toBe('e3-synopsis');
+    expect(resolveDocument('index', rendered)).toBe('csr');
+    expect(resolveDocument('third', rendered)).toBe('third');
+  });
+
+  test('QC-DEMO-031: an unknown or absent document falls back to the first rendered one (#36)', () => {
+    expect(resolveDocument('sap', rendered)).toBe('csr');
+    expect(resolveDocument(null, rendered)).toBe('csr');
+    expect(resolveDocument('', rendered)).toBe('csr');
+    // A page that rendered nothing has no document to show, and says so rather
+    // than naming one it does not hold.
+    expect(resolveDocument('csr', [])).toBe(null);
+    expect(resolveDocument('csr')).toBe(null);
+  });
+
+  test('QC-DEMO-031: a plain list of ids is accepted, so the caller need not build pairs (#36)', () => {
+    expect(resolveDocument('e3-synopsis', ['csr', 'e3-synopsis'])).toBe('e3-synopsis');
+    expect(resolveDocument('index', ['csr', 'e3-synopsis'])).toBe('csr');
+  });
+});
+
+describe('the Documents pane', () => {
+  const entries = [
+    { id: 'csr', file: 'index', title: 'Clinical Study Report', html: '<article>report</article>' },
+    {
+      id: 'e3-synopsis',
+      file: 'e3-synopsis',
+      title: 'Study Synopsis',
+      html: '<article>synopsis</article>'
+    },
+    { id: 'third', file: 'third', title: 'A Third Document', html: '<article>third</article>' }
+  ];
+  const trace = '<aside class="trace" id="trace" hidden></aside>';
+
+  test('QC-DEMO-032: one panel per document, keyed by id and by reader-page name (#36)', () => {
+    const html = renderDocumentsPane({ entries, selected: 'csr', trace });
+    expect((html.match(/data-app-document-panel="/g) || []).length).toBe(3);
+    expect(html).toContain('data-app-document-panel="e3-synopsis" data-app-document-file="e3-synopsis"');
+    expect(html).toContain('data-app-document-panel="csr" data-app-document-file="index"');
+    // The pane renders the fragments it was handed — nothing about a document's
+    // rendering is duplicated here, which is what makes a fourth document free.
+    expect(html).toContain('<article>synopsis</article>');
+    expect(html).toContain('<article>third</article>');
+  });
+
+  test('QC-DEMO-032: exactly one panel is visible, and it is the one requested (#36)', () => {
+    const html = renderDocumentsPane({ entries, selected: 'e3-synopsis', trace });
+    expect((html.match(/data-app-document-panel="[^"]+" data-app-document-file="[^"]+" hidden/g) || []).length).toBe(2);
+    expect(html).toMatch(/data-app-document-panel="e3-synopsis" data-app-document-file="e3-synopsis">/);
+  });
+
+  test('QC-DEMO-032: a document may be requested by its reader page\'s name (#36)', () => {
+    const html = renderDocumentsPane({ entries, selected: 'index', trace });
+    expect(html).toMatch(/data-app-document-panel="csr" data-app-document-file="index">/);
+  });
+
+  test('QC-DEMO-032: an unknown request opens the first document rather than none (#36)', () => {
+    const html = renderDocumentsPane({ entries, selected: 'sap', trace });
+    expect(html).toMatch(/data-app-document-panel="csr" data-app-document-file="index">/);
+    // And no assembled document at all renders the documented empty state.
+    expect(renderDocumentsPane({ entries: [] })).toContain('No document has been assembled yet');
+  });
+
+  test('QC-DEMO-032: one trace panel above the set, never one per document (#36)', () => {
+    // `id="trace"` and `id="trace-index"` can each only mean one element, and a
+    // second copy of the trace script would answer every click twice.
+    const html = renderDocumentsPane({ entries, selected: 'csr', trace });
+    expect((html.match(/id="trace"/g) || []).length).toBe(1);
+    expect(html.indexOf('id="trace"')).toBeGreaterThan(html.indexOf('<article>third</article>'));
+  });
+});
+
+describe('a rendered document is selectable, not somewhere else', () => {
+  const config = {
+    study: { id: 'CDISCPILOT01' },
+    documents: [
+      { id: 'csr', title: 'Clinical Study Report', status: 'built' },
+      { id: 'sap', title: 'Statistical Analysis Plan', status: 'planned' }
+    ]
+  };
+  const sections = [
+    { number: '1', slug: 'objectives', title: 'Objectives', level: 1, populated: true },
+    { number: '2', slug: 'results', title: 'Results', level: 1, populated: false }
+  ];
+  const documents = [
+    {
+      id: 'csr',
+      title: 'Clinical Study Report',
+      status: 'built',
+      primary: true,
+      readerPath: 'reader/index.html',
+      json: { sections, displayIndex: [] },
+      prose: { total: 2, unapproved: 0, draft: false }
+    },
+    {
+      id: 'e3-synopsis',
+      title: 'Study Synopsis',
+      status: 'built',
+      readerPath: 'reader/e3-synopsis.html',
+      json: { sections, displayIndex: [] },
+      prose: { total: 2, unapproved: 2, draft: true }
+    },
+    {
+      id: 'sap',
+      title: 'Statistical Analysis Plan',
+      status: 'planned',
+      readerPath: 'reader/sap.html',
+      json: null,
+      prose: { total: 0, unapproved: 0, draft: false }
+    }
+  ];
+
+  test('QC-DEMO-033: a document the page rendered is an ordinary selection (#36)', () => {
+    const tree = buildNavTree({
+      config,
+      documents,
+      current: 'csr',
+      rendered: ['csr', 'e3-synopsis'],
+      root: '../'
+    });
+    const items = tree.groups.find((group) => group.id === 'documents').items;
+    expect(items.find((item) => item.id === 'e3-synopsis').inApp).toBe(true);
+
+    const html = renderSidebar({ tree, active: 'documents', selected: { doc: 'csr' } });
+    expect(html).toContain('data-nav-item="e3-synopsis"');
+    // Not a way out of the app any more.
+    expect(html).not.toContain('is-elsewhere');
+  });
+
+  test('QC-DEMO-033: it keeps its permalink, so the node works with JavaScript off (#36)', () => {
+    // The same arrangement the view bar uses: a real link the client upgrades,
+    // never a hash that does nothing without a script.
+    const tree = buildNavTree({
+      config,
+      documents,
+      current: 'csr',
+      rendered: ['csr', 'e3-synopsis'],
+      root: '../'
+    });
+    const html = renderSidebar({ tree, active: 'documents', selected: { doc: 'csr' } });
+    expect(html).toMatch(
+      /<a class="nav-item" data-nav-group="documents" data-nav-item="e3-synopsis" href="\.\.\/reader\/e3-synopsis\.html">/
+    );
+  });
+
+  test('QC-DEMO-033: a document the page did NOT render stays a link out (#36)', () => {
+    // Which is what every standalone reader page still is: it renders one
+    // document and passes no `rendered` set at all.
+    const tree = buildNavTree({ config, documents, current: 'csr', root: '../' });
+    const items = tree.groups.find((group) => group.id === 'documents').items;
+    expect(items.find((item) => item.id === 'e3-synopsis').inApp).toBe(false);
+    const html = renderSidebar({ tree, active: 'documents', selected: { doc: 'csr' } });
+    expect(html).toContain('class="nav-item is-elsewhere"');
+    expect(html).not.toContain('data-nav-item="e3-synopsis"');
+  });
+
+  test('QC-DEMO-033: an unbuilt document is not selectable however the page was built (#36)', () => {
+    const tree = buildNavTree({
+      config,
+      documents,
+      current: 'csr',
+      rendered: ['csr', 'e3-synopsis', 'sap'],
+      root: '../'
+    });
+    const items = tree.groups.find((group) => group.id === 'documents').items;
+    expect(items.find((item) => item.id === 'sap').inApp).toBe(false);
+    const html = renderSidebar({ tree, active: 'documents', selected: { doc: 'csr' } });
+    expect(html).toMatch(/<span class="nav-item is-planned"[^>]*data-nav-item="sap"/);
+  });
+
+  test('QC-DEMO-034: every rendered document contributes its own sections, named for it (#36)', () => {
+    const tree = buildNavTree({
+      config,
+      documents,
+      current: 'csr',
+      rendered: ['csr', 'e3-synopsis'],
+      root: '../'
+    });
+    const items = tree.groups.find((group) => group.id === 'documents').items;
+    expect(items.find((item) => item.id === 'csr').sections.length).toBe(2);
+    expect(items.find((item) => item.id === 'e3-synopsis').sections.length).toBe(2);
+    expect(items.find((item) => item.id === 'sap').sections).toEqual([]);
+
+    const html = renderSidebar({ tree, active: 'documents', selected: { doc: 'csr' } });
+    // Both documents model `objectives`, and they are different headings — so
+    // every section link says which document it belongs to.
+    expect((html.match(/class="nav-sections"/g) || []).length).toBe(2);
+    expect(html).toContain('data-nav-doc="csr" data-nav-section="objectives"');
+    expect(html).toContain('data-nav-doc="e3-synopsis" data-nav-section="objectives"');
+    expect(html).toContain('href="#tab=documents&amp;doc=e3-synopsis&amp;focus=objectives"');
+  });
+
+  test('QC-DEMO-034: a document the page did not render contributes no sections (#36)', () => {
+    // Its anchors are on its own page; offering them here would be a deep link
+    // to a heading this page does not hold.
+    const tree = buildNavTree({ config, documents, current: 'csr', root: '../' });
+    const items = tree.groups.find((group) => group.id === 'documents').items;
+    expect(items.find((item) => item.id === 'e3-synopsis').sections).toEqual([]);
+  });
+
+  test('QC-DEMO-035: a draft document is flagged in the tree beside the one that is not (#36)', () => {
+    const tree = buildNavTree({
+      config,
+      documents,
+      current: 'csr',
+      rendered: ['csr', 'e3-synopsis'],
+      root: '../'
+    });
+    const html = renderSidebar({ tree, active: 'documents', selected: { doc: 'csr' } });
+    expect(html).toContain('draft prose');
+    expect((html.match(/>draft prose</g) || []).length).toBe(1);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// The wiring the explorer depends on (open.csr #40)
+// ---------------------------------------------------------------------------
+//
+// client.js is DOM wiring and is verified in the browser, but two claims about
+// it are structural enough to assert from here, and both were the bug: that the
+// per-node collapse state is gone rather than merely hidden, and that a hash
+// naming a document the pane is not showing still opens it.
+
+describe('the explorer wiring', () => {
+  const client = readFileSync(path.join(rootDir, 'site', 'demo', 'client.js'), 'utf8');
+
+  test('QC-DEMO-025: the client holds no per-document expansion state at all (#40)', () => {
+    // Not "the arrow is hidden" — the state itself is gone. A remembered
+    // collapse flag with no control to set it is the same two states with one
+    // of them invisible, which is worse than what @jwildfire reported.
+    expect(client).not.toContain('data-nav-toggle');
+    expect(client).not.toContain('data-nav-node');
+    expect(client).not.toContain('is-collapsed');
+  });
+
+  test('QC-DEMO-020: the group-level collapse the tree still needs is untouched (#40)', () => {
+    // Which collection you are looking at is a real second question, it has a
+    // real control, and it is remembered for the browsing session. That is the
+    // state that was never wonky.
+    expect(client).toContain('data-nav-group-toggle');
+    expect(client).toContain('`group:${id}`');
+    expect(client).toContain('opencsr.nav.collapsed');
+  });
+
+  test('QC-DEMO-031: a deep link into another document opens that document (#40)', () => {
+    // The path the collapse removal could plausibly break: a hash naming a
+    // document other than the one on screen has to resolve, swap the panel, and
+    // move the contents in the tree with it — before the tree is re-marked and
+    // before the scroll is attempted.
+    expect(client).toContain('state.doc = showDocument(state.doc)');
+    const render = client.slice(client.indexOf('function render('));
+    const body = render.slice(0, render.indexOf('\n  }'));
+    expect(body.indexOf('showDocument')).toBeLessThan(body.indexOf('showNav()'));
+    expect(body.indexOf('showNav()')).toBeLessThan(body.indexOf('scrollToFocus'));
   });
 });

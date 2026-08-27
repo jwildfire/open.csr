@@ -17,7 +17,7 @@
 // different surface (site-lib.mjs) and remains the per-block permalink. The
 // Templates pane renders the E3 document model, which v0 had no surface for.
 
-import { chip, empty, escapeHtml } from './site-lib.mjs';
+import { chip, displayUsage, empty, escapeHtml, renderDocumentSwitcher } from './site-lib.mjs';
 import { DISPLAY_TYPE_LABELS, assignDisplayNumbers } from './template-lib.mjs';
 
 // Each view's `href` is its standalone permalink. The client upgrades a click
@@ -73,11 +73,33 @@ function viewLinks(tabs, active) {
  *
  * @returns {{study: object, groups: Array}}
  */
-export function buildNavTree({ config = {}, csr = null, displays = [], textBlocks = [], values = [] } = {}) {
-  const numbers = new Map(
-    (csr?.displayIndex || []).map((entry) => [entry.slug, { number: entry.number, label: entry.label }])
+export function buildNavTree({
+  config = {},
+  csr = null,
+  displays = [],
+  textBlocks = [],
+  values = [],
+  // Every document in the library, and which one this app instance is showing.
+  // A document the page does not render is a real link to its own reader page
+  // rather than a dead selection (#32); a document the page DOES render is an
+  // ordinary selection, because the pane can show it (#36).
+  documents = [],
+  current = null,
+  // The documents this page rendered into the Documents pane. A document in
+  // this set is SELECTABLE — the explorer switches to it in place, and its own
+  // sections come with it — while one outside it stays a link to its standalone
+  // page. A standalone reader page renders one document and passes nothing, so
+  // it keeps the link-out behaviour it had; the Demo app passes every built
+  // document and so has no link out at all (#36).
+  rendered = [],
+  root = '../'
+} = {}) {
+  // Which documents place each display, across the WHOLE library. Falling back
+  // to the primary document keeps a caller that hands over no library — a
+  // standalone reader page — honest about the one document it does know (#42).
+  const usage = displayUsage(
+    documents.length ? documents : csr ? [{ id: 'csr', title: 'Clinical Study Report', json: csr }] : []
   );
-  const usedInCsr = new Set((csr?.displayIndex || []).map((entry) => entry.slug));
 
   // A document's own contents are the third level of the tree rather than a
   // second navigation column beside it: which document and which section are the
@@ -87,18 +109,19 @@ export function buildNavTree({ config = {}, csr = null, displays = [], textBlock
   // contents listed — this is a move, not a redesign. The full 119-entry model
   // stays where it belongs, on the Templates view.
   const sectionsFor = (doc) => {
-    if (doc.status !== 'built' || !csr?.sections) return [];
+    const model = doc.json || csr;
+    if (doc.status !== 'built' || !model?.sections) return [];
     // A top-level section counts as populated when it OR anything beneath it is.
     // E3 puts the content in subsections — 12.2.1 carries the AE summary, not
     // section 12 — so testing only the top-level flag would report almost the
     // whole report empty.
-    const filled = csr.sections
+    const filled = model.sections
       .filter((section) => section.populated && section.number)
       .map((section) => String(section.number));
     const hasContent = (number) =>
       !!number &&
       filled.some((entry) => entry === String(number) || entry.startsWith(`${number}.`));
-    return csr.sections
+    return model.sections
       .filter((section) => (section.level || 1) === 1)
       .map((section) => ({
         id: section.slug,
@@ -108,17 +131,46 @@ export function buildNavTree({ config = {}, csr = null, displays = [], textBlock
       }));
   };
 
-  const documents = (config.documents || []).map((doc) => ({
-    id: doc.id,
-    label: doc.title,
-    abbr: doc.abbr || null,
-    status: doc.status || 'planned',
-    sections: sectionsFor(doc),
-    detail:
-      doc.status === 'built' && csr?.sections
-        ? `${csr.sections.filter((section) => section.populated).length} of ${csr.sections.length} sections`
-        : doc.blurb || ''
-  }));
+  // The document list comes from the library when one was handed over, and from
+  // the config otherwise — the same shape either way, so nothing downstream
+  // knows which it got.
+  const source = documents.length
+    ? documents
+    : (config.documents || []).map((doc) => ({ ...doc, primary: doc.status === 'built' }));
+  const activeId = current || source.find((doc) => doc.primary)?.id || null;
+
+  const inApp = new Set(rendered.map(String));
+  const docItems = source.map((doc) => {
+    const active = doc.id === activeId;
+    const own = doc.json || (active ? csr : null);
+    const built = doc.status === 'built';
+    // On screen: the document this page is showing, or one it rendered into a
+    // pane of its own.
+    const onScreen = active || inApp.has(String(doc.id));
+    return {
+      id: doc.id,
+      label: doc.title,
+      abbr: doc.abbr || null,
+      status: doc.status || 'planned',
+      // A document on screen gets a section tree: its anchors are anchors this
+      // page can reach. A document that is only a link out does not — its
+      // sections live on its own page.
+      sections: onScreen ? sectionsFor(doc) : [],
+      // The standalone permalink, kept on every built document that is not the
+      // one already showing. Where the page also renders that document, this is
+      // the no-JavaScript fallback behind a real selection — the same
+      // arrangement the view bar uses — rather than a way out of the app.
+      href: built && !active && doc.readerPath ? `${root}${doc.readerPath}` : null,
+      // Selectable in place, so the click interception turns it into a pane
+      // switch instead of a navigation.
+      inApp: built && inApp.has(String(doc.id)),
+      draftProse: !!doc.prose?.draft,
+      detail:
+        built && own?.sections
+          ? `${own.sections.filter((section) => section.populated).length} of ${own.sections.length} sections`
+          : doc.blurb || ''
+    };
+  });
 
   return {
     study: {
@@ -127,7 +179,7 @@ export function buildNavTree({ config = {}, csr = null, displays = [], textBlock
       cutoff: config.study?.cutoff || null
     },
     groups: [
-      { id: 'documents', label: 'Documents', items: documents },
+      { id: 'documents', label: 'Documents', items: docItems },
       {
         id: 'displays',
         label: 'Displays',
@@ -135,10 +187,17 @@ export function buildNavTree({ config = {}, csr = null, displays = [], textBlock
         items: displays.map((display) => ({
           id: display.slug,
           label: display.title,
-          number: numbers.get(display.slug)?.number || null,
+          // No number. A display is identified by its slug; the number belongs
+          // to the assembly, and this tree serves every document at once — the
+          // AE overview is Table 14.3.1.2 in the report and Table 13.2 in the
+          // synopsis, so a number here is one report's fact printed on a
+          // document-agnostic surface. Numbers are stated where the assembly is
+          // unambiguous: inside a document, and on the display's own store page
+          // beside the document that assigned it (#42).
+          number: null,
           status: display.status,
-          // Which documents reference it — a display is shared, not owned.
-          usedIn: usedInCsr.has(display.slug) ? ['CSR'] : []
+          // Which documents place it — a display is shared, not owned.
+          usedIn: (usage.get(display.slug) || []).map((place) => place.title)
         }))
       },
       {
@@ -169,13 +228,19 @@ export function buildNavTree({ config = {}, csr = null, displays = [], textBlock
   };
 }
 
-// The id an expandable node's children list carries, so the toggle that controls
-// it can name it in `aria-controls` (open.csr #10).
+// The id a document's section list carries. It was `aria-controls` on a
+// disclosure button until #40 took the button away; it stays because a stable id
+// per document's contents is worth having whether or not anything points at it
+// yet, and because the section list is the one part of the tree that is
+// addressed from outside it.
 export function navChildrenId(groupId, itemId) {
   return `nav-children-${groupId}-${String(itemId).replace(/[^a-zA-Z0-9_-]/g, '-')}`;
 }
 
-// A document's sections: the fourth level, shown for the selected document.
+// A document's sections: the fourth level, shown for the selected document and
+// for no other. Every document's list is rendered; the stylesheet reveals the
+// one next to the current document. That single rule IS the state — before #40
+// there was a second one, a per-document disclosure flag, and the two disagreed.
 //
 // An unpopulated section stays navigable — the heading really is in the assembled
 // document, saying it is not part of this demonstration — but it says so visually
@@ -208,37 +273,49 @@ function treeItem(groupId, item, kind) {
       ? `<span class="nav-flag" title="Not built yet">planned</span>`
       : item.status === 'draft'
         ? `<span class="nav-flag warn" title="Draft: held out of the report">draft</span>`
-        : '';
+        : item.draftProse
+          ? `<span class="nav-flag warn" title="Every prose block in this document is an ` +
+            `unapproved draft">draft prose</span>`
+          : '';
   const number = item.number ? `<span class="nav-num">${escapeHtml(item.number)}</span>` : '';
   const disabled = item.status === 'planned';
-  const attrs =
-    `class="nav-item${disabled ? ' is-planned' : ''}" data-nav-group="${groupId}" ` +
-    `data-nav-item="${escapeHtml(item.id)}"` +
-    (disabled ? ' aria-disabled="true"' : '');
+  // Three kinds of node, and the difference is where the thing IS.
+  //
+  //   planned  — nothing to open; a span, not a link.
+  //   in-app   — the page rendered it, so selecting it switches the pane. It
+  //              still carries its standalone href, exactly as the view bar's
+  //              links do, so the node works with JavaScript off and the client
+  //              only upgrades it (#36).
+  //   elsewhere— the page did not render it. An ordinary link with no data-nav-*
+  //              attributes, so the app's click interception leaves it alone and
+  //              it navigates for real (#32).
+  //
+  // `is-elsewhere` was the whole answer while the app rendered exactly one
+  // document; it is now the answer only for a document this page does not hold.
+  const inApp = !disabled && !!item.inApp;
+  const external = !disabled && !!item.href && !inApp;
+  const attrs = external
+    ? `class="nav-item is-elsewhere"`
+    : `class="nav-item${disabled ? ' is-planned' : ''}" data-nav-group="${groupId}" ` +
+      `data-nav-item="${escapeHtml(item.id)}"` +
+      (disabled ? ' aria-disabled="true"' : '');
 
-  // The disclosure control is a real button beside the item rather than part of
-  // it: expanding a node and selecting it are different intentions, and a
-  // keyboard user needs to be able to do the first without doing the second.
-  // Nodes with nothing beneath them get no control at all — an affordance that
-  // does nothing is worse than none (#10).
-  const children = item.sections?.length || 0;
-  const twisty = children
-    ? `<button type="button" class="nav-twisty" data-nav-toggle="${escapeHtml(item.id)}" ` +
-      `data-nav-group="${groupId}" aria-expanded="true" ` +
-      `aria-controls="${navChildrenId(groupId, item.id)}">` +
-      `<span class="nav-caret" aria-hidden="true"></span>` +
-      `<span class="sr-only">Show or hide the contents of ${escapeHtml(item.label)}</span>` +
-      `</button>`
-    : '';
-
+  // No disclosure control, by design (#40). A document node used to carry one,
+  // which meant the tree answered "are this document's contents showing?" twice
+  // — once by which document is open, once by a remembered per-node flag — and
+  // the two answers were independent. On a document that was not open the arrow
+  // moved and revealed nothing; on the one that was open it hid the contents the
+  // tree exists to list. So the arrow went rather than getting cleverer: the
+  // open document shows its sections, the rest show their titles, and there is
+  // no second control left to disagree with the first.
   return (
-    `<li class="nav-node${children ? ' has-children' : ''}"` +
-    `${children ? ` data-nav-node="${escapeHtml(item.id)}"` : ''}>` +
-    twisty +
+    `<li class="nav-node">` +
     `${
       disabled
         ? `<span ${attrs}>`
-        : `<a ${attrs} href="#tab=${groupId}&amp;${kind}=${encodeURIComponent(item.id)}">`
+        : external || (inApp && item.href)
+          ? `<a ${attrs} href="${escapeHtml(item.href)}">`
+          : `<a ${attrs} href="#tab=${groupId}&amp;${kind}=${encodeURIComponent(item.id)}">`
     }` +
     number +
     `<span class="nav-label">${escapeHtml(item.label)}</span>` +
@@ -416,6 +493,54 @@ export function renderAppPage({
     `</div>\n` +
     `<script type="module" src="client.js"></script>`
   );
+}
+
+// ---------------------------------------------------------------------------
+// Documents pane — every assembled document, one at a time
+// ---------------------------------------------------------------------------
+
+/**
+ * Wrap the rendered reader pages into a switchable pane, one panel each.
+ *
+ * This is the Tables pane's arrangement applied to documents, and deliberately
+ * so: `renderCsrReader` already returns a fragment for whichever document it is
+ * handed (#32), so a pane is those fragments plus the rule that one is visible.
+ * Nothing about a document's rendering is duplicated here — a third and fourth
+ * template object become panels by appearing in `entries`.
+ *
+ * Each panel is keyed BOTH by the document's id and by the basename of its
+ * standalone reader page, because the explorer names documents while a link
+ * between panes names pages, and `resolveDocument` in the client accepts either.
+ *
+ * The shared trace panel is hoisted here rather than emitted per document: one
+ * `id="trace"`, one index, one listener, and the chain behind a number does not
+ * change because a second document quotes it.
+ *
+ * @param {Array<{id: string, file: string, title?: string, html: string}>} entries
+ * @param {string|null} selected which document opens
+ * @param {string} trace the shared trace panel and its wiring
+ */
+export function renderDocumentsPane({ entries = [], selected = null, trace = '' } = {}) {
+  if (!entries.length) {
+    return (
+      `<div class="app-documents">` +
+      empty('No document has been assembled yet — scripts/assemble.mjs fills this pane.') +
+      `</div>`
+    );
+  }
+  const current =
+    entries.find((entry) => entry.id === selected || entry.file === selected)?.id || entries[0].id;
+
+  const panels = entries
+    .map(
+      (entry) =>
+        `<div class="app-document-panel" data-app-document-panel="${escapeHtml(entry.id)}" ` +
+        `data-app-document-file="${escapeHtml(entry.file || entry.id)}"` +
+        `${entry.id === current ? '' : ' hidden'}>${entry.html}</div>`
+    )
+    .join('\n');
+
+  return `<div class="app-documents">${panels}${trace}</div>`;
 }
 
 // ---------------------------------------------------------------------------
@@ -605,13 +730,25 @@ function sectionFill(section, slotsBySection, postBySection) {
  * @param {{sections: object, assembly: object, dir: string}} options.template
  *   the loaded model — `sections` from `loadSections`, `assembly` from `loadAssembly`
  */
-export function renderTemplatesPane({ config = {}, template = null, displays = [] } = {}) {
+export function renderTemplatesPane({
+  config = {},
+  template = null,
+  displays = [],
+  // The document set the template belongs to, so the pane can offer a route to
+  // every other template object in the library (#32). Omitted — as in the unit
+  // fixtures — and the pane renders exactly the single-template page it did.
+  documents = [],
+  current = null,
+  root = '../'
+} = {}) {
   const model = template?.sections;
   const assembly = template?.assembly;
+  const dir = template?.dir || 'library/templates/ich-e3';
+  const switcher = renderDocumentSwitcher({ documents, current, root, view: 'templates' });
   if (!model?.sections?.length) {
     return empty(
-      'library/templates/ich-e3/sections.yaml is not in the repository yet — the template model ' +
-        'renders once the E3 skeleton is committed.'
+      `${dir}/sections.yaml is not in the repository yet — the template model ` +
+        'renders once the skeleton is committed.'
     );
   }
 
@@ -632,22 +769,28 @@ export function renderTemplatesPane({ config = {}, template = null, displays = [
     (section) => sectionFill(section, slotsBySection, postBySection).populated
   );
 
+  // The document's own name, from the config where it is declared and from the
+  // assembled model otherwise — never the directory name, which is an id.
+  const doc = documents.find((entry) => entry.id === current) || null;
+  const modelTitle =
+    doc?.title || model.title || template?.title || config.documents?.[0]?.title || 'This document';
   const head =
     `<header class="page-head">` +
     `<p class="eyebrow">Report Template Library</p>` +
-    `<h2>ICH E3 as data</h2>` +
-    `<p class="lede">E3 has been unrevised since 1995 and no machine-readable model of it existed ` +
-    `publicly; ICH M11 did this for protocols in November 2025. ` +
-    `<span class="mono">sections.yaml</span> encodes the ${sections.length}-entry skeleton — number, ` +
-    `title, slug and content model. <span class="mono">assembly.yaml</span> says what <em>this</em> ` +
-    `report puts in it. Display numbers appear in neither: the assembler derives 14.x positions from ` +
-    `assembly order, so reordering the report is a one-line diff and a display's identity never ` +
-    `changes (design D6).</p>` +
+    `<h2>${escapeHtml(modelTitle)} as data</h2>` +
+    `<p class="lede">ICH E3 has been unrevised since 1995 and no machine-readable model of it ` +
+    `existed publicly; ICH M11 did this for protocols in November 2025. ` +
+    `<span class="mono">${escapeHtml(dir)}/sections.yaml</span> encodes this document's ` +
+    `${sections.length}-entry skeleton — number, title, slug and content model. ` +
+    `<span class="mono">assembly.yaml</span> says what <em>this</em> report puts in it. Display ` +
+    `numbers appear in neither: the assembler derives them from assembly order, so reordering the ` +
+    `report is a one-line diff and a display's identity never changes (design D6). The library is ` +
+    `plural — the same two files describe every document open.csr assembles.</p>` +
     `</header>`;
 
   const stats =
     `<div class="stat-row">` +
-    statTile(sections.length, 'E3 sections modelled', 'the full 16-section skeleton') +
+    statTile(sections.length, 'sections modelled', 'the whole skeleton, filled or not') +
     statTile(filled.length, 'populated in this demo', 'every other section renders as a marked gap') +
     statTile(numbers.size, 'displays numbered', 'assigned at assembly, not authored') +
     statTile(
@@ -669,7 +812,7 @@ export function renderTemplatesPane({ config = {}, template = null, displays = [
         .map(
           ([slug, entry]) =>
             `<tr><td class="mono">${escapeHtml(`${entry.label} ${entry.number}`.trim())}</td>` +
-            `<td><a href="../gallery/${escapeHtml(slug)}.html">` +
+            `<td><a href="${escapeHtml(root)}gallery/${escapeHtml(slug)}.html">` +
             `${escapeHtml(titles.get(slug) || slug)}</a></td>` +
             `<td class="mono">${escapeHtml(slug)}</td>` +
             `<td class="mono">${escapeHtml(entry.section || '')}</td></tr>`
@@ -688,7 +831,7 @@ export function renderTemplatesPane({ config = {}, template = null, displays = [
         ? fill.blocks
             .map(
               (id) =>
-                `<a class="mono" href="../text/index.html#${escapeHtml(id)}">${escapeHtml(id)}</a>`
+                `<a class="mono" href="${escapeHtml(root)}text/index.html#${escapeHtml(id)}">${escapeHtml(id)}</a>`
             )
             .join(' ')
         : '';
@@ -698,7 +841,7 @@ export function renderTemplatesPane({ config = {}, template = null, displays = [
               const number = numbers.get(slug);
               const label = number ? `${number.label} ${number.number}`.trim() : slug;
               return (
-                `<a href="../gallery/${escapeHtml(slug)}.html" title="${escapeHtml(
+                `<a href="${escapeHtml(root)}gallery/${escapeHtml(slug)}.html" title="${escapeHtml(
                   titles.get(slug) || slug
                 )}">${escapeHtml(label)}</a>`
               );
@@ -722,7 +865,7 @@ export function renderTemplatesPane({ config = {}, template = null, displays = [
     .join('');
 
   const skeleton =
-    `<section class="app-block"><h3>The E3 skeleton</h3>` +
+    `<section class="app-block"><h3>The document skeleton</h3>` +
     `<p class="sub">All ${sections.length} modelled sections, and what this report puts in each. ` +
     `Sections marked <em>not in this demo</em> still assemble, as headings that say so — the ` +
     `skeleton stays visible rather than being trimmed to what happens to be built.</p>` +
@@ -737,7 +880,7 @@ export function renderTemplatesPane({ config = {}, template = null, displays = [
       `mechanically. E3 reserved that slot in 1995 and open.csr fills it from the build.</p>`
     : '';
 
-  return [head, stats, provenance, numbering, skeleton].filter(Boolean).join('\n');
+  return [head, switcher, stats, provenance, numbering, skeleton].filter(Boolean).join('\n');
 }
 
 // The site's stat tile. text-status-lib keeps a private copy of the same markup;

@@ -26,7 +26,36 @@
     "RPT-OUT-004": "The assembled document contains the full E3 skeleton, with sections the demonstration does not fill marked unpopulated rather than dropped — the numbering is what makes the artifact recognisable as a CSR.",
     "RPT-OUT-005": "`docs/assembled/csr.html` contains resolved values and never a raw binding token or an unresolved marker.",
     "RPT-OUT-006": "`csr.html` is self-contained: no external host, no script, no external stylesheet, no font or image fetched at view time.",
-    "RPT-OUT-007": "The rendered document shows the assigned display numbering, the per-block gate report and the generated provenance appendix, so a reader can see the evidence for the numbers beside them."
+    "RPT-OUT-007": "The rendered document shows the assigned display numbering, the per-block gate report and the generated provenance appendix, so a reader can see the evidence for the numbers beside them.",
+    "RPT-LIB-001": "The library holds more than one template object, discovered from disk rather than enumerated in code: a directory under `library/templates/` containing a `sections.yaml` is a template object.",
+    "RPT-LIB-002": "A template id resolves to its own document model, its own assembly and its own output basename. `ich-e3` keeps writing `docs/assembled/csr.{json,html}`, so the site build and every published link are unchanged by the library becoming plural.",
+    "RPT-LIB-003": "An unknown template id fails loudly and names the ids the library actually holds, rather than falling back to the default and assembling the wrong document under the right name.",
+    "RPT-LIB-004": "Gates judge the document being assembled, not the whole Text Library: a block written for the full E3 report may cross-reference Section 16.2.1 without failing a synopsis model that has no Section 16. A library block that this build did not assemble is reported as a warning, so \"not gated\" can never pass for \"gated and clean\".",
+    "RPT-SYN-001": "`library/templates/e3-synopsis/sections.yaml` is a structurally valid document model under the same schema and the same validator as the CSR model.",
+    "RPT-SYN-002": "The model carries ICH E3 Annex I's own synopsis fields, numbered 1 to 12 in E3's order, with E3's field names.",
+    "RPT-SYN-003": "The generated provenance appendix is declared on the synopsis model's own section rather than borrowed from E3 Section 16.1.9, because a synopsis has no Section 16. Sections 13 and 14 are open.csr's additions and are marked as such in the model.",
+    "RPT-SYN-004": "Efficacy fields are declared in the model and left unclaimed by the assembly, so they appear as headings marked unpopulated rather than being dropped (design D12).",
+    "RPT-SYN-005": "The synopsis assembles green against CDISCPILOT01 — every gate passes, no build error, and at least twenty of its sections are populated.",
+    "RPT-SYN-006": "The same display carries a different number in each document from one unchanged specification: `Table 14.1.1` in the report and `Table 13.1` in the synopsis, because identity is the slug and the number is a build-time assignment (design D6).",
+    "RPT-SYN-007": "Both documents resolve the same named values, from the same store, to the same numbers, and both re-derive every value against the committed ARDs. Two documents about one study cannot disagree about a quantity.",
+    "RPT-PKG-001": "`library/templates/display-package/sections.yaml` is a structural restriction of the full ICH E3 model: every section it declares carries the number, title, slug and content declaration it has in `ich-e3`, unchanged, and it declares fewer of them.",
+    "RPT-PKG-002": "The package carries no prose: its assembly claims no text block, the assembled document places none, and every block in the shared Text Library is reported as ungated by this build rather than silently skipped.",
+    "RPT-PKG-003": "Every display carries the same assigned number in the package as in the full report — `Table 14.1.1` in both — because both assemblies declare the same post-text structure and neither writes a number down. Two documents that declare the same structure agree; the synopsis, which declares a different one, differs (design D6).",
+    "RPT-PKG-004": "The generated provenance appendix is E3's own Section 16.1.9, not a section invented for this document: E3 already reserves that appendix for the documentation of statistical methods.",
+    "RPT-PKG-005": "Sections 14.2 (efficacy) and 14.3.4 (abnormal laboratory values) are declared and left unpopulated rather than dropped, because open.csr produces no efficacy or laboratory display for this study; Section 14.3.3 is omitted instead, because it is narrative and this document carries none.",
+    "RPT-PKG-006": "The package assembles green against CDISCPILOT01 — every gate passes, no build error, all six displays resolve to a committed ARD.",
+    "RPT-ABR-001": "`library/templates/e3-abbreviated/sections.yaml` is a structural restriction of the full ICH E3 model under the same schema and the same validator: seventy-five sections against the full report's one hundred and nineteen, each unchanged in number, title, slug and content declaration.",
+    "RPT-ABR-002": "The efficacy-analysis apparatus is absent — Section 11.4 and all fifteen of its subsections, the discussion of design choice (9.2) and the efficacy-specific measurement sections (9.5.2 to 9.5.4) — while the analysis sets, the baseline characteristics, the safety evaluation and the discussion remain. That single cut is what makes the report abbreviated.",
+    "RPT-ABR-003": "The abbreviated report introduces no new prose: every text block its assembly names is one the full report already assembles, and the Text Library holds no block written for this document.",
+    "RPT-ABR-004": "Every cross-reference in the reused prose resolves against the abbreviated model, because the model retains every section the retained prose points at — 16.2.1, 16.2.3, 16.2.4, 16.2.7, 16.1.9, 14.2 and 12.3.2 among them.",
+    "RPT-ABR-005": "The abbreviated report assembles green against CDISCPILOT01, populates only sections the full report also populates, and assigns every display they share the same number — the two documents differ in their document model, not in what they say.",
+    "RPT-ABR-006": "Every display the abbreviated report carries is the full report's display object — same slug, same committed ARD file, same assigned number — and every display it does not carry is absent because this model declares no section to put it in. A display withheld from a section the model *does* declare is reported, so \"carries fewer displays\" can never quietly become \"disagrees about what to show\".",
+    "RPT-LIB-005": "Every template object the library holds assembles green against the same study in one run, and each re-derives its named values against the committed ARDs. CI assembles them all with `--all`: a template that is never assembled is a directory, not a template.",
+    "RPT-LIB-006": "No file under `scripts/` names the third or fourth template object. A template object is discovered from disk by the assembler, the loader and the site build, or the framework is not generic — adding one costs two YAML files and no code.",
+    "RPT-LIB-007": "All four documents resolve the same named values, from the same store, to the same numbers. Four documents about one study cannot disagree about a quantity.",
+    "RPT-LIB-008": "Every display the TFL Library holds is carried by at least one template object. A display specified, given a committed ARD and wired into nothing reaches no reader, and only a run over the whole library can see it — so `--all` fails on it, which is what CI runs.",
+    "RPT-LIB-009": "Each assembled document names the library displays it does not carry, in `gates.warnings` and on `gates.displayCoverage`. Carrying a subset is legitimate and stays a warning; being silent about it is not, for the same reason an unassembled text block is reported (RPT-LIB-004).",
+    "RPT-LIB-010": "The coverage comparison goes red on the case it exists for, not only green on the case that already passes."
   },
   "rows": [
     {
@@ -249,6 +278,267 @@
       "id": "RPT-OUT-007",
       "area": "",
       "text": "The rendered document shows the assigned display numbering, the per-block gate report and the generated provenance appendix, so a reader can see the evidence for the numbers beside them.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "RPT-LIB-001",
+      "area": "",
+      "text": "The library holds more than one template object, discovered from disk rather than enumerated in code: a directory under `library/templates/` containing a `sections.yaml` is a template object.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "RPT-LIB-002",
+      "area": "",
+      "text": "A template id resolves to its own document model, its own assembly and its own output basename. `ich-e3` keeps writing `docs/assembled/csr.{json,html}`, so the site build and every published link are unchanged by the library becoming plural.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "RPT-LIB-003",
+      "area": "",
+      "text": "An unknown template id fails loudly and names the ids the library actually holds, rather than falling back to the default and assembling the wrong document under the right name.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "RPT-LIB-004",
+      "area": "",
+      "text": "Gates judge the document being assembled, not the whole Text Library: a block written for the full E3 report may cross-reference Section 16.2.1 without failing a synopsis model that has no Section 16. A library block that this build did not assemble is reported as a warning, so \"not gated\" can never pass for \"gated and clean\".",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "RPT-SYN-001",
+      "area": "",
+      "text": "`library/templates/e3-synopsis/sections.yaml` is a structurally valid document model under the same schema and the same validator as the CSR model.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "RPT-SYN-002",
+      "area": "",
+      "text": "The model carries ICH E3 Annex I's own synopsis fields, numbered 1 to 12 in E3's order, with E3's field names.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "RPT-SYN-003",
+      "area": "",
+      "text": "The generated provenance appendix is declared on the synopsis model's own section rather than borrowed from E3 Section 16.1.9, because a synopsis has no Section 16. Sections 13 and 14 are open.csr's additions and are marked as such in the model.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "RPT-SYN-004",
+      "area": "",
+      "text": "Efficacy fields are declared in the model and left unclaimed by the assembly, so they appear as headings marked unpopulated rather than being dropped (design D12).",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "RPT-SYN-005",
+      "area": "",
+      "text": "The synopsis assembles green against CDISCPILOT01 — every gate passes, no build error, and at least twenty of its sections are populated.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "RPT-SYN-006",
+      "area": "",
+      "text": "The same display carries a different number in each document from one unchanged specification: `Table 14.1.1` in the report and `Table 13.1` in the synopsis, because identity is the slug and the number is a build-time assignment (design D6).",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "RPT-SYN-007",
+      "area": "",
+      "text": "Both documents resolve the same named values, from the same store, to the same numbers, and both re-derive every value against the committed ARDs. Two documents about one study cannot disagree about a quantity.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "RPT-PKG-001",
+      "area": "",
+      "text": "`library/templates/display-package/sections.yaml` is a structural restriction of the full ICH E3 model: every section it declares carries the number, title, slug and content declaration it has in `ich-e3`, unchanged, and it declares fewer of them.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "RPT-PKG-002",
+      "area": "",
+      "text": "The package carries no prose: its assembly claims no text block, the assembled document places none, and every block in the shared Text Library is reported as ungated by this build rather than silently skipped.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "RPT-PKG-003",
+      "area": "",
+      "text": "Every display carries the same assigned number in the package as in the full report — `Table 14.1.1` in both — because both assemblies declare the same post-text structure and neither writes a number down. Two documents that declare the same structure agree; the synopsis, which declares a different one, differs (design D6).",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "RPT-PKG-004",
+      "area": "",
+      "text": "The generated provenance appendix is E3's own Section 16.1.9, not a section invented for this document: E3 already reserves that appendix for the documentation of statistical methods.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "RPT-PKG-005",
+      "area": "",
+      "text": "Sections 14.2 (efficacy) and 14.3.4 (abnormal laboratory values) are declared and left unpopulated rather than dropped, because open.csr produces no efficacy or laboratory display for this study; Section 14.3.3 is omitted instead, because it is narrative and this document carries none.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "RPT-PKG-006",
+      "area": "",
+      "text": "The package assembles green against CDISCPILOT01 — every gate passes, no build error, all six displays resolve to a committed ARD.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "RPT-ABR-001",
+      "area": "",
+      "text": "`library/templates/e3-abbreviated/sections.yaml` is a structural restriction of the full ICH E3 model under the same schema and the same validator: seventy-five sections against the full report's one hundred and nineteen, each unchanged in number, title, slug and content declaration.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "RPT-ABR-002",
+      "area": "",
+      "text": "The efficacy-analysis apparatus is absent — Section 11.4 and all fifteen of its subsections, the discussion of design choice (9.2) and the efficacy-specific measurement sections (9.5.2 to 9.5.4) — while the analysis sets, the baseline characteristics, the safety evaluation and the discussion remain. That single cut is what makes the report abbreviated.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "RPT-ABR-003",
+      "area": "",
+      "text": "The abbreviated report introduces no new prose: every text block its assembly names is one the full report already assembles, and the Text Library holds no block written for this document.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "RPT-ABR-004",
+      "area": "",
+      "text": "Every cross-reference in the reused prose resolves against the abbreviated model, because the model retains every section the retained prose points at — 16.2.1, 16.2.3, 16.2.4, 16.2.7, 16.1.9, 14.2 and 12.3.2 among them.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "RPT-ABR-005",
+      "area": "",
+      "text": "The abbreviated report assembles green against CDISCPILOT01, populates only sections the full report also populates, and assigns every display they share the same number — the two documents differ in their document model, not in what they say.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "RPT-ABR-006",
+      "area": "",
+      "text": "Every display the abbreviated report carries is the full report's display object — same slug, same committed ARD file, same assigned number — and every display it does not carry is absent because this model declares no section to put it in. A display withheld from a section the model *does* declare is reported, so \"carries fewer displays\" can never quietly become \"disagrees about what to show\".",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "RPT-LIB-005",
+      "area": "",
+      "text": "Every template object the library holds assembles green against the same study in one run, and each re-derives its named values against the committed ARDs. CI assembles them all with `--all`: a template that is never assembled is a directory, not a template.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "RPT-LIB-006",
+      "area": "",
+      "text": "No file under `scripts/` names the third or fourth template object. A template object is discovered from disk by the assembler, the loader and the site build, or the framework is not generic — adding one costs two YAML files and no code.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "RPT-LIB-007",
+      "area": "",
+      "text": "All four documents resolve the same named values, from the same store, to the same numbers. Four documents about one study cannot disagree about a quantity.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "RPT-LIB-008",
+      "area": "",
+      "text": "Every display the TFL Library holds is carried by at least one template object. A display specified, given a committed ARD and wired into nothing reaches no reader, and only a run over the whole library can see it — so `--all` fails on it, which is what CI runs.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "RPT-LIB-009",
+      "area": "",
+      "text": "Each assembled document names the library displays it does not carry, in `gates.warnings` and on `gates.displayCoverage`. Carrying a subset is legitimate and stays a warning; being silent about it is not, for the same reason an unassembled text block is reported (RPT-LIB-004).",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "RPT-LIB-010",
+      "area": "",
+      "text": "The coverage comparison goes red on the case it exists for, not only green on the case that already passes.",
       "source": "",
       "evidence": "",
       "link": "",
