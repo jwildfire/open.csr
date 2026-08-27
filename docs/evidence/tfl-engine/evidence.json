@@ -1,6 +1,6 @@
 {
   "module": "tfl-engine",
-  "generated": "2026-08-27T00:52:51.476Z",
+  "generated": "2026-08-27T01:54:02.263Z",
   "records": [
     {
       "requirementIds": [
@@ -460,6 +460,102 @@
     },
     {
       "requirementIds": [
+        "TFL-PREP-008"
+      ],
+      "title": "TFL-PREP-008: every vendored PHUSE file matches its recorded provenance (#39)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-data-phuse.R",
+      "issueRefs": [
+        39
+      ]
+    },
+    {
+      "requirementIds": [
+        "TFL-PREP-009"
+      ],
+      "title": "TFL-PREP-009: the whole CDISCPILOT01 ADaM package is preparable (#39)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-data-phuse.R",
+      "issueRefs": [
+        39
+      ]
+    },
+    {
+      "requirementIds": [
+        "TFL-PREP-010"
+      ],
+      "title": "TFL-PREP-010: TRT01A on every dataset comes from the prepared ADSL (#39)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-data-phuse.R",
+      "issueRefs": [
+        39
+      ]
+    },
+    {
+      "requirementIds": [
+        "TFL-PREP-011"
+      ],
+      "title": "TFL-PREP-011: the PHUSE ADSL states its populations instead of deriving them (#39)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-data-phuse.R",
+      "issueRefs": [
+        39
+      ]
+    },
+    {
+      "requirementIds": [
+        "TFL-PREP-012"
+      ],
+      "title": "TFL-PREP-012: ADCM's two-study relabelling is reversed, and proven (#39)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-data-phuse.R",
+      "issueRefs": [
+        39
+      ]
+    },
+    {
+      "requirementIds": [
+        "TFL-PREP-013"
+      ],
+      "title": "TFL-PREP-013: the manifest names the upstream commit for PHUSE data (#39)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-data-phuse.R",
+      "issueRefs": [
+        39
+      ]
+    },
+    {
+      "requirementIds": [
+        "TFL-PREP-014"
+      ],
+      "title": "TFL-PREP-014: adding PHUSE data moves nothing the displays already stand on (#39)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-data-phuse.R",
+      "issueRefs": [
+        39
+      ]
+    },
+    {
+      "requirementIds": [
+        "TFL-PREP-015"
+      ],
+      "title": "TFL-PREP-015: the efficacy analysis set exists and fails loudly without EFFFL (#39)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-data-phuse.R",
+      "issueRefs": [
+        39
+      ]
+    },
+    {
+      "requirementIds": [
         "TFL-QNT-001"
       ],
       "title": "TFL-QNT-001: quartiles follow the SAS-compatible type-2 definition (#1)",
@@ -772,6 +868,18 @@
     },
     {
       "requirementIds": [
+        "TFL-SRC-001"
+      ],
+      "title": "TFL-SRC-001: the two sources' overlap matches the committed record (#39)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-data-phuse.R",
+      "issueRefs": [
+        39
+      ]
+    },
+    {
+      "requirementIds": [
         "TFL-VAL-001"
       ],
       "title": "TFL-VAL-001: a declaration missing a label, an id or a source is rejected (#1)",
@@ -904,7 +1012,7 @@
   "environment": {
     "os": "Darwin 23.6.0",
     "node": "v24.14.0",
-    "vitest": "2.1.9",
+    "vitest": null,
     "r": "4.3.3"
   },
   "run": null

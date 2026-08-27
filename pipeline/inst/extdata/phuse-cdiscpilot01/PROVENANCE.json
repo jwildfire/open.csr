@@ -1,0 +1,122 @@
+{
+  "source_repo": "https://github.com/phuse-org/phuse-scripts",
+  "commit": "398a6d33ced9359ffb58c46650a6d488811176b1",
+  "commit_date": "2025-08-25T14:48:53Z",
+  "retrieved": "2026-08-26",
+  "licence": "MIT",
+  "licence_file": "LICENSE-phuse-scripts.md",
+  "licence_url": "https://github.com/phuse-org/phuse-scripts/blob/398a6d33ced9359ffb58c46650a6d488811176b1/LICENSE.md",
+  "verification": "Each vendored file's git blob SHA-1 was recomputed from the downloaded bytes and matched against the SHA recorded in the commit's recursive tree.",
+  "files": [
+    {
+      "dataset": "adsl",
+      "upstream_path": "data/adam/cdiscpilot01/adsl.xpt",
+      "blob_sha1": "56e04ac80dab0d9bca3b48296a2c1eac654ccfb3",
+      "sha256": "c5139f873a93ef6add77bc4297beb6460a398bbdd036874382a9f39dfc92091d",
+      "bytes": 114640,
+      "vendored": "adsl.xpt.gz",
+      "gz_sha256": "e01b4be05fac1c03fbebf6da5fadd1bcc2ca7a6bc1c2b51b5b8246c402e9c4b9",
+      "gz_bytes": 16535
+    },
+    {
+      "dataset": "adae",
+      "upstream_path": "data/adam/cdiscpilot01/adae.xpt",
+      "blob_sha1": "95129e67e73963d182bf2c5fef46e49898edfee0",
+      "sha256": "b8678e70946473a753bb01d002917f478bf51b59bdd0dc19587b97128059b6a0",
+      "bytes": 713600,
+      "vendored": "adae.xpt.gz",
+      "gz_sha256": "3bffe9c91b84e1a0d54d64871a1b27299474ab2fbf41d769531ee0e311eb5df4",
+      "gz_bytes": 40281
+    },
+    {
+      "dataset": "advs",
+      "upstream_path": "data/adam/cdiscpilot01/advs.xpt",
+      "blob_sha1": "59641d0a8939f4026086106dcfba245cbb8986f7",
+      "sha256": "28233c8ed038d0f315a9538d910beb43cf1bb4b69f8f1c39b32463c7b018dff1",
+      "bytes": 13632480,
+      "vendored": "advs.xpt.gz",
+      "gz_sha256": "832916f839a218cfddad5f9ccfaae3266603f96911eaf1a796fb38872fed81a7",
+      "gz_bytes": 638780
+    },
+    {
+      "dataset": "adlbc",
+      "upstream_path": "data/adam/cdiscpilot01/adlbc.xpt",
+      "blob_sha1": "7c6061f0eea450f671c0632434c111326b028fde",
+      "sha256": "b9f6b5106965b5e2e3b33062a18710b58ceecc0c8cf1e54271849653037998ea",
+      "bytes": 34242960,
+      "vendored": "adlbc.xpt.gz",
+      "gz_sha256": "977eaf25b2b121fe4552afca15ca19459a48ed6be27f01c357d752142cf795f0",
+      "gz_bytes": 1849093
+    },
+    {
+      "dataset": "adlbh",
+      "upstream_path": "data/adam/cdiscpilot01/adlbh.xpt",
+      "blob_sha1": "a7cbba0389c4e5055fc6194d72cfc27724b6ddd9",
+      "sha256": "de568850f5585266844abe6eb7ef0290ea130d90c3f023efcb9f13c2a586455b",
+      "bytes": 23025920,
+      "vendored": "adlbh.xpt.gz",
+      "gz_sha256": "87337a029146b6c9abc66539946b82ec07bb48763d8b6b6d3255ed7531ed017c",
+      "gz_bytes": 1153289
+    },
+    {
+      "dataset": "adlbhy",
+      "upstream_path": "data/adam/cdiscpilot01/adlbhy.xpt",
+      "blob_sha1": "546e5354599c15c15a566012bb909f4d3a497226",
+      "sha256": "bb1c0c020aa1ef5af0a4b35467ad5bbdf2f4234dc8b97a333877182e62370682",
+      "bytes": 4675280,
+      "vendored": "adlbhy.xpt.gz",
+      "gz_sha256": "eb66fd3669382e79719b2811a2b924fec7ac3ee5f80a3613c6e1cfd138019544",
+      "gz_bytes": 121931
+    },
+    {
+      "dataset": "adqsadas",
+      "upstream_path": "data/adam/cdiscpilot01/adqsadas.xpt",
+      "blob_sha1": "76a3cb59e2cb3e7ba35803fd44f469131f56ccc5",
+      "sha256": "ac3fa1217651810b0f15fe489fdda7d99eff10553ded025156ad7c1b89f84608",
+      "bytes": 5178480,
+      "vendored": "adqsadas.xpt.gz",
+      "gz_sha256": "f4b493f5cef971672581f4156fd757a365b5b3e067a7e072648d6c7097bffc06",
+      "gz_bytes": 157505
+    },
+    {
+      "dataset": "adqscibc",
+      "upstream_path": "data/adam/cdiscpilot01/adqscibc.xpt",
+      "blob_sha1": "4c5aa553ca7b4141f7c7748d0d7b3fb6bd4d3d3a",
+      "sha256": "16e7118f606d907e817f0a5885d662c2e7177c430d2b3ec6c0ba9096cb3d7bc1",
+      "bytes": 290480,
+      "vendored": "adqscibc.xpt.gz",
+      "gz_sha256": "d22ef74d5aa3338cbef8c90241cb4333f49cc1d2134e50a47a1a23dc0f08c259",
+      "gz_bytes": 14222
+    },
+    {
+      "dataset": "adqsnpix",
+      "upstream_path": "data/adam/cdiscpilot01/adqsnpix.xpt",
+      "blob_sha1": "12dbd8c03ea5675f0a924b7a37cb19b3fd169405",
+      "sha256": "90cf438913cfb976a34e9cf6c44291eab7a65c5c0146f8df092cd9ce2bd8c44a",
+      "bytes": 13147600,
+      "vendored": "adqsnpix.xpt.gz",
+      "gz_sha256": "7d82c42f7b860d12b5ab8a5c18ac8f08e40c7e4a377a95e2175934c26faa6328",
+      "gz_bytes": 443385
+    },
+    {
+      "dataset": "adtte",
+      "upstream_path": "data/adam/cdiscpilot01/adtte.xpt",
+      "blob_sha1": "b813b60fe70fd50e0af4b8fa54a8695e772a48b8",
+      "sha256": "68513fc4126744b6b2c7328eb70eb7b9683865d12c58b36539325f3c0c0ab93d",
+      "bytes": 91840,
+      "vendored": "adtte.xpt.gz",
+      "gz_sha256": "f832936dda0d69b3f281cce41cab58c64172a7558cba5bd71c74c11c7018c643",
+      "gz_bytes": 7138
+    },
+    {
+      "dataset": "adcm",
+      "upstream_path": "data/adam/cdisc/adcm.xpt",
+      "blob_sha1": "8e60b80239505897086923c1ef3c546920488544",
+      "sha256": "7a82e955bcd5714228122bb803bb98d5678c4a92fb994f30fccc43bd43efe710",
+      "bytes": 4542720,
+      "vendored": "adcm.xpt.gz",
+      "gz_sha256": "1a2bca28df8491f1571bff1709b9462ca69d49f0e1bba8a9ddf76a31896f685d",
+      "gz_bytes": 92311
+    }
+  ]
+}

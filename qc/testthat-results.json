@@ -1,14 +1,14 @@
 {
   "suite": "r-unit",
   "package": "opencsr",
-  "generated": "2026-07-27T04:44:16Z",
+  "generated": "2026-08-27T01:56:20Z",
   "environment": {
     "r": "4.3.3",
     "os": "Darwin 23.6.0"
   },
   "summary": {
-    "total": 90,
-    "passed": 90,
+    "total": 99,
+    "passed": 99,
     "failed": 0,
     "errored": 0,
     "skipped": 0
@@ -92,6 +92,51 @@
     {
       "file": "test-ard-io.R",
       "test": "TFL-IO-005: every committed ARD is readable and internally consistent (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-data-phuse.R",
+      "test": "TFL-PREP-008: every vendored PHUSE file matches its recorded provenance (#39)",
+      "status": "pass"
+    },
+    {
+      "file": "test-data-phuse.R",
+      "test": "TFL-PREP-009: the whole CDISCPILOT01 ADaM package is preparable (#39)",
+      "status": "pass"
+    },
+    {
+      "file": "test-data-phuse.R",
+      "test": "TFL-PREP-010: TRT01A on every dataset comes from the prepared ADSL (#39)",
+      "status": "pass"
+    },
+    {
+      "file": "test-data-phuse.R",
+      "test": "TFL-PREP-011: the PHUSE ADSL states its populations instead of deriving them (#39)",
+      "status": "pass"
+    },
+    {
+      "file": "test-data-phuse.R",
+      "test": "TFL-PREP-012: ADCM's two-study relabelling is reversed, and proven (#39)",
+      "status": "pass"
+    },
+    {
+      "file": "test-data-phuse.R",
+      "test": "TFL-PREP-013: the manifest names the upstream commit for PHUSE data (#39)",
+      "status": "pass"
+    },
+    {
+      "file": "test-data-phuse.R",
+      "test": "TFL-PREP-014: adding PHUSE data moves nothing the displays already stand on (#39)",
+      "status": "pass"
+    },
+    {
+      "file": "test-data-phuse.R",
+      "test": "TFL-PREP-015: the efficacy analysis set exists and fails loudly without EFFFL (#39)",
+      "status": "pass"
+    },
+    {
+      "file": "test-data-phuse.R",
+      "test": "TFL-SRC-001: the two sources' overlap matches the committed record (#39)",
       "status": "pass"
     },
     {

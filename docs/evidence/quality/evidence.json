@@ -1,6 +1,6 @@
 {
   "module": "quality",
-  "generated": "2026-08-27T01:15:51.089Z",
+  "generated": "2026-08-27T01:54:02.263Z",
   "records": [
     {
       "requirementIds": [
@@ -2308,7 +2308,7 @@
   "environment": {
     "os": "Darwin 23.6.0",
     "node": "v24.14.0",
-    "vitest": "2.1.9",
+    "vitest": null,
     "r": "4.3.3"
   },
   "run": null

@@ -97,8 +97,20 @@ jobs:
             any::cardx
             any::r2rtf
 
+      - name: Vendored CDISCPILOT01 data matches its provenance record
+        # The eleven .xpt.gz under pipeline/inst/extdata/ are a third-party data
+        # package. Their SHA-256 digests are recorded; a silent change to any of
+        # them would change published figures, so it fails the build (#39).
+        run: Rscript qc/vendor-phuse-data.R --check
+
       - name: Run the testthat suite
         run: Rscript qc/run-tests.R
+
+      - name: The two packagings of CDISCPILOT01 diverge only where recorded
+        # Second measurement of the facts TFL-SRC-001 asserts, by a route that
+        # never loads {opencsr}. Non-zero when the sources move relative to each
+        # other, or when the committed record stops describing them (#39).
+        run: Rscript qc/source-agreement.R
 
       - name: Committed R results match this run
         # run-tests.R rewrites qc/testthat-results.json; anything but a
