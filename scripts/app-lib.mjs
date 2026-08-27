@@ -80,11 +80,18 @@ export function buildNavTree({
   textBlocks = [],
   values = [],
   // Every document in the library, and which one this app instance is showing.
-  // Documents other than the current one become real links to their own reader
-  // page rather than dead selections — the app renders one document at a time
-  // and a nav entry that selects nothing is worse than none (#32).
+  // A document the page does not render is a real link to its own reader page
+  // rather than a dead selection (#32); a document the page DOES render is an
+  // ordinary selection, because the pane can show it (#36).
   documents = [],
   current = null,
+  // The documents this page rendered into the Documents pane. A document in
+  // this set is SELECTABLE — the explorer switches to it in place, and its own
+  // sections come with it — while one outside it stays a link to its standalone
+  // page. A standalone reader page renders one document and passes nothing, so
+  // it keeps the link-out behaviour it had; the Demo app passes every built
+  // document and so has no link out at all (#36).
+  rendered = [],
   root = '../'
 } = {}) {
   const numbers = new Map(
@@ -130,19 +137,31 @@ export function buildNavTree({
     : (config.documents || []).map((doc) => ({ ...doc, primary: doc.status === 'built' }));
   const activeId = current || source.find((doc) => doc.primary)?.id || null;
 
+  const inApp = new Set(rendered.map(String));
   const docItems = source.map((doc) => {
     const active = doc.id === activeId;
     const own = doc.json || (active ? csr : null);
     const built = doc.status === 'built';
+    // On screen: the document this page is showing, or one it rendered into a
+    // pane of its own.
+    const onScreen = active || inApp.has(String(doc.id));
     return {
       id: doc.id,
       label: doc.title,
       abbr: doc.abbr || null,
       status: doc.status || 'planned',
-      // Only the document on screen gets a section tree: its anchors are the
-      // anchors of this page. Another document's sections live on its own page.
-      sections: active ? sectionsFor(doc) : [],
+      // A document on screen gets a section tree: its anchors are anchors this
+      // page can reach. A document that is only a link out does not — its
+      // sections live on its own page.
+      sections: onScreen ? sectionsFor(doc) : [],
+      // The standalone permalink, kept on every built document that is not the
+      // one already showing. Where the page also renders that document, this is
+      // the no-JavaScript fallback behind a real selection — the same
+      // arrangement the view bar uses — rather than a way out of the app.
       href: built && !active && doc.readerPath ? `${root}${doc.readerPath}` : null,
+      // Selectable in place, so the click interception turns it into a pane
+      // switch instead of a navigation.
+      inApp: built && inApp.has(String(doc.id)),
       draftProse: !!doc.prose?.draft,
       detail:
         built && own?.sections
@@ -245,11 +264,21 @@ function treeItem(groupId, item, kind) {
           : '';
   const number = item.number ? `<span class="nav-num">${escapeHtml(item.number)}</span>` : '';
   const disabled = item.status === 'planned';
-  // An item that lives on another page is an ordinary link: no data-nav-*
-  // attributes, so the app's click interception leaves it alone and it
-  // navigates. That is what makes a second document reachable with JavaScript
-  // off as well as on (#32).
-  const external = !disabled && item.href;
+  // Three kinds of node, and the difference is where the thing IS.
+  //
+  //   planned  — nothing to open; a span, not a link.
+  //   in-app   — the page rendered it, so selecting it switches the pane. It
+  //              still carries its standalone href, exactly as the view bar's
+  //              links do, so the node works with JavaScript off and the client
+  //              only upgrades it (#36).
+  //   elsewhere— the page did not render it. An ordinary link with no data-nav-*
+  //              attributes, so the app's click interception leaves it alone and
+  //              it navigates for real (#32).
+  //
+  // `is-elsewhere` was the whole answer while the app rendered exactly one
+  // document; it is now the answer only for a document this page does not hold.
+  const inApp = !disabled && !!item.inApp;
+  const external = !disabled && !!item.href && !inApp;
   const attrs = external
     ? `class="nav-item is-elsewhere"`
     : `class="nav-item${disabled ? ' is-planned' : ''}" data-nav-group="${groupId}" ` +
@@ -278,7 +307,7 @@ function treeItem(groupId, item, kind) {
     `${
       disabled
         ? `<span ${attrs}>`
-        : external
+        : external || (inApp && item.href)
           ? `<a ${attrs} href="${escapeHtml(item.href)}">`
           : `<a ${attrs} href="#tab=${groupId}&amp;${kind}=${encodeURIComponent(item.id)}">`
     }` +
@@ -458,6 +487,54 @@ export function renderAppPage({
     `</div>\n` +
     `<script type="module" src="client.js"></script>`
   );
+}
+
+// ---------------------------------------------------------------------------
+// Documents pane — every assembled document, one at a time
+// ---------------------------------------------------------------------------
+
+/**
+ * Wrap the rendered reader pages into a switchable pane, one panel each.
+ *
+ * This is the Tables pane's arrangement applied to documents, and deliberately
+ * so: `renderCsrReader` already returns a fragment for whichever document it is
+ * handed (#32), so a pane is those fragments plus the rule that one is visible.
+ * Nothing about a document's rendering is duplicated here — a third and fourth
+ * template object become panels by appearing in `entries`.
+ *
+ * Each panel is keyed BOTH by the document's id and by the basename of its
+ * standalone reader page, because the explorer names documents while a link
+ * between panes names pages, and `resolveDocument` in the client accepts either.
+ *
+ * The shared trace panel is hoisted here rather than emitted per document: one
+ * `id="trace"`, one index, one listener, and the chain behind a number does not
+ * change because a second document quotes it.
+ *
+ * @param {Array<{id: string, file: string, title?: string, html: string}>} entries
+ * @param {string|null} selected which document opens
+ * @param {string} trace the shared trace panel and its wiring
+ */
+export function renderDocumentsPane({ entries = [], selected = null, trace = '' } = {}) {
+  if (!entries.length) {
+    return (
+      `<div class="app-documents">` +
+      empty('No document has been assembled yet — scripts/assemble.mjs fills this pane.') +
+      `</div>`
+    );
+  }
+  const current =
+    entries.find((entry) => entry.id === selected || entry.file === selected)?.id || entries[0].id;
+
+  const panels = entries
+    .map(
+      (entry) =>
+        `<div class="app-document-panel" data-app-document-panel="${escapeHtml(entry.id)}" ` +
+        `data-app-document-file="${escapeHtml(entry.file || entry.id)}"` +
+        `${entry.id === current ? '' : ' hidden'}>${entry.html}</div>`
+    )
+    .join('\n');
+
+  return `<div class="app-documents">${panels}${trace}</div>`;
 }
 
 // ---------------------------------------------------------------------------

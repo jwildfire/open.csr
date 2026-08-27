@@ -18,6 +18,9 @@ the release is cut; the GitHub release publishes from the section verbatim.
 - The numbering rule now shows both of its faces. The synopsis renumbers the six displays because it declares a different structure; the display package and the abbreviated report keep `Table 14.1.1` because they declare the same one. Neither file writes a number down.
 - Adding the two changed nothing outside `library/templates/`, `quality/` and `docs/`: no file under `scripts/` names either template id, and a test enforces that. The two new documents appear on the demo site with no site change at all — declaring their titles in `site/config.json` is the one thing still outstanding.
 
+- **Both documents open in the demo, in the same viewer.** The demo's Documents view holds every assembled document, one visible at a time — the arrangement the Displays view already used for the six tables. Selecting the synopsis in the explorer switches the document in place rather than leaving the demo, the trace panel behind any bound number works from either document, and each document carries its own prose notice, so the synopsis reads as unreviewed draft inside the app exactly as it does on its own page. A third and fourth template object become panels with no change to the site build. ([#36](https://github.com/jwildfire/open.csr/issues/36))
+- The two documents are guarded against disagreeing. Every display both documents place resolves to the same analysis results dataset with a byte-identical payload, and both carry the same store of named values with no value differing — checked on the committed artifacts on every run, so a template that recomputed a number rather than citing a display fails the build before anyone reads two different figures on one screen.
+
 _The synopsis prose is drafted and not yet reviewed: its eighteen `TXT-SYN-*` blocks are `draft`, the site says so on the page, and the build says so on every block._
 
 # Earlier releases

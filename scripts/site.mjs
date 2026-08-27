@@ -32,6 +32,7 @@ import {
   loadRequirements,
   loadTextBlocks,
   renderCsrReader,
+  renderTraceChrome,
   renderDocPage,
   renderDocsIndex,
   renderDisplayPage,
@@ -63,6 +64,7 @@ import {
   buildNavTree,
   renderAppBar,
   renderAppPage,
+  renderDocumentsPane,
   renderSidebar,
   renderTablesPane,
   renderTemplatesPane,
@@ -369,16 +371,42 @@ const displayContext = displays.map((display) => ({
 // every block the build mounted an editor for (#129 C, open.csr#15). The
 // standalone /reader/ page keeps the read-only render — there is no editor there
 // to adopt, and an affordance that opens nothing is worse than none.
-const readerAppContent = renderCsrReader({
-  config,
-  csr,
-  displays,
-  ards,
-  traceIndex,
-  textBlocks,
-  documents,
-  root: '../',
-  editable: new Set(textBlocks.filter((block) => block.exists !== false).map((block) => block.id))
+//
+// One panel per assembled document, from the same renderer and the same list
+// that produces the standalone reader pages (#36). The pane follows the library:
+// a third template object becomes a third panel here with no change below this
+// line. Each document renders WITHOUT its own trace panel — one shared panel is
+// hoisted into the pane, because `id="trace"` can only mean one element.
+const editableBlocks = new Set(
+  textBlocks.filter((block) => block.exists !== false).map((block) => block.id)
+);
+const readerDocuments = openDocuments.length ? openDocuments : [csr];
+const documentEntries = readerDocuments.map((doc) => ({
+  // A tree with nothing assembled still renders the pane: the fallback document
+  // is the CSR's own "not assembled yet" state, and it needs a key like any other.
+  id: doc.id || 'csr',
+  // The basename of this document's standalone reader page: `index` for the
+  // primary, the template id for every other object. It is what a link between
+  // panes names, so the panel answers to it as well as to the document id.
+  file: path.basename(doc.readerPath || 'reader/index.html', '.html'),
+  title: doc.title,
+  html: renderCsrReader({
+    config,
+    csr: doc,
+    displays,
+    ards,
+    traceIndex,
+    textBlocks,
+    documents,
+    trace: false,
+    root: '../',
+    editable: editableBlocks
+  })
+}));
+const readerAppContent = renderDocumentsPane({
+  entries: documentEntries,
+  selected: csr.id,
+  trace: renderTraceChrome(traceIndex)
 });
 
 const templatesContent = renderTemplatesPane({
@@ -422,6 +450,7 @@ const navTree = buildNavTree({
   values: valueStore?.values || [],
   documents,
   current: csr.id,
+  rendered: documentEntries.map((entry) => entry.id),
   root: '../'
 });
 

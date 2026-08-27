@@ -1959,13 +1959,23 @@ span.xref.unresolved {
    and labels the pane (aria-labelledby). Suppressed in presentation rather than
    removed from the markup, because the panes not drifting from their permalinks
    is worth more than the four elements this hides. */
-.app-pane > .page-head {
+.app-pane > .page-head,
+.app-document-panel > .page-head {
   display: none;
 }
 
 .app-pane > .page-head h1,
 .app-pane > .page-head h2 {
   font-size: 1.5rem;
+}
+
+/* Documents pane: one panel per assembled document, one visible (#36). The
+   panel is the reader's own fragment, so the rule above has to reach one level
+   further in — the document's page head is the same redundant chrome here that
+   it was when the pane held a single document, and which document is showing is
+   said by the switcher strip at the top of the panel and by the explorer. */
+.app-document-panel[hidden] {
+  display: none;
 }
 
 /* Tables pane: the picker is a row of displays, the stage shows one. */

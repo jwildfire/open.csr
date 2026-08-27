@@ -92,8 +92,19 @@ export function resolveAppLink(href) {
   // evidence pages and the trace panel already link to — while the views they
   // open are now called Documents and Displays. Renaming the directories would
   // break every one of those links for a vocabulary change.
+  // Every document publishes a standalone reader page, and inside the app each
+  // one is a PANEL rather than a destination — the same absorption the gallery
+  // already got. `reader/index.html` is the primary document's page, so it
+  // names the document `index`; every other object names itself. The document
+  // key travels as the file's own basename because that is what a link between
+  // panes actually says; the client resolves it to a document id against the
+  // panels the page rendered (open.csr #36).
   if (clean === 'reader/index.html' || clean === 'reader/') {
-    return { tab: 'documents', focus };
+    return { tab: 'documents', doc: 'index', focus };
+  }
+  const reader = clean.match(/^reader\/([a-z0-9-]+)\.html$/);
+  if (reader) {
+    return { tab: 'documents', doc: reader[1], focus };
   }
   if (clean === 'gallery/index.html' || clean === 'gallery/') {
     return { tab: 'displays', focus };
@@ -144,6 +155,39 @@ export function applySelection(current, change) {
     block: change.block || current.block,
     focus: change.focus ?? null
   };
+}
+
+/**
+ * Which document should the Documents pane show?
+ *
+ * The selection may arrive as a document id (the explorer names documents) or
+ * as the basename of that document's standalone reader page (a link between
+ * panes names pages). Both mean the same document, so both resolve here rather
+ * than forcing every caller to know which vocabulary it holds.
+ *
+ * Falls back to the first rendered document — a stale deep link degrades to the
+ * primary document rather than to an empty pane, exactly as `resolveDisplay`
+ * degrades to the first display.
+ *
+ * @param {string|null} selected a document id or a reader-page basename
+ * @param {Array<{id: string, file?: string}|string>} available rendered documents
+ * @returns {string|null} the id of the document to show
+ */
+export function resolveDocument(selected, available = []) {
+  const entries = available
+    .map((entry) =>
+      typeof entry === 'string'
+        ? { id: entry, file: null }
+        : { id: String(entry?.id ?? ''), file: entry?.file ? String(entry.file) : null }
+    )
+    .filter((entry) => entry.id);
+  if (!entries.length) return null;
+  const want = String(selected == null ? '' : selected);
+  if (want) {
+    const hit = entries.find((entry) => entry.id === want || entry.file === want);
+    if (hit) return hit.id;
+  }
+  return entries[0].id;
 }
 
 /**
