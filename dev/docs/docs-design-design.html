@@ -177,8 +177,8 @@
 </tr>
 <tr>
 <td>D12</td>
-<td><strong>Demo data = <code>{pharmaverseadam}</code> CDISCPILOT01, safety-focused</strong>, with a tested <code>data-prep</code> layer deriving what&#39;s missing (ITTFL/EFFFL, screen-failure exclusion). Efficacy displays are roadmap (no CDISCPILOT01 efficacy ADaM exists; derivation from <code>{pharmaversesdtm}</code> QS is the planned path).</td>
-<td>Honest handling of a known data gap beats mixing the oncology-shaped datasets into an Alzheimer&#39;s study. Population flags derived, documented, and tested rather than assumed.</td>
+<td><strong>Demo data = CDISCPILOT01, from two packagings, chosen per dataset</strong> (<code>data_sources()</code>). <code>{pharmaverseadam}</code> serves the five domains it always served — ADSL, ADAE, ADEX, ADLB, ADVS — and remains the only source of ADEX. The CDISC pilot submission&#39;s own ADaM package, vendored from <code>phuse-org/phuse-scripts</code> (MIT), serves the efficacy (ADQSADAS, ADQSCIBC, ADQSNPIX), laboratory (ADLBC, ADLBH, ADLBHY) and time-to-event (ADTTE) domains, plus ADCM. The tested <code>data-prep</code> layer still derives what a source leaves missing, and now derives <em>less</em> on the lane where the study states more.</td>
+<td>Correction, 2026-08-27 (#39): the original decision read &quot;no CDISCPILOT01 efficacy ADaM exists&quot;. That was true of <code>{pharmaverseadam}</code> and false in general — the pilot&#39;s own package contains both primary efficacy endpoints, ADAS-Cog (11) and CIBIC+, and its data guide names them as such. The rest of D12 stands: the correct answer to a gap is a tested, documented derivation layer, not oncology-shaped substitute data. The two packagings do not agree on every figure, so the default registry moves nothing the committed displays already stand on; the divergences are measured in <code>quality/data/source-agreement.json</code> and reproduced by <code>qc/source-agreement.R</code>.</td>
 </tr>
 </tbody></table>
 <h2 id="4-the-tfl-builder-library">4. The TFL Builder + Library</h2>
@@ -313,7 +313,7 @@ provenance: { model: null, prompt: null }   # populated for tier: generated
 </tr>
 <tr>
 <td>pharmaverseadam efficacy gap</td>
-<td>Scoped out of v0 explicitly; derivation plan documented (D12)</td>
+<td>Closed as a <em>data</em> gap in v0.3.0 (#39): the CDISC pilot&#39;s own ADQSADAS/ADQSCIBC/ADQSNPIX are vendored and preparable. Still open as a <em>display</em> gap — no efficacy display is specified, and the study&#39;s own analysis definitions (define.xml analysis results metadata) are the reference for specifying one</td>
 </tr>
 <tr>
 <td>Numbers in prose sneaking past the gate</td>
