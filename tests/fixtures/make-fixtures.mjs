@@ -321,6 +321,118 @@ const saeRows = SAE_RECORDS.flatMap((rec, i) =>
 );
 const aeSerious = { ...envelope('l-ae-serious', [ds('adsl', 254), ds('adae', 1191)]), rows: saeRows };
 
+// ------------------------------- t-vitals / t-vitals-change / t-weight / t-conmeds
+// The vital signs, weight and concomitant-medication group. Two things about
+// these displays differ from the six above and the fixtures carry both, because
+// a fixture that quietly normalised them would let a gate pass on a shape the
+// pipeline never produces: they group by TRT01P rather than TRT01A, and they
+// declare no pooled Total column.
+const ARMS = ['Placebo', 'Xanomeline Low Dose', 'Xanomeline High Dose'];
+
+/** N / mean / sd / median / p25 / p75 / min / max per arm, grouped by TRT01P. */
+function armContinuous(analysis, variable, base) {
+  return ARMS.flatMap((g, k) =>
+    Object.entries({
+      N: N[g] - k, mean: base.mean + k, sd: base.sd, median: base.median,
+      p25: base.median - 6, p75: base.median + 6, min: base.min, max: base.max,
+    }).map(([statName, value]) =>
+      row({ analysis, group1: 'TRT01P', group1_level: g, variable,
+        context: 'continuous', stat_name: statName, stat: value })
+    )
+  );
+}
+
+/** n / N / p per arm, grouped by TRT01P. */
+function armCount(analysis, variable, counts, opts = {}) {
+  const { variableLevel = 'Y', context = 'subject_count', group2, group2Level } = opts;
+  return ARMS.flatMap((g) => {
+    const base = { analysis, group1: 'TRT01P', group1_level: g, variable,
+      variable_level: variableLevel, context,
+      group2: group2 ?? null, group2_level: group2Level ?? null };
+    return [
+      row({ ...base, stat_name: 'n', stat: counts[g] }),
+      row({ ...base, stat_name: 'N', stat: N[g] }),
+      row({ ...base, stat_name: 'p', stat: counts[g] / N[g] }),
+    ];
+  });
+}
+
+const POPULATION = armCount('population', 'POPFL', {
+  Placebo: N.Placebo, 'Xanomeline Low Dose': N['Xanomeline Low Dose'],
+  'Xanomeline High Dose': N['Xanomeline High Dose'],
+});
+
+const MEASURES = [['sbp', 138, 17, 136, 90, 190], ['dbp', 76, 10, 76, 40, 110],
+  ['pulse', 71, 10, 70, 47, 134]];
+const POSITIONS = ['lying', 'stand1', 'stand3'];
+
+function vitalsRows(variable, visits, shift) {
+  const rows = [...POPULATION];
+  for (const [m, mean, sd, median, min, max] of MEASURES) {
+    for (const p of POSITIONS) {
+      for (const v of visits) {
+        rows.push(...armContinuous(`${m}_${p}_${v}`, variable,
+          { mean: mean + shift, sd, median: median + shift, min: min + shift, max: max + shift }));
+      }
+    }
+  }
+  return rows;
+}
+
+const vitals = {
+  ...envelope('t-vitals', [ds('adsl', 254), ds('advs', 65032)]),
+  rows: vitalsRows('AVAL', ['bl', 'wk24', 'eot'], 0),
+};
+
+const vitalsChange = {
+  ...envelope('t-vitals-change', [ds('adsl', 254), ds('advs', 65032)]),
+  rows: vitalsRows('CHGBL', ['wk24', 'eot'], -136),
+};
+
+const weight = {
+  ...envelope('t-weight', [ds('adsl', 254), ds('advs', 65032)]),
+  rows: [
+    ...POPULATION,
+    ...['bl', 'wk24', 'eot'].flatMap((v) =>
+      armContinuous(`wt_${v}`, 'AVAL', { mean: 63, sd: 12.8, median: 61, min: 34, max: 108 })),
+    ...['wk24', 'eot'].flatMap((v) =>
+      armContinuous(`chg_${v}`, 'CHGBL', { mean: 0.1, sd: 2.3, median: 0, min: -14.5, max: 33.3 })),
+  ],
+};
+
+const CM_CLASSES = {
+  UNCODED: { counts: { Placebo: 74, 'Xanomeline Low Dose': 70, 'Xanomeline High Dose': 77 },
+    terms: { UNCODED: { Placebo: 74, 'Xanomeline Low Dose': 70, 'Xanomeline High Dose': 77 } } },
+  'NERVOUS SYSTEM': { counts: { Placebo: 23, 'Xanomeline Low Dose': 14, 'Xanomeline High Dose': 8 },
+    terms: {
+      'ACETYLSALICYLIC ACID': { Placebo: 21, 'Xanomeline Low Dose': 11, 'Xanomeline High Dose': 6 },
+      'DONEPEZIL HYDROCHLORIDE': { Placebo: 1, 'Xanomeline Low Dose': 2, 'Xanomeline High Dose': 2 },
+    } },
+  'CARDIOVASCULAR SYSTEM': { counts: { Placebo: 12, 'Xanomeline Low Dose': 12, 'Xanomeline High Dose': 7 },
+    terms: { AMLODIPINE: { Placebo: 8, 'Xanomeline Low Dose': 1, 'Xanomeline High Dose': 2 } } },
+};
+
+const conmedRows = [
+  ...armCount('any_conmed', 'CMFL', {
+    Placebo: 77, 'Xanomeline Low Dose': 74, 'Xanomeline High Dose': 78 }),
+];
+// The by-variable summary {cards} stacks alongside a hierarchical count.
+for (const g of ARMS) {
+  for (const [statName, stat] of [['n', N[g]], ['N', N.Total], ['p', N[g] / N.Total]]) {
+    conmedRows.push(row({ analysis: 'by_class_term', variable: 'TRT01P', variable_level: g,
+      context: 'categorical', stat_name: statName, stat }));
+  }
+}
+for (const [cls, { counts, terms }] of Object.entries(CM_CLASSES)) {
+  conmedRows.push(...armCount('by_class_term', 'CMCLAS', counts,
+    { variableLevel: cls, context: 'hierarchical' }));
+  for (const [term, termCounts] of Object.entries(terms)) {
+    conmedRows.push(...armCount('by_class_term', 'CMDECOD', termCounts,
+      { variableLevel: term, context: 'hierarchical', group2: 'CMCLAS', group2Level: cls }));
+  }
+}
+const conmeds = { ...envelope('t-conmeds', [ds('adsl', 254), ds('adcm', 7510)]), rows: conmedRows };
+
 const FIXTURES = {
   't-disposition': disposition,
   't-demographics': demographics,
@@ -328,6 +440,10 @@ const FIXTURES = {
   't-ae-overview': aeOverview,
   't-ae-common': aeCommon,
   'l-ae-serious': aeSerious,
+  't-vitals': vitals,
+  't-vitals-change': vitalsChange,
+  't-weight': weight,
+  't-conmeds': conmeds,
 };
 
 export function buildFixtures() {

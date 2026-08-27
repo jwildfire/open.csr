@@ -1,0 +1,9 @@
+{
+  "display": "t-vitals",
+  "version": "v001",
+  "updated": "2026-08-27T04:06:01Z",
+  "path": "outputs/t-vitals/v001",
+  "ard": "outputs/t-vitals/v001/ard.json",
+  "table": "outputs/t-vitals/v001/table.html",
+  "variants": "post_text"
+}

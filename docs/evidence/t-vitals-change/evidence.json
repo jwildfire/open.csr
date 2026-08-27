@@ -1,0 +1,89 @@
+{
+  "module": "t-vitals-change",
+  "generated": "2026-08-27T04:14:45.503Z",
+  "records": [
+    {
+      "requirementIds": [
+        "DSP-ALL-001"
+      ],
+      "title": "DSP-ALL-001: every display renders a table that actually contains numbers (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-ALL-002"
+      ],
+      "title": "DSP-ALL-002: every display declares a regulatory identifier and a source line (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-VSC-001"
+      ],
+      "title": "DSP-VSC-001: every rendered cell of the vital signs change display is what the reference report printed (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-vitals.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-VWC-001"
+      ],
+      "title": "DSP-VWC-001: all four displays group by planned treatment over the safety analysis set (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-vitals.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-VWC-002"
+      ],
+      "title": "DSP-VWC-002: the committed three-route agreement record is green and describes this iteration (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-vitals.R",
+      "issueRefs": [
+        1
+      ]
+    }
+  ],
+  "traceability": {
+    "adamDatasets": [
+      "adsl",
+      "advs"
+    ],
+    "adamHashes": {
+      "adsl": "sha256:83b1d423d2b40766af8138864699137cfb6e0ccb064ca25369c1ed7216936918",
+      "advs": "sha256:7be440388501966144aa18f3d460cc9e4bb783eb8312df196aa6dfb7502e685b"
+    },
+    "ardFile": "outputs/t-vitals-change/v001/ard.json",
+    "ardHash": "sha256:2561647451f1514c5997684dc2d556425f683ddb34689f60dd767741d14d3777",
+    "displayFile": "library/tfl/t-vitals-change/display.yaml",
+    "specHash": "sha256:0d204e9c533b1d93eb583c63b8aa9eac5db5b6c58b7ea53e4609d472abbd2f6b",
+    "iteration": "v001",
+    "sourceCommit": null
+  },
+  "environment": {
+    "os": "Darwin 23.6.0",
+    "node": "v24.14.0",
+    "vitest": null,
+    "r": "4.3.3"
+  },
+  "run": null
+}

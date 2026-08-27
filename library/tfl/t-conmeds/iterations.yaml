@@ -1,0 +1,13 @@
+display: t-conmeds
+iterations:
+- version: v001
+  created: '2026-08-27T04:06:04Z'
+  actor: '@jwildfire'
+  change_request: Initial generation of CMT01, targeting Table 14-7.04 of the reference
+    clinical study report for this study.
+  git_commit: ''
+  spec_hash: sha256:5b8045eb70da88bc2f3876b8a6fc2d35c907e604991fe8e467f4f32c097c32d1
+  display_hash: sha256:6f1a46f8b7d057f930f1afffb6ed27c0566d1d981b0a59d2cdbde42f28853519
+  ard_hash: sha256:87b879c9777a8c73321f8f9bad5b0ad516e2a7671a4fc01847434abe14c1a8b8
+  ard_rows: 414
+

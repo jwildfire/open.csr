@@ -1,0 +1,57 @@
+{
+  "display": "t-weight",
+  "version": "v001",
+  "created": "2026-08-27T04:10:09Z",
+  "actor": "@w-vitals",
+  "change_request": "Initial generation of VST03, targeting Table 14-7.03 of the reference clinical study report: weight and weight change from baseline at Week 24 and end of treatment.",
+  "regulatory_id": "VST03",
+  "git_commit": null,
+  "spec_hash": "sha256:14be68b3bc1d72d8c3e7ff6c067edb41004ad68be9286479c3c2e9a9891dfff3",
+  "display_hash": "sha256:c1a16fd08c4c081a335923ab9efb7260cfb7e031db4384c9695c301dfa64e0a3",
+  "ard_hash": "sha256:ce01673cbf084419c92e2f3d7b0383c09aada0bd6b1283d0c9425b1b7ee03853",
+  "ard_rows": 129,
+  "ard_warnings": 0,
+  "ard_errors": 0,
+  "datasets": ["adsl", "advs"],
+  "data": [
+    {
+      "dataset": "adsl",
+      "hash": "sha256:83b1d423d2b40766af8138864699137cfb6e0ccb064ca25369c1ed7216936918",
+      "n_row": 254,
+      "n_col": 60,
+      "source_pkg": "pharmaverseadam",
+      "source_version": "1.1.0"
+    },
+    {
+      "dataset": "advs",
+      "hash": "sha256:7be440388501966144aa18f3d460cc9e4bb783eb8312df196aa6dfb7502e685b",
+      "n_row": 65032,
+      "n_col": 108,
+      "source_pkg": "pharmaverseadam",
+      "source_version": "1.1.0"
+    }
+  ],
+  "environment": {
+    "r": "4.3.3",
+    "os": "Darwin 23.6.0",
+    "packages": {
+      "cards": "0.6.1",
+      "cardx": "0.2.5",
+      "gtsummary": "2.3.0",
+      "gt": "1.0.0",
+      "dplyr": "1.1.4",
+      "pharmaverseadam": "1.1.0",
+      "jsonlite": "2.0.0",
+      "yaml": "2.3.10",
+      "digest": "0.6.37"
+    }
+  },
+  "variants": {
+    "post_text": {
+      "file": "table.html",
+      "rtf": "table.rtf",
+      "rtf_hash": "sha256:74c394347346748c6eb1ce9021725cc362f73b82fc98c0bfe603124fcc9d619b",
+      "n_rows": 27
+    }
+  }
+}

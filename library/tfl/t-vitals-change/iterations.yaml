@@ -1,0 +1,13 @@
+display: t-vitals-change
+iterations:
+- version: v001
+  created: '2026-08-27T04:06:03Z'
+  actor: '@jwildfire'
+  change_request: Initial generation of VST02, targeting Table 14-7.02 of the reference
+    clinical study report for this study.
+  git_commit: ''
+  spec_hash: sha256:0d204e9c533b1d93eb583c63b8aa9eac5db5b6c58b7ea53e4609d472abbd2f6b
+  display_hash: sha256:590c09c0f2481bc89ee2e9f5bd6011a95861fbd02fad072b4771518acf4af54c
+  ard_hash: sha256:2561647451f1514c5997684dc2d556425f683ddb34689f60dd767741d14d3777
+  ard_rows: 441
+

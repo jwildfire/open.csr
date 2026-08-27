@@ -1,0 +1,63 @@
+{
+  "display": "t-conmeds",
+  "version": "v001",
+  "created": "2026-08-27T04:06:04Z",
+  "actor": "@jwildfire",
+  "change_request": "Initial generation of CMT01, targeting Table 14-7.04 of the reference clinical study report for this study.",
+  "regulatory_id": "CMT01",
+  "git_commit": null,
+  "spec_hash": "sha256:5b8045eb70da88bc2f3876b8a6fc2d35c907e604991fe8e467f4f32c097c32d1",
+  "display_hash": "sha256:6f1a46f8b7d057f930f1afffb6ed27c0566d1d981b0a59d2cdbde42f28853519",
+  "ard_hash": "sha256:87b879c9777a8c73321f8f9bad5b0ad516e2a7671a4fc01847434abe14c1a8b8",
+  "ard_rows": 414,
+  "ard_warnings": 0,
+  "ard_errors": 0,
+  "datasets": ["adsl", "adcm"],
+  "data": [
+    {
+      "dataset": "adsl",
+      "hash": "sha256:83b1d423d2b40766af8138864699137cfb6e0ccb064ca25369c1ed7216936918",
+      "n_row": 254,
+      "n_col": 60,
+      "source_pkg": "pharmaverseadam",
+      "source_version": "1.1.0"
+    },
+    {
+      "dataset": "adcm",
+      "hash": "sha256:28e100aaeacdd8ed81825a2278d7e76658ba508e0306bb2d659e44ff443eee0b",
+      "n_row": 7510,
+      "n_col": 95,
+      "source_pkg": "pharmaverseadam",
+      "source_version": "1.1.0"
+    }
+  ],
+  "environment": {
+    "r": "4.3.3",
+    "os": "Darwin 23.6.0",
+    "packages": {
+      "cards": "0.6.1",
+      "cardx": "0.2.5",
+      "gtsummary": "2.3.0",
+      "gt": "1.0.0",
+      "dplyr": "1.1.4",
+      "pharmaverseadam": "1.1.0",
+      "jsonlite": "2.0.0",
+      "yaml": "2.3.10",
+      "digest": "0.6.37"
+    }
+  },
+  "variants": {
+    "post_text": {
+      "file": "table.html",
+      "rtf": "table.rtf",
+      "rtf_hash": "sha256:36973eed1e3caf2961495cffe226caa8276c10fff67d3773bba1316f9b8d977f",
+      "n_rows": 46
+    },
+    "in_text": {
+      "file": "table-in-text.html",
+      "rtf": "table-in-text.rtf",
+      "rtf_hash": "sha256:819d7316f365ba1b0b78a65d376434b8666d44c2f68c4f2136eba1543d7cf68a",
+      "n_rows": 14
+    }
+  }
+}

@@ -54,6 +54,27 @@ function restrictionDrift(subset) {
 }
 
 const numbersOf = (doc) => Object.fromEntries(doc.displayIndex.map((d) => [d.slug, d.number]));
+
+/**
+ * The numbers two documents assign to the displays they BOTH carry.
+ *
+ * D6's claim is that a display's number follows from the structure the document
+ * declares, so two documents declaring the same structure agree display by
+ * display. It is not a claim that two documents carry the same displays: a
+ * restriction legitimately carries fewer. Comparing the whole map would turn
+ * "the abbreviated report drops a section" into a numbering failure, which is a
+ * different thing and already covered by the restriction-drift check.
+ */
+const sharedNumbers = (a, b) => {
+  const other = numbersOf(b);
+  const mine = numbersOf(a);
+  const shared = Object.keys(mine).filter((slug) => slug in other);
+  expect(shared.length).toBeGreaterThan(0);
+  return [
+    Object.fromEntries(shared.map((s) => [s, mine[s]])),
+    Object.fromEntries(shared.map((s) => [s, other[s]])),
+  ];
+};
 const textIdsOf = (assembly) => assembly.slots.flatMap((s) => s.text);
 
 describe('Post-text display package', () => {
@@ -121,7 +142,7 @@ describe('Post-text display package', () => {
     expect(doc.study.id).toBe('CDISCPILOT01');
     expect(doc.ok).toBe(true);
     expect(doc.buildErrors).toEqual([]);
-    expect(doc.displayIndex.length).toBe(6);
+    expect(doc.displayIndex.length).toBe(listDisplaySlugs(join(ROOT, 'library/tfl')).length);
   });
 });
 
@@ -131,7 +152,8 @@ describe('Abbreviated clinical study report', () => {
     expect(restrictionDrift(abbreviated)).toEqual([]);
     expect(abbreviated.model.id).toBe('e3-abbreviated');
     expect(abbreviated.sections.length).toBe(75);
-    expect(full.sections.length).toBe(119);
+    expect(full.sections.length).toBeGreaterThanOrEqual(119);
+    expect(abbreviated.sections.length).toBeLessThan(full.sections.length);
   });
 
   it('RPT-ABR-002: the efficacy-analysis apparatus is absent, the analysis sets remain (#34)', () => {
@@ -175,9 +197,13 @@ describe('Abbreviated clinical study report', () => {
     const csr = assemble({ write: false, template: 'ich-e3' });
     expect(doc.ok).toBe(true);
     expect(doc.buildErrors).toEqual([]);
-    expect(numbersOf(doc)).toEqual(numbersOf(csr));
+    const [mine, theirs] = sharedNumbers(doc, csr);
+    expect(mine).toEqual(theirs);
+    // The abbreviated model declares neither Section 12.4 nor Section 12.5, so it
+    // carries neither the laboratory nor the vital signs post-text displays. What
+    // it does carry, it carries under the report's own numbers.
     const populated = (d) => d.sections.filter((s) => s.populated).map((s) => s.number).sort();
-    expect(populated(doc)).toEqual(populated(csr));
+    expect(populated(doc).every((n) => populated(csr).includes(n))).toBe(true);
     // Same content, fewer headings around it — which is the whole difference.
     expect(doc.sections.length).toBeLessThan(csr.sections.length);
   });

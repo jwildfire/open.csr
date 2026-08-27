@@ -1,6 +1,6 @@
 {
   "schema": "opencsr/csr/v1",
-  "generated": "2026-08-27T02:57:39.646Z",
+  "generated": "2026-08-27T04:10:18.184Z",
   "study": {
     "id": "CDISCPILOT01",
     "title": "Safety and Efficacy of the Xanomeline Transdermal Therapeutic System (TTS) in Patients with Mild to Moderate Alzheimer's Disease",
@@ -9362,7 +9362,11 @@
       "TXT-SYN-1000: in the Text Library but not assembled into e3-abbreviated; not gated by this build",
       "TXT-SYN-1102: in the Text Library but not assembled into e3-abbreviated; not gated by this build",
       "TXT-SYN-1103: in the Text Library but not assembled into e3-abbreviated; not gated by this build",
-      "TXT-SYN-1200: in the Text Library but not assembled into e3-abbreviated; not gated by this build"
+      "TXT-SYN-1200: in the Text Library but not assembled into e3-abbreviated; not gated by this build",
+      "t-conmeds: in the TFL Library but not carried by e3-abbreviated; this document does not present it",
+      "t-vitals: in the TFL Library but not carried by e3-abbreviated; this document does not present it",
+      "t-vitals-change: in the TFL Library but not carried by e3-abbreviated; this document does not present it",
+      "t-weight: in the TFL Library but not carried by e3-abbreviated; this document does not present it"
     ],
     "blocks": [
       {
@@ -9735,9 +9739,13 @@
         "l-ae-serious",
         "t-ae-common",
         "t-ae-overview",
+        "t-conmeds",
         "t-demographics",
         "t-disposition",
-        "t-exposure"
+        "t-exposure",
+        "t-vitals",
+        "t-vitals-change",
+        "t-weight"
       ],
       "carried": [
         "l-ae-serious",
@@ -9747,7 +9755,12 @@
         "t-disposition",
         "t-exposure"
       ],
-      "notCarried": []
+      "notCarried": [
+        "t-conmeds",
+        "t-vitals",
+        "t-vitals-change",
+        "t-weight"
+      ]
     }
   }
 }
