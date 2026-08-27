@@ -19,6 +19,7 @@ Imports:
     digest,
     dplyr,
     gt,
+    haven,
     jsonlite,
     r2rtf,
     rlang,

@@ -1,7 +1,7 @@
 {
   "suite": "r-unit",
   "package": "opencsr",
-  "generated": "2026-08-27T04:14:43Z",
+  "generated": "2026-08-27T01:56:20Z",
   "environment": {
     "r": "4.3.3",
     "os": "Darwin 23.6.0"
@@ -95,6 +95,51 @@
       "status": "pass"
     },
     {
+      "file": "test-data-phuse.R",
+      "test": "TFL-PREP-008: every vendored PHUSE file matches its recorded provenance (#39)",
+      "status": "pass"
+    },
+    {
+      "file": "test-data-phuse.R",
+      "test": "TFL-PREP-009: the whole CDISCPILOT01 ADaM package is preparable (#39)",
+      "status": "pass"
+    },
+    {
+      "file": "test-data-phuse.R",
+      "test": "TFL-PREP-010: TRT01A on every dataset comes from the prepared ADSL (#39)",
+      "status": "pass"
+    },
+    {
+      "file": "test-data-phuse.R",
+      "test": "TFL-PREP-011: the PHUSE ADSL states its populations instead of deriving them (#39)",
+      "status": "pass"
+    },
+    {
+      "file": "test-data-phuse.R",
+      "test": "TFL-PREP-012: ADCM's two-study relabelling is reversed, and proven (#39)",
+      "status": "pass"
+    },
+    {
+      "file": "test-data-phuse.R",
+      "test": "TFL-PREP-013: the manifest names the upstream commit for PHUSE data (#39)",
+      "status": "pass"
+    },
+    {
+      "file": "test-data-phuse.R",
+      "test": "TFL-PREP-014: adding PHUSE data moves nothing the displays already stand on (#39)",
+      "status": "pass"
+    },
+    {
+      "file": "test-data-phuse.R",
+      "test": "TFL-PREP-015: the efficacy analysis set exists and fails loudly without EFFFL (#39)",
+      "status": "pass"
+    },
+    {
+      "file": "test-data-phuse.R",
+      "test": "TFL-SRC-001: the two sources' overlap matches the committed record (#39)",
+      "status": "pass"
+    },
+    {
       "file": "test-data-prep.R",
       "test": "TFL-PREP-001: screen failures are excluded from every prepared dataset (#1)",
       "status": "pass"
@@ -127,51 +172,6 @@
     {
       "file": "test-data-prep.R",
       "test": "TFL-PREP-007: treatment arms are ordered by dose, not alphabetically (#1)",
-      "status": "pass"
-    },
-    {
-      "file": "test-displays-vitals.R",
-      "test": "DSP-VS-001: every rendered cell of the vital signs summary is what the reference report printed (#1)",
-      "status": "pass"
-    },
-    {
-      "file": "test-displays-vitals.R",
-      "test": "DSP-VS-002: baseline and end of treatment select one record per subject, parameter and position (#1)",
-      "status": "pass"
-    },
-    {
-      "file": "test-displays-vitals.R",
-      "test": "DSP-VSC-001: every rendered cell of the vital signs change display is what the reference report printed (#1)",
-      "status": "pass"
-    },
-    {
-      "file": "test-displays-vitals.R",
-      "test": "DSP-WT-001: every rendered cell of the weight display is what the reference report printed (#1)",
-      "status": "pass"
-    },
-    {
-      "file": "test-displays-vitals.R",
-      "test": "DSP-CM-001: concomitant medication counts match ADCM computed directly (#1)",
-      "status": "pass"
-    },
-    {
-      "file": "test-displays-vitals.R",
-      "test": "DSP-CM-002: a subject counted for a medication is counted for its class (#1)",
-      "status": "pass"
-    },
-    {
-      "file": "test-displays-vitals.R",
-      "test": "DSP-CM-003: the in-text variant applies the 5% threshold its spec declares (#1)",
-      "status": "pass"
-    },
-    {
-      "file": "test-displays-vitals.R",
-      "test": "DSP-VWC-001: all four displays group by planned treatment over the safety analysis set (#1)",
-      "status": "pass"
-    },
-    {
-      "file": "test-displays-vitals.R",
-      "test": "DSP-VWC-002: the committed three-route agreement record is green and describes this iteration (#1)",
       "status": "pass"
     },
     {

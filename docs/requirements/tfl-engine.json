@@ -9,6 +9,15 @@
     "TFL-PREP-005": "Every prepared dataset is described in a manifest with row/column counts, a SHA-256 content hash, and the source package and version.",
     "TFL-PREP-006": "The analysis-set registry maps `analysis_set` keys onto population flags and rejects unknown sets and datasets lacking the required flag.",
     "TFL-PREP-007": "Treatment arms are ordered by dose, not alphabetically, in every prepared dataset.",
+    "TFL-PREP-008": "Every vendored PHUSE file matches the SHA-256 and byte count recorded in `PROVENANCE.json`, which pins the upstream repository, commit, per-file git blob SHA-1 and MIT licence.",
+    "TFL-PREP-009": "`prepare_data()` exposes the whole CDISCPILOT01 ADaM package — the ten datasets the study's `define.xml` documents, plus PHUSE's added `adcm` — and rejects an unknown dataset name by listing the known ones.",
+    "TFL-PREP-010": "`TRT01A` on every non-ADSL dataset is taken from the prepared ADSL rather than the dataset's own `TRTA`/`TRTP`, so no display can group on an arm the subject-level table disagrees with.",
+    "TFL-PREP-011": "On the PHUSE source the study's own `SAFFL`/`ITTFL`/`EFFFL` and baseline vitals are used as stated rather than re-derived, screen-failure absence is asserted rather than assumed, and `AGEGR1` carries the study's three age groups.",
+    "TFL-PREP-012": "ADCM's relabelling of even-numbered sites into a synthetic second study is reversed, and every remapped subject is proven to be the same subject by age, sex and actual treatment before the remap is accepted.",
+    "TFL-PREP-013": "The manifest records the upstream repository path and pinned commit for every PHUSE-sourced dataset, in the same `source_pkg`/`source_version` pair a package uses.",
+    "TFL-PREP-014": "Adding the PHUSE package moves no domain `{pharmaverseadam}` already served, so every dataset the committed displays read is unchanged.",
+    "TFL-PREP-015": "The analysis-set registry resolves `efficacy` to `EFFFL`; a source that states no efficacy set fails by naming the missing flag rather than returning every subject.",
+    "TFL-SRC-001": "The two packagings of CDISCPILOT01 are measured against each other on the domains they share, and every divergence matches the record committed at `quality/data/source-agreement.json`; an unrecorded divergence fails the build.",
     "TFL-SPEC-001": "An analysis method outside the documented vocabulary is rejected, naming the offending analysis and listing the known methods.",
     "TFL-SPEC-002": "Missing required keys and missing per-method fields (`variables`, `hierarchy`, `custom`) are rejected before any `{cards}` call is attempted.",
     "TFL-SPEC-003": "A display specification must carry a study identifier, a population label and a data cut-off — the ICH E3 header requirement — as non-empty strings.",
@@ -124,6 +133,87 @@
       "id": "TFL-PREP-007",
       "area": "",
       "text": "Treatment arms are ordered by dose, not alphabetically, in every prepared dataset.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-PREP-008",
+      "area": "",
+      "text": "Every vendored PHUSE file matches the SHA-256 and byte count recorded in `PROVENANCE.json`, which pins the upstream repository, commit, per-file git blob SHA-1 and MIT licence.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-PREP-009",
+      "area": "",
+      "text": "`prepare_data()` exposes the whole CDISCPILOT01 ADaM package — the ten datasets the study's `define.xml` documents, plus PHUSE's added `adcm` — and rejects an unknown dataset name by listing the known ones.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-PREP-010",
+      "area": "",
+      "text": "`TRT01A` on every non-ADSL dataset is taken from the prepared ADSL rather than the dataset's own `TRTA`/`TRTP`, so no display can group on an arm the subject-level table disagrees with.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-PREP-011",
+      "area": "",
+      "text": "On the PHUSE source the study's own `SAFFL`/`ITTFL`/`EFFFL` and baseline vitals are used as stated rather than re-derived, screen-failure absence is asserted rather than assumed, and `AGEGR1` carries the study's three age groups.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-PREP-012",
+      "area": "",
+      "text": "ADCM's relabelling of even-numbered sites into a synthetic second study is reversed, and every remapped subject is proven to be the same subject by age, sex and actual treatment before the remap is accepted.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-PREP-013",
+      "area": "",
+      "text": "The manifest records the upstream repository path and pinned commit for every PHUSE-sourced dataset, in the same `source_pkg`/`source_version` pair a package uses.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-PREP-014",
+      "area": "",
+      "text": "Adding the PHUSE package moves no domain `{pharmaverseadam}` already served, so every dataset the committed displays read is unchanged.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-PREP-015",
+      "area": "",
+      "text": "The analysis-set registry resolves `efficacy` to `EFFFL`; a source that states no efficacy set fails by naming the missing flag rather than returning every subject.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "TFL-SRC-001",
+      "area": "",
+      "text": "The two packagings of CDISCPILOT01 are measured against each other on the domains they share, and every divergence matches the record committed at `quality/data/source-agreement.json`; an unrecorded divergence fails the build.",
       "source": "",
       "evidence": "",
       "link": "",

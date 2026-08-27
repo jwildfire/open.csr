@@ -60,7 +60,10 @@ test_that("TFL-PREP-005: the manifest describes every prepared dataset with a sh
 
 test_that("TFL-PREP-006: the analysis-set registry rejects unknown sets and applies flags (#1)", {
   prepared <- fixture_data()
-  expect_error(apply_analysis_set(prepared$adsl, "efficacy"), "Unknown analysis_set")
+  expect_error(apply_analysis_set(prepared$adsl, "responders"), "Unknown analysis_set")
+  # 'efficacy' IS a known set (it maps to EFFFL); on a source that does not
+  # state one, the failure must name the missing flag, not the set
+  expect_error(apply_analysis_set(prepared$adsl, "efficacy"), "population flag 'EFFFL'")
   expect_equal(nrow(apply_analysis_set(prepared$adsl, "safety")), 254)
   expect_equal(nrow(apply_analysis_set(prepared$adsl, "all")), 254)
   expect_equal(
