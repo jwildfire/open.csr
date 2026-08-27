@@ -1,0 +1,57 @@
+{
+  "display": "t-cibic-week24",
+  "version": "v002",
+  "created": "2026-08-27T02:37:29Z",
+  "actor": "@jwildfire",
+  "change_request": "Initial generation.",
+  "regulatory_id": "EFF02",
+  "git_commit": null,
+  "spec_hash": "sha256:190d1760455c525851b8e46bcdc832e327d003c61819565c98dfaf7430dd231b",
+  "display_hash": "sha256:7d1c9681e127b2587c2986d34d193c0c6680444a62ed50102a998f7ad2e311ce",
+  "ard_hash": "sha256:ac80459459bb4be27bcd79bb0c13609c51f3612a3c96917d726a404f1d5c0a14",
+  "ard_rows": 43,
+  "ard_warnings": 0,
+  "ard_errors": 0,
+  "datasets": ["adsl", "adqscibc"],
+  "data": [
+    {
+      "dataset": "adsl",
+      "hash": "sha256:6534192e6ae2a8789015148d2068ecdd8421791ea6d7f9cc307fef1db97945f9",
+      "n_row": 254,
+      "n_col": 53,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    },
+    {
+      "dataset": "adqscibc",
+      "hash": "sha256:2af92608855a146509d9c39acf5afea33dceffc23cc24efde28a36f5771d5ea8",
+      "n_row": 730,
+      "n_col": 37,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    }
+  ],
+  "environment": {
+    "r": "4.3.3",
+    "os": "Darwin 23.6.0",
+    "packages": {
+      "cards": "0.6.1",
+      "cardx": "0.2.5",
+      "gtsummary": "2.3.0",
+      "gt": "1.0.0",
+      "dplyr": "1.1.4",
+      "pharmaverseadam": "1.1.0",
+      "jsonlite": "2.0.0",
+      "yaml": "2.3.10",
+      "digest": "0.6.37"
+    }
+  },
+  "variants": {
+    "post_text": {
+      "file": "table.html",
+      "rtf": "table.rtf",
+      "rtf_hash": "sha256:73649eaf774bd72777179cc064b7e3bf682100426a1550ff9f49a8c0cf08fd06",
+      "n_rows": 12
+    }
+  }
+}
