@@ -431,6 +431,228 @@ export function loadCsr(rootDir) {
   };
 }
 
+// ---------------------------------------------------------------------------
+// 2b. The document set — one site, every template object in the library
+// ---------------------------------------------------------------------------
+//
+// The Report Template Library is plural (#28): `library/templates/<id>/` holds a
+// document model plus an assembly, and `scripts/assemble.mjs --all` writes one
+// assembled document per object into docs/assembled/. The site follows the
+// library rather than a list of its own — add a third template object, assemble
+// it, and it acquires a reader, a template page, a nav entry and a home-page row
+// with no change to site/config.json and no change here.
+//
+// config.documents stays the place for editorial metadata (a nicer title, an
+// abbreviation, a blurb) and for documents that are PLANNED and therefore have
+// no template object to discover. It is a merge, never a gate: a template object
+// the config has never heard of still publishes, titled from the assembled
+// document's own template block.
+
+/** ich-e3 writes docs/assembled/csr.*; every other object writes under its id. */
+export function documentBasename(templateId) {
+  return templateId === 'ich-e3' ? 'csr' : templateId;
+}
+
+/** Template ids in library/templates/ — a directory holding a sections.yaml. */
+export function listTemplateObjects(rootDir) {
+  const dir = path.join(rootDir, 'library', 'templates');
+  if (!existsSync(dir)) return [];
+  return readdirSync(dir, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory() && existsSync(path.join(dir, entry.name, 'sections.yaml')))
+    .map((entry) => entry.name)
+    .sort();
+}
+
+/**
+ * Where a document's prose stands, read off the assembled document rather than
+ * asserted: `approval.state` travels with every block the assembler placed.
+ * A document whose blocks are unreviewed says so on its own page (#32) — the
+ * demo site publishes drafts, and a draft that reads as finished is the failure
+ * mode a colleague cannot see.
+ */
+export function proseState(json) {
+  const blocks = (json?.textBlocks || []).filter((block) => block.included !== false);
+  const unapproved = blocks.filter((block) => (block.approval?.state || 'draft') !== 'approved');
+  return {
+    total: blocks.length,
+    approved: blocks.length - unapproved.length,
+    unapproved: unapproved.length,
+    draft: unapproved.length > 0,
+    ids: unapproved.map((block) => block.id)
+  };
+}
+
+/**
+ * Every document this site can show, in library order with the config's own
+ * documents first. Each entry carries what a reader page needs — the assembled
+ * JSON/HTML, the template model, where it publishes, and how far its prose has
+ * been reviewed.
+ *
+ * The first BUILT document keeps the site's original `reader/` and `templates/`
+ * URLs; every other document publishes one level down under its template id, so
+ * no published link changes when the library grows.
+ */
+export function loadDocuments(rootDir, config = {}) {
+  const declared = config.documents || [];
+  const objects = listTemplateObjects(rootDir);
+
+  const built = objects.map((templateId) => {
+    const meta = declared.find((doc) => doc.template === templateId) || {};
+    const basename = documentBasename(templateId);
+    const json = readJsonFile(path.join(rootDir, 'docs', 'assembled', `${basename}.json`));
+    const html = readText(path.join(rootDir, 'docs', 'assembled', `${basename}.html`));
+    const dir = path.join(rootDir, 'library', 'templates', templateId);
+    return {
+      id: meta.id || templateId,
+      templateId,
+      basename,
+      title: meta.title || json?.template?.title || templateId,
+      abbr: meta.abbr || null,
+      // The blurb a config entry gives, or the model's own provenance — an
+      // undeclared template object describes itself rather than going unlabelled.
+      blurb: meta.blurb || json?.template?.source || '',
+      status: json ? 'built' : 'planned',
+      declared: !!meta.id,
+      json,
+      html,
+      template: {
+        id: templateId,
+        dir: path.relative(rootDir, dir).replaceAll('\\', '/'),
+        sections: existsSync(path.join(dir, 'sections.yaml'))
+          ? readYamlFile(path.join(dir, 'sections.yaml'))
+          : null,
+        assembly: existsSync(path.join(dir, 'assembly.yaml'))
+          ? readYamlFile(path.join(dir, 'assembly.yaml'))
+          : null
+      },
+      prose: proseState(json)
+    };
+  });
+
+  // Planned documents: declared in the config with no template object behind
+  // them yet. They keep their place in the list so the gap is visible.
+  const planned = declared
+    .filter((doc) => !doc.template || !objects.includes(doc.template))
+    .map((doc) => ({
+      id: doc.id,
+      templateId: doc.template || null,
+      basename: null,
+      title: doc.title || doc.id,
+      abbr: doc.abbr || null,
+      blurb: doc.blurb || '',
+      status: 'planned',
+      declared: true,
+      json: null,
+      html: null,
+      template: null,
+      prose: proseState(null)
+    }));
+
+  // Documents you can open lead, in the config's own order; anything the library
+  // holds that the config has never named follows; planned documents come last,
+  // because a gap is context and not a destination.
+  const order = (doc) => {
+    const index = declared.findIndex((entry) => entry.id === doc.id);
+    return index < 0 ? declared.length + 1 : index;
+  };
+  const documents = [...built, ...planned].sort(
+    (a, b) =>
+      (a.status === 'built' ? 0 : 1) - (b.status === 'built' ? 0 : 1) ||
+      order(a) - order(b) ||
+      String(a.id).localeCompare(String(b.id))
+  );
+
+  let primaryTaken = false;
+  for (const doc of documents) {
+    const primary = doc.status === 'built' && !primaryTaken;
+    if (primary) primaryTaken = true;
+    doc.primary = primary;
+    // Published paths, relative to the site root. The primary document keeps the
+    // URLs the site has always had (reader/index.html, templates/index.html);
+    // every other document is a sibling FILE in the same directory rather than a
+    // nested directory, so every page in the site sits exactly one level down and
+    // the `../gallery/…`, `../text/…`, `../quality/…` links the readers and the
+    // trace index emit resolve identically for all of them.
+    doc.readerPath = primary ? 'reader/index.html' : `reader/${doc.templateId}.html`;
+    doc.templatePath = primary ? 'templates/index.html' : `templates/${doc.templateId}.html`;
+    doc.root = '../';
+  }
+  return documents;
+}
+
+/** The documents a visitor can actually open. */
+export function builtDocuments(documents = []) {
+  return documents.filter((doc) => doc.status === 'built');
+}
+
+/**
+ * The strip that makes the library plural to a reader: every built document,
+ * the current one marked, each carrying the state of its own prose. Rendered on
+ * both the reader and the template pages, from the same list, so a third
+ * template object joins both without a line of new markup.
+ */
+export function renderDocumentSwitcher({
+  documents = [],
+  current = null,
+  root = '',
+  view = 'reader'
+} = {}) {
+  const open = builtDocuments(documents);
+  if (open.length < 2) return '';
+  const key = view === 'templates' ? 'templatePath' : 'readerPath';
+  const items = open
+    .map((doc) => {
+      const on = doc.id === current;
+      const flag = doc.prose.draft
+        ? `<span class="doc-flag warn" title="${escapeHtml(
+            `${doc.prose.unapproved} of ${doc.prose.total} prose blocks are unapproved drafts`
+          )}">draft prose</span>`
+        : '';
+      const label = escapeHtml(doc.title);
+      return on
+        ? `<span class="doc-tab current" aria-current="page">${label}${flag}</span>`
+        : `<a class="doc-tab" href="${escapeHtml(root + doc[key])}">${label}${flag}</a>`;
+    })
+    .join('');
+  return (
+    `<nav class="doc-switch" aria-label="Documents in this study">` +
+    `<span class="doc-switch-label">Documents</span>${items}</nav>`
+  );
+}
+
+/**
+ * One honest line about the prose in this document, stated where it is read.
+ *
+ * The demo site publishes whatever the assembler placed, and the approval gate
+ * only holds GENERATED-tier blocks — a boilerplate or parameterized block can be
+ * an unreviewed draft and still be assembled into the document. So "assembled"
+ * does not mean "reviewed", and a page that does not say which one it is invites
+ * a reader to assume the stronger claim (#32).
+ */
+export function renderProseNotice(doc) {
+  const prose = doc?.prose;
+  if (!prose || !prose.total) return '';
+  if (!prose.draft) {
+    return (
+      `<p class="prose-state ok">Prose: all ${prose.total} block` +
+      `${prose.total === 1 ? '' : 's'} in this document carry an approved signature in their ` +
+      `frontmatter.</p>`
+    );
+  }
+  const all = prose.unapproved === prose.total;
+  return (
+    `<div class="callout warn prose-state" role="note">` +
+    `<strong>Draft prose — not reviewed by anyone.</strong> ` +
+    `${all ? 'All' : `${prose.unapproved} of`} ${prose.total} prose block` +
+    `${prose.total === 1 ? '' : 's'} in this document ` +
+    `${all ? 'are' : 'are'} unapproved drafts: no human has read or signed off on the words ` +
+    `below. They are published to exercise the assembler against a second document model, ` +
+    `not to be read as a statement about this study. The numbers are bound to the same ` +
+    `committed ARDs as every other document here and are gated the same way; the sentences ` +
+    `around them are not.</div>`
+  );
+}
+
 export function loadTemplate(rootDir, config) {
   const dir = path.join(rootDir, config.template?.dir || 'library/templates/ich-e3');
   return {
@@ -605,7 +827,7 @@ function pageHeader(eyebrow, title, lede) {
 // 5. Home
 // ---------------------------------------------------------------------------
 
-export function renderHome({ config, displays, textBlocks, quality }) {
+export function renderHome({ config, displays, textBlocks, quality, documents = [] }) {
   const counts = {
     displays: displays.length,
     built: displays.filter((d) => d.status !== 'planned').length,
@@ -662,8 +884,9 @@ export function renderHome({ config, displays, textBlocks, quality }) {
       `<a class="button ghost" href="quality/index.html">See the evidence</a>` +
       `<a class="button ghost" href="docs/index.html">Read the design</a>` +
       `</p>`,
-    `<p class="sub">The demo is one view with four ways in — the assembled report, the table and ARD ` +
-      `behind any number, the prose that quotes it, and the ICH E3 model it all assembles into.</p>`,
+    `<p class="sub">The demo is one view with four ways in — the assembled documents, the table and ` +
+      `ARD behind any number, the prose that quotes them, and the document models they assemble ` +
+      `into.</p>`,
     `</section>`,
 
     `<section class="stat-row">`,
@@ -672,6 +895,8 @@ export function renderHome({ config, displays, textBlocks, quality }) {
     statTile(counts.requirements, 'reviewed requirements', `${quality.matrices} matrices`),
     statTile(counts.tests, 'test records', `${quality.suites.join(' · ') || 'awaiting a run'}`),
     `</section>`,
+
+    documentsPanel(documents),
 
     `<section class="panel">`,
     `<h2>The gap open.csr occupies</h2>`,
@@ -711,10 +936,10 @@ export function renderHome({ config, displays, textBlocks, quality }) {
       'Numbers arrive as <code>{{ard:…}}</code> bindings',
       'Approval state travels in the frontmatter'
     ]),
-    architectureCard('Report Template Library', 'library/templates/ich-e3/', [
-      'ICH E3 as data: 16 sections, content models',
-      'Assembly slots and 14.x numbering at build time',
-      '16.1.9 provenance appendix generated mechanically'
+    architectureCard('Report Template Library', 'library/templates/&lt;id&gt;/', [
+      'A document as data: sections, content models',
+      'Assembly slots and display numbering at build time',
+      'Provenance appendix generated mechanically'
     ]),
     `</div>`,
     `<p class="sub">How the four connect, end to end, with one display followed from the ` +
@@ -730,6 +955,58 @@ export function renderHome({ config, displays, textBlocks, quality }) {
   → display vNNN (manifest: spec hash, commit) → CSR slot (assembly.yaml) → text binding</pre>`,
     `<p class="sub">The <a href="reader/index.html">CSR Reader</a> renders that chain as a trace panel: ` +
       `click a bound number and the whole provenance path opens beside it.</p>`,
+    `</section>`
+  ].join('\n');
+}
+
+/**
+ * The documents this site publishes, on the front page.
+ *
+ * Derived from the library rather than written here: assemble a third template
+ * object and its card appears, with its own section count, its own prose state
+ * and its own two links. A document whose prose has not been reviewed says so on
+ * the card, not only on the page you land on after clicking it (#32).
+ */
+function documentsPanel(documents = []) {
+  const open = builtDocuments(documents);
+  if (!open.length) return '';
+  const cards = documents
+    .map((doc) => {
+      const built = doc.status === 'built';
+      const sections = doc.json?.sections?.length || 0;
+      const populated = (doc.json?.sections || []).filter((section) => section.populated).length;
+      const facts = built
+        ? `${populated} of ${sections} sections populated · ${doc.prose.total} prose block` +
+          `${doc.prose.total === 1 ? '' : 's'}`
+        : doc.blurb || 'Planned';
+      const flag = doc.prose?.draft
+        ? chip(`${doc.prose.unapproved} unapproved draft blocks`, 'warn',
+            'No human has reviewed the prose in this document')
+        : built
+          ? chip('prose approved', 'good')
+          : chip('planned', 'muted');
+      const links = built
+        ? `<p class="sub"><a href="${escapeHtml(doc.readerPath)}">Read it →</a> · ` +
+          `<a href="${escapeHtml(doc.templatePath)}">Its document model →</a></p>`
+        : '';
+      return (
+        `<article class="card doc-card">` +
+        `<div class="card-top">${flag}</div>` +
+        `<h3>${escapeHtml(doc.title)}</h3>` +
+        `<p class="mono-path">${escapeHtml(doc.template?.dir || 'library/templates/')}</p>` +
+        `<p>${escapeHtml(facts)}</p>` +
+        links +
+        `</article>`
+      );
+    })
+    .join('');
+  return [
+    `<section class="panel">`,
+    `<h2>The documents</h2>`,
+    `<p>One study, one set of ARDs, one values store — and every document the template library ` +
+      `holds, assembled from them. The same display is a different table number in each, from one ` +
+      `unchanged specification.</p>`,
+    `<div class="card-grid three">${cards}</div>`,
     `</section>`
   ].join('\n');
 }
@@ -1267,18 +1544,37 @@ export function renderCsrReader({
   ards,
   traceIndex,
   textBlocks = [],
-  editable = null
+  editable = null,
+  // The document set this one belongs to. Passing it turns the page from "the
+  // CSR Reader" into a reader for whichever document it was handed — which is
+  // what lets one renderer serve every template object in the library (#32).
+  documents = [],
+  root = ''
 }) {
   const normalized = normalizeCsr(csr.json);
   const bySlug = Object.fromEntries(displays.map((display) => [display.slug, display]));
 
+  // `csr` may be a bare {json, html} pair (the original call shape) or a full
+  // document descriptor from loadDocuments. Either way the title comes from the
+  // document that was assembled rather than from a constant.
+  const doc = csr.id
+    ? csr
+    : {
+        id: 'csr',
+        title: csr.json?.template?.title || 'Clinical Study Report',
+        prose: proseState(csr.json)
+      };
+  const modelName = csr.json?.template?.title || 'ICH E3';
+
   const head = pageHeader(
     'Assembled document',
-    'CSR Reader',
-    'The ICH E3 document model, filled from the text library and the display library. Every bound ' +
-      'number and every display is clickable: the trace panel answers which dataset, which spec, ' +
-      'which ARD row, which display, which sentence.'
+    doc.title || 'CSR Reader',
+    `The ${escapeHtml(modelName)} document model, filled from the text library and the display ` +
+      'library. Every bound number and every display is clickable: the trace panel answers which ' +
+      'dataset, which spec, which ARD row, which display, which sentence.'
   );
+  const switcher = renderDocumentSwitcher({ documents, current: doc.id, root, view: 'reader' });
+  const notice = renderProseNotice(doc);
 
   const tracePanel =
     `<aside class="trace" id="trace" hidden aria-live="polite">` +
@@ -1296,6 +1592,7 @@ export function renderCsrReader({
         );
     return [
       head,
+      switcher,
       `<p class="callout">Once <span class="mono">docs/assembled/csr.json</span> exists this page ` +
         `renders it section by section with the trace panel attached. The trace index below is already ` +
         `built from the displays that exist.</p>`,
@@ -1350,6 +1647,8 @@ export function renderCsrReader({
 
   return [
     head,
+    switcher,
+    notice,
     `<div class="reader">`,
     `<nav class="reader-toc" aria-label="Document sections"><h2>Contents</h2><ol>${toc}</ol></nav>`,
     `<article class="csr-doc">${body}</article>`,

@@ -25,6 +25,15 @@
       "blurb": "The ICH E3 report assembled from the text library and the display library."
     },
     {
+      "id": "e3-synopsis",
+      "title": "Study Synopsis",
+      "abbr": "Synopsis",
+      "template": "e3-synopsis",
+      "source": "docs/assembled/e3-synopsis.json",
+      "status": "built",
+      "blurb": "The ICH E3 Annex I synopsis of the same study, assembled from the same ARDs and the same values store as the report. Its prose is unreviewed draft."
+    },
+    {
       "id": "sap",
       "title": "Statistical Analysis Plan",
       "abbr": "SAP",
