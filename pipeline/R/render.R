@@ -287,13 +287,35 @@ passes_threshold <- function(df, min_pct) {
 }
 
 #' Drop section headings left with no data rows beneath them
+#'
+#' A heading is empty when no data row falls under it — that is, when scanning
+#' forward from it reaches the next heading at the same or a shallower indent
+#' (or the end of the table) without passing a data row. Headings nested under
+#' it are scanned through rather than treated as the end of its span, so a
+#' display can stack headings — measure, then position, then visit — and keep
+#' every level that has data somewhere beneath it. A heading whose own span
+#' holds only other empty headings is still dropped, and so is a trailing one.
 #' @noRd
 drop_empty_sections <- function(out) {
+  if (!length(out)) {
+    return(out)
+  }
+  is_section <- vapply(out, function(r) isTRUE(r$section), logical(1))
+  indent <- vapply(out, function(r) as.integer(r$indent), integer(1))
   keep <- rep(TRUE, length(out))
   for (i in seq_along(out)) {
-    if (!isTRUE(out[[i]]$section)) next
-    nxt <- if (i < length(out)) out[[i + 1]] else NULL
-    if (is.null(nxt) || isTRUE(nxt$section)) keep[i] <- FALSE
+    if (!is_section[i]) next
+    has_data <- FALSE
+    j <- i + 1L
+    while (j <= length(out)) {
+      if (!is_section[j]) {
+        has_data <- TRUE
+        break
+      }
+      if (indent[j] <= indent[i]) break
+      j <- j + 1L
+    }
+    keep[i] <- has_data
   }
   out[keep]
 }

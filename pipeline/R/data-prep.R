@@ -12,6 +12,15 @@ trt_levels <- function() {
 #' @noRd
 screen_failure_label <- function() "Screen Failure"
 
+#' Highest planned visit number inside the treatment period
+#'
+#' The CDISCPILOT01 statistical analysis plan defines the treatment period as
+#' "any planned visit after Week 0 (Visit 3), up to and including Week 24
+#' (Visit 12)". `AVISITN` carries the week number, so the treatment period is
+#' `0 < AVISITN <= 24`. Week 26 is the follow-up visit and is outside it.
+#' @noRd
+treatment_period_last_week <- function() 24
+
 #' Prepare the demonstration ADaM datasets
 #'
 #' Reads the public CDISCPILOT01 ADaM datasets shipped in `{pharmaverseadam}`
@@ -50,10 +59,30 @@ screen_failure_label <- function() "Screen Failure"
 #'     `{pharmaverseadam}`, and a demographic display must not join
 #'     subject-level data at render time, so the merge happens here. ADVS is
 #'     read for this derivation whether or not it was requested in `datasets`.}
-#'   \item{`TRT01A`}{Cast to a factor with levels in dose order (see
-#'     [trt_levels()]); the screen-failure level is dropped.}
+#'   \item{`TRT01A`, `TRT01P`}{Cast to factors with levels in dose order (see
+#'     [trt_levels()]); the screen-failure level is dropped. Actual and planned
+#'     treatment differ for twelve subjects in this study, so displays state
+#'     which one they group by.}
 #'   \item{`TRTEMFL` (ADAE)}{`NA` recoded to `"N"`.}
 #'   \item{`AESEV` (ADAE)}{Cast to a factor ordered MILD < MODERATE < SEVERE.}
+#'   \item{`BLVAL`, `CHGBL` (ADVS)}{Derived. `BLVAL` is the subject's Week 0
+#'     (`AVISIT == "Baseline"`) value of the same parameter at the same time
+#'     point, taken from an observed record (`is.na(DTYPE)`); `CHGBL` is
+#'     `AVAL - BLVAL`. `{pharmaverseadam}` ships `BASE`/`CHG`, but its `BASE`
+#'     falls back to a screening measurement when a subject has no Week 0 record
+#'     — which would report a change from baseline for a subject the same
+#'     display reports no baseline for. `CHGBL` is missing for those subjects,
+#'     so the baseline rows and the change rows describe the same subjects.}
+#'   \item{`EOTFL` (ADVS)}{Derived end-of-treatment flag: `"Y"` on the record
+#'     carrying the subject's last observed value of that parameter and time
+#'     point inside the treatment period, and `"N"` everywhere else. The
+#'     treatment period is the analysis plan's — planned visits after Week 0 up
+#'     to and including Week 24 (see [treatment_period_last_week()]) — so
+#'     unscheduled visits, the Week 26 follow-up visit and derived records
+#'     (`DTYPE`) are never selected. `{pharmaverseadam}` ships an
+#'     `AVISIT == "End of Treatment"` record (`DTYPE == "LOV"`), but it exists
+#'     for only 189 of 254 subjects and is not restricted to Week 24, so it does
+#'     not implement this definition.}
 #' }
 #'
 #' # Manifest
@@ -73,7 +102,7 @@ screen_failure_label <- function() "Screen Failure"
 #' data_manifest(prepared)
 #' }
 #' @export
-prepare_data <- function(datasets = c("adsl", "adae", "adex", "adlb", "advs"),
+prepare_data <- function(datasets = c("adsl", "adae", "adex", "adlb", "advs", "adcm"),
                          source_pkg = "pharmaverseadam") {
   if (!requireNamespace(source_pkg, quietly = TRUE)) {
     stop("Package '", source_pkg, "' is required by prepare_data().", call. = FALSE)
@@ -93,7 +122,11 @@ prepare_data <- function(datasets = c("adsl", "adae", "adex", "adlb", "advs"),
     df <- raw[[nm]]
     df <- df[df$USUBJID %in% keep_ids, , drop = FALSE]
     df$TRT01A <- factor(as.character(df$TRT01A), levels = trt_levels())
+    if ("TRT01P" %in% names(df)) {
+      df$TRT01P <- factor(as.character(df$TRT01P), levels = trt_levels())
+    }
     if (nm == "adae") df <- prep_adae(df)
+    if (nm == "advs") df <- prep_advs(df)
     out[[nm]] <- tibble::as_tibble(df)
   }
 
@@ -129,6 +162,7 @@ prep_adsl <- function(adsl, vitals = NULL) {
   )
   adsl$DISCREAS <- factor(adsl$DISCREAS, levels = c("Death", "Other/Not specified"))
   adsl$TRT01A <- factor(as.character(adsl$TRT01A), levels = trt_levels())
+  adsl$TRT01P <- factor(as.character(adsl$TRT01P), levels = trt_levels())
   adsl$SEX <- factor(as.character(adsl$SEX), levels = c("F", "M"))
   adsl$RACE <- factor(as.character(adsl$RACE))
   adsl$AGEGR1 <- factor(as.character(adsl$AGEGR1), levels = c("18-64", ">64"))
@@ -153,6 +187,46 @@ merge_baseline_vitals <- function(adsl, vitals) {
     adsl[[map[[nm]]]] <- sub$AVAL[match(adsl$USUBJID, sub$USUBJID)]
   }
   adsl
+}
+
+#' Analysis key for a vital-sign series
+#'
+#' One subject's repeated measurements of one parameter at one time point. Blood
+#' pressure and pulse are collected supine and after one and three minutes
+#' standing, and each position is its own series: a subject's baseline SBP after
+#' standing for three minutes is not the baseline for their supine SBP.
+#' @noRd
+advs_series_key <- function(advs) {
+  paste(
+    advs$USUBJID, advs$PARAMCD,
+    ifelse(is.na(advs$ATPT), "", as.character(advs$ATPT)),
+    sep = "\r"
+  )
+}
+
+#' ADVS derivations (see [prepare_data()])
+#'
+#' Adds `BLVAL`, `CHGBL` and `EOTFL`. Records `{pharmaverseadam}` derived by
+#' averaging or by last-observation carry-forward are marked by `DTYPE`; only
+#' observed records (`is.na(DTYPE)`) take part, so a derived record can never be
+#' a subject's baseline or their end-of-treatment measurement.
+#' @noRd
+prep_advs <- function(advs) {
+  key <- advs_series_key(advs)
+  observed <- is.na(advs$DTYPE) & !is.na(advs$AVAL)
+
+  is_baseline <- observed & !is.na(advs$AVISIT) & advs$AVISIT == "Baseline"
+  advs$BLVAL <- advs$AVAL[is_baseline][match(key, key[is_baseline])]
+  advs$CHGBL <- advs$AVAL - advs$BLVAL
+
+  on_treatment <- observed & !is.na(advs$AVISITN) &
+    advs$AVISITN > 0 & advs$AVISITN <= treatment_period_last_week()
+  last_week <- tapply(advs$AVISITN[on_treatment], key[on_treatment], max)
+  advs$EOTFL <- ifelse(
+    on_treatment & advs$AVISITN == unname(last_week[key]),
+    "Y", "N"
+  )
+  advs
 }
 
 #' ADAE derivations (see [prepare_data()])
