@@ -138,6 +138,42 @@ own footnotes so a reader of the table sees it:
 | DSP-VWC-001 | All four displays group by planned treatment over the safety analysis set, carry no pooled Total column, and head their columns with the safety analysis set sizes -- which differ from the actual-treatment sizes, so the choice is consequential rather than cosmetic. | Regulatory | `test-displays-vitals.R` | Verified |
 | DSP-VWC-002 | The committed three-route agreement record reports no disagreement, leaves no publishable statistic unchecked, and describes the iteration of each display that is committed now rather than an earlier one. | Quality evidence | `test-displays-vitals.R` | Verified |
 
+## Efficacy — ADAS-Cog and NPI-X (EFT01–EFT09)
+
+Nine displays built from the CDISC pilot's own ADaM package (`adqsadas`,
+`adqsnpix`), specified by the CDISCPILOT01 statistical analysis plan and
+targeted at the reference report's Section 14 displays.
+
+These are qualified by three routes, not two. Route A is the pipeline; route B
+is an independent recomputation in base R that never loads `{opencsr}`; route C
+is the CDISC pilot's own published tables, computed in SAS by other people in
+2006–2007. `qc/efficacy-agreement.R` runs all three and exits non-zero on any
+change; `quality/data/efficacy-reference.json` holds route C, extracted
+mechanically from the source document rather than transcribed.
+
+| Slug | Regulatory ID | Display | Reference |
+|---|---|---|---|
+| `t-eff-adas-wk24` | EFT01 | ADAS-Cog, change from baseline to Week 24, LOCF | Table 14-3.01 |
+| `t-eff-adas-wk8` | EFT02 | ADAS-Cog, change from baseline to Week 8, LOCF | Table 14-3.03 |
+| `t-eff-adas-wk16` | EFT03 | ADAS-Cog, change from baseline to Week 16, LOCF | Table 14-3.05 |
+| `t-eff-adas-wk24-completers` | EFT04 | ADAS-Cog, Week 24 completers, observed cases | Table 14-3.07 |
+| `t-eff-adas-wk24-male` | EFT05 | ADAS-Cog, Week 24, male subjects | Table 14-3.08 |
+| `t-eff-adas-wk24-female` | EFT06 | ADAS-Cog, Week 24, female subjects | Table 14-3.09 |
+| `t-eff-adas-overtime` | EFT07 | ADAS-Cog, mean and mean change over time | Table 14-3.10 |
+| `t-eff-adas-mmrm` | EFT08 | ADAS-Cog, repeated measures analysis | Table 14-3.11 |
+| `t-eff-npix-mean` | EFT09 | NPI-X, mean total score from Week 4 through Week 24 | Table 14-3.12 |
+
+| ID | Requirement | Type | Verification | Status |
+|---|---|---|---|---|
+| DSP-EFF-001 | Every descriptive statistic in the six ANCOVA-style ADAS-Cog and NPI-X displays — n, mean, SD, median, minimum and maximum, at baseline, on treatment and for the change — equals the value computed directly from the vendored ADaM package, at the display's declared precision. | Functional | `test-displays-efficacy.R` | Verified |
+| DSP-EFF-002 | The ANCOVA statistics — dose-response p-value, pairwise differences of least-squares means, their standard errors, p-values and confidence intervals — reproduce the CDISCPILOT01 reference report exactly, for every display that reports them. | Functional | `test-displays-efficacy.R` | Verified |
+| DSP-EFF-003 | The Week-24 completers display reports the population size and the number of records summarised as separate statistics: its placebo column is headed N=60 while summarising 59 assessments, because one completer has no assessment inside the Week-24 window. | Functional | `test-displays-efficacy.R` | Verified |
+| DSP-EFF-004 | The over-time display's windowed and LOCF lanes select different record sets at Weeks 16 and 24 and identical ones at Week 8, every cell reproduces reference Table 14-3.10, and each visit's baseline row is the baseline of the subjects contributing to that visit rather than of the whole column. | Functional | `test-displays-efficacy.R` | Verified |
+| DSP-EFF-005 | The repeated-measures fit reproduces the reference report's own PROC MIXED output: the same 539 observations from 234 subjects, all six unstructured covariance parameters to six significant figures, and the REML criterion to eight. | Functional | `test-displays-efficacy.R` | Verified |
+| DSP-EFF-006 | The repeated-measures least-squares means are the visit-averaged treatment main effect, not the Week-24-conditioned estimate, and the two are far enough apart that a silent change of estimand would be caught. | Consistency | `test-displays-efficacy.R` | Verified |
+| DSP-EFF-007 | The NPI-X endpoint is the per-subject mean over the Week 4 to Week 24 windows as the analysis plan defines it, and reproduces reference Table 14-3.12. The study's own NPTOTMN parameter does not: it omits exactly twelve subjects and adds none, and that difference stays measured. | Functional | `test-displays-efficacy.R` | Verified |
+| DSP-EFF-008 | A derived per-subject record refuses to carry a column that varies inside the subject, so a covariate can never depend silently on record order. | Robustness | `test-displays-efficacy.R` | Verified |
+| DSP-EFF-009 | Every rendered cell of all nine displays matches the reference report, except the five cells of the repeated-measures display that the committed agreement record declares and explains. A sixth difference, or a different fifth, fails. | Regulatory | `test-displays-efficacy.R` | Verified |
 
 ## Library-wide
 

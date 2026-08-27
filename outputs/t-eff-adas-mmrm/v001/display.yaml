@@ -1,0 +1,45 @@
+id: t-eff-adas-mmrm
+title: "ADAS-Cog (11) - Repeated Measures Analysis of Change from Baseline to Week 24"
+study: CDISCPILOT01
+population_label: "Efficacy Analysis Set"
+cutoff: "2015-02-17"
+source: "Source: adqsadas (ADAS-Cog (11) total score, PARAMCD ACTOT) and adsl, from the CDISC pilot's own ADaM package (phuse-org/phuse-scripts, MIT). Supportive analysis as specified in the CDISCPILOT01 statistical analysis plan, section 10.1.1. Reference report display: Table 14-3.11. Data cut-off: 2015-02-17."
+footnotes:
+  - "[1] Mixed model for repeated measures of the change from baseline, fitted by restricted maximum likelihood with an unstructured within-subject covariance matrix. Fixed effects: treatment, site group, visit, treatment by visit, the baseline score, and the baseline score by visit."
+  - "[2] Pairwise comparison of least-squares means; p-values are not adjusted for multiple comparisons."
+  - "Observed cases only: 539 assessments from 234 subjects at Weeks 8, 16 and 24. The model accounts for a missing visit through the covariance structure, so no value is carried forward."
+  - "WHAT THE LEAST-SQUARES MEANS ESTIMATE: they are the treatment main effect — the model's prediction averaged over all three post-baseline visits and over the eleven site groups equally, with the baseline score held at its mean. They are not the Week-24 visit conditioned on, which the title might suggest and which is a different and less precise quantity (for placebo, 2.3 with a standard error of 0.69 rather than 1.6 with 0.49). This display reproduces what the reference report computed; the distinction is stated here because the number cannot state it itself."
+  - "MEASURED, NOT ASSUMED: the fit reproduces the reference report's own PROC MIXED output to six significant figures — all six unstructured covariance parameters and the REML criterion — which identifies the model far more sharply than the rounded cells above can."
+  - "DIFFERS FROM THE REFERENCE, DELIBERATELY: standard errors and degrees of freedom here are the model-based ones on 517 residual degrees of freedom. The reference used Kenward-Roger degrees of freedom with Prasad-Rao-Jeske-Kackar-Harville standard errors, which inflate both by roughly one per cent to allow for the covariance parameters having been estimated. At the precision shown that moves one of the nine cells (the high-dose least-squares mean standard error, 0.55 here against 0.56) and each p-value by 0.001. Every point estimate and confidence interval agrees. The difference is measured and recorded in quality/data/efficacy-agreement.json."
+  - "Treatment columns are planned treatment (TRTP), which is how the CDISCPILOT01 reference report presents them."
+  - "CDISCPILOT01 states no data cut-off date. The date shown is the latest ADAS-Cog assessment date present in the vendored ADaM package."
+columns:
+  order: ["Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"]
+format:
+  est_se: "{estimate} ({se})"
+  ci: "({lcl};{ucl})"
+  p_value: "{pvalue}"
+  digits:
+    estimate: 1
+    se: 2
+    lcl: 1
+    ucl: 1
+    pvalue: 3
+rows:
+  - { analysis: mmrm, variable: CHG, level: lsmean, pattern: est_se,
+      label: "LS means (SE) [1]" }
+  - { label: "Comparison of least-squares means", section: true }
+  - { analysis: mmrm, variable: CHG, level: xan_vs_placebo, pattern: p_value,
+      label: "p-value (Xanomeline - Placebo) [1][2]", indent: 1 }
+  - { analysis: mmrm, variable: CHG, level: xan_vs_placebo, pattern: est_se,
+      label: "Difference of LS means (SE)", indent: 2 }
+  - { analysis: mmrm, variable: CHG, level: xan_vs_placebo, pattern: ci,
+      label: "95% CI", indent: 2 }
+  - { analysis: mmrm, variable: CHG, level: high_vs_low, pattern: p_value,
+      label: "p-value (Xanomeline High - Xanomeline Low) [1][2]", indent: 1 }
+  - { analysis: mmrm, variable: CHG, level: high_vs_low, pattern: est_se,
+      label: "Difference of LS means (SE)", indent: 2 }
+  - { analysis: mmrm, variable: CHG, level: high_vs_low, pattern: ci,
+      label: "95% CI", indent: 2 }
+variants:
+  post_text: {}

@@ -1,0 +1,57 @@
+{
+  "display": "t-eff-npix-mean",
+  "version": "v002",
+  "created": "2026-08-27T03:50:45Z",
+  "actor": "obot worker W0137",
+  "change_request": "Record in the display's own footnotes that this endpoint is derived from the per-visit NPTOT records rather than the study's NPTOTMN parameter, and what the two differ by.",
+  "regulatory_id": "EFT09",
+  "git_commit": null,
+  "spec_hash": "sha256:80f5f0ccff24b1cf2f942ea6b2e3615b2fe5bf61016f79e950b6c75d4df5019f",
+  "display_hash": "sha256:c3210952b525d9075afa6c8d2ecf1772a52200499d0202ac66a23888400bcbc4",
+  "ard_hash": "sha256:86751a3481082dc21711e2ad504d97be0b0b334f4ef42610fb1124b19543e3de",
+  "ard_rows": 71,
+  "ard_warnings": 0,
+  "ard_errors": 0,
+  "datasets": ["adsl", "adqsnpix"],
+  "data": [
+    {
+      "dataset": "adsl",
+      "hash": "sha256:6534192e6ae2a8789015148d2068ecdd8421791ea6d7f9cc307fef1db97945f9",
+      "n_row": 254,
+      "n_col": 53,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    },
+    {
+      "dataset": "adqsnpix",
+      "hash": "sha256:2c590895d6d8dd6f847e3985be3dc4b5efde4bd08b140185a3c6a91aaf1d401f",
+      "n_row": 31140,
+      "n_col": 42,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    }
+  ],
+  "environment": {
+    "r": "4.3.3",
+    "os": "Darwin 23.6.0",
+    "packages": {
+      "cards": "0.6.1",
+      "cardx": "0.2.5",
+      "gtsummary": "2.3.0",
+      "gt": "1.0.0",
+      "dplyr": "1.1.4",
+      "pharmaverseadam": "1.1.0",
+      "jsonlite": "2.0.0",
+      "yaml": "2.3.10",
+      "digest": "0.6.37"
+    }
+  },
+  "variants": {
+    "post_text": {
+      "file": "table.html",
+      "rtf": "table.rtf",
+      "rtf_hash": "sha256:51085b2ba2d8e23289d697d9eeb914c97d354a1a1432b43c852d1f828306d3ec",
+      "n_rows": 16
+    }
+  }
+}

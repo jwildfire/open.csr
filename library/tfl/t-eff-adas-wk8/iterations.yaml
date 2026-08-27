@@ -1,0 +1,12 @@
+display: t-eff-adas-wk8
+iterations:
+- version: v001
+  created: '2026-08-27T02:21:30Z'
+  actor: obot worker
+  change_request: Initial generation of the ADAS-Cog efficacy displays (#43).
+  git_commit: ''
+  spec_hash: sha256:6508cc49120671f7d2e9bffe8f3163278727686c7e9f5d67933b79a55283021a
+  display_hash: sha256:675584e468bfff4cdb7b62c08cceaa521394820074d930eef69c0d06945a516e
+  ard_hash: sha256:c9148b11c442f55b51fe62f5d0965d7ea7c73a018f84f45eef01db6619c30260
+  ard_rows: 95
+

@@ -1,0 +1,24 @@
+display: t-eff-npix-mean
+iterations:
+- version: v001
+  created: '2026-08-27T03:49:43Z'
+  actor: obot worker W0137
+  change_request: First generation of the secondary efficacy endpoint (reference report
+    Table 14-3.12).
+  git_commit: ''
+  spec_hash: sha256:80f5f0ccff24b1cf2f942ea6b2e3615b2fe5bf61016f79e950b6c75d4df5019f
+  display_hash: sha256:2a125282a0f3bffdb3ee0b9a2b4cde642ab5df2ae637c8df80d0a4e8c62fd731
+  ard_hash: sha256:36723590232056152dc985b74eb8cc339012bcc06ccee13994237e583527c29b
+  ard_rows: 71
+- version: v002
+  created: '2026-08-27T03:50:45Z'
+  actor: obot worker W0137
+  change_request: Record in the display's own footnotes that this endpoint is derived
+    from the per-visit NPTOT records rather than the study's NPTOTMN parameter, and
+    what the two differ by.
+  git_commit: ''
+  spec_hash: sha256:80f5f0ccff24b1cf2f942ea6b2e3615b2fe5bf61016f79e950b6c75d4df5019f
+  display_hash: sha256:c3210952b525d9075afa6c8d2ecf1772a52200499d0202ac66a23888400bcbc4
+  ard_hash: sha256:86751a3481082dc21711e2ad504d97be0b0b334f4ef42610fb1124b19543e3de
+  ard_rows: 71
+

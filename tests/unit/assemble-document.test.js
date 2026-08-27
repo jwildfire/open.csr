@@ -2,7 +2,10 @@ import { describe, expect, it } from 'vitest';
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { assemble } from '../../scripts/assemble.mjs';
-import { ROOT, librarySlugs } from './text-test-helpers.js';
+import { loadAssembly } from '../../scripts/template-lib.mjs';
+import { ASSEMBLY_YAML, ROOT } from './text-test-helpers.js';
+
+const assembly = loadAssembly(ASSEMBLY_YAML);
 
 // One assembly for the whole suite; `write: false` keeps docs/assembled/ untouched
 // so running the tests never mutates a published artifact.
@@ -70,14 +73,13 @@ describe('Assembled CSR document model', () => {
   });
 
   it('RPT-ARD-001: every display resolves to a real ARD, and the source is recorded as outputs or fixture (#1)', () => {
-    // Derived, not a magic number: the report carries what its assembly names,
-    // and a display added to the library and to Section 14 must not need this
-    // count edited to stay green.
-    expect(doc.displayIndex.length).toBe(new Set(doc.displayIndex.map((d) => d.slug)).size);
-    expect(doc.displayIndex.map((d) => d.slug).sort()).toEqual(
-      doc.displayIndex.map((d) => d.slug).filter((s) => librarySlugs().includes(s)).sort()
-    );
-    expect(doc.displayIndex.length).toBeGreaterThanOrEqual(6);
+    // Counted from what the assembly carries rather than pinned to a literal, so
+    // adding a display to the report cannot make this test wrong instead of the
+    // display. What is being asserted is that EVERY carried display resolves.
+    const carried = new Set(assembly.postText.flatMap((p) => p.displays ?? []));
+    for (const slot of assembly.slots ?? []) for (const d of slot.displays ?? []) carried.add(d);
+    expect(doc.displayIndex.length).toBe(carried.size);
+    expect(new Set(doc.displayIndex.map((d) => d.slug))).toEqual(carried);
     for (const d of doc.displayIndex) {
       expect(['outputs', 'fixture'], d.slug).toContain(d.ardSource);
       expect(d.ardPath).toMatch(/ard\.json$|\.json$/);
@@ -96,13 +98,13 @@ describe('Assembled CSR document model', () => {
       expect(entry.specHash).toMatch(/^sha256:/);
       expect(entry.displayHash).toMatch(/^sha256:/);
       expect(entry.data.length).toBeGreaterThan(0);
-      // The report draws on two packagings of the same study — {pharmaverseadam}
-      // for the safety spine, the CDISC pilot's own ADaM package for the domains
-      // that one does not carry — so 16.1.9 records which, per dataset. What
-      // matters here is that it came out of the ARD envelope rather than prose.
-      expect(typeof entry.data[0].source_pkg).toBe('string');
-      expect(entry.data[0].source_pkg.length).toBeGreaterThan(0);
-      expect(entry.data[0].source_version).toBeTruthy();
+      // CDISCPILOT01 is published twice and this report draws on both: safety
+      // from the pharmaverse re-derivation, efficacy from the CDISC pilot's own
+      // package. What must hold is that every dataset names a source open.csr
+      // knows, not that they all name the same one.
+      for (const d of entry.data) {
+        expect(d.source_pkg).toMatch(/^(pharmaverseadam|phuse-org\/phuse-scripts)/);
+      }
       expect(entry.environment.r).toMatch(/^\d+\.\d+/);
     }
     expect(section('16.1.9').populated).toBe(true);
@@ -154,7 +156,10 @@ describe('Assembled CSR document model', () => {
     const populated = doc.sections.filter((s) => s.populated);
     expect(populated.length).toBeGreaterThanOrEqual(15);
     expect(populated.length).toBeLessThan(doc.sections.length);
-    expect(section('14.2').populated).toBe(false); // no efficacy data (design D12)
+    // 14.2 carries the efficacy displays; 11.4.1, whose narrative analysis of
+    // efficacy is still unwritten, is the section that stays declared and empty —
+    // which is the point of the test: unpopulated sections are flagged, not dropped.
+    expect(section('14.2').populated).toBe(true);
     expect(section('11.4.1').populated).toBe(false);
   });
 });

@@ -1,0 +1,57 @@
+{
+  "display": "t-eff-adas-wk24-male",
+  "version": "v001",
+  "created": "2026-08-27T03:41:23Z",
+  "actor": "obot worker W0137",
+  "change_request": "Complete the preserved specification: first generation of numbers and rendered output.",
+  "regulatory_id": "EFT05",
+  "git_commit": null,
+  "spec_hash": "sha256:f08b78fe8e88aaa42862be64c962f7ee814e55d42a7c2137a2a8356c5152e1a9",
+  "display_hash": "sha256:cc16d8375545d5c6c41f0646c94fb7e5350844eff172c0dae87f16f84c06d2d7",
+  "ard_hash": "sha256:f4ecc3b36b6a75bc97799cbcd7efad17139f1edad38f8aa25c68474cbb343ba5",
+  "ard_rows": 95,
+  "ard_warnings": 0,
+  "ard_errors": 0,
+  "datasets": ["adsl", "adqsadas"],
+  "data": [
+    {
+      "dataset": "adsl",
+      "hash": "sha256:6534192e6ae2a8789015148d2068ecdd8421791ea6d7f9cc307fef1db97945f9",
+      "n_row": 254,
+      "n_col": 53,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    },
+    {
+      "dataset": "adqsadas",
+      "hash": "sha256:0f3e481baf734dc3e5ce7373d255269c2285400ff5bee77be525d832bade80cf",
+      "n_row": 12463,
+      "n_col": 41,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    }
+  ],
+  "environment": {
+    "r": "4.3.3",
+    "os": "Darwin 23.6.0",
+    "packages": {
+      "cards": "0.6.1",
+      "cardx": "0.2.5",
+      "gtsummary": "2.3.0",
+      "gt": "1.0.0",
+      "dplyr": "1.1.4",
+      "pharmaverseadam": "1.1.0",
+      "jsonlite": "2.0.0",
+      "yaml": "2.3.10",
+      "digest": "0.6.37"
+    }
+  },
+  "variants": {
+    "post_text": {
+      "file": "table.html",
+      "rtf": "table.rtf",
+      "rtf_hash": "sha256:3261c16ece8ecc027c59a2761f9b7ea3cfe5dad9495b9e6e8821923085435125",
+      "n_rows": 20
+    }
+  }
+}

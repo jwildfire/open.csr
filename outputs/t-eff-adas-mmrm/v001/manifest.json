@@ -1,0 +1,57 @@
+{
+  "display": "t-eff-adas-mmrm",
+  "version": "v001",
+  "created": "2026-08-27T03:57:31Z",
+  "actor": "obot worker W0137",
+  "change_request": "First generation of the MMRM supportive analysis (reference report Table 14-3.11).",
+  "regulatory_id": "EFT08",
+  "git_commit": null,
+  "spec_hash": "sha256:3070e2ae555ebd380a243e788f94e58d8b53d122f15a7bfa7ebfff80bc48324d",
+  "display_hash": "sha256:8569301fcb38ab38b04de81183d685f8173f53ca5d09a850adea5fc46bf8e1b9",
+  "ard_hash": "sha256:530038169fb15be4e5d4c2ba52b3476fbed6cd60ed6b6a8dd5cc463f19ec77ae",
+  "ard_rows": 34,
+  "ard_warnings": 0,
+  "ard_errors": 0,
+  "datasets": ["adsl", "adqsadas"],
+  "data": [
+    {
+      "dataset": "adsl",
+      "hash": "sha256:6534192e6ae2a8789015148d2068ecdd8421791ea6d7f9cc307fef1db97945f9",
+      "n_row": 254,
+      "n_col": 53,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    },
+    {
+      "dataset": "adqsadas",
+      "hash": "sha256:0f3e481baf734dc3e5ce7373d255269c2285400ff5bee77be525d832bade80cf",
+      "n_row": 12463,
+      "n_col": 41,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    }
+  ],
+  "environment": {
+    "r": "4.3.3",
+    "os": "Darwin 23.6.0",
+    "packages": {
+      "cards": "0.6.1",
+      "cardx": "0.2.5",
+      "gtsummary": "2.3.0",
+      "gt": "1.0.0",
+      "dplyr": "1.1.4",
+      "pharmaverseadam": "1.1.0",
+      "jsonlite": "2.0.0",
+      "yaml": "2.3.10",
+      "digest": "0.6.37"
+    }
+  },
+  "variants": {
+    "post_text": {
+      "file": "table.html",
+      "rtf": "table.rtf",
+      "rtf_hash": "sha256:bfdd60df997e2e220ac512022c7b8a8955129bf2ffcfe9ac85f8b1672ae6843c",
+      "n_rows": 8
+    }
+  }
+}

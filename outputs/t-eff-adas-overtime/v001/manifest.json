@@ -1,0 +1,57 @@
+{
+  "display": "t-eff-adas-overtime",
+  "version": "v001",
+  "created": "2026-08-27T03:52:26Z",
+  "actor": "obot worker W0137",
+  "change_request": "First generation of the over-time summary (reference report Table 14-3.10).",
+  "regulatory_id": "EFT07",
+  "git_commit": null,
+  "spec_hash": "sha256:37f6ffad430e7d6da5cdc7f273ced45902f6ca9850b7abb07d14d45ac224341a",
+  "display_hash": "sha256:cc82b9a1359e9f859ec2909372b35bd75e31daeea2e4ce91319e942ebefbd088",
+  "ard_hash": "sha256:41c5098a56eb5a21aba42355dec6f921d58464f6fce198e1e5795add52080e7e",
+  "ard_rows": 459,
+  "ard_warnings": 0,
+  "ard_errors": 0,
+  "datasets": ["adsl", "adqsadas"],
+  "data": [
+    {
+      "dataset": "adsl",
+      "hash": "sha256:6534192e6ae2a8789015148d2068ecdd8421791ea6d7f9cc307fef1db97945f9",
+      "n_row": 254,
+      "n_col": 53,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    },
+    {
+      "dataset": "adqsadas",
+      "hash": "sha256:0f3e481baf734dc3e5ce7373d255269c2285400ff5bee77be525d832bade80cf",
+      "n_row": 12463,
+      "n_col": 41,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    }
+  ],
+  "environment": {
+    "r": "4.3.3",
+    "os": "Darwin 23.6.0",
+    "packages": {
+      "cards": "0.6.1",
+      "cardx": "0.2.5",
+      "gtsummary": "2.3.0",
+      "gt": "1.0.0",
+      "dplyr": "1.1.4",
+      "pharmaverseadam": "1.1.0",
+      "jsonlite": "2.0.0",
+      "yaml": "2.3.10",
+      "digest": "0.6.37"
+    }
+  },
+  "variants": {
+    "post_text": {
+      "file": "table.html",
+      "rtf": "table.rtf",
+      "rtf_hash": "sha256:fca112c5d553f7e4d7c0cc548483c764240cb5f5f47028d5f794d32f3db77cf8",
+      "n_rows": 46
+    }
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "display": "t-eff-adas-wk24",
+  "version": "v001",
+  "created": "2026-08-27T02:21:19Z",
+  "actor": "obot worker",
+  "change_request": "Initial generation of the ADAS-Cog Week 24 primary efficacy display (#43).",
+  "regulatory_id": "EFT01",
+  "git_commit": null,
+  "spec_hash": "sha256:b1293042583d96e58d1cbba3fb184d33bfc6e72be390f27c43871c6cfe43674a",
+  "display_hash": "sha256:e51fda295f38f7b0b60a675f81eaf78d6a17790a268dc982cd33aaa94d61d0ab",
+  "ard_hash": "sha256:7769370093c068677ce8aaf425e73844d343fb33524cfe9280e10792079531c3",
+  "ard_rows": 95,
+  "ard_warnings": 0,
+  "ard_errors": 0,
+  "datasets": ["adsl", "adqsadas"],
+  "data": [
+    {
+      "dataset": "adsl",
+      "hash": "sha256:6534192e6ae2a8789015148d2068ecdd8421791ea6d7f9cc307fef1db97945f9",
+      "n_row": 254,
+      "n_col": 53,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    },
+    {
+      "dataset": "adqsadas",
+      "hash": "sha256:0f3e481baf734dc3e5ce7373d255269c2285400ff5bee77be525d832bade80cf",
+      "n_row": 12463,
+      "n_col": 41,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    }
+  ],
+  "environment": {
+    "r": "4.3.3",
+    "os": "Darwin 23.6.0",
+    "packages": {
+      "cards": "0.6.1",
+      "cardx": "0.2.5",
+      "gtsummary": "2.3.0",
+      "gt": "1.0.0",
+      "dplyr": "1.1.4",
+      "pharmaverseadam": "1.1.0",
+      "jsonlite": "2.0.0",
+      "yaml": "2.3.10",
+      "digest": "0.6.37"
+    }
+  },
+  "variants": {
+    "post_text": {
+      "file": "table.html",
+      "rtf": "table.rtf",
+      "rtf_hash": "sha256:a929c95b800b4163a1c72aeb163b62bc12e9a75a7bf6a5f5c86d67528662557b",
+      "n_rows": 20
+    }
+  }
+}

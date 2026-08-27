@@ -1,0 +1,57 @@
+{
+  "display": "t-eff-adas-mmrm",
+  "version": "v002",
+  "created": "2026-08-27T03:58:05Z",
+  "actor": "obot worker W0137",
+  "change_request": "State in the display footnotes exactly which five cells differ from the reference report, and why: Kenward-Roger degrees of freedom and PRJKH standard errors are not implemented.",
+  "regulatory_id": "EFT08",
+  "git_commit": null,
+  "spec_hash": "sha256:3070e2ae555ebd380a243e788f94e58d8b53d122f15a7bfa7ebfff80bc48324d",
+  "display_hash": "sha256:edf500134e53cb5b38327998d146394ae02c95250e84483692bb11b48656c174",
+  "ard_hash": "sha256:9df5a5383226227390b036da06a51c8091fd384e0f03005309a70a07f06cb54d",
+  "ard_rows": 34,
+  "ard_warnings": 0,
+  "ard_errors": 0,
+  "datasets": ["adsl", "adqsadas"],
+  "data": [
+    {
+      "dataset": "adsl",
+      "hash": "sha256:6534192e6ae2a8789015148d2068ecdd8421791ea6d7f9cc307fef1db97945f9",
+      "n_row": 254,
+      "n_col": 53,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    },
+    {
+      "dataset": "adqsadas",
+      "hash": "sha256:0f3e481baf734dc3e5ce7373d255269c2285400ff5bee77be525d832bade80cf",
+      "n_row": 12463,
+      "n_col": 41,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    }
+  ],
+  "environment": {
+    "r": "4.3.3",
+    "os": "Darwin 23.6.0",
+    "packages": {
+      "cards": "0.6.1",
+      "cardx": "0.2.5",
+      "gtsummary": "2.3.0",
+      "gt": "1.0.0",
+      "dplyr": "1.1.4",
+      "pharmaverseadam": "1.1.0",
+      "jsonlite": "2.0.0",
+      "yaml": "2.3.10",
+      "digest": "0.6.37"
+    }
+  },
+  "variants": {
+    "post_text": {
+      "file": "table.html",
+      "rtf": "table.rtf",
+      "rtf_hash": "sha256:e4a0d9648b4ef7cb437e27c1e61cf4338ca7ea705a1180d0e6fa6db75eaf6436",
+      "n_rows": 8
+    }
+  }
+}

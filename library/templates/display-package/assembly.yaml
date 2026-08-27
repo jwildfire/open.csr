@@ -46,9 +46,8 @@ study:
     The post-text displays of the clinical study report for this study, delivered
     on their own for review before the report is written. No narrative: every
     number here is the rendering of a committed analysis results dataset, and the
-    appendix records which one. Efficacy (Section 14.2) and abnormal laboratory
-    values (Section 14.3.4) are declared and empty — no efficacy or laboratory
-    analysis dataset exists for this study in the demonstration data (D12).
+    appendix records which one. Abnormal laboratory values (Section 14.3.4) are
+    declared and empty — no laboratory display is specified for this study yet.
 
 # E3 already reserves 16.1.9 for the documentation of statistical methods, so the
 # generated provenance appendix goes where the full report puts it.
@@ -70,6 +69,20 @@ post_text:
   # landing two tables.
   - section: "14.1"
     displays: [t-disposition, t-demographics, t-populations, t-end-of-study]
+
+  # Same nine displays, same order, as library/templates/ich-e3/assembly.yaml —
+  # which is what makes the package's assigned numbers identical to the report's.
+  - section: "14.2"
+    displays:
+      - t-eff-adas-wk24
+      - t-eff-adas-wk8
+      - t-eff-adas-wk16
+      - t-eff-adas-wk24-completers
+      - t-eff-adas-wk24-male
+      - t-eff-adas-wk24-female
+      - t-eff-adas-overtime
+      - t-eff-adas-mmrm
+      - t-eff-npix-mean
 
   - section: "14.3.1"
     displays: [t-exposure, t-ae-overview, t-ae-common]

@@ -1,0 +1,9 @@
+{
+  "display": "t-eff-adas-mmrm",
+  "version": "v002",
+  "updated": "2026-08-27T03:58:05Z",
+  "path": "outputs/t-eff-adas-mmrm/v002",
+  "ard": "outputs/t-eff-adas-mmrm/v002/ard.json",
+  "table": "outputs/t-eff-adas-mmrm/v002/table.html",
+  "variants": "post_text"
+}
