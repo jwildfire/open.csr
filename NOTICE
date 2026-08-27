@@ -1,0 +1,30 @@
+open.csr
+Copyright 2026 Jeremy Wildfire and the open.csr contributors
+
+This product includes software developed as part of the open.csr project,
+licensed under the Apache License, Version 2.0. See LICENSE.
+
+--------------------------------------------------------------------------
+Third-party material redistributed with this work
+--------------------------------------------------------------------------
+
+CDISC SDTM/ADaM Pilot Project ADaM extracts (study CDISCPILOT01)
+  Redistributed at: pipeline/inst/extdata/phuse-cdiscpilot01/
+  Obtained from:    https://github.com/phuse-org/phuse-scripts
+                    data/adam/TDF_ADaM_v1.0/
+  Licence:          MIT
+
+  The upstream LICENSE.md is reproduced verbatim beside the data it covers,
+  at pipeline/inst/extdata/phuse-cdiscpilot01/LICENSE-phuse-scripts.md.
+
+  That file names no copyright holder. It opens at "Permission is hereby
+  granted" with no preceding copyright line, so there is no holder line to
+  carry forward here and none has been invented. Attribution is therefore
+  made to the repository that published the material, together with the
+  upstream commit and per-file digests recorded in
+  pipeline/inst/extdata/phuse-cdiscpilot01/PROVENANCE.json.
+
+  The datasets describe CDISCPILOT01, a simulated study. Its legacy source
+  data were contributed to the CDISC pilot by Eli Lilly and Company. Only
+  the ADaM datasets are redistributed here; no document from the pilot's
+  documentation package is included, in whole or in part.
