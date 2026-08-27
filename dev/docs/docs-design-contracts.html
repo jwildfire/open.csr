@@ -62,7 +62,7 @@
 library/tfl/&lt;slug&gt;/       analysis.yaml, display.yaml, [custom.R], iterations.yaml
 library/text/&lt;ID&gt;.md      text blocks (YAML frontmatter + prose)
 library/values/values.yaml named-value declarations (§11)
-library/templates/ich-e3/ sections.yaml, assembly.yaml
+library/templates/&lt;id&gt;/   sections.yaml, assembly.yaml (one directory per template object)
 outputs/&lt;slug&gt;/vNNN/      spec snapshots, ard.json, table.html + table.rtf (per variant), manifest.json
 outputs/&lt;slug&gt;/current.json
 outputs/values/values.json generated values store (§11)
@@ -186,7 +186,8 @@ reported at least one adverse event.
 <p><strong>CI gates (D7):</strong> (a) every binding resolves to exactly one ARD row; (b) every digit run in <em>rendered</em> prose traces to a resolved binding — except inside inline code, markdown links, and an explicit <code>allow_digits</code> frontmatter list (E3 section numbers, citations, protocol IDs); (c) <code>generated</code>-tier blocks with <code>approval.state != approved</code> are excluded from assembly and reported.</p>
 <h2 id="7-template-model-library-templates-lt-id-gt">7. Template model — <code>library/templates/&lt;id&gt;/</code></h2>
 <p>One directory per <strong>template object</strong>. A directory containing a <code>sections.yaml</code> is a template object; the assembler discovers them from disk and <code>--template &lt;id&gt;</code> selects one (<code>--all</code> builds every one). <code>ich-e3</code> is the default and writes <code>docs/assembled/csr.{json,html}</code>; any other id writes under its own name.</p>
-<p><code>sections.yaml</code>: the document model — what this kind of document IS. <code>library/templates/ich-e3/sections.yaml</code> is the full ICH E3 skeleton; <code>library/templates/e3-synopsis/sections.yaml</code> is the ICH E3 Annex I synopsis.</p>
+<p><code>sections.yaml</code>: the document model — what this kind of document IS. <code>library/templates/ich-e3/sections.yaml</code> is the full ICH E3 skeleton; <code>library/templates/e3-synopsis/sections.yaml</code> is the ICH E3 Annex I synopsis; <code>library/templates/display-package/sections.yaml</code> is the post-text displays on their own; <code>library/templates/e3-abbreviated/sections.yaml</code> is the reduced report E3&#39;s Introduction contemplates.</p>
+<p>A document model may be a <strong>restriction</strong> of another: the display package and the abbreviated report declare only sections that exist in <code>ich-e3</code>, each carrying the number, title, slug and content declaration it has there, unchanged. Nothing in the loader enforces that — it is a property of those two files, checked by <code>tests/unit/assemble-template-subsets.test.js</code> — but it is what lets a restricted model reuse the full report&#39;s prose without a single edit: the cross-references in that prose resolve because the referenced sections are retained.</p>
 <pre><code class="language-yaml">sections:
   - number: &quot;12.2.1&quot;
     title: &quot;Brief Summary of Adverse Events&quot;
