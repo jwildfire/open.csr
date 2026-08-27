@@ -13,7 +13,7 @@ pipeline/                 R package `opencsr` (DESCRIPTION, NAMESPACE, R/, tests
 library/tfl/<slug>/       analysis.yaml, display.yaml, [custom.R], iterations.yaml
 library/text/<ID>.md      text blocks (YAML frontmatter + prose)
 library/values/values.yaml named-value declarations (§11)
-library/templates/ich-e3/ sections.yaml, assembly.yaml
+library/templates/<id>/   sections.yaml, assembly.yaml (one directory per template object)
 outputs/<slug>/vNNN/      spec snapshots, ard.json, table.html + table.rtf (per variant), manifest.json
 outputs/<slug>/current.json
 outputs/values/values.json generated values store (§11)
@@ -168,7 +168,9 @@ Binding syntax: `{{ard:<binding address>}}` (§5). Rendering resolves against `o
 
 One directory per **template object**. A directory containing a `sections.yaml` is a template object; the assembler discovers them from disk and `--template <id>` selects one (`--all` builds every one). `ich-e3` is the default and writes `docs/assembled/csr.{json,html}`; any other id writes under its own name.
 
-`sections.yaml`: the document model — what this kind of document IS. `library/templates/ich-e3/sections.yaml` is the full ICH E3 skeleton; `library/templates/e3-synopsis/sections.yaml` is the ICH E3 Annex I synopsis.
+`sections.yaml`: the document model — what this kind of document IS. `library/templates/ich-e3/sections.yaml` is the full ICH E3 skeleton; `library/templates/e3-synopsis/sections.yaml` is the ICH E3 Annex I synopsis; `library/templates/display-package/sections.yaml` is the post-text displays on their own; `library/templates/e3-abbreviated/sections.yaml` is the reduced report E3's Introduction contemplates.
+
+A document model may be a **restriction** of another: the display package and the abbreviated report declare only sections that exist in `ich-e3`, each carrying the number, title, slug and content declaration it has there, unchanged. Nothing in the loader enforces that — it is a property of those two files, checked by `tests/unit/assemble-template-subsets.test.js` — but it is what lets a restricted model reuse the full report's prose without a single edit: the cross-references in that prose resolve because the referenced sections are retained.
 
 ```yaml
 sections:

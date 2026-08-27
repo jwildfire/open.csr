@@ -1,7 +1,67 @@
 {
   "module": "templates",
-  "generated": "2026-08-27T00:39:23.871Z",
+  "generated": "2026-08-27T00:52:51.476Z",
   "records": [
+    {
+      "requirementIds": [
+        "RPT-ABR-001"
+      ],
+      "title": "Abbreviated clinical study report RPT-ABR-001: the model is a strict restriction of the full ICH E3 model (#34)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/assemble-template-subsets.test.js",
+      "issueRefs": [
+        34
+      ]
+    },
+    {
+      "requirementIds": [
+        "RPT-ABR-002"
+      ],
+      "title": "Abbreviated clinical study report RPT-ABR-002: the efficacy-analysis apparatus is absent, the analysis sets remain (#34)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/assemble-template-subsets.test.js",
+      "issueRefs": [
+        34
+      ]
+    },
+    {
+      "requirementIds": [
+        "RPT-ABR-003"
+      ],
+      "title": "Abbreviated clinical study report RPT-ABR-003: it introduces no new prose (#34)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/assemble-template-subsets.test.js",
+      "issueRefs": [
+        34
+      ]
+    },
+    {
+      "requirementIds": [
+        "RPT-ABR-004"
+      ],
+      "title": "Abbreviated clinical study report RPT-ABR-004: the reused prose resolves every cross-reference against this model (#34)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/assemble-template-subsets.test.js",
+      "issueRefs": [
+        34
+      ]
+    },
+    {
+      "requirementIds": [
+        "RPT-ABR-005"
+      ],
+      "title": "Abbreviated clinical study report RPT-ABR-005: it assembles green and says the same things as the full report (#34)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/assemble-template-subsets.test.js",
+      "issueRefs": [
+        34
+      ]
+    },
     {
       "requirementIds": [
         "RPT-ARD-001"
@@ -256,6 +316,42 @@
     },
     {
       "requirementIds": [
+        "RPT-LIB-005"
+      ],
+      "title": "Four documents, one library RPT-LIB-005: every template object in the library assembles green against the same study (#34)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/assemble-template-subsets.test.js",
+      "issueRefs": [
+        34
+      ]
+    },
+    {
+      "requirementIds": [
+        "RPT-LIB-006"
+      ],
+      "title": "Four documents, one library RPT-LIB-006: a new template object costs no change in scripts/ (#34)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/assemble-template-subsets.test.js",
+      "issueRefs": [
+        34
+      ]
+    },
+    {
+      "requirementIds": [
+        "RPT-LIB-007"
+      ],
+      "title": "Four documents, one library RPT-LIB-007: all four documents resolve the same named values to the same numbers (#34)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/assemble-template-subsets.test.js",
+      "issueRefs": [
+        34
+      ]
+    },
+    {
+      "requirementIds": [
         "RPT-SYN-001"
       ],
       "title": "ICH E3 Annex I synopsis document model RPT-SYN-001: sections.yaml is a structurally valid document model (#28)",
@@ -396,6 +492,78 @@
       "file": "tests/unit/assemble-template.test.js",
       "issueRefs": [
         1
+      ]
+    },
+    {
+      "requirementIds": [
+        "RPT-PKG-001"
+      ],
+      "title": "Post-text display package RPT-PKG-001: the model is a strict restriction of the full ICH E3 model (#34)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/assemble-template-subsets.test.js",
+      "issueRefs": [
+        34
+      ]
+    },
+    {
+      "requirementIds": [
+        "RPT-PKG-002"
+      ],
+      "title": "Post-text display package RPT-PKG-002: the package carries no prose at all, and the build says so (#34)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/assemble-template-subsets.test.js",
+      "issueRefs": [
+        34
+      ]
+    },
+    {
+      "requirementIds": [
+        "RPT-PKG-003"
+      ],
+      "title": "Post-text display package RPT-PKG-003: every display carries the same number as in the full report (#34)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/assemble-template-subsets.test.js",
+      "issueRefs": [
+        34
+      ]
+    },
+    {
+      "requirementIds": [
+        "RPT-PKG-004"
+      ],
+      "title": "Post-text display package RPT-PKG-004: provenance lands in E3’s own 16.1.9, with nothing invented (#34)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/assemble-template-subsets.test.js",
+      "issueRefs": [
+        34
+      ]
+    },
+    {
+      "requirementIds": [
+        "RPT-PKG-005"
+      ],
+      "title": "Post-text display package RPT-PKG-005: empty display slots are declared and unpopulated, not dropped (#34)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/assemble-template-subsets.test.js",
+      "issueRefs": [
+        34
+      ]
+    },
+    {
+      "requirementIds": [
+        "RPT-PKG-006"
+      ],
+      "title": "Post-text display package RPT-PKG-006: the package assembles green against CDISCPILOT01 (#34)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/assemble-template-subsets.test.js",
+      "issueRefs": [
+        34
       ]
     },
     {
