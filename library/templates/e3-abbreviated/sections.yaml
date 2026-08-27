@@ -1,0 +1,480 @@
+# ------------------------------------------------------------------------------
+# Abbreviated clinical study report — machine-readable document model
+# ------------------------------------------------------------------------------
+# ICH E3's Introduction contemplates a reduced report for a study that is not
+# intended to support a claim of efficacy or safety — enough detail of design and
+# results to let a reviewer judge the study, without the full apparatus of an
+# efficacy submission. E3 describes the idea; it does not print a section list for
+# one, and no public machine-readable model of an abbreviated report exists.
+#
+# SO THE SUBSET BELOW IS OPEN.CSR'S, NOT E3'S. The rule it follows is stated here,
+# once, so a reader can disagree with the rule in one place instead of arguing
+# section by section:
+#
+#   a. Everything that describes how the study was conducted is kept in full —
+#      E3's front matter (1 to 4), ethics (5), administrative structure (6),
+#      introduction (7), objectives (8), the investigational plan's descriptive
+#      sections (9.1, 9.3, 9.4, 9.5.1, 9.6, 9.7, 9.8), study patients (10), the
+#      analysis sets and baseline characteristics (11.1 to 11.3), the discussion
+#      (13) and the reference list (15).
+#
+#   b. The efficacy-analysis apparatus is dropped, and that is what makes the
+#      report abbreviated: Section 11.4 and all fifteen of its subsections, the
+#      efficacy-specific parts of Section 9.5 (9.5.2 to 9.5.4), and the discussion
+#      of design choice and control groups (9.2).
+#
+#   c. Safety is kept through adverse events, deaths and other serious adverse
+#      events, and the safety conclusions (12.1 to 12.3, 12.6). E3's
+#      parameter-by-parameter laboratory (12.4) and vital-sign (12.5) evaluations
+#      are dropped as detail an abbreviated report may summarise rather than
+#      reproduce, and the post-text slot that belongs to them (14.3.4) goes with
+#      them. This is the clause of the rule most worth arguing with.
+#
+#   d. Section 16 keeps only the appendices a report of this kind actually cites:
+#      the protocol (16.1.1), the consent documentation (16.1.3), the
+#      randomisation scheme (16.1.7), the documentation of statistical methods
+#      (16.1.9), and the four patient-data listings the retained prose points at
+#      (16.2.1, 16.2.3, 16.2.4, 16.2.7).
+#
+# Seventy-five sections, against the full report's one hundred and nineteen.
+#
+# A RESTRICTION, NOT A REWRITE. Every section below carries the number, title,
+# slug and content declaration it has in library/templates/ich-e3/sections.yaml,
+# unchanged — nothing renamed, nothing renumbered, nothing re-scoped. A reader
+# moving between the abbreviated report and the full report is reading one
+# numbering scheme, and a display carries the same number in both. A test in
+# tests/unit/assemble-template-subsets.test.js checks that section by section, so
+# "subset" is a property of the file rather than a claim in this comment.
+#
+# NO NEW PROSE. The assembly beside this file populates these sections with the
+# same fifteen text blocks the full report already uses. Not one sentence was
+# written for this document. The synopsis needed eighteen new blocks because the
+# report's prose cross-references E3 section numbers a synopsis has not got; an
+# abbreviated report keeps E3's numbers, so the same prose resolves unchanged.
+#
+# LICENCE. Encoded from ICH E3 (1995), Step 4, a public guideline, on the same
+# footing as the model it restricts. Nothing here is derived from a sponsor or CRO
+# template, or from any R Consortium Submissions Working Group pilot repository:
+# pilots 1, 2 and 3 are GPL-3.0 (one-way incompatible with this Apache-2.0 project
+# in the direction reuse would need) and pilots 4, 5-dev and 6, the ADRG
+# automation pipeline and most of the eCTD "-to-fda" packages carry no licence at
+# all. See reports/csr-template-objects-2026-08-26 on the hub.
+#
+# Schema: identical to library/templates/ich-e3/sections.yaml (contracts.md §7).
+# ------------------------------------------------------------------------------
+model:
+  id: e3-abbreviated
+  title: "Abbreviated Clinical Study Report (ICH E3)"
+  version: "1.0.0"
+  source: "ICH E3 (1995), Step 4 — Introduction, restricted per the rule in this file"
+  reference: "https://database.ich.org/sites/default/files/E3_Guideline.pdf"
+  note: >-
+    A study not intended to support a claim still has to be reported, and E3
+    allows that report to be shorter. This model is the full E3 document model
+    with the efficacy-analysis apparatus and the uncited appendices removed. It
+    shares the report's numbering exactly, so the same prose, the same displays
+    and the same display numbers carry over without a single edit.
+
+sections:
+  - number: "1"
+    title: "Title Page"
+    slug: title-page
+    content: [text]
+
+  - number: "2"
+    title: "Synopsis"
+    slug: synopsis
+    content: [text]
+    note: >-
+      Kept, and worth naming: the synopsis this section carries is itself a
+      template object in this library (library/templates/e3-synopsis), assembled
+      from the same study and the same values. The framework has no way to embed
+      one assembled document inside another, so the two are built side by side
+      rather than nested. That is a real limitation, not a design position.
+
+  - number: "3"
+    title: "Table of Contents for the Individual Clinical Study Report"
+    slug: table-of-contents
+    content: []
+
+  - number: "4"
+    title: "List of Abbreviations and Definition of Terms"
+    slug: abbreviations
+    content: [text]
+
+  - number: "5"
+    title: "Ethics"
+    slug: ethics
+    content: []
+
+  - number: "5.1"
+    title: "Independent Ethics Committee (IEC) or Institutional Review Board (IRB)"
+    slug: ethics-iec-irb
+    content: [text]
+
+  - number: "5.2"
+    title: "Ethical Conduct of the Study"
+    slug: ethics-conduct
+    content: [text]
+
+  - number: "5.3"
+    title: "Patient Information and Consent"
+    slug: ethics-consent
+    content: [text]
+
+  - number: "6"
+    title: "Investigators and Study Administrative Structure"
+    slug: administrative-structure
+    content: [text]
+
+  - number: "7"
+    title: "Introduction"
+    slug: introduction
+    content: [text]
+
+  - number: "8"
+    title: "Study Objectives"
+    slug: objectives
+    content: [text]
+
+  - number: "9"
+    title: "Investigational Plan"
+    slug: investigational-plan
+    content: []
+
+  - number: "9.1"
+    title: "Overall Study Design and Plan: Description"
+    slug: study-design
+    content: [text, in_text_display]
+
+  - number: "9.3"
+    title: "Selection of Study Population"
+    slug: study-population
+    content: []
+
+  - number: "9.3.1"
+    title: "Inclusion Criteria"
+    slug: inclusion-criteria
+    content: [text]
+
+  - number: "9.3.2"
+    title: "Exclusion Criteria"
+    slug: exclusion-criteria
+    content: [text]
+
+  - number: "9.3.3"
+    title: "Removal of Patients from Therapy or Assessment"
+    slug: patient-removal
+    content: [text]
+
+  - number: "9.4"
+    title: "Treatments"
+    slug: treatments
+    content: []
+
+  - number: "9.4.1"
+    title: "Treatments Administered"
+    slug: treatments-administered
+    content: [text]
+
+  - number: "9.4.2"
+    title: "Identity of Investigational Product(s)"
+    slug: product-identity
+    content: [text]
+
+  - number: "9.4.3"
+    title: "Method of Assigning Patients to Treatment Groups"
+    slug: treatment-assignment
+    content: [text]
+
+  - number: "9.4.4"
+    title: "Selection of Doses in the Study"
+    slug: dose-selection
+    content: [text]
+
+  - number: "9.4.5"
+    title: "Selection and Timing of Dose for Each Patient"
+    slug: dose-timing
+    content: [text]
+
+  - number: "9.4.6"
+    title: "Blinding"
+    slug: blinding
+    content: [text]
+
+  - number: "9.4.7"
+    title: "Prior and Concomitant Therapy"
+    slug: concomitant-therapy
+    content: [text, in_text_display]
+
+  - number: "9.4.8"
+    title: "Treatment Compliance"
+    slug: treatment-compliance
+    content: [text, in_text_display]
+
+  - number: "9.5"
+    title: "Efficacy and Safety Variables"
+    slug: efficacy-safety-variables
+    content: []
+
+  - number: "9.5.1"
+    title: "Efficacy and Safety Measurements Assessed and Flow Chart"
+    slug: measurements-assessed
+    content: [text, in_text_display]
+
+  - number: "9.6"
+    title: "Data Quality Assurance"
+    slug: data-quality-assurance
+    content: [text]
+
+  - number: "9.7"
+    title: "Statistical Methods Planned in the Protocol and Determination of Sample Size"
+    slug: planned-statistical-methods
+    content: []
+
+  - number: "9.7.1"
+    title: "Statistical and Analytical Plans"
+    slug: statistical-analytical-plans
+    content: [text]
+
+  - number: "9.7.2"
+    title: "Determination of Sample Size"
+    slug: sample-size
+    content: [text]
+
+  - number: "9.8"
+    title: "Changes in the Conduct of the Study or Planned Analyses"
+    slug: conduct-changes
+    content: [text]
+
+  - number: "10"
+    title: "Study Patients"
+    slug: study-patients
+    content: []
+
+  - number: "10.1"
+    title: "Disposition of Patients"
+    slug: disposition
+    content: [text, in_text_display]
+
+  - number: "10.2"
+    title: "Protocol Deviations"
+    slug: protocol-deviations
+    content: [text, in_text_display]
+
+  - number: "11"
+    title: "Efficacy Evaluation"
+    slug: efficacy-evaluation
+    content: []
+    note: >-
+      Efficacy is kept only as far as the analysis sets and the baseline
+      characteristics. Section 11.4 (Efficacy Results and Tabulations of
+      Individual Patient Data) and all fifteen of its subsections are absent, and
+      that single cut is what makes this report abbreviated rather than short.
+
+  - number: "11.1"
+    title: "Data Sets Analysed"
+    slug: data-sets-analysed
+    content: [text, in_text_display]
+
+  - number: "11.2"
+    title: "Demographic and Other Baseline Characteristics"
+    slug: demographics
+    content: [text, in_text_display]
+
+  - number: "11.3"
+    title: "Measurements of Treatment Compliance"
+    slug: compliance-measurements
+    content: [text, in_text_display]
+
+  - number: "12"
+    title: "Safety Evaluation"
+    slug: safety-evaluation
+    content: []
+    note: >-
+      The safety evaluation is kept through adverse events, deaths and other
+      serious adverse events, and the safety conclusions. E3's
+      parameter-by-parameter laboratory evaluation (12.4) and its vital-sign
+      section (12.5) are absent: an abbreviated report may summarise that detail
+      rather than reproduce it, and the underlying patient listings remain
+      reachable through Section 16.2.
+
+  - number: "12.1"
+    title: "Extent of Exposure"
+    slug: extent-of-exposure
+    content: [text, in_text_display]
+
+  - number: "12.2"
+    title: "Adverse Events (AEs)"
+    slug: adverse-events
+    content: []
+
+  - number: "12.2.1"
+    title: "Brief Summary of Adverse Events"
+    slug: ae-brief-summary
+    content: [text, in_text_display]
+
+  - number: "12.2.2"
+    title: "Display of Adverse Events"
+    slug: ae-display
+    content: [text, in_text_display]
+
+  - number: "12.2.3"
+    title: "Analysis of Adverse Events"
+    slug: ae-analysis
+    content: [text, in_text_display]
+
+  - number: "12.2.4"
+    title: "Listing of Adverse Events by Patient"
+    slug: ae-listing
+    content: [text]
+
+  - number: "12.3"
+    title: "Deaths, Other Serious Adverse Events, and Other Significant Adverse Events"
+    slug: deaths-saes
+    content: []
+
+  - number: "12.3.1"
+    title: "Listing of Deaths, Other Serious Adverse Events and Other Significant Adverse Events"
+    slug: deaths-saes-listing
+    content: [text, in_text_display]
+
+  - number: "12.3.1.1"
+    title: "Deaths"
+    slug: deaths
+    content: [text]
+
+  - number: "12.3.1.2"
+    title: "Other Serious Adverse Events"
+    slug: other-serious-aes
+    content: [text]
+
+  - number: "12.3.1.3"
+    title: "Other Significant Adverse Events"
+    slug: other-significant-aes
+    content: [text]
+
+  - number: "12.3.2"
+    title: "Narratives of Deaths, Other Serious and Certain Other Significant Adverse Events"
+    slug: sae-narratives
+    content: [text]
+
+  - number: "12.3.3"
+    title: "Analysis and Discussion of Deaths, Other Serious and Other Significant Adverse Events"
+    slug: sae-discussion
+    content: [text]
+
+  - number: "12.6"
+    title: "Safety Conclusions"
+    slug: safety-conclusions
+    content: [text]
+
+  - number: "13"
+    title: "Discussion and Overall Conclusions"
+    slug: discussion-conclusions
+    content: [text]
+
+  - number: "14"
+    title: "Tables, Figures and Graphs Referred to but not Included in the Text"
+    slug: post-text-displays
+    content: [post_text_index]
+
+  - number: "14.1"
+    title: "Demographic Data"
+    slug: post-text-demographic
+    content: [post_text_index]
+
+  - number: "14.2"
+    title: "Efficacy Data"
+    slug: post-text-efficacy
+    content: [post_text_index]
+    note: >-
+      Declared and left empty. No efficacy analysis dataset exists for CDISCPILOT01
+      in pharmaverseadam (design decision D12), and Section 11.1's prose points
+      here to say so. Dropping the heading would have hidden the gap.
+
+  - number: "14.3"
+    title: "Safety Data"
+    slug: post-text-safety
+    content: []
+
+  - number: "14.3.1"
+    title: "Displays of Adverse Events"
+    slug: post-text-ae-displays
+    content: [post_text_index]
+
+  - number: "14.3.2"
+    title: "Listings of Deaths, Other Serious and Significant Adverse Events"
+    slug: post-text-death-sae-listings
+    content: [post_text_index]
+
+  - number: "14.3.3"
+    title: "Narratives of Deaths, Other Serious and Certain Other Significant Adverse Events"
+    slug: post-text-sae-narratives
+    content: [text]
+
+  - number: "15"
+    title: "Reference List"
+    slug: references
+    content: [text]
+
+  - number: "16"
+    title: "Appendices"
+    slug: appendices
+    content: []
+    note: >-
+      Only the appendices this report cites. The eight retained entries are the
+      four documentation appendices (protocol, consent, randomisation scheme,
+      statistical methods) and the four patient-data listings the retained prose
+      cross-references. Everything else E3 lists under Section 16 is absent.
+
+  - number: "16.1"
+    title: "Study Information"
+    slug: appendix-study-information
+    content: []
+
+  - number: "16.1.1"
+    title: "Protocol and Protocol Amendments"
+    slug: appendix-protocol
+    content: [text]
+
+  - number: "16.1.3"
+    title: "List of IEC or IRB and Representative Written Information for Patient and Sample Consent Forms"
+    slug: appendix-iec-consent
+    content: [text]
+
+  - number: "16.1.7"
+    title: "Randomisation Scheme and Codes (patient identification and treatment assigned)"
+    slug: appendix-randomisation
+    content: [text]
+
+  - number: "16.1.9"
+    title: "Documentation of Statistical Methods"
+    slug: appendix-statistical-methods
+    content: [text, generated_provenance]
+
+  - number: "16.2"
+    title: "Patient Data Listings"
+    slug: appendix-patient-listings
+    content: []
+
+  - number: "16.2.1"
+    title: "Discontinued Patients"
+    slug: listing-discontinued
+    content: [post_text_index]
+
+  - number: "16.2.3"
+    title: "Patients Excluded from the Efficacy Analysis"
+    slug: listing-efficacy-exclusions
+    content: [post_text_index]
+
+  - number: "16.2.4"
+    title: "Demographic Data"
+    slug: listing-demographics
+    content: [post_text_index]
+
+  - number: "16.2.7"
+    title: "Adverse Event Listings (each patient)"
+    slug: listing-adverse-events
+    content: [post_text_index]
+

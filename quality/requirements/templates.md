@@ -6,8 +6,11 @@ configuration, and the Node assembler that walks them to produce the report.
 Scope: [`library/templates/`](../../library/templates) — one directory per template
 object, each a document model (`sections.yaml`) plus a per-report assembly
 (`assembly.yaml`): [`ich-e3`](../../library/templates/ich-e3) (the full clinical study
-report) and [`e3-synopsis`](../../library/templates/e3-synopsis) (the ICH E3 Annex I
-synopsis) — together with [`scripts/template-lib.mjs`](../../scripts/template-lib.mjs) and
+report), [`e3-synopsis`](../../library/templates/e3-synopsis) (the ICH E3 Annex I
+synopsis), [`display-package`](../../library/templates/display-package) (the post-text
+displays delivered on their own) and
+[`e3-abbreviated`](../../library/templates/e3-abbreviated) (the reduced report E3
+contemplates for a study not intended to support a claim) — together with [`scripts/template-lib.mjs`](../../scripts/template-lib.mjs) and
 [`scripts/assemble.mjs`](../../scripts/assemble.mjs). Prose content and the text gates
 are [`text.md`](text.md); ARD production is [`tfl-engine.md`](tfl-engine.md); the site
 that renders `csr.json` is [`quality.md`](quality.md).
@@ -27,6 +30,18 @@ that renders `csr.json` is [`quality.md`](quality.md).
   synopsis is the smallest document that exercises sections, assembly, text blocks, named
   values, in-text displays, a post-text index and the generated provenance appendix at
   once, against the same study and the same ARDs as the full report.
+- **Restriction, not rewrite** ([#34](https://github.com/jwildfire/open.csr/issues/34)) —
+  the third and fourth template objects are each expressed as a SUBSET of the full E3
+  model: every section they declare carries the number, title, slug and content
+  declaration it has in `ich-e3`, unchanged. That is what let both be added without
+  writing a sentence of prose. The synopsis needed eighteen new blocks because the
+  report's prose cross-references E3 section numbers a synopsis has not got; a document
+  that keeps E3's numbering reuses the same prose untouched, and its model retains every
+  cross-referenced section precisely so that it does.
+- **The cost of a fifth** — no file under `scripts/` names any template id except the
+  `ich-e3` default, and the demo site follows the library rather than a member of it
+  ([#32](https://github.com/jwildfire/open.csr/issues/32)). A new template object is two
+  YAML files, a matrix section and a test file; the framework itself does not move.
 - **Licence position** — no template object in this library is derived from the R
   Consortium Submissions Working Group pilot repositories. Pilots 1, 2 and 3 are GPL-3.0,
   which is one-way incompatible with this Apache-2.0 project in the direction reuse would
@@ -104,6 +119,35 @@ that renders `csr.json` is [`quality.md`](quality.md).
 | RPT-SYN-006 | The same display carries a different number in each document from one unchanged specification: `Table 14.1.1` in the report and `Table 13.1` in the synopsis, because identity is the slug and the number is a build-time assignment (design D6). | Functional | `assemble-templates-plural.test.js` | Verified |
 | RPT-SYN-007 | Both documents resolve the same named values, from the same store, to the same numbers, and both re-derive every value against the committed ARDs. Two documents about one study cannot disagree about a quantity. | Traceability | `assemble-templates-plural.test.js` | Verified |
 
+## Third template object — post-text display package
+
+| ID | Requirement | Type | Verification | Status |
+|---|---|---|---|---|
+| RPT-PKG-001 | `library/templates/display-package/sections.yaml` is a structural restriction of the full ICH E3 model: every section it declares carries the number, title, slug and content declaration it has in `ich-e3`, unchanged, and it declares fewer of them. | Functional | `assemble-template-subsets.test.js` | Verified |
+| RPT-PKG-002 | The package carries no prose: its assembly claims no text block, the assembled document places none, and every block in the shared Text Library is reported as ungated by this build rather than silently skipped. | Functional | `assemble-template-subsets.test.js` | Verified |
+| RPT-PKG-003 | Every display carries the same assigned number in the package as in the full report — `Table 14.1.1` in both — because both assemblies declare the same post-text structure and neither writes a number down. Two documents that declare the same structure agree; the synopsis, which declares a different one, differs (design D6). | Functional | `assemble-template-subsets.test.js` | Verified |
+| RPT-PKG-004 | The generated provenance appendix is E3's own Section 16.1.9, not a section invented for this document: E3 already reserves that appendix for the documentation of statistical methods. | Traceability | `assemble-template-subsets.test.js` | Verified |
+| RPT-PKG-005 | Sections 14.2 (efficacy) and 14.3.4 (abnormal laboratory values) are declared and left unpopulated rather than dropped, because open.csr produces no efficacy or laboratory display for this study; Section 14.3.3 is omitted instead, because it is narrative and this document carries none. | Traceability | `assemble-template-subsets.test.js` | Verified |
+| RPT-PKG-006 | The package assembles green against CDISCPILOT01 — every gate passes, no build error, all six displays resolve to a committed ARD. | Functional | `assemble-template-subsets.test.js` | Verified |
+
+## Fourth template object — abbreviated clinical study report
+
+| ID | Requirement | Type | Verification | Status |
+|---|---|---|---|---|
+| RPT-ABR-001 | `library/templates/e3-abbreviated/sections.yaml` is a structural restriction of the full ICH E3 model under the same schema and the same validator: seventy-five sections against the full report's one hundred and nineteen, each unchanged in number, title, slug and content declaration. | Functional | `assemble-template-subsets.test.js` | Verified |
+| RPT-ABR-002 | The efficacy-analysis apparatus is absent — Section 11.4 and all fifteen of its subsections, the discussion of design choice (9.2) and the efficacy-specific measurement sections (9.5.2 to 9.5.4) — while the analysis sets, the baseline characteristics, the safety evaluation and the discussion remain. That single cut is what makes the report abbreviated. | Functional | `assemble-template-subsets.test.js` | Verified |
+| RPT-ABR-003 | The abbreviated report introduces no new prose: every text block its assembly names is one the full report already assembles, and the Text Library holds no block written for this document. | Traceability | `assemble-template-subsets.test.js` | Verified |
+| RPT-ABR-004 | Every cross-reference in the reused prose resolves against the abbreviated model, because the model retains every section the retained prose points at — 16.2.1, 16.2.3, 16.2.4, 16.2.7, 16.1.9, 14.2 and 12.3.2 among them. | Functional | `assemble-template-subsets.test.js` | Verified |
+| RPT-ABR-005 | The abbreviated report assembles green against CDISCPILOT01, populates exactly the sections the full report populates, and assigns every display the same number — the two documents differ in their document model, not in what they say. | Functional | `assemble-template-subsets.test.js` | Verified |
+
+## The library takes templates
+
+| ID | Requirement | Type | Verification | Status |
+|---|---|---|---|---|
+| RPT-LIB-005 | Every template object the library holds assembles green against the same study in one run, and each re-derives its named values against the committed ARDs. CI assembles them all with `--all`: a template that is never assembled is a directory, not a template. | Functional | `assemble-template-subsets.test.js` | Verified |
+| RPT-LIB-006 | No file under `scripts/` names the third or fourth template object. A template object is discovered from disk by the assembler, the loader and the site build, or the framework is not generic — adding one costs two YAML files and no code. | Non-functional | `assemble-template-subsets.test.js` | Verified |
+| RPT-LIB-007 | All four documents resolve the same named values, from the same store, to the same numbers. Four documents about one study cannot disagree about a quantity. | Traceability | `assemble-template-subsets.test.js` | Verified |
+
 ## Known limitations
 
 - Display titles fall back to a built-in map when the TFL Library supplies no
@@ -115,10 +159,22 @@ that renders `csr.json` is [`quality.md`](quality.md).
   explicitly with the `scale` qualifier.
 - Whole-document RTF/DOCX assembly (`r2rtf::assemble_rtf` / `assemble_docx`) is the
   roadmap submission path; v0 emits JSON and HTML only.
-- The demo site is still single-template: it reads `docs/assembled/csr.json` and one
-  template directory, so the synopsis assembles and is committed but is not yet reachable
-  from the Reader or the Templates page.
-- The two template objects share one flat Text Library. A block's `e3_section` is metadata
+- The demo site follows the library rather than one member of it (#32), so a new template
+  object acquires its pages without a site change. `site/config.json` supplies editorial
+  metadata only and is a merge, never a gate: an undeclared template object still
+  publishes, titled from its own model, with a warning naming it. `display-package` and
+  `e3-abbreviated` are currently undeclared and raise that warning on every build.
+- Four template objects share one flat Text Library. A block's `e3_section` is metadata
   only, so a synopsis block and a report block sit side by side with nothing but their id
-  prefix distinguishing them; if a third document model is added, the library will want a
-  per-model index.
+  prefix distinguishing them. The third and fourth objects did not make this worse — the
+  display package assembles no prose and the abbreviated report reuses the report's — but
+  the first document model that needs its own prose will want a per-model index.
+- The abbreviated report's section list is open.csr's judgment, not ICH E3's: E3's
+  Introduction contemplates a reduced report but prints no section list for one. The rule
+  the subset follows is stated in `library/templates/e3-abbreviated/sections.yaml`, in one
+  place, so it can be disagreed with there rather than section by section. The clause most
+  worth arguing with is the removal of E3's parameter-by-parameter laboratory (12.4) and
+  vital-sign (12.5) evaluations.
+- No template object in the library assembles another. An abbreviated report's Section 2
+  is a synopsis, and this library holds a synopsis template object, but the assembler has
+  no way to place one assembled document inside another; the two are built side by side.

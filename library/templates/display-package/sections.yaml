@@ -1,0 +1,124 @@
+# ------------------------------------------------------------------------------
+# Post-text display package — machine-readable document model
+# ------------------------------------------------------------------------------
+# The tables, figures and listings of a clinical study report, delivered on their
+# own. This is what a statistician reviews before the report exists: the numbers
+# are final and checkable, the narrative has not been written, and nobody should
+# be asked to read prose to find out whether a table is right.
+#
+# WHERE THE STRUCTURE COMES FROM. This model is a RESTRICTION of
+# library/templates/ich-e3/sections.yaml — every section below carries the number,
+# title, slug and content declaration it has in the full clinical study report,
+# unchanged. Nothing is renamed and nothing is renumbered, and a test in
+# tests/unit/assemble-template-subsets.test.js checks that, section by section.
+#
+# WHY THAT MATTERS MORE THAN IT SOUNDS. Because the numbering is E3's own and the
+# post-text order is the report's own, a display carries the SAME number here as
+# it does in the report: the table the statistician reviews as Table 14.1.1 is
+# Table 14.1.1 when the report is written around it. That is the opposite of what
+# the synopsis demonstrates — there the same display is Table 14.1.1 in the report
+# and Table 13.1 in the synopsis — and both follow from the same rule (design
+# decision D6): identity is the slug, the number is assigned at build time from
+# the assembly. Two documents that declare the same structure agree; two that
+# declare different structures differ. Neither requires touching a display.
+#
+# WHAT IS NOT HERE. E3 Section 14.3.3 (Narratives of Deaths, Other Serious and
+# Certain Other Significant Adverse Events) is prose, and a display package
+# carries no prose. It is the one part of E3's Section 14 this model drops, and
+# it is dropped because of what this document is, not because open.csr cannot
+# produce it. No text block is assembled into this document at all: the assembler
+# reports every block in the Text Library as ungated by this build, which is the
+# accurate thing for it to say.
+#
+# LICENCE. Encoded from ICH E3 (1995), Step 4, Section 14, a public guideline, on
+# the same footing as the model it restricts. Nothing here is derived from a
+# sponsor or CRO template, or from any R Consortium Submissions Working Group
+# pilot repository: pilots 1, 2 and 3 are GPL-3.0 (one-way incompatible with this
+# Apache-2.0 project in the direction reuse would need) and pilots 4, 5-dev and 6,
+# the ADRG automation pipeline and most of the eCTD "-to-fda" packages carry no
+# licence at all. See reports/csr-template-objects-2026-08-26 on the hub.
+#
+# Schema: identical to library/templates/ich-e3/sections.yaml (contracts.md §7).
+# ------------------------------------------------------------------------------
+model:
+  id: display-package
+  title: "Post-Text Display Package"
+  version: "1.0.0"
+  source: "ICH E3 (1995), Step 4 — Section 14, restricted to its display sections"
+  reference: "https://database.ich.org/sites/default/files/E3_Guideline.pdf"
+  note: >-
+    E3 Section 14 collects the tables, figures and graphs referred to but not
+    included in the text. Delivered on its own, that collection is the deliverable
+    a statistician reviews before any narrative exists. This model is E3 Section
+    14 plus the appendix E3 already reserves for the documentation of statistical
+    methods, and nothing else.
+
+sections:
+  - number: "14"
+    title: "Tables, Figures and Graphs Referred to but not Included in the Text"
+    slug: post-text-displays
+    content: [post_text_index]
+    note: >-
+      E3's own title, kept even though this package IS the text, because keeping
+      it is what makes a display in the package and the same display in the report
+      carry one number.
+
+  - number: "14.1"
+    title: "Demographic Data"
+    slug: post-text-demographic
+    content: [post_text_index]
+
+  - number: "14.2"
+    title: "Efficacy Data"
+    slug: post-text-efficacy
+    content: [post_text_index]
+    note: >-
+      Declared and left empty. No efficacy analysis dataset exists for CDISCPILOT01
+      in pharmaverseadam (design decision D12) and the reference report for the same
+      study carries thirteen efficacy tables. A package that dropped the heading
+      would look finished and tell the reviewer less.
+
+  - number: "14.3"
+    title: "Safety Data"
+    slug: post-text-safety
+    content: []
+
+  - number: "14.3.1"
+    title: "Displays of Adverse Events"
+    slug: post-text-ae-displays
+    content: [post_text_index]
+
+  - number: "14.3.2"
+    title: "Listings of Deaths, Other Serious and Significant Adverse Events"
+    slug: post-text-death-sae-listings
+    content: [post_text_index]
+
+  - number: "14.3.4"
+    title: "Abnormal Laboratory Value Listing (Each Patient)"
+    slug: post-text-abnormal-labs
+    content: [post_text_index]
+    note: >-
+      Declared and left empty: the reference report for this study carries six
+      laboratory displays and open.csr produces none of them yet. E3 Section 14.3.3
+      is omitted rather than left empty, because it is narrative and this document
+      carries none.
+
+  - number: "16"
+    title: "Appendices"
+    slug: appendices
+    content: []
+
+  - number: "16.1"
+    title: "Study Information"
+    slug: appendix-study-information
+    content: []
+
+  - number: "16.1.9"
+    title: "Documentation of Statistical Methods"
+    slug: appendix-statistical-methods
+    content: [text, generated_provenance]
+    note: >-
+      The generated provenance appendix, in the same place the full report puts
+      it. The synopsis had to declare a section of its own because a synopsis has
+      no Section 16; a display package does not, because E3 already reserves this
+      one for exactly this content. Nothing is invented here.

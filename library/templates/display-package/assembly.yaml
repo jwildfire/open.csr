@@ -1,0 +1,69 @@
+# ------------------------------------------------------------------------------
+# assembly.yaml — the post-text display package for the open.csr demonstration
+# study, CDISCPILOT01.
+# ------------------------------------------------------------------------------
+# sections.yaml in this directory says what a display package IS. This file says
+# what THIS package contains: six displays, in the order the full clinical study
+# report puts them in, and nothing else.
+#
+# THERE IS NO `slots:` BLOCK, AND THAT IS THE POINT. A display package carries no
+# narrative, so this assembly claims no text block at all. Every block in the Text
+# Library is therefore reported by the assembler as "in the Text Library but not
+# assembled into display-package; not gated by this build" — thirty-odd warning
+# lines that are all true. The alternative, staying quiet about them, would let
+# "not gated" pass for "gated and clean" (RPT-LIB-004).
+#
+# The `study` block is identical to the one in ich-e3 and e3-synopsis: the same
+# study, the same cut-off, the same analysis set. All three documents bind the
+# same named values from library/values/values.yaml, re-derived against the
+# committed ARDs at build time, so none of them can quote a quantity the others
+# contradict.
+#
+# The post-text order is identical to the report's, so the assigned numbers are
+# identical to the report's: Table 14.1.1 here is Table 14.1.1 there. That is a
+# consequence of D6, not an exception to it — reorder the lists below and the
+# package renumbers itself without a display specification, a piece of prose or a
+# test changing.
+# ------------------------------------------------------------------------------
+template: display-package
+
+study:
+  id: CDISCPILOT01
+  title: >-
+    Safety and Efficacy of the Xanomeline Transdermal Therapeutic System (TTS) in
+    Patients with Mild to Moderate Alzheimer's Disease
+  short_title: "Xanomeline TTS in Mild to Moderate Alzheimer's Disease"
+  phase: "Phase 2"
+  indication: "Mild to moderate Alzheimer's disease"
+  product: "Xanomeline Transdermal Therapeutic System (TTS)"
+  sponsor: "open.csr demonstration report (CDISC pilot study data)"
+  cutoff: "2014-07-01"
+  design: "Randomised, double-blind, placebo-controlled, parallel-group"
+  treatment_groups: ["Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"]
+  primary_analysis_set: "Safety Analysis Set"
+  data_source: "pharmaverseadam (CDISCPILOT01 ADaM)"
+  scope_note: >-
+    The post-text displays of the clinical study report for this study, delivered
+    on their own for review before the report is written. No narrative: every
+    number here is the rendering of a committed analysis results dataset, and the
+    appendix records which one. Efficacy (Section 14.2) and abnormal laboratory
+    values (Section 14.3.4) are declared and empty — no efficacy or laboratory
+    analysis dataset exists for this study in the demonstration data (D12).
+
+# E3 already reserves 16.1.9 for the documentation of statistical methods, so the
+# generated provenance appendix goes where the full report puts it.
+provenance_section: "16.1.9"
+
+# ------------------------------------------------------------- post-text displays
+# Numbers are assigned from this order at build time and appear nowhere in source
+# (D6). The order matches library/templates/ich-e3/assembly.yaml exactly, so the
+# package and the report agree display by display.
+post_text:
+  - section: "14.1"
+    displays: [t-disposition, t-demographics]
+
+  - section: "14.3.1"
+    displays: [t-exposure, t-ae-overview, t-ae-common]
+
+  - section: "14.3.2"
+    displays: [l-ae-serious]
