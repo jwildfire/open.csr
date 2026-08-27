@@ -1,7 +1,7 @@
 {
   "suite": "r-unit",
   "package": "opencsr",
-  "generated": "2026-08-27T12:40:15Z",
+  "generated": "2026-08-27T14:53:13Z",
   "environment": {
     "r": "4.3.3",
     "os": "Darwin 23.6.0"

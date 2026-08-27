@@ -72,6 +72,7 @@
     "QC-DEMO-035": "Each document panel carries its own prose disclosure, so a document whose blocks are unreviewed reads as draft inside the app exactly as it does on its own page.",
     "QC-SITE-013": "The display store states which documents place each display, built over the whole template library: the display's own page lists every document with a link to it and the number that document assigned, a display no document places says so, and the gallery card names those documents rather than counting them.",
     "QC-SITE-014": "A display placed in a document carries a hyperlink to its entry in the display store, written in the form the app's link-interception rule recognises, so the same href is a pane switch inside the demo and a real navigation on the standalone reader page.",
+    "QC-SITE-015": "A display's page lists the requirements that cover that display — the matrix rows matching the prefixes it declares in `site/config.json`, together with the ids its own evidence cites — and not the whole matrix. A display declaring no prefixes lists none rather than all of them.",
     "QC-SITE-012": "The stylesheet expresses the explorer's one state and only that: a document's section list is hidden by default and revealed by sitting next to the current document, with no per-node collapse class and no disclosure-control rules left to override it.",
     "QC-SITE-011": "Two documents assembled from the shared libraries quote the same artifacts: every display both documents place resolves to the same ARD source and the same ARD payload, and both carry the same value store with no value differing in raw value or formatted string. Only the per-document display number differs.",
     "QC-SITE-008": "`site/site.css` parses as a whole: every block is closed, no block is closed that was never opened, and no declaration sits outside a rule — so no rule in the file can be silently dead in the browser.",
@@ -708,6 +709,15 @@
       "evidence": "js-unit",
       "link": "site-render.test.js",
       "status": "draft"
+    },
+    {
+      "id": "QC-SITE-015",
+      "area": "Site",
+      "text": "A display's page lists the requirements that cover that display — the matrix rows matching the prefixes it declares in `site/config.json`, together with the ids its own evidence cites — and not the whole matrix. A display declaring no prefixes lists none rather than all of them.",
+      "source": "Correctness",
+      "evidence": "`display-requirements.test.js`",
+      "link": "Verified",
+      "status": ""
     },
     {
       "id": "QC-SITE-012",

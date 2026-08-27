@@ -1,0 +1,113 @@
+{
+  "module": "t-cibic-categorical",
+  "generated": "2026-08-27T14:52:45.349Z",
+  "records": [
+    {
+      "requirementIds": [
+        "DSP-ALL-001"
+      ],
+      "title": "DSP-ALL-001: every display renders a table that actually contains numbers (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-ALL-002"
+      ],
+      "title": "DSP-ALL-002: every display declares a regulatory identifier and a source line (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-CIBIC-001"
+      ],
+      "title": "DSP-CIBIC-001: the CIBIC+ summary tables reproduce the published tables cell for cell (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-cibic.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-CIBIC-002"
+      ],
+      "title": "DSP-CIBIC-002: the analysis of covariance reproduces the published model results (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-cibic.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-CIBIC-003"
+      ],
+      "title": "DSP-CIBIC-003: the column heading is the analysis set and the n row is the visit (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-cibic.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-CIBIC-004"
+      ],
+      "title": "DSP-CIBIC-004: the categorical analysis reports every category at every visit and partitions it (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-cibic.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-CIBIC-005"
+      ],
+      "title": "DSP-CIBIC-005: the categorical p-values are the published row-mean-scores CMH values (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays-cibic.R",
+      "issueRefs": [
+        1
+      ]
+    }
+  ],
+  "traceability": {
+    "adamDatasets": [
+      "adqscibc",
+      "adsl"
+    ],
+    "adamHashes": {
+      "adsl": "sha256:6534192e6ae2a8789015148d2068ecdd8421791ea6d7f9cc307fef1db97945f9",
+      "adqscibc": "sha256:2af92608855a146509d9c39acf5afea33dceffc23cc24efde28a36f5771d5ea8"
+    },
+    "ardFile": "outputs/t-cibic-categorical/v001/ard.json",
+    "ardHash": "sha256:bf869c30a1b569da9f37a56e6be472e60f6ad033cc60e48455f3d66a7647d850",
+    "displayFile": "library/tfl/t-cibic-categorical/display.yaml",
+    "specHash": "sha256:f6675d7fa980619760f57857f5cba5bf0e75b6aa92d486c7664b19f7f216ba7b",
+    "iteration": "v001",
+    "sourceCommit": null
+  },
+  "environment": {
+    "os": "Darwin 23.6.0",
+    "node": "v24.14.0",
+    "vitest": null,
+    "r": "4.3.3"
+  },
+  "run": null
+}

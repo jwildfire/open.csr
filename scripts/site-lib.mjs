@@ -419,6 +419,30 @@ export function loadEvidence(rootDir, module) {
   return readJsonFile(path.join(rootDir, 'docs', 'evidence', module, 'evidence.json'));
 }
 
+/**
+ * The requirements that cover one display, out of the whole matrix.
+ *
+ * `docs/requirements/<slug>.json` holds every row in the matrix, not the rows
+ * for that display — the per-display file is a copy of the whole thing, and the
+ * filtering was always meant to happen here. `site/config.json` declares a
+ * `prefixes` array per display for exactly this, and nothing read it, so every
+ * gallery page listed all 49 rows and the efficacy tables claimed the
+ * adverse-event requirements as their own.
+ *
+ * A display with no declared prefixes gets nothing. Showing it everything is
+ * what made the registration gap invisible for as long as it lasted.
+ */
+export function requirementsFor(requirements, prefixes) {
+  if (!requirements || !prefixes || !prefixes.length) return {};
+  const out = {};
+  for (const [id, text] of Object.entries(requirements)) {
+    // Whole-prefix match: the id is <PREFIX>-<number>, so DSP-AE must not catch
+    // DSP-AEX-001.
+    if (prefixes.some((p) => id.startsWith(`${p}-`))) out[id] = text;
+  }
+  return out;
+}
+
 export function loadRequirements(rootDir, component) {
   const extract = readJsonFile(path.join(rootDir, 'docs', 'requirements', `${component}.json`));
   return extract || { component, matrix: null, requirements: {}, rows: [] };
