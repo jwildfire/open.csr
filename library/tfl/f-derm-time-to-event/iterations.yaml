@@ -1,0 +1,14 @@
+display: f-derm-time-to-event
+iterations:
+- version: v001
+  created: '2026-08-27T02:20:25Z'
+  actor: '@obotclaw'
+  change_request: Initial generation of Figure 14-1 from the study own analysis results
+    metadata (define.xml ResultDisplay Figure_14-1, PROC LIFETEST) and SAP section
+    11.2.
+  git_commit: ''
+  spec_hash: sha256:b91adad30a44f47edde70d16b5f4d36d673d930ef1013e9723edd9441f9488ef
+  display_hash: sha256:a982dd65af195a3b23f9e495f1c0d6cbafc60d9add78087159395a232ceecd82
+  ard_hash: sha256:d7b60a344fdc7396ef33fa9d4fac459ad86b8f9987d20045ca02f9660085a0f4
+  ard_rows: 45
+

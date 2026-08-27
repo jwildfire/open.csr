@@ -1,0 +1,68 @@
+id: f-derm-time-to-event
+title: "Time to Dermatologic Event by Treatment Group"
+study: CDISCPILOT01
+population_label: "Safety Analysis Set"
+cutoff: "2014-07-01"
+source: "Source: adtte, adsl (CDISC pilot ADaM package, vendored from phuse-org/phuse-scripts). Data cut-off: 2014-07-01."
+footnotes:
+  - "Dermatologic events are the adverse events the study flagged as its first customised query, CQ01NAM = 'DERMATOLOGIC EVENTS'; ADTTE carries one record per subject for the first such treatment-emergent event."
+  - "Subjects without a dermatologic event are censored at their study completion date (CNSR = 1); the event time is the day of the first event (CNSR = 0)."
+  - "Survival probability is the Kaplan-Meier product-limit estimate of remaining free of a dermatologic event. Tick marks on a curve are censored subjects."
+  - "The median and its 95% confidence limits use the linear transformation, reproducing the limits in the reference report; NE means the curve never reached 0.5 and the median is not estimable."
+  - "The quoted p-value is the log-rank test of equality across the three treatment groups (2 degrees of freedom)."
+columns:
+  order: [Placebo, "Xanomeline Low Dose", "Xanomeline High Dose"]
+format:
+  digits:
+    p: 0
+    n_censor: 0
+    p_censor: 0
+    median: 1
+    median_lcl: 1
+    median_ucl: 1
+  # `p_censor` is a proportion this display's custom.R computes, so it is
+  # declared here rather than pre-scaled in the ARD (contract §3).
+  proportions: [p, prop, p_censor]
+  median_ci: "{median} ({median_lcl}, {median_ucl})"
+rows:
+  - { analysis: km, pattern: n_pct, label: "Subjects with a dermatologic event, n (%)" }
+  - { analysis: km, pattern: "{n_censor} ({p_censor}%)", label: "Censored, n (%)" }
+  - { analysis: km, pattern: median_ci, label: "Median time to event, days (95% CI)",
+      na_text: "NE" }
+figure:
+  analysis: km
+  plot_title: "Product-Limit Survival Function Estimates"
+  width: 900
+  height: 460
+  x_axis:
+    label: "Time to Dermatologic Event or End of Study (days)"
+    min: 0
+    max: 200
+    ticks: [0, 50, 100, 150, 200]
+  y_axis:
+    label: "Survival Probability"
+    min: 0
+    max: 1
+    ticks: [0, 0.2, 0.4, 0.6, 0.8, 1.0]
+    digits: 1
+  stats:
+    time: time
+    value: surv
+    censor_time: censor_time
+    censor_value: censor_surv
+  series:
+    - level: Placebo
+      color: "#2563eb"
+      dash: ""
+    - level: "Xanomeline Low Dose"
+      color: "#0d9488"
+      dash: "8 4"
+    - level: "Xanomeline High Dose"
+      color: "#dc2626"
+      dash: "2 3"
+  annotation:
+    binding: "km:p_value"
+    template: "Log-rank p {value}"
+    format: p_value
+variants:
+  post_text: {}

@@ -113,11 +113,15 @@ regenerate <- function(slug, root = csr_root(), change_request = "Initial genera
   }
 
   needed <- unique(c("adsl", analysis_spec$dataset, analysis_spec$denominator))
-  if (is.null(data)) data <- prepare_data(datasets = needed)
+  # The packaging of CDISCPILOT01 a display was computed against is part of the
+  # display's definition, not of the caller's environment (contract §2/§4), so it
+  # is read from the spec rather than defaulted here.
+  if (is.null(data)) data <- prepare_data(datasets = needed, sources = analysis_spec$sources)
   missing <- setdiff(needed, names(data))
   if (length(missing)) {
     stop("Prepared data is missing dataset(s): ", paste(missing, collapse = ", "), call. = FALSE)
   }
+  assert_data_sources(data, needed, analysis_spec$sources, slug)
 
   custom_env <- source_custom(display_dir(slug, root))
   rows <- build_ard(analysis_spec, data, custom_env)
@@ -198,6 +202,41 @@ regenerate <- function(slug, root = csr_root(), change_request = "Initial genera
   invisible(manifest)
 }
 
+#' Assert that supplied data was prepared from the packaging the spec declares
+#'
+#' [regenerate_all()] prepares data once and hands the same list to several
+#' displays. If a display declares `sources:` and the list it is handed came from
+#' a different packaging, the display would regenerate against data its spec
+#' never asked for and say nothing — a wrong number with a clean exit code. So
+#' the manifest is checked against the declaration before anything is computed.
+#'
+#' @param data Prepared data list.
+#' @param needed Dataset names this display uses.
+#' @param sources The spec's normalised `sources` declaration, or `NULL`.
+#' @param slug Display slug, for the error message.
+#' @noRd
+assert_data_sources <- function(data, needed, sources, slug) {
+  manifest <- data_manifest(data)
+  registry <- data_sources(sources)
+  wrong <- character(0)
+  for (nm in needed) {
+    want <- unname(source_label(registry[[nm]])[["pkg"]])
+    got <- manifest$source_pkg[manifest$dataset == nm]
+    if (length(got) == 1 && !identical(got, want)) {
+      wrong <- c(wrong, paste0(nm, ": prepared from ", got, ", spec declares ", want))
+    }
+  }
+  if (length(wrong)) {
+    stop(
+      "Display '", slug, "' was handed data prepared from a different packaging ",
+      "of CDISCPILOT01 than its spec declares — ", paste(wrong, collapse = "; "),
+      ". Regenerate it on its own, or group by `sources:`.",
+      call. = FALSE
+    )
+  }
+  invisible(TRUE)
+}
+
 #' Append an entry to a display's iteration ledger
 #' @noRd
 append_iteration <- function(slug, manifest, root = csr_root()) {
@@ -230,14 +269,28 @@ append_iteration <- function(slug, manifest, root = csr_root()) {
 regenerate_all <- function(slugs = display_slugs(root), root = csr_root(),
                            change_request = "Initial generation.", actor = "@jwildfire") {
   specs <- lapply(slugs, function(s) read_analysis_spec(s, root))
-  needed <- unique(c("adsl", unlist(lapply(specs, function(s) c(s$dataset, s$denominator)))))
-  data <- prepare_data(datasets = needed)
-  out <- lapply(slugs, function(s) {
-    m <- regenerate(s, root, change_request = change_request, actor = actor, data = data)
-    tibble::tibble(
-      display = m$display, version = m$version, ard_rows = m$ard_rows,
-      ard_errors = m$ard_errors
-    )
-  })
-  invisible(do.call(rbind, out))
+  names(specs) <- slugs
+  # Preparing data is the expensive step, so it is shared — but only across
+  # displays that declare the same packaging of CDISCPILOT01. Sharing it across
+  # displays that declare different ones would silently compute a display against
+  # data its spec never asked for (see assert_data_sources()).
+  keys <- vapply(specs, function(s) {
+    if (is.null(s$sources)) "default" else paste(names(s$sources) %||% "", s$sources, collapse = "|")
+  }, character(1))
+  out <- list()
+  for (key in unique(keys)) {
+    group <- slugs[keys == key]
+    gspecs <- specs[group]
+    needed <- unique(c("adsl", unlist(lapply(gspecs, function(s) c(s$dataset, s$denominator)))))
+    data <- prepare_data(datasets = needed, sources = gspecs[[1]]$sources)
+    for (s in group) {
+      m <- regenerate(s, root, change_request = change_request, actor = actor, data = data)
+      out[[length(out) + 1]] <- tibble::tibble(
+        display = m$display, version = m$version, ard_rows = m$ard_rows,
+        ard_errors = m$ard_errors
+      )
+    }
+  }
+  out <- do.call(rbind, out)
+  invisible(out[match(slugs, out$display), , drop = FALSE])
 }

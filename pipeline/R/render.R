@@ -29,18 +29,28 @@ default_patterns <- function() {
 #' @param value Statistic value.
 #' @param stat_name Statistic name.
 #' @param digits Named list/vector of decimals by statistic name.
+#' @param proportions Statistic names stored as proportions in \[0, 1\] and
+#'   shown as percentages. Defaults to what `{cards}` produces; a display whose
+#'   `custom.R` emits further proportions declares them in `display.yaml`'s
+#'   `format.proportions` rather than pre-scaling them in the ARD, so the ARD
+#'   keeps the statistic and the display keeps the presentation.
 #'
 #' @return A length-one character vector.
 #' @examples
 #' format_stat(0.3385827, "p")   # "33.9"
 #' format_stat(8.5865, "sd")     # "8.59"
 #' @export
-format_stat <- function(value, stat_name, digits = list()) {
+format_stat <- function(value, stat_name, digits = list(), proportions = proportion_stats()) {
   if (is.null(value) || length(value) == 0) {
     return(NA_character_)
   }
   if (length(value) > 1) {
-    return(paste(vapply(value, format_stat, character(1), stat_name = stat_name, digits = digits), collapse = ", "))
+    return(paste(
+      vapply(value, format_stat, character(1),
+        stat_name = stat_name, digits = digits, proportions = proportions
+      ),
+      collapse = ", "
+    ))
   }
   if (is.na(value)) {
     return(NA_character_)
@@ -48,7 +58,7 @@ format_stat <- function(value, stat_name, digits = list()) {
   if (!is.numeric(value)) {
     return(as.character(value))
   }
-  if (stat_name %in% proportion_stats()) value <- value * 100
+  if (stat_name %in% proportions) value <- value * 100
   d <- digits[[stat_name]]
   if (is.null(d)) d <- default_digits(stat_name)
   d <- as.integer(d)
@@ -84,26 +94,32 @@ render_display <- function(ard, display_spec, variant = "post_text") {
   vcfg <- display_spec$variants[[variant]] %||% list()
   patterns <- utils::modifyList(
     default_patterns(),
-    display_spec$format[setdiff(names(display_spec$format), "digits")]
+    display_spec$format[setdiff(names(display_spec$format), c("digits", "proportions"))]
   )
   digits <- display_spec$format$digits
+  proportions <- as.character(display_spec$format$proportions %||% proportion_stats())
 
   is_listing <- nrow(rows) > 0 && all(rows$context == "listing")
   body <- if (is_listing) {
     listing_body(rows, display_spec, digits)
   } else {
-    table_body(rows, display_spec, vcfg, patterns, digits)
+    table_body(rows, display_spec, vcfg, patterns, digits, proportions)
   }
 
   title <- vcfg$title %||% display_spec$title
   gt_tbl <- build_gt(body, display_spec, vcfg, title, variant)
-  html <- standalone_html(gt_tbl, title, display_spec, variant)
+  # A figure's plot is built from the same ARD rows the table beside it came
+  # from, and is inlined into the same document, so the artifact a reviewer
+  # opens carries the curve and the numbers that describe it together.
+  svg <- if (is.null(display_spec$figure)) NULL else figure_svg(rows, display_spec, vcfg)
+  html <- standalone_html(gt_tbl, title, display_spec, variant, svg)
 
   structure(
     list(
       html = html,
       table = body$table,
       gt = gt_tbl,
+      svg = svg,
       columns = body$columns,
       title = title,
       variant = variant,
@@ -167,7 +183,7 @@ expand_rows <- function(rows, display_spec, vcfg) {
       label = r$label %||% r$level %||% r$variable %||% r$analysis,
       analysis = r$analysis, variable = r$variable, variable_level = r$level,
       pattern = r$pattern %||% "n_pct", indent = r$indent %||% 0,
-      digits = r$digits
+      digits = r$digits, na_text = r$na_text
     )
   }
   out <- drop_empty_sections(out)
@@ -179,13 +195,14 @@ expand_rows <- function(rows, display_spec, vcfg) {
 plan_row <- function(label, analysis = NA_character_, variable = NA_character_,
                      variable_level = NA_character_, group2_level = NA_character_,
                      pattern = NA_character_, indent = 0, section = FALSE,
-                     digits = list()) {
+                     digits = list(), na_text = NA_character_) {
   out <- data.frame(
     label = label, analysis = analysis %||% NA_character_,
     variable = variable %||% NA_character_,
     variable_level = variable_level %||% NA_character_,
     group2_level = group2_level %||% NA_character_,
     pattern = pattern %||% NA_character_,
+    na_text = na_text %||% NA_character_,
     indent = as.integer(indent), section = section,
     stringsAsFactors = FALSE
   )
@@ -211,7 +228,7 @@ expand_levels <- function(rows, r, min_pct) {
     plan_row(
       label = paste0(lv), analysis = r$analysis, variable = r$variable,
       variable_level = lv, pattern = r$pattern %||% "n_pct",
-      indent = r$indent %||% 1, digits = r$digits
+      indent = r$indent %||% 1, digits = r$digits, na_text = r$na_text
     )
   })
 }
@@ -327,7 +344,8 @@ auto_row_plan <- function(rows) {
 
 #' Build the rendered table body for a summary display
 #' @noRd
-table_body <- function(rows, display_spec, vcfg, patterns, digits) {
+table_body <- function(rows, display_spec, vcfg, patterns, digits,
+                       proportions = proportion_stats()) {
   cols <- display_columns(rows, display_spec)
   plan <- expand_rows(rows, display_spec, vcfg)
   if (is.null(plan) || nrow(plan) == 0) {
@@ -337,7 +355,7 @@ table_body <- function(rows, display_spec, vcfg, patterns, digits) {
   for (i in seq_len(nrow(plan))) {
     if (isTRUE(plan$section[i])) next
     for (j in seq_along(cols$levels)) {
-      cells[i, j] <- cell_value(rows, plan[i, ], cols$levels[j], patterns, digits)
+      cells[i, j] <- cell_value(rows, plan[i, ], cols$levels[j], patterns, digits, proportions)
     }
   }
   tbl <- tibble::tibble(label = indent_label(plan$label, plan$indent))
@@ -358,7 +376,8 @@ indent_label <- function(label, indent) {
 
 #' Compute one cell by substituting formatted statistics into a pattern
 #' @noRd
-cell_value <- function(rows, plan_row, col_level, patterns, digits) {
+cell_value <- function(rows, plan_row, col_level, patterns, digits,
+                       proportions = proportion_stats()) {
   keep <- rows$analysis == plan_row$analysis &
     !is.na(rows$group1_level) & rows$group1_level == col_level
   if (!is.na(plan_row$variable)) keep <- keep & rows$variable == plan_row$variable
@@ -379,8 +398,16 @@ cell_value <- function(rows, plan_row, col_level, patterns, digits) {
   for (tok in needed) {
     nm <- substr(tok, 2, nchar(tok) - 1)
     hit <- sub$stat[sub$stat_name == nm]
-    val <- if (length(hit)) format_stat(unlist(hit[[1]]), nm, digits) else NA_character_
+    val <- if (length(hit)) format_stat(unlist(hit[[1]]), nm, digits, proportions) else NA_character_
     if (is.na(val)) {
+      # A statistic that exists but is not estimable is not the same as a cell
+      # with nothing behind it. `na_text:` lets the row say which it is — a
+      # Kaplan-Meier median that never falls below 0.5 is "NE", not blank — and
+      # without it the old behaviour (an empty cell) is unchanged.
+      na_text <- plan_row$na_text
+      if (!is.null(na_text) && !is.na(na_text)) {
+        return(as.character(na_text))
+      }
       return("")
     }
     out <- sub(tok, val, out, fixed = TRUE)
@@ -469,8 +496,12 @@ build_gt <- function(body, display_spec, vcfg, title, variant) {
 #' display has to be openable from disk and publishable to a static site
 #' unchanged.
 #' @noRd
-standalone_html <- function(gt_tbl, title, display_spec, variant) {
+standalone_html <- function(gt_tbl, title, display_spec, variant, svg = NULL) {
   fragment <- gt::as_raw_html(gt_tbl, inline_css = TRUE)
+  # The site embeds this document by lifting its <body> and dropping <head>, so
+  # the plot carries its styling as SVG presentation attributes rather than as a
+  # stylesheet rule (see sanitizeEmbeddedHtml in scripts/site-lib.mjs).
+  plot <- if (is.null(svg)) "" else paste0("<figure class=\"opencsr-figure\">", svg, "</figure>\n")
   css <- paste(
     "body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;",
     "margin:0;padding:24px;background:#ffffff;color:#111827;}",
@@ -488,6 +519,7 @@ standalone_html <- function(gt_tbl, title, display_spec, variant) {
     "<p class=\"meta\">", html_escape(display_spec$id), " &middot; ", html_escape(variant),
     " variant &middot; study ", html_escape(display_spec$study),
     " &middot; data cut-off ", html_escape(display_spec$cutoff), "</p>\n",
+    plot,
     fragment,
     "\n</main>\n</body>\n</html>\n"
   )
