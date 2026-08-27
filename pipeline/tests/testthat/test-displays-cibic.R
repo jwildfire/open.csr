@@ -428,9 +428,13 @@ test_that("TFL-PREP-016: a display is refused data prepared from a packaging its
   root <- scratch_root("t-cibic-week24")
   # Same datasets the display asks for, one of them from the other packaging.
   wrong <- prepare_data(c("adsl", "adqscibc"), sources = c(adsl = "pharmaverseadam"))
+  # The wording is the surviving engine's, not this branch's. Two branches built
+  # this guard independently; the one that reached dev first names the offending
+  # dataset and both sides of the disagreement, so it is the one kept. What the
+  # test asserts is unchanged: the refusal happens, and nothing is written.
   expect_error(
     regenerate("t-cibic-week24", root, data = wrong),
-    "but the prepared data supplied was built from"
+    "prepared from a different source than the spec declares"
   )
   expect_false(dir.exists(file.path(root, "outputs", "t-cibic-week24", "v001")))
   unlink(root, recursive = TRUE)

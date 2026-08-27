@@ -1,14 +1,14 @@
 {
   "suite": "r-unit",
   "package": "opencsr",
-  "generated": "2026-08-27T05:04:20Z",
+  "generated": "2026-08-27T12:40:15Z",
   "environment": {
     "r": "4.3.3",
     "os": "Darwin 23.6.0"
   },
   "summary": {
-    "total": 113,
-    "passed": 113,
+    "total": 140,
+    "passed": 140,
     "failed": 0,
     "errored": 0,
     "skipped": 0
@@ -175,73 +175,163 @@
       "status": "pass"
     },
     {
-      "file": "test-displays-efficacy.R",
+      "file": "test-displays-cibic.R",
       "test": "DSP-CIBIC-001: the CIBIC+ summary tables reproduce the published tables cell for cell (#1)",
       "status": "pass"
     },
     {
-      "file": "test-displays-efficacy.R",
+      "file": "test-displays-cibic.R",
       "test": "DSP-CIBIC-002: the analysis of covariance reproduces the published model results (#1)",
       "status": "pass"
     },
     {
-      "file": "test-displays-efficacy.R",
+      "file": "test-displays-cibic.R",
       "test": "DSP-CIBIC-003: the column heading is the analysis set and the n row is the visit (#1)",
       "status": "pass"
     },
     {
-      "file": "test-displays-efficacy.R",
+      "file": "test-displays-cibic.R",
       "test": "DSP-CIBIC-004: the categorical analysis reports every category at every visit and partitions it (#1)",
       "status": "pass"
     },
     {
-      "file": "test-displays-efficacy.R",
+      "file": "test-displays-cibic.R",
       "test": "DSP-CIBIC-005: the categorical p-values are the published row-mean-scores CMH values (#1)",
       "status": "pass"
     },
     {
-      "file": "test-displays-efficacy.R",
+      "file": "test-displays-cibic.R",
       "test": "DSP-TTE-001: the time-to-event display reproduces the published narrative (#1)",
       "status": "pass"
     },
     {
-      "file": "test-displays-efficacy.R",
+      "file": "test-displays-cibic.R",
       "test": "DSP-TTE-002: the survival figure is drawn from the ARD and cannot disagree with it (#1)",
       "status": "pass"
     },
     {
-      "file": "test-displays-efficacy.R",
+      "file": "test-displays-cibic.R",
       "test": "DSP-TTE-003: the annotated test is addressed into the ARD and reported at its precision (#1)",
       "status": "pass"
     },
     {
-      "file": "test-displays-efficacy.R",
+      "file": "test-displays-cibic.R",
       "test": "TFL-FIG-001: a figure is drawn only from its ARD, and a missing series fails the build (#1)",
       "status": "pass"
     },
     {
-      "file": "test-displays-efficacy.R",
+      "file": "test-displays-cibic.R",
       "test": "TFL-FIG-002: a figure keeps its appearance when the site strips the document head (#1)",
       "status": "pass"
     },
     {
-      "file": "test-displays-efficacy.R",
+      "file": "test-displays-cibic.R",
       "test": "TFL-SPEC-008: a figure display and its figure block must agree, or the build fails (#1)",
       "status": "pass"
     },
     {
-      "file": "test-displays-efficacy.R",
+      "file": "test-displays-cibic.R",
       "test": "TFL-FMT-004: p-values are reported at the boundary of their declared precision (#1)",
       "status": "pass"
     },
     {
-      "file": "test-displays-efficacy.R",
+      "file": "test-displays-cibic.R",
       "test": "TFL-SPEC-007: a spec key YAML 1.1 resolved to a boolean is refused, not silently dropped (#1)",
       "status": "pass"
     },
     {
-      "file": "test-displays-efficacy.R",
+      "file": "test-displays-cibic.R",
       "test": "TFL-PREP-016: a display is refused data prepared from a packaging its spec did not ask for (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays-efficacy.R",
+      "test": "DSP-EFF-001: efficacy descriptive statistics match the vendored ADaM computed directly (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays-efficacy.R",
+      "test": "DSP-EFF-002: the ANCOVA statistics reproduce the reference report exactly (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays-efficacy.R",
+      "test": "DSP-EFF-003: the completers display separates population size from records summarised (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays-efficacy.R",
+      "test": "DSP-EFF-004: the over-time display's two imputation lanes select different records (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays-efficacy.R",
+      "test": "DSP-EFF-005: the repeated-measures fit reproduces the reference report's PROC MIXED output (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays-efficacy.R",
+      "test": "DSP-EFF-006: the repeated-measures LS means are the visit-averaged treatment effect (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays-efficacy.R",
+      "test": "DSP-EFF-007: the NPI-X endpoint follows the analysis plan, not the shipped NPTOTMN parameter (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays-efficacy.R",
+      "test": "DSP-EFF-008: a derived subject record refuses a carry column that varies inside the subject (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays-efficacy.R",
+      "test": "DSP-EFF-009: every rendered efficacy cell matches the reference report bar the five declared (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays-vitals.R",
+      "test": "DSP-VS-001: every rendered cell of the vital signs summary is what the reference report printed (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays-vitals.R",
+      "test": "DSP-VS-002: baseline and end of treatment select one record per subject, parameter and position (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays-vitals.R",
+      "test": "DSP-VSC-001: every rendered cell of the vital signs change display is what the reference report printed (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays-vitals.R",
+      "test": "DSP-WT-001: every rendered cell of the weight display is what the reference report printed (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays-vitals.R",
+      "test": "DSP-CM-001: concomitant medication counts match ADCM computed directly (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays-vitals.R",
+      "test": "DSP-CM-002: a subject counted for a medication is counted for its class (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays-vitals.R",
+      "test": "DSP-CM-003: the in-text variant applies the 5% threshold its spec declares (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays-vitals.R",
+      "test": "DSP-VWC-001: all four displays group by planned treatment over the safety analysis set (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays-vitals.R",
+      "test": "DSP-VWC-002: the committed three-route agreement record is green and describes this iteration (#1)",
       "status": "pass"
     },
     {
@@ -312,6 +402,51 @@
     {
       "file": "test-displays.R",
       "test": "DSP-ALL-002: every display declares a regulatory identifier and a source line (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays.R",
+      "test": "DSP-POP-001: the population rows match the study's own flags in ADSL (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays.R",
+      "test": "DSP-POP-002: completion rows use COMP24FL and the complement of DISCONFL (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays.R",
+      "test": "DSP-POP-003: the display reads the packaging that states the flags it reports (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays.R",
+      "test": "DSP-POP-004: planned and actual treatment agree for every subject (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays.R",
+      "test": "DSP-EOS-001: the completion-status rows partition each treatment group (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays.R",
+      "test": "DSP-EOS-002: the early-termination reasons partition the early terminations (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays.R",
+      "test": "DSP-EOS-003: a p-value appears on exactly the rows the analysis plan names (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays.R",
+      "test": "DSP-EOS-004: every percentage is based on the treatment group, not the discontinuations (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays.R",
+      "test": "DSP-REF-001: both displays publish the figures the pilot's own report printed (#1)",
       "status": "pass"
     },
     {

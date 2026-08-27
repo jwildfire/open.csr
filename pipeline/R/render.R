@@ -348,12 +348,33 @@ passes_threshold <- function(df, min_pct) {
 
 #' Drop section headings left with no data rows beneath them
 #' @noRd
+# A section header is dropped only when nothing beneath it is data. The walk
+# forward is deliberate and the indent test is what makes it correct for nested
+# headers: a parameter header whose next row is a position header is NOT empty,
+# because the data sits a level further down. Checking only the immediately
+# following row drops every level of a multi-level display — it looked equivalent
+# while every display was flat, and t-vitals is three deep (parameter, position,
+# visit), so it silently removed 81 of its cells.
 drop_empty_sections <- function(out) {
+  if (!length(out)) {
+    return(out)
+  }
+  is_section <- vapply(out, function(r) isTRUE(r$section), logical(1))
+  indent <- vapply(out, function(r) as.integer(r$indent), integer(1))
   keep <- rep(TRUE, length(out))
   for (i in seq_along(out)) {
-    if (!isTRUE(out[[i]]$section)) next
-    nxt <- if (i < length(out)) out[[i + 1]] else NULL
-    if (is.null(nxt) || isTRUE(nxt$section)) keep[i] <- FALSE
+    if (!is_section[i]) next
+    has_data <- FALSE
+    j <- i + 1L
+    while (j <= length(out)) {
+      if (!is_section[j]) {
+        has_data <- TRUE
+        break
+      }
+      if (indent[j] <= indent[i]) break
+      j <- j + 1L
+    }
+    keep[i] <- has_data
   }
   out[keep]
 }
@@ -394,11 +415,17 @@ table_body <- function(rows, display_spec, vcfg, patterns, digits,
   if (is.null(plan) || nrow(plan) == 0) {
     stop("Display '", display_spec$id, "' produced no rows.", call. = FALSE)
   }
+  # A column may override the row's pattern. This is what lets one row print a
+  # count in the treatment columns and a p-value in the p-value column, and it is
+  # why the disposition tables carry a p-value on exactly the three rows the
+  # analysis plan names. Dropping it renders those cells empty.
+  col_patterns <- as.list(display_spec$columns$patterns %||% list())
   cells <- matrix("", nrow = nrow(plan), ncol = length(cols$levels))
   for (i in seq_len(nrow(plan))) {
     if (isTRUE(plan$section[i])) next
     for (j in seq_along(cols$levels)) {
-      cells[i, j] <- cell_value(rows, plan[i, ], cols$levels[j], patterns, digits, proportions)
+      pat <- col_patterns[[cols$levels[j]]] %||% plan$pattern[i]
+      cells[i, j] <- cell_value(rows, plan[i, ], cols$levels[j], patterns, digits, pat, proportions)
     }
   }
   tbl <- tibble::tibble(label = indent_label(plan$label, plan$indent))
@@ -420,6 +447,7 @@ indent_label <- function(label, indent) {
 #' Compute one cell by substituting formatted statistics into a pattern
 #' @noRd
 cell_value <- function(rows, plan_row, col_level, patterns, digits,
+                       pattern_name = plan_row$pattern,
                        proportions = proportion_stats()) {
   keep <- rows$analysis == plan_row$analysis &
     !is.na(rows$group1_level) & rows$group1_level == col_level
@@ -435,7 +463,7 @@ cell_value <- function(rows, plan_row, col_level, patterns, digits,
     return("")
   }
   digits <- utils::modifyList(as.list(digits), as.list(plan_row$digits[[1]] %||% list()))
-  pattern <- patterns[[plan_row$pattern]] %||% plan_row$pattern
+  pattern <- patterns[[pattern_name]] %||% pattern_name
   needed <- regmatches(pattern, gregexpr("\\{[^}]+\\}", pattern))[[1]]
   out <- pattern
   for (tok in needed) {

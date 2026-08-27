@@ -27,9 +27,15 @@ export const ASSEMBLY_YAML = join(ROOT, 'library/templates/ich-e3/assembly.yaml'
  * Distinct from `fixtureArds()` on purpose. A test that asks "does this assembly
  * reference a display that exists?" is asking about the LIBRARY, and answering it
  * from the six fixture ARDs made every display added since those fixtures were
- * written look like a typo. A test that asks "what do the numbers say?" still
- * resolves against the fixtures, which is what keeps it independent of whatever
- * the R pipeline last regenerated.
+ * written look like a typo. Assembly validation asks that question — a slot
+ * naming a display the library does not hold is a broken assembly. A test that
+ * asks "what do the numbers say?" still resolves against the fixtures, which is
+ * what keeps it independent of whatever the R pipeline last regenerated.
+ *
+ * Two branches wrote this function independently, one filtering on analysis.yaml
+ * and one on display.yaml. They select the same 21 directories — checked, not
+ * assumed — and this is the one that also verifies the entry is a directory and
+ * returns a sorted list.
  */
 export function librarySlugs() {
   const dir = join(ROOT, 'library/tfl');
@@ -47,21 +53,6 @@ export function fixtureArds() {
     ards.set(name.replace(/\.json$/, ''), loadArd(join(ARD_FIXTURES, name)));
   }
   return ards;
-}
-
-/**
- * Every display slug the TFL Library defines.
- *
- * Distinct from `fixtureArds()` on purpose. A fixture ARD answers "what numbers
- * shall this test resolve against"; the library answers "which displays exist".
- * Assembly validation is asking the second question — a slot naming a display
- * the library does not hold is a broken assembly — and answering it from the
- * fixture corpus would make every new display look like a configuration error.
- */
-export function librarySlugs() {
-  const dir = join(ROOT, 'library/tfl');
-  if (!existsSync(dir)) return [];
-  return readdirSync(dir).filter((slug) => existsSync(join(dir, slug, 'display.yaml')));
 }
 
 /** A display/section index good enough to resolve cross-references in unit tests. */
