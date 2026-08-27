@@ -261,6 +261,49 @@ Removing four buttons from the tab order costs a keyboard user nothing: the
 document links were always focusable, and activating one is now the whole of
 opening its contents.
 
+## 9. Revision: the sidebar stops knowing about the CSR (2026-08-26)
+
+The same pass turned up two more places where the shared surfaces still assumed
+one document, both of them the assumption §6 was written under and #36 removed
+from the shell.
+
+**A display listed the documents that use it, and could only ever list one.**
+`usedIn` was an array — someone anticipated more than one document — built from
+the primary document's `displayIndex` alone, so with four template objects in the
+library three of them were invisible to it. It is now built by `displayUsage()`
+over the whole library, and it carries what each document CALLS the display, not
+just that it uses it. That index feeds three surfaces at once, so the gallery, a
+display's own page and the explorer cannot disagree about where a display
+appears.
+
+**The explorer stated a display number, and four assemblies disagree about it.**
+The framework's own contract is that a display is identified by its slug and the
+number belongs to the assembly: `sections.yaml` is the document model,
+`assembly.yaml` is what a given report puts in it, and that split is what makes
+the numbering claim possible at all. The AE overview is `Table 14.3.1.2` in the
+report and `Table 13.4` in the synopsis. So a number on the explorer — a surface
+that serves every document at once — is one report's fact printed on a
+document-agnostic place, and removing it is the framework being applied rather
+than a matter of taste.
+
+Numbers stay wherever the assembly is unambiguous:
+
+- **Inside a document**, where the assembly that assigned the number is the one
+  you are reading.
+- **On the display's own store page**, where every document is listed and each
+  number is stated beside the document that assigned it. That is what makes
+  `14.3.1.2` and `13.4` on the same page read as two documents' names for one
+  display rather than as a contradiction — and it is the only reason a number is
+  safe on a shared surface at all.
+
+**A display in a document now links to its store entry**, mirroring the text
+block's link to the Text Library exactly: a trailing reference line under the
+object, naming it, linking to its own library page. The href is written in the
+form `resolveAppLink` parses, so inside the demo it is absorbed into a pane
+switch and on the standalone reader page it navigates — one link, both
+behaviours. The point of the mirroring is that a reader learns one gesture rather
+than two.
+
 ---
 
 *This document was drafted by Claude Code using Opus 5 and not yet reviewed by @jwildfire.*

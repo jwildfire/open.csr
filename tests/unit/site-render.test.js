@@ -25,8 +25,10 @@ import {
   renderNav,
   renderShell,
   renderTextLibrary,
-  rewriteDocLinks
+  rewriteDocLinks,
+  displayUsage
 } from '../../scripts/site-lib.mjs';
+import { resolveAppLink } from '../../site/demo/core.js';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(here, '..', '..');
@@ -377,5 +379,112 @@ describe('design and research pages', () => {
     });
     expect(html).toContain('missing');
     expect(html).toContain('design.html');
+  });
+});
+
+// ---------------------------------------------------------------------------
+// The display store knows its documents, and a document links to the store
+// (open.csr #42)
+// ---------------------------------------------------------------------------
+//
+// @jwildfire: *"I'd like to improve the linkage between the in-document displays
+// and the display store. There should be a hyperlink in the document that links
+// to the display store. The display store should provide a list of all the
+// documents where the display is used (just like the value store does already)"*
+//
+// Both halves are the same fact seen from two ends, so both come from one
+// index built over the whole library rather than over the primary document.
+
+describe('a display and the documents that place it', () => {
+  const library = [
+    {
+      id: 'csr',
+      title: 'Clinical Study Report',
+      status: 'built',
+      readerPath: 'reader/index.html',
+      json: {
+        displayIndex: [
+          { slug: 't-demo', number: '14.3.1.1', label: 'Table' },
+          { slug: 't-solo', number: '14.3.1.2', label: 'Table' }
+        ]
+      }
+    },
+    {
+      id: 'e3-synopsis',
+      title: 'Study Synopsis',
+      status: 'built',
+      readerPath: 'reader/e3-synopsis.html',
+      json: { displayIndex: [{ slug: 't-demo', number: '13.1', label: 'Table' }] }
+    },
+    { id: 'sap', title: 'Statistical Analysis Plan', status: 'planned', json: null }
+  ];
+
+  test('QC-SITE-013: the index reads the whole library, and records what each document calls a display (#42)', () => {
+    const usage = displayUsage(library);
+    expect(usage.get('t-demo').map((entry) => entry.id)).toEqual(['csr', 'e3-synopsis']);
+    // The same display, two assemblies, two numbers — which is exactly why the
+    // number cannot be a property of the display.
+    expect(usage.get('t-demo').map((entry) => entry.number)).toEqual(['14.3.1.1', '13.1']);
+    expect(usage.get('t-solo').map((entry) => entry.title)).toEqual(['Clinical Study Report']);
+    // A planned document places nothing, and an unplaced display is absent
+    // rather than present-and-empty.
+    expect(usage.has('t-missing')).toBe(false);
+    expect(displayUsage([]).size).toBe(0);
+    expect(displayUsage().size).toBe(0);
+  });
+
+  test('QC-SITE-013: the display page lists every document that places it, and its number there (#42)', () => {
+    const html = renderDisplayPage({
+      config,
+      display: bySlug['t-demo'],
+      evidence: null,
+      requirements: {},
+      usedIn: displayUsage(library).get('t-demo')
+    });
+    expect(html).toContain('Used in');
+    expect(html).toContain('Clinical Study Report');
+    expect(html).toContain('Study Synopsis');
+    // Each document's own link, and each document's own number for this display.
+    expect(html).toContain('href="../reader/index.html"');
+    expect(html).toContain('href="../reader/e3-synopsis.html"');
+    expect(html).toContain('14.3.1.1');
+    expect(html).toContain('13.1');
+  });
+
+  test('QC-SITE-013: a display no document places says so rather than showing an empty row (#42)', () => {
+    const html = renderDisplayPage({
+      config,
+      display: bySlug['t-missing'],
+      evidence: null,
+      requirements: {},
+      usedIn: displayUsage(library).get('t-missing')
+    });
+    expect(html).toContain('Used in');
+    expect(html).toContain('No document places it yet');
+    expect(html).not.toContain('undefined');
+  });
+
+  test('QC-SITE-013: the gallery card names the documents that place each display (#42)', () => {
+    const html = renderGallery({ config, displays, usage: displayUsage(library) });
+    expect(html).toContain('Clinical Study Report');
+    expect(html).toContain('Study Synopsis');
+    // A gallery built without the index is the gallery it has always been.
+    expect(renderGallery({ config, displays })).toContain('Demo display');
+  });
+
+  test('QC-SITE-014: a display placed in a document hyperlinks to its entry in the store (#42)', () => {
+    const html = renderCsrReader({ config, csr: loadCsr(repoDir), displays, ards, traceIndex });
+    // The same gesture a text block already offers — a trailing reference line
+    // whose link is the object's page in its own library. Inside the demo app
+    // the link is absorbed into a pane switch; on the standalone reader page it
+    // navigates. One href, both behaviours, no second interaction to learn.
+    expect(html).toContain('class="display-ref"');
+    expect(html).toMatch(/<a href="\.\.\/gallery\/t-demo\.html">/);
+    // Written the way core.js recognises a pane crossing, or the app would leave
+    // the demo to show a display it is already holding.
+    expect(resolveAppLink('../gallery/t-demo.html')).toMatchObject({
+      tab: 'displays',
+      display: 't-demo'
+    });
   });
 });

@@ -53,7 +53,7 @@
     "QC-DEMO-016": "The application strip's four views are real links to real pages, marked with `aria-current` rather than tab-selection state, so the bar is working navigation with no JavaScript and the client only upgrades it.",
     "QC-DEMO-017": "The application strip carries a live context readout — study, assigned display number, slug, iteration and short ARD hash — built from an embedded index that is escaped so it cannot close its own script element.",
     "QC-DEMO-018": "The navigation tree is rooted at the study, with documents, displays and text as the collections beneath it; more than one document is listed, and one that is not built is marked rather than hidden.",
-    "QC-DEMO-019": "A display records the documents that reference it rather than living inside one, and a text block that is not on disk is left out of the tree while a draft block is flagged in it.",
+    "QC-DEMO-019": "A display records every document in the library that places it — not only the primary one — and the explorer states no display number at all; a text block that is not on disk is left out of the tree while a draft block is flagged in it.",
     "QC-DEMO-020": "The explorer renders the study, every group with its item count, opens only the active group, and marks the selected item.",
     "QC-DEMO-021": "Every selectable item in the explorer is a real link carrying its own deep link, and an unbuilt item is not a link at all.",
     "QC-DEMO-022": "The header carries a Read/Edit mode control in which Read is current and Edit is genuinely disabled, and the explorer renders without throwing on an empty registry.",
@@ -70,6 +70,8 @@
     "QC-DEMO-033": "A document the page rendered is a selectable explorer node carrying its standalone permalink as the no-JavaScript fallback; a document the page did not render stays an ordinary link out with no selection attributes.",
     "QC-DEMO-034": "Every rendered document contributes its own top-level sections to the explorer, each section link naming its document, and a section slug is resolved inside the document on screen rather than across the page.",
     "QC-DEMO-035": "Each document panel carries its own prose disclosure, so a document whose blocks are unreviewed reads as draft inside the app exactly as it does on its own page.",
+    "QC-SITE-013": "The display store states which documents place each display, built over the whole template library: the display's own page lists every document with a link to it and the number that document assigned, a display no document places says so, and the gallery card names those documents rather than counting them.",
+    "QC-SITE-014": "A display placed in a document carries a hyperlink to its entry in the display store, written in the form the app's link-interception rule recognises, so the same href is a pane switch inside the demo and a real navigation on the standalone reader page.",
     "QC-SITE-012": "The stylesheet expresses the explorer's one state and only that: a document's section list is hidden by default and revealed by sitting next to the current document, with no per-node collapse class and no disclosure-control rules left to override it.",
     "QC-SITE-011": "Two documents assembled from the shared libraries quote the same artifacts: every display both documents place resolves to the same ARD source and the same ARD payload, and both carry the same value store with no value differing in raw value or formatted string. Only the per-document display number differs.",
     "QC-SITE-008": "`site/site.css` parses as a whole: every block is closed, no block is closed that was never opened, and no declaration sits outside a rule — so no rule in the file can be silently dead in the browser.",
@@ -539,8 +541,8 @@
     {
       "id": "QC-DEMO-019",
       "area": "Demo",
-      "text": "A display records the documents that reference it rather than living inside one, and a text block that is not on disk is left out of the tree while a draft block is flagged in it.",
-      "source": "#113",
+      "text": "A display records every document in the library that places it — not only the primary one — and the explorer states no display number at all; a text block that is not on disk is left out of the tree while a draft block is flagged in it.",
+      "source": "open.csr#42",
       "evidence": "js-unit",
       "link": "site-demo.test.js",
       "status": "draft"
@@ -687,6 +689,24 @@
       "source": "open.csr#36",
       "evidence": "js-unit",
       "link": "site-demo.test.js, site-documents.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-SITE-013",
+      "area": "Site",
+      "text": "The display store states which documents place each display, built over the whole template library: the display's own page lists every document with a link to it and the number that document assigned, a display no document places says so, and the gallery card names those documents rather than counting them.",
+      "source": "open.csr#42",
+      "evidence": "js-unit",
+      "link": "site-render.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-SITE-014",
+      "area": "Site",
+      "text": "A display placed in a document carries a hyperlink to its entry in the display store, written in the form the app's link-interception rule recognises, so the same href is a pane switch inside the demo and a real navigation on the standalone reader page.",
+      "source": "open.csr#42",
+      "evidence": "js-unit",
+      "link": "site-render.test.js",
       "status": "draft"
     },
     {

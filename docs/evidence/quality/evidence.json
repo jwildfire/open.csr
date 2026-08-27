@@ -1,7 +1,67 @@
 {
   "module": "quality",
-  "generated": "2026-08-27T01:54:40.635Z",
+  "generated": "2026-08-27T02:05:28.631Z",
   "records": [
+    {
+      "requirementIds": [
+        "QC-SITE-013"
+      ],
+      "title": "a display and the documents that place it QC-SITE-013: a display no document places says so rather than showing an empty row (#42)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-render.test.js",
+      "issueRefs": [
+        42
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-SITE-013"
+      ],
+      "title": "a display and the documents that place it QC-SITE-013: the display page lists every document that places it, and its number there (#42)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-render.test.js",
+      "issueRefs": [
+        42
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-SITE-013"
+      ],
+      "title": "a display and the documents that place it QC-SITE-013: the gallery card names the documents that place each display (#42)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-render.test.js",
+      "issueRefs": [
+        42
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-SITE-013"
+      ],
+      "title": "a display and the documents that place it QC-SITE-013: the index reads the whole library, and records what each document calls a display (#42)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-render.test.js",
+      "issueRefs": [
+        42
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-SITE-014"
+      ],
+      "title": "a display and the documents that place it QC-SITE-014: a display placed in a document hyperlinks to its entry in the store (#42)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-render.test.js",
+      "issueRefs": [
+        42
+      ]
+    },
     {
       "requirementIds": [
         "QC-DEMO-035"
@@ -1734,12 +1794,12 @@
       "requirementIds": [
         "QC-DEMO-019"
       ],
-      "title": "the navigation tree QC-DEMO-019: a display records the documents that use it rather than living inside one (#1)",
+      "title": "the navigation tree QC-DEMO-019: a display records EVERY document that uses it, not just the report (#42)",
       "suite": "js-unit",
       "passed": true,
       "file": "tests/unit/site-demo.test.js",
       "issueRefs": [
-        1
+        42
       ]
     },
     {
@@ -1752,6 +1812,18 @@
       "file": "tests/unit/site-demo.test.js",
       "issueRefs": [
         1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DEMO-019"
+      ],
+      "title": "the navigation tree QC-DEMO-019: the sidebar states no display number, because four assemblies disagree (#42)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-demo.test.js",
+      "issueRefs": [
+        42
       ]
     },
     {

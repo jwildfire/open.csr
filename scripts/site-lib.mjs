@@ -586,6 +586,47 @@ export function builtDocuments(documents = []) {
 }
 
 /**
+ * Which documents place each display, and what each one calls it there.
+ *
+ * A display is identified by its slug; the NUMBER belongs to the assembly, not
+ * to the display (`sections.yaml` is the document model, `assembly.yaml` is what
+ * a given report puts in it). So the same display is `Table 14.3.1.1` in the
+ * clinical study report and `Table 13.1` in the synopsis, and neither number is
+ * a property of the thing being numbered.
+ *
+ * That is exactly why this index is a map from slug to a list of PLACEMENTS
+ * rather than a `document` field on a display: a display belongs to no document,
+ * and the number only means anything once you say which assembly you are in.
+ *
+ * Built over the whole library. The single-document version of this — a set of
+ * slugs taken from the primary document, yielding a `usedIn` that could only
+ * ever hold one name — is the same assumption the shell shed in #37, surviving
+ * one layer down (#42).
+ *
+ * @param {Array<{id: string, title?: string, readerPath?: string,
+ *   json?: {displayIndex?: Array<{slug: string, number?: string|null,
+ *   label?: string|null}>}}>} documents every document in the library
+ * @returns {Map<string, Array<{id, title, readerPath, number, label}>>}
+ */
+export function displayUsage(documents = []) {
+  const usage = new Map();
+  for (const doc of documents || []) {
+    for (const entry of doc?.json?.displayIndex || []) {
+      if (!entry?.slug) continue;
+      if (!usage.has(entry.slug)) usage.set(entry.slug, []);
+      usage.get(entry.slug).push({
+        id: doc.id,
+        title: doc.title || doc.id,
+        readerPath: doc.readerPath || null,
+        number: entry.number || null,
+        label: entry.label || null
+      });
+    }
+  }
+  return usage;
+}
+
+/**
  * The strip that makes the library plural to a reader: every built document,
  * the current one marked, each carrying the state of its own prose. Rendered on
  * both the reader and the template pages, from the same list, so a third
@@ -1034,7 +1075,7 @@ function architectureCard(title, pathLabel, bullets) {
 const STATUS_KIND = { evidenced: 'good', built: 'info', planned: 'muted' };
 const TYPE_LABEL = { table: 'Table', listing: 'Listing', figure: 'Figure' };
 
-export function renderGallery({ config, displays }) {
+export function renderGallery({ config, displays, usage = null } = {}) {
   const cards = displays
     .map((display) => {
       const outputs = display.outputs || {};
@@ -1051,6 +1092,16 @@ export function renderGallery({ config, displays }) {
         ? `${current.version} · ${rows} ARD row${rows === 1 ? '' : 's'}` +
           `${outputs.iterations.length > 1 ? ` · ${outputs.iterations.length} iterations` : ''}`
         : 'No iteration generated yet';
+      // Which documents place it — named, not counted. A display is shared, and
+      // the gallery is the place a reader finds out how widely (#42). No number
+      // here: four assemblies would each give a different one, and the card
+      // cannot say which it means.
+      const places = usage?.get?.(display.slug) || [];
+      const usedIn = places.length
+        ? `<p class="card-used-in">In ${places
+            .map((place) => escapeHtml(place.title))
+            .join(', ')}</p>`
+        : '';
       return (
         `<article class="card display-card">` +
         `<div class="card-top">${chip(display.status, STATUS_KIND[display.status] || 'muted')}` +
@@ -1059,6 +1110,7 @@ export function renderGallery({ config, displays }) {
         `<h3><a href="${escapeHtml(display.slug)}.html">${escapeHtml(display.title)}</a></h3>` +
         `<p class="card-meta">${meta}</p>` +
         `<p>${escapeHtml(display.blurb || '')}</p>` +
+        usedIn +
         `<p class="card-facts mono">${escapeHtml(facts)}</p>` +
         `</article>`
       );
@@ -1241,7 +1293,16 @@ export function artifactFileName(slug, artifact) {
   return `${slug}${suffix}.${artifact.format}`;
 }
 
-export function renderDisplayPage({ config, display, evidence, requirements }) {
+export function renderDisplayPage({
+  config,
+  display,
+  evidence,
+  requirements,
+  // Every document that places this display, from displayUsage(). Absent on a
+  // caller that has no library to hand — the page then simply does not make the
+  // claim, rather than making an empty one (#42).
+  usedIn = null
+} = {}) {
   const outputs = display.outputs || {};
   const current = outputs.current;
 
@@ -1324,6 +1385,32 @@ export function renderDisplayPage({ config, display, evidence, requirements }) {
       requirementIds.length
         ? requirementIds.map((id) => `<span class="mono">${escapeHtml(id)}</span>`).join(' ')
         : '—'
+    ],
+    // The other end of the link a document offers. The value store already
+    // answers "who cites this number?"; this is the same question asked of a
+    // display, and it is the only place in the site where a display's number is
+    // safe to print, because each number is stated beside the assembly that
+    // assigned it (#42).
+    [
+      'Used in',
+      (usedIn || []).length
+        ? `<ul class="used-in">` +
+          usedIn
+            .map(
+              (place) =>
+                `<li>` +
+                (place.readerPath
+                  ? `<a href="../${escapeHtml(place.readerPath)}">${escapeHtml(place.title)}</a>`
+                  : escapeHtml(place.title)) +
+                (place.number
+                  ? ` <span class="mono sub">${escapeHtml(place.label || 'Display')} ` +
+                    `${escapeHtml(place.number)}</span>`
+                  : '') +
+                `</li>`
+            )
+            .join('') +
+          `</ul>`
+        : `<span class="muted">No document places it yet</span>`
     ]
   ]
     .map(([label, value]) => `<div><dt>${escapeHtml(label)}</dt><dd>${value}</dd></div>`)
@@ -1764,7 +1851,16 @@ function renderCsrDisplay(block, context) {
   const body = html
     ? `<div class="rendered-display">${sanitizeEmbeddedHtml(html)}</div>`
     : empty(`Display ${block.slug} has not been rendered yet.`);
-  return `<figure class="csr-display">${caption}${body}</figure>`;
+  // The way back to the display store, in the same shape a text block already
+  // uses to reach the Text Library: a trailing reference line whose link is the
+  // object's own page. Inside the Demo app core.js absorbs `../gallery/<slug>.html`
+  // into a pane switch; on the standalone reader page the same href navigates.
+  // One link, both behaviours — a reader learns one gesture, not two (#42).
+  const ref = block.slug
+    ? `<p class="display-ref"><a href="../gallery/${escapeHtml(block.slug)}.html">` +
+      `${escapeHtml(block.slug)}</a></p>`
+    : '';
+  return `<figure class="csr-display">${caption}${body}${ref}</figure>`;
 }
 
 // Section 16.1.9: E3 reserved the slot in 1995 and open.csr fills it

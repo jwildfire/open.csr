@@ -17,7 +17,7 @@
 // different surface (site-lib.mjs) and remains the per-block permalink. The
 // Templates pane renders the E3 document model, which v0 had no surface for.
 
-import { chip, empty, escapeHtml, renderDocumentSwitcher } from './site-lib.mjs';
+import { chip, displayUsage, empty, escapeHtml, renderDocumentSwitcher } from './site-lib.mjs';
 import { DISPLAY_TYPE_LABELS, assignDisplayNumbers } from './template-lib.mjs';
 
 // Each view's `href` is its standalone permalink. The client upgrades a click
@@ -94,10 +94,12 @@ export function buildNavTree({
   rendered = [],
   root = '../'
 } = {}) {
-  const numbers = new Map(
-    (csr?.displayIndex || []).map((entry) => [entry.slug, { number: entry.number, label: entry.label }])
+  // Which documents place each display, across the WHOLE library. Falling back
+  // to the primary document keeps a caller that hands over no library — a
+  // standalone reader page — honest about the one document it does know (#42).
+  const usage = displayUsage(
+    documents.length ? documents : csr ? [{ id: 'csr', title: 'Clinical Study Report', json: csr }] : []
   );
-  const usedInCsr = new Set((csr?.displayIndex || []).map((entry) => entry.slug));
 
   // A document's own contents are the third level of the tree rather than a
   // second navigation column beside it: which document and which section are the
@@ -185,10 +187,17 @@ export function buildNavTree({
         items: displays.map((display) => ({
           id: display.slug,
           label: display.title,
-          number: numbers.get(display.slug)?.number || null,
+          // No number. A display is identified by its slug; the number belongs
+          // to the assembly, and this tree serves every document at once — the
+          // AE overview is Table 14.3.1.2 in the report and Table 13.2 in the
+          // synopsis, so a number here is one report's fact printed on a
+          // document-agnostic surface. Numbers are stated where the assembly is
+          // unambiguous: inside a document, and on the display's own store page
+          // beside the document that assigned it (#42).
+          number: null,
           status: display.status,
-          // Which documents reference it — a display is shared, not owned.
-          usedIn: usedInCsr.has(display.slug) ? ['CSR'] : []
+          // Which documents place it — a display is shared, not owned.
+          usedIn: (usage.get(display.slug) || []).map((place) => place.title)
         }))
       },
       {

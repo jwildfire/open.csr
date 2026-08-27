@@ -25,6 +25,7 @@ import {
   buildQualitySummary,
   artifactFileName,
   buildTraceIndex,
+  displayUsage,
   builtDocuments,
   loadDocuments,
   loadDisplays,
@@ -122,6 +123,10 @@ for (const doc of openDocuments) {
   }
 }
 const traceIndex = buildTraceIndex(displays);
+// Which documents place each display, over the whole library rather than over
+// the primary document. Read by the gallery, by each display's own page, and by
+// the explorer, so all three agree about where a display appears (#42).
+const usage = displayUsage(documents);
 // The values store and, from the last assembly, the verdict of the gate that
 // re-derived it — the pane states whether the numbers still match their sources
 // rather than implying it (#129 B).
@@ -184,7 +189,7 @@ page(path.join(buildDir, 'gallery', 'index.html'), {
   description:
     'Every display in the library: analysis spec, display spec, ARD, rendered output, and the ' +
     'iteration timeline of every regeneration.',
-  content: renderGallery({ config, displays })
+  content: renderGallery({ config, displays, usage })
 });
 
 // Rendered once, used twice: as the /gallery/<slug>.html permalink and as a
@@ -199,7 +204,7 @@ const displayFragments = displays.map((display) => {
     regulatoryId: display.regulatoryId,
     type: display.type,
     status: display.status,
-    html: renderDisplayPage({ config, display, evidence, requirements })
+    html: renderDisplayPage({ config, display, evidence, requirements, usedIn: usage.get(display.slug) })
   };
 });
 

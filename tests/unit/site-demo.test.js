@@ -411,6 +411,7 @@ describe('the navigation tree', () => {
   };
   const displays = [
     { slug: 't-ae-overview', title: 'AE Overview', status: 'evidenced' },
+    { slug: 't-disposition', title: 'Disposition', status: 'built' },
     { slug: 't-unused', title: 'Not in any document', status: 'built' }
   ];
   const textBlocks = [
@@ -426,6 +427,32 @@ describe('the navigation tree', () => {
     { id: 'TXT-GONE', title: 'Missing on disk', exists: false }
   ];
   const csr = { displayIndex: [{ slug: 't-ae-overview', number: '14.3.1.2', label: 'Table' }] };
+  // The library as the shell now holds it (#37): four assemblies, three of them
+  // invisible to anything that reads `csr` alone.
+  const libraryDocuments = [
+    {
+      id: 'csr',
+      title: 'Clinical Study Report',
+      status: 'built',
+      readerPath: 'reader/index.html',
+      json: { displayIndex: [{ slug: 't-ae-overview', number: '14.3.1.2', label: 'Table' }] }
+    },
+    {
+      id: 'e3-synopsis',
+      title: 'Study Synopsis',
+      status: 'built',
+      readerPath: 'reader/e3-synopsis.html',
+      json: { displayIndex: [{ slug: 't-disposition', number: '13.2', label: 'Table' }] }
+    },
+    {
+      id: 'e3-abbreviated',
+      title: 'Abbreviated Clinical Study Report',
+      status: 'built',
+      readerPath: 'reader/e3-abbreviated.html',
+      json: { displayIndex: [{ slug: 't-ae-overview', number: '14.3.1.2', label: 'Table' }] }
+    },
+    { id: 'sap', title: 'Statistical Analysis Plan', status: 'planned', json: null }
+  ];
 
   test('QC-DEMO-018: the study is the root, and documents, displays, text and values hang off it (#1)', () => {
     const tree = buildNavTree({ config, csr, displays, textBlocks });
@@ -445,18 +472,38 @@ describe('the navigation tree', () => {
     expect(documents[1].status).toBe('planned');
   });
 
-  test('QC-DEMO-019: a display records the documents that use it rather than living inside one (#1)', () => {
+  test('QC-DEMO-019: a display records EVERY document that uses it, not just the report (#42)', () => {
     // A display can be referenced by more than one document, so displays are a
-    // peer collection of documents, not a child of one.
-    const tree = buildNavTree({ config, csr, displays, textBlocks });
+    // peer collection of documents, not a child of one. `usedIn` was built from
+    // the CSR's index alone and could only ever hold one name — the same
+    // single-document assumption #37 took out of the shell, one layer down.
+    const tree = buildNavTree({ config, csr, displays, textBlocks, documents: libraryDocuments });
     const items = tree.groups[1].items;
-    expect(items.find((item) => item.id === 't-ae-overview')).toMatchObject({
-      number: '14.3.1.2',
-      usedIn: ['CSR']
-    });
+    expect(items.find((item) => item.id === 't-ae-overview').usedIn).toEqual([
+      'Clinical Study Report',
+      'Abbreviated Clinical Study Report'
+    ]);
+    // Placed by one document only.
+    expect(items.find((item) => item.id === 't-disposition').usedIn).toEqual(['Study Synopsis']);
     // Registered, generated, and in no document yet — still listed, with nothing
     // claiming it.
     expect(items.find((item) => item.id === 't-unused').usedIn).toEqual([]);
+  });
+
+  test('QC-DEMO-019: the sidebar states no display number, because four assemblies disagree (#42)', () => {
+    // A display is identified by its slug; the number belongs to the assembly.
+    // The explorer serves every document at once, so a number there is one
+    // report's fact printed on a document-agnostic surface — and the CSR's
+    // 14.3.1.2 is the synopsis's 13.2.
+    const tree = buildNavTree({ config, csr, displays, textBlocks, documents: libraryDocuments });
+    for (const item of tree.groups[1].items) expect(item.number).toBeNull();
+    const html = renderSidebar({ tree, active: 'displays', selected: { display: 't-ae-overview' } });
+    expect(html).toContain('data-nav-item="t-ae-overview"');
+    expect(html).not.toContain('14.3.1.2');
+    expect(html).not.toContain('13.2');
+    // Documents and text blocks keep their numbers: a section number belongs to
+    // the document it is in, and only one document is open.
+    expect(html).toContain('<span class="nav-num">');
   });
 
   test('QC-DEMO-019: a text block that is not on disk is left out, and a draft is flagged (#1)', () => {
