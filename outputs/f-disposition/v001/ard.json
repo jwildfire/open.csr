@@ -1,0 +1,130 @@
+{
+  "schema": "opencsr/ard/v1",
+  "display": "f-disposition",
+  "created": "2026-09-02T16:24:32Z",
+  "provenance": {
+    "spec_hash": "sha256:abf4fa1cd7f2bb7e8fea1db662e08d98cbe5ad7fada0abc0f5346843e98aa501",
+    "display_hash": "sha256:334133a00bd56486d689d479d3d92b5a88d02d320d030e1c8788ceb964165715",
+    "data": [
+      {
+        "dataset": "adsl",
+        "hash": "sha256:3139478d86fda4c38e8bb2f41d348518f4a65f58bcdd7e9650fda8da7a9a6838",
+        "n_row": 254,
+        "n_col": 54,
+        "source_pkg": "phuse-org/phuse-scripts:data/adam",
+        "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+      },
+      {
+        "dataset": "dm",
+        "hash": "sha256:6f25948c36c7852a5188de66440be4689fc7ff727356f404d4b508c790497012",
+        "n_row": 306,
+        "n_col": 28,
+        "source_pkg": "phuse-org/phuse-scripts:data/adam",
+        "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+      }
+    ],
+    "environment": {
+      "r": "4.3.3",
+      "os": "Darwin 23.6.0",
+      "packages": {
+        "cards": "0.6.1",
+        "cardx": "0.2.5",
+        "gtsummary": "2.3.0",
+        "gt": "1.0.0",
+        "dplyr": "1.1.4",
+        "pharmaverseadam": "1.1.0",
+        "jsonlite": "2.0.0",
+        "yaml": "2.3.10",
+        "digest": "0.6.37"
+      }
+    },
+    "git_commit": null,
+    "population": {
+      "analysis_set": "all",
+      "group": "TRT01P",
+      "n": {
+        "Placebo": 86,
+        "Xanomeline Low Dose": 84,
+        "Xanomeline High Dose": 84
+      },
+      "total": 254
+    }
+  },
+  "rows": [
+    {
+      "analysis": "flow",
+      "group1": "population",
+      "group1_level": "All Subjects",
+      "group2": null,
+      "group2_level": null,
+      "variable": "DSFLOW",
+      "variable_level": "screened",
+      "context": "subject_count",
+      "stat_name": "n",
+      "stat_label": "n",
+      "stat": 306,
+      "warning": null,
+      "error": null
+    },
+    {
+      "analysis": "flow",
+      "group1": "population",
+      "group1_level": "All Subjects",
+      "group2": null,
+      "group2_level": null,
+      "variable": "DSFLOW",
+      "variable_level": "screen_failures",
+      "context": "subject_count",
+      "stat_name": "n",
+      "stat_label": "n",
+      "stat": 52,
+      "warning": null,
+      "error": null
+    },
+    {
+      "analysis": "flow",
+      "group1": "population",
+      "group1_level": "All Subjects",
+      "group2": null,
+      "group2_level": null,
+      "variable": "DSFLOW",
+      "variable_level": "randomised",
+      "context": "subject_count",
+      "stat_name": "n",
+      "stat_label": "n",
+      "stat": 254,
+      "warning": null,
+      "error": null
+    },
+    {
+      "analysis": "flow",
+      "group1": "population",
+      "group1_level": "All Subjects",
+      "group2": null,
+      "group2_level": null,
+      "variable": "DSFLOW",
+      "variable_level": "completed_wk24",
+      "context": "subject_count",
+      "stat_name": "n",
+      "stat_label": "n",
+      "stat": 118,
+      "warning": null,
+      "error": null
+    },
+    {
+      "analysis": "flow",
+      "group1": "population",
+      "group1_level": "All Subjects",
+      "group2": null,
+      "group2_level": null,
+      "variable": "DSFLOW",
+      "variable_level": "completed_study",
+      "context": "subject_count",
+      "stat_name": "n",
+      "stat_label": "n",
+      "stat": 110,
+      "warning": null,
+      "error": null
+    }
+  ]
+}

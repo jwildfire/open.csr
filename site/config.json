@@ -701,6 +701,24 @@
         "DSP-SITE",
         "DSP-REF"
       ]
+    },
+    {
+      "module": "f-disposition",
+      "slug": "f-disposition",
+      "title": "Subject Disposition",
+      "regulatoryId": "DSF01",
+      "type": "figure",
+      "e3Section": "10.1",
+      "matrix": "displays.md",
+      "status": "planned",
+      "datasets": [
+        "dm",
+        "adsl"
+      ],
+      "blurb": "The reference report's Figure 10-1: subjects screened, screen failures, randomised, completed Week 24 and completed the study, drawn as a flow from the study's SDTM DM and its ADSL.",
+      "prefixes": [
+        "DSP-FLOW"
+      ]
     }
   ],
   "textBlocks": [

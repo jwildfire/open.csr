@@ -30,7 +30,7 @@ node scripts/site.mjs           # everything -> site/_build/
 
 ## Data
 
-CDISCPILOT01 (xanomeline Alzheimer's study). Since v0.4.0 every display reads the study's own ADaM package, vendored under `pipeline/inst/extdata/phuse-cdiscpilot01/` from `phuse-org/phuse-scripts` (MIT): `adsl`, `adae`, `advs`, `adqsadas`, `adqscibc`, `adqsnpix`, `adlbc`, `adlbh`, `adlbhy`, `adtte`, `adcm`. `data_sources()` resolves every one of them to that lane by default (design D12 as revised on D0032, contracts §4).
+CDISCPILOT01 (xanomeline Alzheimer's study). Since v0.4.0 every display reads the study's own ADaM package, vendored under `pipeline/inst/extdata/phuse-cdiscpilot01/` from `phuse-org/phuse-scripts` (MIT): `adsl`, `adae`, `advs`, `adqsadas`, `adqscibc`, `adqsnpix`, `adlbc`, `adlbh`, `adlbhy`, `adtte`, plus its SDTM `cm` (from which `adcm` is derived) and `dm` (the screened population). `data_sources()` resolves every one of them to that lane by default (design D12 as revised on D0032, contracts §4).
 
 - `{pharmaverseadam}` is the ALTERNATE: reachable with `sources = "pharmaverseadam"`, the only source of `adex` and `adlb` (which no display reads), and measured against the package by `Rscript qc/source-agreement.R`. Its actual-treatment column assigns twelve subjects to a different arm — that is why it is not the default, and why a display must never read it.
 - `library/study.yaml` is the study model: arms in print order, the columns that carry an arm label, the analysis sets with the subjects each holds per arm, the cut-off, the source. `trt_levels()` and `analysis_set_flag()` read it; every ARD records its population against it; the assembler's treatment-consistency gate fails the document when two displays disagree with it or with each other.

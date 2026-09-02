@@ -1,0 +1,34 @@
+id: f-disposition
+title: "Subject Disposition"
+study: CDISCPILOT01
+population_label: "All Subjects"
+cutoff: "2014-07-01"
+source: "Source: dm (the study's SDTM demographics domain) and adsl (CDISCPILOT01 ADaM package, phuse-org/phuse-scripts). Data cut-off: 2014-07-01."
+footnotes:
+  - "Subjects screened are every subject in the study's SDTM DM domain; screen failures are those DM labels as such. Randomised subjects are every subject in ADSL; completed Week 24 is COMP24FL, and completed the study through Week 26 is the complement of DISCONFL — the definition Table 14-1.01 states for Complete Study."
+  - "Drawn as the reference report's Figure 10-1: 306 screened, of whom 52 screen failures and 254 randomised; of those, 118 completed Week 24 and 110 completed the study."
+columns:
+  order: ["All Subjects"]
+format:
+  count: "{n}"
+rows:
+  - { analysis: flow, variable: DSFLOW, level: screened, pattern: count, label: "Subjects screened" }
+  - { analysis: flow, variable: DSFLOW, level: screen_failures, pattern: count, label: "Screen failures", indent: 1 }
+  - { analysis: flow, variable: DSFLOW, level: randomised, pattern: count, label: "Randomised, entered treatment phase", indent: 1 }
+  - { analysis: flow, variable: DSFLOW, level: completed_wk24, pattern: count, label: "Completed Week 24", indent: 2 }
+  - { analysis: flow, variable: DSFLOW, level: completed_study, pattern: count, label: "Completed study through Week 26", indent: 3 }
+figure:
+  kind: flow
+  analysis: flow
+  width: 760
+  height: 330
+  boxes:
+    - { level: screened, label: "Subjects Screened" }
+    - { level: randomised, label: "Randomized, entered Treatment Phase", from: screened }
+    - { level: screen_failures, label: "Screen failures", from: screened, side: right }
+    - { level: completed_wk24, label: "Completed Week 24", from: randomised }
+    - { level: completed_study, label: "Completed Study through Week 26", from: completed_wk24 }
+variants:
+  post_text: {}
+  in_text:
+    title: "Subject Disposition"

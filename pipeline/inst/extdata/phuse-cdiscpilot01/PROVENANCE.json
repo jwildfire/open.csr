@@ -2,7 +2,7 @@
   "source_repo": "https://github.com/phuse-org/phuse-scripts",
   "commit": "398a6d33ced9359ffb58c46650a6d488811176b1",
   "commit_date": "2025-08-25T14:48:53Z",
-  "retrieved": "2026-08-26",
+  "retrieved": "2026-09-02",
   "licence": "MIT",
   "licence_file": "LICENSE-phuse-scripts.md",
   "licence_url": "https://github.com/phuse-org/phuse-scripts/blob/398a6d33ced9359ffb58c46650a6d488811176b1/LICENSE.md",
@@ -117,6 +117,26 @@
       "vendored": "adcm.xpt.gz",
       "gz_sha256": "1a2bca28df8491f1571bff1709b9462ca69d49f0e1bba8a9ddf76a31896f685d",
       "gz_bytes": 92311
+    },
+    {
+      "dataset": "cm",
+      "upstream_path": "data/sdtm/cdiscpilot01/cm.xpt",
+      "blob_sha1": "37bb289b965a1d47537b3d4de95e8ab0ca009d87",
+      "sha256": "bb31e91b93a8e4854bd66270cb4d1677a4ab59add30ec8cdbebb3491c18f1582",
+      "bytes": 3758720,
+      "vendored": "cm.xpt.gz",
+      "gz_sha256": "1b0f83fc1e55173c334eca8402b77ab16e6df53a64af08a3b2802802a265ccfb",
+      "gz_bytes": 100205
+    },
+    {
+      "dataset": "dm",
+      "upstream_path": "data/sdtm/cdiscpilot01/dm.xpt",
+      "blob_sha1": "dda76664a1c139270e1545856c45402aacb5193b",
+      "sha256": "7327baea97fd532d02385248da0c7240402e770099507e2c3a88e2ac706c02a6",
+      "bytes": 110800,
+      "vendored": "dm.xpt.gz",
+      "gz_sha256": "4fee7681a334645057dfa6173c34f5db02a95d149b74acc0a09480cffeaf6651",
+      "gz_bytes": 10268
     }
   ]
 }

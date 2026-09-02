@@ -1,6 +1,6 @@
 {
   "schema": "opencsr/csr/v1",
-  "generated": "2026-09-02T16:32:03.054Z",
+  "generated": "2026-09-02T16:31:55.648Z",
   "study": {
     "id": "CDISCPILOT01",
     "title": "Safety and Efficacy of the Xanomeline Transdermal Therapeutic System (TTS) in Patients with Mild to Moderate Alzheimer's Disease",
@@ -3100,6 +3100,7 @@
       "TXT-E3-1300: in the Text Library but not assembled into e3-synopsis; not gated by this build",
       "l-ae-serious: population record has no per-arm counts (safety, grouped by nothing); not gated by arm",
       "f-derm-time-to-event: in the TFL Library but not carried by e3-synopsis; this document does not present it",
+      "f-disposition: in the TFL Library but not carried by e3-synopsis; this document does not present it",
       "t-ae-incidence: in the TFL Library but not carried by e3-synopsis; this document does not present it",
       "t-cibic-categorical: in the TFL Library but not carried by e3-synopsis; this document does not present it",
       "t-cibic-week16: in the TFL Library but not carried by e3-synopsis; this document does not present it",
@@ -3586,6 +3587,7 @@
     "displayCoverage": {
       "library": [
         "f-derm-time-to-event",
+        "f-disposition",
         "l-ae-serious",
         "t-ae-common",
         "t-ae-incidence",
@@ -3625,6 +3627,7 @@
       ],
       "notCarried": [
         "f-derm-time-to-event",
+        "f-disposition",
         "t-ae-incidence",
         "t-cibic-categorical",
         "t-cibic-week16",
