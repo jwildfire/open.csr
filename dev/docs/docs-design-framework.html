@@ -99,11 +99,17 @@ directories.</p>
 <td>What a document of this kind is, and what this study puts in it. Two objects today: the full ICH E3 report and its Annex I synopsis</td>
 </tr>
 </tbody></table>
+<p>Beside the four is one file that is not a part but a premise: <code>library/study.yaml</code>, the
+study model. It declares the arms in print order, the analysis sets with the subjects each
+holds per arm, the cut-off and the data source, once. The R band reads it for its treatment
+vocabulary and analysis-set registry; the Node band reads it to hold every placed display to
+the same counts — the treatment-consistency gate, which fails the document when two
+displays disagree about who was in the study (D0032, #59).</p>
 <p>Everything else in the repository is either the machinery that reads them (<code>pipeline/</code>,
 <code>scripts/</code>), or generated output that is never hand-edited (<code>outputs/</code>, <code>docs/assembled/</code>,
 <code>docs/evidence/</code>, <code>docs/requirements/</code>, <code>site/_build/</code>).</p>
-<pre><code> ADaM study data (pharmaverseadam · CDISCPILOT01)
-        │  prepare_data()
+<pre><code> ADaM study data (CDISCPILOT01, the pilot&#39;s own package)   library/study.yaml — arms, sets, source
+        │  prepare_data()                                          declared once; read by both bands
         ▼
  ┌──────────────────────────────┐  build_ard()   ┌──────────┐  render_display()  ┌───────────────┐
  │ 1 · DISPLAY SPEC             │ ─────────────▶ │ ard.json │ ─────────────────▶ │ table.html    │
