@@ -12,7 +12,7 @@
 // That is why `resolveAppLink` is the centre of this file — cross-pane
 // behaviour is a link-rewriting rule, not a rewrite of every renderer.
 
-export const TAB_IDS = ['documents', 'displays', 'text', 'values', 'templates'];
+export const TAB_IDS = ['documents', 'displays', 'text', 'values', 'data', 'metadata', 'templates'];
 
 export const DEFAULT_TAB = 'documents';
 
@@ -124,6 +124,25 @@ export function resolveAppLink(href) {
   // means "the thing in this pane I am looking at".
   if (clean === 'values/index.html' || clean === 'values/') {
     return { tab: 'values', focus };
+  }
+  // The Data pane (#76). A dataset is one section of one page, so its
+  // standalone permalink becomes the pane with that section in focus — the
+  // Values arrangement, for the same reason: the pane is one list.
+  if (clean === 'data/index.html' || clean === 'data/') {
+    return { tab: 'data', focus };
+  }
+  const dataset = clean.match(/^data\/([a-z0-9-]+)\.html$/);
+  if (dataset) {
+    return { tab: 'data', focus: dataset[1] === 'lanes' ? 'lanes' : `dataset-${dataset[1]}` };
+  }
+  // The Metadata pane (#77): six sections on one page; a section's standalone
+  // permalink becomes the pane with that section in focus.
+  if (clean === 'metadata/index.html' || clean === 'metadata/') {
+    return { tab: 'metadata', focus };
+  }
+  const metadata = clean.match(/^metadata\/([a-z]+)\.html$/);
+  if (metadata) {
+    return { tab: 'metadata', focus: focus || `section-${metadata[1]}` };
   }
   return null;
 }
