@@ -168,7 +168,8 @@ test_that("DSP-VS-002: baseline and end of treatment select one record per subje
   eot <- d[d$LAST, , drop = FALSE]
   # Inside the analysis plan's treatment period, and no unscheduled or derived record.
   expect_true(all(eot$AVISITN > 0 & eot$AVISITN <= 24))
-  expect_true(all(is.na(eot$DTYPE)))
+  # the pilot's ADVS carries no DTYPE column at all; the alternate's is all missing here
+  expect_true(!"DTYPE" %in% names(eot) || all(is.na(eot$DTYPE)))
   # It really is each series' last visit inside that period.
   win <- d[!is.na(d$AVISITN) & d$AVISITN > 0 & d$AVISITN <= 24, , drop = FALSE]
   latest <- vapply(split(win$AVISITN, win$SERIES), max, numeric(1))

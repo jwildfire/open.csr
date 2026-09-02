@@ -178,8 +178,11 @@ prepare_data <- function(datasets = c("adsl", "adae", "advs", "adcm"),
   out <- list(adsl = adsl)
   for (nm in setdiff(datasets, "adsl")) {
     df <- raw[[nm]]
-    if (identical(src[[nm]], "phuse")) df <- prep_phuse_common(df, nm)
-    df <- df[df$USUBJID %in% keep_ids, , drop = FALSE]
+    if (identical(src[[nm]], "phuse")) df <- prep_phuse_common(df, nm, adsl = adsl)
+    # DM is the screened population — the one dataset whose rows are not
+    # restricted to the subjects in ADSL, because its point is the 52 who never
+    # reached it (the disposition figure, #63). Everything else is.
+    if (nm != "dm") df <- df[df$USUBJID %in% keep_ids, , drop = FALSE]
     df <- attach_trt(df, adsl)
     if (nm == "adae") df <- prep_adae(df)
     if (nm == "advs") df <- prep_advs(df)
@@ -235,6 +238,10 @@ data_sources_used <- function(prepared) {
 #' @noRd
 read_source <- function(name, source, source_pkg) {
   if (identical(source, "phuse")) {
+    # ADCM is derived from the study's own SDTM medications domain since
+    # v0.4.0 (#65); the remapped PHUSE copy stays vendored and readable as
+    # `read_phuse("adcm")` for the agreement check that proves the derivation.
+    if (identical(name, "adcm")) return(derive_adcm(read_phuse("cm")))
     return(read_phuse(name))
   }
   tryCatch(
@@ -263,6 +270,10 @@ attach_trt <- function(df, adsl) {
   i <- match(df$USUBJID, adsl$USUBJID)
   df$TRT01A <- adsl$TRT01A[i]
   if ("TRT01P" %in% names(adsl)) df$TRT01P <- adsl$TRT01P[i]
+  # A dataset the study publishes without a safety flag (its SDTM domains, and
+  # the medications dataset derived from one) takes it from ADSL by subject, so
+  # `analysis_set: safety` means the same thing on every dataset.
+  if (!"SAFFL" %in% names(df) && "SAFFL" %in% names(adsl)) df$SAFFL <- adsl$SAFFL[i]
   df
 }
 
@@ -407,7 +418,7 @@ race_white_other <- function(raceor) {
 
 #' Derivations applied to every non-ADSL PHUSE dataset (see [prepare_data()])
 #' @noRd
-prep_phuse_common <- function(df, name) {
+prep_phuse_common <- function(df, name, adsl = NULL) {
   if (identical(name, "adcm")) df <- prep_adcm_phuse(df)
   df
 }
@@ -431,6 +442,45 @@ prep_phuse_common <- function(df, name) {
 #' The remap is asserted, not assumed: a subject that does not match ADSL after
 #' remapping is an error, not a silently dropped row.
 #' @noRd
+#' ADCM from the study's own SDTM CM domain
+#'
+#' The only ADCM PHUSE publishes for this study is a relabelled copy from a
+#' folder its own README calls out of place ([prep_adcm_phuse()] reverses the
+#' relabelling). The study's SDTM CM domain is in the same repository at the
+#' same commit, so the analysis dataset is derived from it here, with the
+#' derivation on record rather than assumed (#65, D0032):
+#'
+#' * one record per CM record, every CM column carried as published;
+#' * `ASTDT` / `AENDT` from `CMSTDTC` / `CMENDTC` where the date is complete
+#'   to the day, otherwise missing — no imputation, because no display reads a
+#'   date and an imputed one would be an assertion nothing checks;
+#' * `SAFFL`, `TRT01P`, `TRT01A`, `TRTSDT`, `TRTEDT` joined from the prepared
+#'   ADSL by subject in [prepare_data()] (the treatment columns by
+#'   `attach_trt()`, as for every dataset);
+#' * `CMFL = "Y"` on every record, the flag the medication table counts.
+#'
+#' Coded term and therapeutic class are CM's own `CMDECOD` and `CMCLAS`; the
+#' medication table reads nothing else. The derived dataset is held to the
+#' remapped copy on every statistic that table publishes by
+#' `test-data-phuse.R` (TFL-PREP-018).
+#' @noRd
+derive_adcm <- function(cm) {
+  cm <- as.data.frame(cm)
+  cm$USUBJID <- as.character(cm$USUBJID)
+  cm$SITEID <- substr(cm$USUBJID, 4, 6)
+  full_day <- function(x) {
+    x <- as.character(x)
+    out <- rep(as.Date(NA), length(x))
+    ok <- !is.na(x) & grepl("^[0-9]{4}-[0-9]{2}-[0-9]{2}", x)
+    out[ok] <- as.Date(substr(x[ok], 1, 10))
+    out
+  }
+  cm$ASTDT <- full_day(cm$CMSTDTC)
+  cm$AENDT <- full_day(cm$CMENDTC)
+  cm$CMFL <- "Y"
+  cm
+}
+
 prep_adcm_phuse <- function(adcm) {
   relabelled <- as.character(adcm$STUDYID) == "CDISCPILOT02"
   adcm$USUBJID <- ifelse(

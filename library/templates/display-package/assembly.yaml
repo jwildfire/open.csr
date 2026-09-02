@@ -70,7 +70,7 @@ post_text:
   # Whoever owns Section 14 as a whole should make that call once, not a worker
   # landing two tables.
   - section: "14.1"
-    displays: [t-disposition, t-demographics, t-populations, t-end-of-study, t-subjects-by-site]
+    displays: [t-disposition, t-demographics, t-populations, t-end-of-study, t-subjects-by-site, f-disposition]
 
   # Same nine displays, same order, as library/templates/ich-e3/assembly.yaml —
   # which is what makes the package's assigned numbers identical to the report's.

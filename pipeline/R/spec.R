@@ -235,6 +235,21 @@ validate_figure_block <- function(figure, id) {
     )
   }
   figure$analysis <- req("analysis", figure$analysis)
+  # A flow figure (kind: flow) draws boxes of counts, not curves on axes; its
+  # own block is `boxes`, checked here, and the axis checks below do not apply.
+  if (identical(figure$kind, "flow")) {
+    req("analysis", figure$analysis)
+    if (!is.list(figure$boxes) || !length(figure$boxes)) {
+      stop("display '", id, "': a flow figure needs a `boxes:` list.", call. = FALSE)
+    }
+    for (b in figure$boxes) {
+      req("boxes[].level", b$level)
+      req("boxes[].label", b$label)
+    }
+    figure$width <- figure$width %||% 760
+    figure$height <- figure$height %||% 330
+    return(figure)
+  }
   for (axis in c("x_axis", "y_axis")) {
     ax <- figure[[axis]]
     if (!is.list(ax)) {

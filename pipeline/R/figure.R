@@ -47,6 +47,11 @@ figure_svg <- function(rows, display_spec, vcfg = list()) {
   if (is.null(fig)) {
     return(NULL)
   }
+  # Two kinds of figure so far: the step curves this function draws, and a
+  # flow of subject counts (the reference report's Figure 10-1, #63).
+  if (identical(fig$kind, "flow")) {
+    return(figure_flow_svg(rows, fig, display_spec, vcfg))
+  }
   series <- figure_series_data(rows, fig, display_spec$id)
   at_risk <- figure_at_risk(rows, fig, series, display_spec$id)
 
@@ -152,6 +157,73 @@ figure_svg <- function(rows, display_spec, vcfg = list()) {
     "font-family=\"-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif\">",
     "<title>", html_escape(vcfg$title %||% display_spec$title), "</title>",
     figure_style(length(series)),
+    paste0(parts, collapse = ""),
+    "</svg>"
+  )
+}
+
+#' A flow of subject counts, drawn from the ARD
+#'
+#' Each box in `figure.boxes` names an ARD level and prints its count beside the
+#' declared label; `from` draws the arrow that feeds it, `side: right` hangs it
+#' off its source to the right (a branch, such as the screen failures) instead
+#' of below it. Pure arithmetic on committed statistics, like the curves.
+#' @noRd
+figure_flow_svg <- function(rows, fig, display_spec, vcfg = list()) {
+  count_of <- function(level) {
+    hit <- rows$stat[rows$analysis == fig$analysis & !is.na(rows$variable_level) &
+      rows$variable_level == level & rows$stat_name == "n"]
+    if (!length(hit)) {
+      stop("display '", display_spec$id, "': the ARD has no count for flow level '", level, "'.", call. = FALSE)
+    }
+    unlist(hit[[1]])
+  }
+  width <- fig$width
+  height <- fig$height
+  boxes <- fig$boxes
+  n_main <- sum(vapply(boxes, function(b) !identical(b$side, "right"), logical(1)))
+  bw <- 300
+  bh <- 40
+  gap <- (height - 30 - n_main * bh) / max(1, n_main - 1)
+  cx <- width / 2 - 60
+  pos <- list()
+  i <- 0
+  for (b in boxes) {
+    if (identical(b$side, "right")) next
+    pos[[b$level]] <- list(x = cx - bw / 2, y = 15 + i * (bh + gap), w = bw, h = bh)
+    i <- i + 1
+  }
+  for (b in boxes) {
+    if (!identical(b$side, "right")) next
+    src <- pos[[b$from]]
+    pos[[b$level]] <- list(x = src$x + bw + 40, y = src$y, w = 200, h = bh)
+  }
+  parts <- character(0)
+  add <- function(...) parts <<- c(parts, paste0(...))
+  for (b in boxes) {
+    p <- pos[[b$level]]
+    add(svg_rect(p$x, p$y, p$w, p$h, fill = "none", stroke = "currentColor", cls = "flow-box", stroke_opacity = 0.7))
+    add(svg_text(p$x + p$w / 2, p$y + bh / 2 + 5,
+      paste0(b$label, " = ", figure_num(count_of(b$level), 0)),
+      anchor = "middle", size = 13, weight = "600", cls = "flow-label"
+    ))
+    if (!is.null(b$from)) {
+      s <- pos[[b$from]]
+      if (identical(b$side, "right")) {
+        add(svg_line(s$x + s$w, s$y + bh / 2, p$x, p$y + bh / 2, cls = "flow-arrow", stroke_opacity = 0.7))
+        add(svg_path(sprintf("M%s %s l-8 -4 l0 8 z", figure_num(p$x, 1), figure_num(p$y + bh / 2, 1)), stroke = "currentColor", width = 1, cls = "flow-head"))
+      } else {
+        add(svg_line(s$x + s$w / 2, s$y + s$h, p$x + p$w / 2, p$y, cls = "flow-arrow", stroke_opacity = 0.7))
+        add(svg_path(sprintf("M%s %s l-4 -8 l8 0 z", figure_num(p$x + p$w / 2, 1), figure_num(p$y, 1)), stroke = "currentColor", width = 1, cls = "flow-head"))
+      }
+    }
+  }
+  paste0(
+    "<svg class=\"opencsr-figure\" viewBox=\"0 0 ", figure_num(width, 0), " ", figure_num(height, 0), "\" ",
+    "width=\"100%\" role=\"img\" ",
+    "style=\"max-width:", figure_num(width, 0), "px;height:auto;display:block;margin:0 auto\" ",
+    "font-family=\"-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif\">",
+    "<title>", html_escape(vcfg$title %||% display_spec$title), "</title>",
     paste0(parts, collapse = ""),
     "</svg>"
   )

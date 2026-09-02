@@ -1,14 +1,14 @@
 {
   "suite": "r-unit",
   "package": "opencsr",
-  "generated": "2026-09-02T16:20:27Z",
+  "generated": "2026-09-02T16:32:35Z",
   "environment": {
     "r": "4.3.3",
     "os": "Darwin 23.6.0"
   },
   "summary": {
-    "total": 163,
-    "passed": 163,
+    "total": 166,
+    "passed": 166,
     "failed": 0,
     "errored": 0,
     "skipped": 0
@@ -137,6 +137,16 @@
     {
       "file": "test-data-phuse.R",
       "test": "TFL-SRC-001: the two sources' overlap matches the committed record (#39)",
+      "status": "pass"
+    },
+    {
+      "file": "test-data-phuse.R",
+      "test": "TFL-PREP-018: the medication analysis dataset is derived from the study's own SDTM CM domain and reproduces every statistic the remapped PHUSE copy gave the medication table (#65)",
+      "status": "pass"
+    },
+    {
+      "file": "test-data-phuse.R",
+      "test": "TFL-PREP-019: DM is the screened population and is the one dataset prepare_data() does not restrict to the subjects in ADSL (#63)",
       "status": "pass"
     },
     {
@@ -492,6 +502,11 @@
     {
       "file": "test-displays.R",
       "test": "DSP-REF-003: the incidence and serious-events displays publish every cell the pilot's own report printed for Tables 14-5.01 and 14-5.02 — 258 lines of three cells and two p-values (#62)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays.R",
+      "test": "DSP-FLOW-001: the disposition figure counts screened, screen-failure, randomised, Week 24 and study completers from DM and ADSL directly, prints them in its table and draws them in its flow (#63)",
       "status": "pass"
     },
     {

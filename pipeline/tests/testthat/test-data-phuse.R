@@ -32,7 +32,7 @@ test_that("TFL-PREP-008: every vendored PHUSE file matches its recorded provenan
   expect_true(file.exists(file.path(phuse_dir(), prov$licence_file)))
   expect_match(prov$commit, "^[0-9a-f]{40}$")
   expect_identical(prov$source_repo, "https://github.com/phuse-org/phuse-scripts")
-  expect_length(prov$files, 11)
+  expect_length(prov$files, 13)
 
   for (f in prov$files) {
     path <- file.path(phuse_dir(), f$vendored)
@@ -45,7 +45,7 @@ test_that("TFL-PREP-008: every vendored PHUSE file matches its recorded provenan
     )
     expect_identical(length(raw), f$bytes, info = f$dataset)
     expect_match(f$blob_sha1, "^[0-9a-f]{40}$")
-    expect_match(f$upstream_path, "^data/adam/")
+    expect_match(f$upstream_path, "^data/(adam|sdtm)/")
   }
   # verification is opt-in and, when asked for, actually verifies
   expect_silent(invisible(read_phuse("adtte", verify = TRUE)))
@@ -59,8 +59,9 @@ test_that("TFL-PREP-009: the whole CDISCPILOT01 ADaM package is preparable (#39)
     "adsl", "adtte", "advs"
   )
   expect_true(all(pilot %in% phuse_datasets()))
-  # plus adcm, which PHUSE added and the pilot package does not contain
-  expect_setequal(phuse_datasets(), c(pilot, "adcm"))
+  # plus adcm, which PHUSE added and the pilot package does not contain, and
+  # the study's own SDTM medications and demographics domains (#65, #63)
+  expect_setequal(phuse_datasets(), c(pilot, "adcm", "cm", "dm"))
 
   reg <- data_sources()
   # the study's own package is the default for everything it publishes (#60);
@@ -68,8 +69,8 @@ test_that("TFL-PREP-009: the whole CDISCPILOT01 ADaM package is preparable (#39)
   expect_identical(unname(reg[c("adsl", "adae", "advs")]), rep("phuse", 3))
   expect_identical(unname(reg[c("adex", "adlb")]), rep("pharmaverseadam", 2))
   expect_identical(
-    unname(reg[c("adqsadas", "adqscibc", "adqsnpix", "adtte", "adlbc", "adlbh", "adlbhy", "adcm")]),
-    rep("phuse", 8)
+    unname(reg[c("adqsadas", "adqscibc", "adqsnpix", "adtte", "adlbc", "adlbh", "adlbhy", "adcm", "cm", "dm")]),
+    rep("phuse", 10)
   )
   expect_identical(unname(data_sources("phuse")[["adsl"]]), "phuse")
   expect_error(data_sources("cdisc.org"), "Unknown data source")
@@ -293,4 +294,41 @@ test_that("TFL-SRC-001: the two sources' overlap matches the committed record (#
     rec$adcm$remapped_subjects_found_in_adsl
   )
   expect_equal(rec$adcm$adsl_subjects_with_no_record, 25)
+})
+
+test_that("TFL-PREP-018: the medication analysis dataset is derived from the study's own SDTM CM domain and reproduces every statistic the remapped PHUSE copy gave the medication table (#65)", {
+  d <- prepare_data(c("adsl", "adcm"))
+  derived <- d$adcm
+  expect_true(all(c("CMDECOD", "CMCLAS", "CMFL", "ASTDT", "AENDT", "SAFFL", "TRT01P") %in% names(derived)))
+  expect_equal(nrow(derived), nrow(read_phuse("cm")))
+  expect_true(all(derived$CMFL == "Y"))
+  # a date is taken only when the source states it to the day; nothing is imputed
+  raw <- read_phuse("cm")
+  complete <- grepl("^[0-9]{4}-[0-9]{2}-[0-9]{2}", as.character(raw$CMSTDTC))
+  expect_equal(sum(!is.na(derived$ASTDT)), sum(complete))
+  # the check that proves the derivation: the remapped copy, reversed as before,
+  # gives the medication table the same 414 statistics
+  spec <- read_analysis_spec("t-conmeds")
+  new <- build_ard(spec, d)
+  remapped <- prep_adcm_phuse(read_phuse("adcm"))
+  remapped <- remapped[remapped$USUBJID %in% d$adsl$USUBJID, , drop = FALSE]
+  remapped <- attach_trt(remapped, d$adsl)
+  old <- build_ard(spec, list(adsl = d$adsl, adcm = tibble::as_tibble(remapped)))
+  key <- function(r) paste(r$analysis, r$group1_level, r$variable, r$variable_level, r$group2_level, r$stat_name)
+  expect_setequal(key(new), key(old))
+  a <- stats::setNames(new$stat, key(new))
+  b <- stats::setNames(old$stat, key(old))
+  expect_equal(length(a), 414)
+  for (k in names(a)) expect_equal(unlist(a[[k]]), unlist(b[[k]]), info = k)
+  # and the committed display reads the derived dataset, not the copy
+  prov <- fixture_ard("t-conmeds")$provenance$data
+  expect_setequal(vapply(prov, function(x) x$dataset, character(1)), c("adsl", "adcm"))
+})
+
+test_that("TFL-PREP-019: DM is the screened population and is the one dataset prepare_data() does not restrict to the subjects in ADSL (#63)", {
+  d <- prepare_data(c("adsl", "dm"))
+  expect_equal(nrow(d$dm), 306)
+  expect_equal(sum(as.character(d$dm$ARM) == "Screen Failure"), 52)
+  expect_equal(sum(d$dm$USUBJID %in% d$adsl$USUBJID), 254)
+  expect_true(all(is.na(d$dm$TRT01P[as.character(d$dm$ARM) == "Screen Failure"])))
 })

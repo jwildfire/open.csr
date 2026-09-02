@@ -1,0 +1,9 @@
+{
+  "display": "f-disposition",
+  "version": "v001",
+  "updated": "2026-09-02T16:24:32Z",
+  "path": "outputs/f-disposition/v001",
+  "ard": "outputs/f-disposition/v001/ard.json",
+  "table": "outputs/f-disposition/v001/table.html",
+  "variants": ["post_text", "in_text"]
+}
