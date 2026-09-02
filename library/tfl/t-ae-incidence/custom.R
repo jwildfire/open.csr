@@ -58,16 +58,22 @@ fisher_rows <- function(stats, reference) {
 }
 
 row_block <- function(stats, tests, variable, variable_level, group, group2 = NA_character_, group2_level = NA_character_, context = "hierarchical") {
+  # `sig` is the report's in-text marker (Table 12-1): an asterisk on an active
+  # arm whose comparison with placebo has p < 0.15, nothing on placebo itself.
+  sig_for <- function(arm) {
+    t <- Filter(function(x) endsWith(x$level, sub("^Xanomeline ", "", arm)), tests)
+    if (!length(t) || is.na(t[[1]]$p)) "" else if (t[[1]]$p < 0.15) "*" else ""
+  }
   arm_rows <- do.call(rbind, lapply(stats, function(s) {
     data.frame(
       group1 = group, group1_level = s$arm, group2 = group2, group2_level = group2_level,
       variable = variable, variable_level = variable_level, context = context,
-      stat_name = c("n", "N", "p", "events"),
-      stat_label = c("n", "N", "%", "Events"),
+      stat_name = c("n", "N", "p", "events", "sig"),
+      stat_label = c("n", "N", "%", "Events", "Placebo comparison p < 0.15"),
       warning = NA_character_, error = NA_character_, stringsAsFactors = FALSE
     )
   }))
-  arm_rows$stat <- unlist(lapply(stats, function(s) list(s$n, s$N, s$p, s$events)), recursive = FALSE)
+  arm_rows$stat <- unlist(lapply(stats, function(s) list(s$n, s$N, s$p, s$events, sig_for(s$arm))), recursive = FALSE)
   test_rows <- do.call(rbind, lapply(tests, function(t) {
     data.frame(
       group1 = "statistic", group1_level = t$level, group2 = group2, group2_level = group2_level,

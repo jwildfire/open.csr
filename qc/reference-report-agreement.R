@@ -279,7 +279,26 @@ route_a_incidence <- function(serious = FALSE, perturb = FALSE) {
   out
 }
 
+# The site table: subjects per site, per arm and population, and the totals.
+route_a_site <- function(perturb = FALSE) {
+  d <- as.data.frame(adsl)
+  if (perturb) d$SITEID[1] <- "999"
+  g <- blank_na(d$TRT01P)
+  flags <- list(ITT = blank_na(d$ITTFL) == "Y", Eff = blank_na(d$EFFFL) == "Y", Com = blank_na(d$COMP24FL) == "Y")
+  line_for <- function(in_site) {
+    unlist(lapply(c(arms, "Total"), function(a) {
+      in_arm <- if (a == "Total") rep(TRUE, nrow(d)) else g == a
+      vapply(flags, function(f) as.character(sum(in_site & in_arm & f)), character(1))
+    }))
+  }
+  out <- list()
+  for (site in sort(unique(blank_na(d$SITEID)))) out[[paste0("site:", site)]] <- line_for(blank_na(d$SITEID) == site)
+  out[["total"]] <- line_for(rep(TRUE, nrow(d)))
+  out
+}
+
 route_a <- function(slug, perturb = FALSE) {
+  if (slug == "t-subjects-by-site") return(route_a_site(perturb))
   if (slug == "t-ae-incidence") return(route_a_incidence(FALSE, perturb))
   if (slug == "t-sae-incidence") return(route_a_incidence(TRUE, perturb))
   if (slug == "t-demographics") return(route_a_demographics(perturb))
@@ -375,7 +394,9 @@ route_c <- function(slug, perturb = FALSE) {
   lapply(spec$rows, function(r) {
     printed <- vapply(r$printed, function(x) norm_cell(x), character(1))
     if (perturb) printed[1] <- norm_cell("99 ( 99%)")
-    ps <- if (!is.null(r$p_values_printed)) {
+    ps <- if (identical(spec$p_columns, 0L) || identical(spec$p_columns, 0)) {
+      character(0)
+    } else if (!is.null(r$p_values_printed)) {
       vapply(r$p_values_printed, function(x) x %||% "", character(1))
     } else if (is.null(r$p_value_printed)) {
       ""
@@ -664,7 +685,7 @@ compare <- function(slug, perturb = NULL) {
     n_cols <- length(ref$cells)
     pub_cells <- c(pub$cells, rep("", max(0, n_cols - length(pub$cells))))[seq_len(n_cols)]
     for (j in seq_len(n_cols)) {
-      trio <- c(recomputed = rec[j], published = pub_cells[j], report = ref$cells[j])
+      trio <- c(recomputed = unname(rec[j]), published = unname(pub_cells[j]), report = unname(ref$cells[j]))
       known <- known_difference(slug, ref$analysis, j)
       if (!is.null(known)) {
         # A recorded difference must still be exactly the recorded difference:

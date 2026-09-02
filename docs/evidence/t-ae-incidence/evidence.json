@@ -1,6 +1,6 @@
 {
   "module": "t-ae-incidence",
-  "generated": "2026-09-02T16:07:18.703Z",
+  "generated": "2026-09-02T16:20:30.837Z",
   "records": [
     {
       "requirementIds": [
@@ -160,6 +160,42 @@
     },
     {
       "requirementIds": [
+        "DSP-INTXT-001"
+      ],
+      "title": "DSP-INTXT-001: the in-text demographics redraw is the report's Table 11-1 — mean and range, percentages, race as White/Caucasian or other — from the same ARD as the full table (#63)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        63
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-INTXT-002"
+      ],
+      "title": "DSP-INTXT-002: the in-text incidence redraw is the report's Table 12-1 — terms at 5% or more in any arm, flat, in title case, an asterisk where the placebo comparison has p < 0.15 (#63)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        63
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-INTXT-003"
+      ],
+      "title": "DSP-INTXT-003: the in-text weight redraw is the report's Table 12-4 — n and mean per arm for baseline and the changes at Week 24 and end of treatment — from the weight table's own ARD (#63)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        63
+      ]
+    },
+    {
+      "requirementIds": [
         "DSP-REF-001"
       ],
       "title": "DSP-REF-001: both displays publish the figures the pilot's own report printed (#1)",
@@ -192,6 +228,18 @@
       "file": "test-displays.R",
       "issueRefs": [
         62
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-REF-004"
+      ],
+      "title": "DSP-REF-004: the subjects-by-site display publishes every cell the pilot's own report printed for Table 14-1.03 (#63)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        63
       ]
     },
     {
@@ -261,14 +309,14 @@
       "adsl"
     ],
     "adamHashes": {
-      "adsl": "sha256:3139478d86fda4c38e8bb2f41d348518f4a65f58bcdd7e9650fda8da7a9a6838",
+      "adsl": "sha256:b022f78fdd0ade028f6c4e9e7cc5187284a5249f30c16646931a1856d5fff2f6",
       "adae": "sha256:4ffe4e4c90c8a531e95e4931b601c258ed0b83638d4b346e66635d79e78a7bf1"
     },
-    "ardFile": "outputs/t-ae-incidence/v005/ard.json",
-    "ardHash": "sha256:c8613b34897ae56c92b93e497e48031ac30a5f0888afb638b04c1b48d681784b",
+    "ardFile": "outputs/t-ae-incidence/v007/ard.json",
+    "ardHash": "sha256:091de5139418fc160d23400a54f2b6895a2981c8e71fbca4b478665e4a0d4293",
     "displayFile": "library/tfl/t-ae-incidence/display.yaml",
     "specHash": "sha256:a94b85b6e974ae8cc4f19deacfc41f440b4ec4b68c0c8edcc69ca4d6aea3a0ec",
-    "iteration": "v005",
+    "iteration": "v007",
     "sourceCommit": null
   },
   "environment": {

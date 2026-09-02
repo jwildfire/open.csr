@@ -1,14 +1,14 @@
 {
   "suite": "r-unit",
   "package": "opencsr",
-  "generated": "2026-09-02T16:05:49Z",
+  "generated": "2026-09-02T16:20:27Z",
   "environment": {
     "r": "4.3.3",
     "os": "Darwin 23.6.0"
   },
   "summary": {
-    "total": 156,
-    "passed": 156,
+    "total": 163,
+    "passed": 163,
     "failed": 0,
     "errored": 0,
     "skipped": 0
@@ -495,6 +495,36 @@
       "status": "pass"
     },
     {
+      "file": "test-displays.R",
+      "test": "DSP-SITE-001: every site row counts the intent-to-treat, efficacy and Week 24 completer subjects per arm and overall, equal to a direct count of ADSL (#63)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays.R",
+      "test": "DSP-SITE-002: the seven small sites are listed under pooled id 900, each on its own line, after the ten that stand alone (#63)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays.R",
+      "test": "DSP-REF-004: the subjects-by-site display publishes every cell the pilot's own report printed for Table 14-1.03 (#63)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays.R",
+      "test": "DSP-INTXT-001: the in-text demographics redraw is the report's Table 11-1 — mean and range, percentages, race as White/Caucasian or other — from the same ARD as the full table (#63)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays.R",
+      "test": "DSP-INTXT-002: the in-text incidence redraw is the report's Table 12-1 — terms at 5% or more in any arm, flat, in title case, an asterisk where the placebo comparison has p < 0.15 (#63)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays.R",
+      "test": "DSP-INTXT-003: the in-text weight redraw is the report's Table 12-4 — n and mean per arm for baseline and the changes at Week 24 and end of treatment — from the weight table's own ARD (#63)",
+      "status": "pass"
+    },
+    {
       "file": "test-formatting.R",
       "test": "TFL-FMT-001: round_half_up rounds half away from zero, unlike base::round (#1)",
       "status": "pass"
@@ -632,6 +662,11 @@
     {
       "file": "test-render.R",
       "test": "TFL-RND-009: a hierarchical row plan can order its levels by name, by one arm's count, or by the subjects summed across arms, and a bare-zero option applies to any pattern that prints a count (#62)",
+      "status": "pass"
+    },
+    {
+      "file": "test-render.R",
+      "test": "TFL-RND-010: a column may name its group, its analysis and its pattern, and a variant may redraw the display with its own rows, columns and format over the same ARD (#63)",
       "status": "pass"
     },
     {

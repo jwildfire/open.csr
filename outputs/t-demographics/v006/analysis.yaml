@@ -1,0 +1,175 @@
+# ------------------------------------------------------------------------------
+# t-demographics — Summary of Demographic and Baseline Characteristics
+# ------------------------------------------------------------------------------
+# Target: Table 14-2.01 of the CDISCPILOT01 clinical study report (27 June 2006),
+# pages 46–48. Intent-to-treat population; Placebo, low dose, high dose, Total,
+# and a p-value column — one-way ANOVA for a continuous block, Pearson's
+# chi-square for a categorical one (the report's footnote [1]).
+#
+# Every block is two entries. The `<block>_n` entry is dispatched to custom.R and
+# produces the block's "n" row (subjects with a value) together with the block's
+# single test; its sibling produces the statistics or the levels through the
+# built-in method. Three sub-blocks — age groups, duration-of-disease groups and
+# BMI groups — have no "n" row in the report and print their p-value beside the
+# first level, which `p_on_level` declares.
+#
+# Race (Origin) is the report's one classification with Hispanic as a category;
+# the data carry race and ethnicity separately. `RACEOR` is derived in the data
+# layer (prep_adsl: ethnicity first, then race, with the report's labels) and the
+# display's footnote says so. The CDISC-coded `race` and `ethnic` analyses stay
+# in the ARD, unrendered, because the report's narrative binds them by name.
+#
+# Until v0.4.0 this display was the FDA-standard DMT01 shape on the safety
+# analysis set, without a p-value column. The regulatory identifier is kept; the
+# shape is the reference's (D0032, #61).
+# ------------------------------------------------------------------------------
+id: t-demographics
+title: "Summary of Demographic and Baseline Characteristics"
+regulatory_id: DMT01
+type: table
+dataset: adsl
+analysis_set: itt
+denominator: adsl
+group:
+  - TRT01P
+total: true
+analyses:
+  # ---- Age ----
+  - name: age_n
+    method: continuous
+    custom: ard_block_n_and_test
+    test: anova
+    label: "Age (years): n and ANOVA"
+    variables: [AGE]
+  - name: age
+    method: continuous
+    label: "Age (years)"
+    variables: [AGE]
+  - name: agegr_n
+    method: categorical
+    custom: ard_block_n_and_test
+    test: chisq
+    p_on_level: "<65"
+    label: "Age group: chi-square"
+    variables: [AGEGR1]
+  - name: agegr
+    method: categorical
+    label: "Age group"
+    variables: [AGEGR1]
+  # ---- Sex ----
+  - name: sex_n
+    method: categorical
+    custom: ard_block_n_and_test
+    test: chisq
+    label: "Sex: n and chi-square"
+    variables: [SEX]
+  - name: sex
+    method: categorical
+    label: "Sex"
+    variables: [SEX]
+  # ---- Race (Origin) ----
+  - name: raceor_n
+    method: categorical
+    custom: ard_block_n_and_test
+    test: chisq
+    label: "Race (Origin): n and chi-square"
+    variables: [RACEOR]
+  - name: raceor
+    method: categorical
+    label: "Race (Origin)"
+    variables: [RACEOR]
+  # ---- MMSE ----
+  - name: mmse_n
+    method: continuous
+    custom: ard_block_n_and_test
+    test: anova
+    label: "MMSE: n and ANOVA"
+    variables: [MMSETOT]
+  - name: mmse
+    method: continuous
+    label: "MMSE"
+    variables: [MMSETOT]
+  # ---- Duration of disease ----
+  - name: durdis_n
+    method: continuous
+    custom: ard_block_n_and_test
+    test: anova
+    label: "Duration of disease (months): n and ANOVA"
+    variables: [DURDIS]
+  - name: durdis
+    method: continuous
+    label: "Duration of disease (months)"
+    variables: [DURDIS]
+  - name: durdisgr_n
+    method: categorical
+    custom: ard_block_n_and_test
+    test: chisq
+    p_on_level: "<12"
+    label: "Duration of disease group: chi-square"
+    variables: [DURDSGR1]
+  - name: durdisgr
+    method: categorical
+    label: "Duration of disease group"
+    variables: [DURDSGR1]
+  # ---- Education ----
+  - name: educ_n
+    method: continuous
+    custom: ard_block_n_and_test
+    test: anova
+    label: "Years of education: n and ANOVA"
+    variables: [EDUCLVL]
+  - name: educ
+    method: continuous
+    label: "Years of education"
+    variables: [EDUCLVL]
+  # ---- Baseline weight, height, BMI ----
+  - name: weight_n
+    method: continuous
+    custom: ard_block_n_and_test
+    test: anova
+    label: "Baseline weight (kg): n and ANOVA"
+    variables: [BLWT]
+  - name: weight
+    method: continuous
+    label: "Baseline weight (kg)"
+    variables: [BLWT]
+  - name: height_n
+    method: continuous
+    custom: ard_block_n_and_test
+    test: anova
+    label: "Baseline height (cm): n and ANOVA"
+    variables: [BLHT]
+  - name: height
+    method: continuous
+    label: "Baseline height (cm)"
+    variables: [BLHT]
+  - name: bmi_n
+    method: continuous
+    custom: ard_block_n_and_test
+    test: anova
+    label: "Baseline BMI: n and ANOVA"
+    variables: [BLBMI]
+  - name: bmi
+    method: continuous
+    label: "Baseline BMI"
+    variables: [BLBMI]
+  - name: bmigr_n
+    method: categorical
+    custom: ard_block_n_and_test
+    test: chisq
+    p_on_level: "<25"
+    label: "Baseline BMI group: chi-square"
+    variables: [BMIBLGR1]
+  - name: bmigr
+    method: categorical
+    label: "Baseline BMI group"
+    variables: [BMIBLGR1]
+  # ---- CDISC-coded race and ethnicity: in the ARD for the narrative's bindings, not rendered ----
+  - name: race
+    method: categorical
+    label: "Race (CDISC coding)"
+    variables: [RACE]
+  - name: ethnic
+    method: categorical
+    label: "Ethnicity (CDISC coding)"
+    variables: [ETHNIC]

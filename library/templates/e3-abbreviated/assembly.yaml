@@ -114,6 +114,9 @@ slots:
     text: [TXT-E3-1222]
     displays: [t-ae-common]
 
+  - section: "12.2.3"
+    displays: [t-ae-incidence]
+
   - section: "12.2.4"
     text: [TXT-E3-1224]
 
@@ -141,7 +144,7 @@ post_text:
   # Whoever owns Section 14 as a whole should make that call once, not a worker
   # landing two tables.
   - section: "14.1"
-    displays: [t-disposition, t-demographics, t-populations, t-end-of-study]
+    displays: [t-disposition, t-demographics, t-populations, t-end-of-study, t-subjects-by-site]
 
   # Mirrors library/templates/ich-e3/assembly.yaml. Same displays, same order,
   # so both reports assign the same numbers and neither is re-specified.

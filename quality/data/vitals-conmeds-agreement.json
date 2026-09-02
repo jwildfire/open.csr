@@ -1,7 +1,7 @@
 {
   "schema": "opencsr/agreement/v1",
   "subject": "vital signs, weight and concomitant medications",
-  "generated": "2026-09-02T16:06:34Z",
+  "generated": "2026-09-02T16:19:51Z",
   "reproducer": "qc/vitals-conmeds-agreement.R",
   "routes": {
     "A": "the open.csr pipeline, via each display's committed outputs/<slug>/current ARD",
@@ -34,8 +34,8 @@
     },
     {
       "display": "t-weight",
-      "version": "v002",
-      "ard": "outputs/t-weight/v002/ard.json",
+      "version": "v004",
+      "ard": "outputs/t-weight/v004/ard.json",
       "reference": "Table 14-7.03",
       "publishable_statistics": 99,
       "recomputed": 99,

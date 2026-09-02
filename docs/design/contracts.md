@@ -91,6 +91,8 @@ variants:
 
 **Hierarchical sort and shared custom code (#62).** A `type: hierarchical` row accepts `sort: { outer: alpha | { by_group }, inner: alpha | { by_group: "<arm label>" } | { by: sum } }`; the default at both levels is the largest count in any one arm, descending, then name. An analysis spec may declare `custom_from: <slug>` to dispatch its `custom:` entries to another display's `custom.R`, so two tables that must count the same way share one implementation.
 
+**Column objects and variant redraws (#63).** An entry of `columns.order` may be an object `{label, group, analysis, pattern}`: the column prints `label`, reads the ARD at group level `group`, and — when set — reads `analysis` rather than the row's and prints `pattern` rather than the row's. Twelve columns of arm × population on the subjects-by-site table, and n / mean pairs per arm on the in-text weight table, are that. A variant may declare `rows`, `columns` and `format` of its own; they replace the display's for that rendering, over the same ARD, which is how the report's in-text Tables 11-1, 12-1 and 12-4 are drawn from the Section 14 displays' results. A hierarchical row accepts `inner_only: true` (no outer headings, the inner level flat) and `label_case: title`.
+
 ## 4. Prepared datasets (data-prep layer)
 
 `opencsr::prepare_data(datasets, source_pkg, sources)` returns a named list of tibbles for one study, CDISCPILOT01, drawn from two packagings of it and prepared with documented derivations (D12).

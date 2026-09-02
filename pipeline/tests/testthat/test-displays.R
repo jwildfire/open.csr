@@ -477,7 +477,7 @@ test_that("DSP-REF-001: both displays publish the figures the pilot's own report
     simplifyVector = FALSE
   )
   norm <- function(x) trimws(gsub("[[:space:]]+", " ", gsub("\\(\\s+", "(", x)))
-  expect_setequal(names(record$displays), c("t-populations", "t-end-of-study", "t-demographics", "t-exposure", "t-ae-incidence", "t-sae-incidence"))
+  expect_setequal(names(record$displays), c("t-populations", "t-end-of-study", "t-demographics", "t-exposure", "t-ae-incidence", "t-sae-incidence", "t-subjects-by-site"))
   n_checked <- 0L
   for (slug in c("t-populations", "t-end-of-study")) {
     disp <- fixture_display(slug)
@@ -665,4 +665,111 @@ test_that("DSP-REF-003: the incidence and serious-events displays publish every 
   }
   expect_length(record$displays[["t-ae-incidence"]]$known_differences, 4)
   expect_identical(n_checked, 258L * 5L)
+})
+
+# The subjects-by-site table (Table 14-1.03) and the report's in-text redraws
+# of Section 14 tables (Tables 11-1, 12-1, 12-4) — Issue E of D0032 (#63).
+
+test_that("DSP-SITE-001: every site row counts the intent-to-treat, efficacy and Week 24 completer subjects per arm and overall, equal to a direct count of ADSL (#63)", {
+  disp <- fixture_display("t-subjects-by-site")
+  raw <- ref_phuse_adsl()
+  arms <- c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose")
+  expect_length(disp$columns$levels, 12)
+  lab <- plain(disp$table$label)
+  for (site in c("701", "704", "717")) {
+    i <- which(grepl(paste0(" / ", site, "$"), lab))
+    expect_length(i, 1)
+    in_site <- blank_na(raw$SITEID) == site
+    k <- 0
+    for (a in c(arms, "Total")) {
+      in_arm <- if (a == "Total") rep(TRUE, nrow(raw)) else as.character(raw$TRT01P) == a
+      for (flag in c("ITTFL", "EFFFL", "COMP24FL")) {
+        k <- k + 1
+        expect_identical(disp$table[[paste0("col", k)]][i], as.character(sum(in_site & in_arm & blank_na(raw[[flag]]) == "Y")), info = paste(site, a, flag))
+      }
+    }
+  }
+  tot <- which(lab == "TOTAL")
+  expect_identical(unname(vapply(1:12, function(k) disp$table[[paste0("col", k)]][tot], character(1))), c("86", "79", "60", "84", "81", "28", "84", "74", "30", "254", "234", "118"))
+})
+
+test_that("DSP-SITE-002: the seven small sites are listed under pooled id 900, each on its own line, after the ten that stand alone (#63)", {
+  disp <- fixture_display("t-subjects-by-site")
+  lab <- plain(disp$table$label)
+  raw <- ref_phuse_adsl()
+  pooled <- sort(unique(blank_na(raw$SITEID[blank_na(raw$SITEGR1) == "900"])))
+  expect_length(pooled, 7)
+  for (s in pooled) expect_true(paste0("900 / ", s) %in% lab, info = s)
+  standalone <- sort(unique(blank_na(raw$SITEID[blank_na(raw$SITEGR1) != "900"])))
+  expect_length(standalone, 10)
+  for (s in standalone) expect_true(paste0(s, " / ", s) %in% lab, info = s)
+  expect_identical(lab[1], "701 / 701")
+  expect_identical(lab[18], "TOTAL")
+})
+
+test_that("DSP-REF-004: the subjects-by-site display publishes every cell the pilot's own report printed for Table 14-1.03 (#63)", {
+  record <- jsonlite::fromJSON(
+    file.path(csr_root(), "quality", "data", "reference-report-agreement.json"),
+    simplifyVector = FALSE
+  )
+  tb <- fixture_display("t-subjects-by-site")$table
+  tb$label <- plain(tb$label)
+  rows <- record$displays[["t-subjects-by-site"]]$rows
+  expect_length(rows, 18)
+  expect_identical(nrow(tb), length(rows))
+  n_checked <- 0L
+  for (i in seq_along(rows)) {
+    expect_identical(tb$label[i], rows[[i]]$label, info = rows[[i]]$analysis)
+    for (k in 1:12) {
+      expect_identical(tb[[paste0("col", k)]][i], rows[[i]]$printed[[k]], info = paste(rows[[i]]$analysis, k))
+      n_checked <- n_checked + 1L
+    }
+  }
+  expect_identical(n_checked, 216L)
+})
+
+test_that("DSP-INTXT-001: the in-text demographics redraw is the report's Table 11-1 — mean and range, percentages, race as White/Caucasian or other — from the same ARD as the full table (#63)", {
+  full <- fixture_display("t-demographics")
+  intext <- fixture_display("t-demographics", "in_text")
+  expect_identical(intext$columns$levels, c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose", "Total"))
+  expect_identical(cell(intext, "Age (years), mean (range)", "Placebo"), "75.2 (52-89)")
+  expect_identical(cell(intext, "Age (years), mean (range)", "Total"), "75.1 (51-89)")
+  expect_identical(cell(intext, "Male", "Xanomeline High Dose"), "52%")
+  expect_identical(cell(intext, "White/Caucasian", "Total"), "86%")
+  expect_identical(cell(intext, "Other", "Placebo"), "13%")
+  expect_identical(cell(intext, "Education (years), mean (range)", "Xanomeline Low Dose"), "13.2 (3-24)")
+  # one ARD, two renderings: the mean the redraw prints is the full table's mean
+  expect_identical(sub(" .*$", "", cell(intext, "Age (years), mean (range)", "Placebo")), full$table$col1[which(plain(full$table$label) == "Mean")[1]])
+})
+
+test_that("DSP-INTXT-002: the in-text incidence redraw is the report's Table 12-1 — terms at 5% or more in any arm, flat, in title case, an asterisk where the placebo comparison has p < 0.15 (#63)", {
+  intext <- fixture_display("t-ae-incidence", "in_text")
+  lab <- plain(intext$table$label)
+  expect_identical(intext$columns$levels, c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"))
+  expect_false(any(grepl("DISORDERS$", lab)))
+  expect_identical(lab[1:4], c("Sinus Bradycardia", "Vomiting", "Nausea", "Diarrhoea"))
+  expect_identical(cell(intext, "Sinus Bradycardia", "Xanomeline Low Dose"), "7 (8.3%)*")
+  expect_identical(cell(intext, "Sinus Bradycardia", "Placebo"), "2 (2.3%)")
+  expect_identical(cell(intext, "Vomiting", "Xanomeline High Dose"), "7 (8.3%)")
+  expect_identical(cell(intext, "Application Site Pruritus", "Xanomeline High Dose"), "22 (26.2%)*")
+  expect_identical(cell(intext, "Blister", "Placebo"), "0")
+  # every term shown reaches 5% in at least one arm; the full table has many more
+  ard <- fixture_ard("t-ae-incidence")$rows
+  for (term in lab) {
+    p <- ard[ard$analysis == "by_soc_pt" & ard$variable == "AEDECOD" & toupper(term) == ard$variable_level & ard$stat_name == "p", ]
+    expect_gte(max(unlist(p$stat)), 0.05, label = term)
+  }
+  expect_gt(nrow(fixture_display("t-ae-incidence")$table), 4 * nrow(intext$table))
+})
+
+test_that("DSP-INTXT-003: the in-text weight redraw is the report's Table 12-4 — n and mean per arm for baseline and the changes at Week 24 and end of treatment — from the weight table's own ARD (#63)", {
+  intext <- fixture_display("t-weight", "in_text")
+  expect_identical(intext$columns$levels, c("Placebo n", "Placebo Mean", "Low Dose n", "Low Dose Mean", "High Dose n", "High Dose Mean"))
+  lab <- plain(intext$table$label)
+  i <- which(lab == "Baseline")
+  expect_identical(unname(vapply(1:6, function(k) intext$table[[paste0("col", k)]][i], character(1))), c("86", "62.8", "83", "67.3", "84", "70.0"))
+  i <- which(lab == "Change at Week 24")
+  expect_identical(unname(vapply(1:6, function(k) intext$table[[paste0("col", k)]][i], character(1))), c("59", "0.1", "27", "-0.3", "30", "1.0"))
+  i <- which(lab == "Change at End of Treatment")
+  expect_identical(unname(vapply(1:6, function(k) intext$table[[paste0("col", k)]][i], character(1))), c("84", "0.2", "83", "-0.4", "81", "0.1"))
 })

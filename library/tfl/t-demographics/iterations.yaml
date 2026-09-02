@@ -55,4 +55,24 @@ iterations:
   display_hash: sha256:ce6678b15ca47b2e0515c5e641b4b8eb28da7159f2365403c0890efde5cdb306
   ard_hash: sha256:3516f690df3588f12fb1b589645820308174a25130219b0bc6c0cf67e51d112e
   ard_rows: 524
+- version: v006
+  created: '2026-09-02T16:10:27Z'
+  actor: '@obotclaw'
+  change_request: 'In-text variant redrawn as the reference report prints it (Tables
+    11-1, 12-1, 12-4; D0032, #63).'
+  git_commit: ''
+  spec_hash: sha256:1db216cf8f6d81a73469c0afb0c7ffaa6ae987f22f7e9ce0d047af310da061b2
+  display_hash: sha256:ce6678b15ca47b2e0515c5e641b4b8eb28da7159f2365403c0890efde5cdb306
+  ard_hash: sha256:7e45dc8db8a0e477efb13091b020841d2c61ca495fcd2b37859532d4d1091bcb
+  ard_rows: 524
+- version: v007
+  created: '2026-09-02T16:11:27Z'
+  actor: '@obotclaw'
+  change_request: 'In-text variant redrawn as the reference report prints it (Tables
+    11-1, 12-1, 12-4; D0032, #63).'
+  git_commit: ''
+  spec_hash: sha256:bc60600be035071da384b07199fb4b48cfc3f8b46e764e2db96d568a2bd34e20
+  display_hash: sha256:c2a1f1710bcf057a83819c6e6e29b95aeaa30bc0bedf5d3c7bbca9d63d356b0c
+  ard_hash: sha256:87af02747ecd7e74df308ac7fc521b68e22f7fad3fb86607e5e93d9d28cb82a5
+  ard_rows: 548
 

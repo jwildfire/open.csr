@@ -1,6 +1,6 @@
 {
   "module": "t-demographics",
-  "generated": "2026-09-02T16:07:18.703Z",
+  "generated": "2026-09-02T16:20:30.837Z",
   "records": [
     {
       "requirementIds": [
@@ -160,6 +160,42 @@
     },
     {
       "requirementIds": [
+        "DSP-INTXT-001"
+      ],
+      "title": "DSP-INTXT-001: the in-text demographics redraw is the report's Table 11-1 — mean and range, percentages, race as White/Caucasian or other — from the same ARD as the full table (#63)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        63
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-INTXT-002"
+      ],
+      "title": "DSP-INTXT-002: the in-text incidence redraw is the report's Table 12-1 — terms at 5% or more in any arm, flat, in title case, an asterisk where the placebo comparison has p < 0.15 (#63)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        63
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-INTXT-003"
+      ],
+      "title": "DSP-INTXT-003: the in-text weight redraw is the report's Table 12-4 — n and mean per arm for baseline and the changes at Week 24 and end of treatment — from the weight table's own ARD (#63)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        63
+      ]
+    },
+    {
+      "requirementIds": [
         "STD-MODEL-003"
       ],
       "title": "STD-MODEL-003: the treatment vocabulary and the analysis-set registry resolve from the study model, not from code (#59)",
@@ -224,13 +260,13 @@
       "adsl"
     ],
     "adamHashes": {
-      "adsl": "sha256:3139478d86fda4c38e8bb2f41d348518f4a65f58bcdd7e9650fda8da7a9a6838"
+      "adsl": "sha256:b022f78fdd0ade028f6c4e9e7cc5187284a5249f30c16646931a1856d5fff2f6"
     },
-    "ardFile": "outputs/t-demographics/v005/ard.json",
-    "ardHash": "sha256:3516f690df3588f12fb1b589645820308174a25130219b0bc6c0cf67e51d112e",
+    "ardFile": "outputs/t-demographics/v007/ard.json",
+    "ardHash": "sha256:87af02747ecd7e74df308ac7fc521b68e22f7fad3fb86607e5e93d9d28cb82a5",
     "displayFile": "library/tfl/t-demographics/display.yaml",
-    "specHash": "sha256:1db216cf8f6d81a73469c0afb0c7ffaa6ae987f22f7e9ce0d047af310da061b2",
-    "iteration": "v005",
+    "specHash": "sha256:bc60600be035071da384b07199fb4b48cfc3f8b46e764e2db96d568a2bd34e20",
+    "iteration": "v007",
     "sourceCommit": null
   },
   "environment": {

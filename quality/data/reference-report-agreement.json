@@ -1,6 +1,6 @@
 {
   "record": "reference-report-agreement",
-  "what": "The figures the CDISC pilot's own clinical study report printed for Tables 14-1.01, 14-1.02, 14-2.01, 14-4.01, 14-5.01 and 14-5.02, transcribed cell by cell. open.csr rebuilds those six displays as t-populations, t-end-of-study, t-demographics, t-exposure, t-ae-incidence and t-sae-incidence; qc/reference-report-agreement.R checks that a from-scratch recomputation and the committed rendered HTML both land on every string below.",
+  "what": "The figures the CDISC pilot's own clinical study report printed for Tables 14-1.01, 14-1.02, 14-2.01, 14-4.01, 14-5.01, 14-5.02 and 14-1.03, transcribed cell by cell. open.csr rebuilds those seven displays as t-populations, t-end-of-study, t-demographics, t-exposure, t-ae-incidence, t-sae-incidence and t-subjects-by-site; qc/reference-report-agreement.R checks that a from-scratch recomputation and the committed rendered HTML both land on every string below.",
   "reference": {
     "document": "Clinical Study Report, CDISC SDTM/ADaM Pilot Project, protocol CDISCPILOT01, FINAL, 27 June 2006",
     "published_by": "CDISC SDTM/ADaM Pilot Project Team",
@@ -10,7 +10,8 @@
       "t-demographics": "Table 14-2.01, Summary of Demographic and Baseline Characteristics (Population: Intent-to-Treat)",
       "t-exposure": "Table 14-4.01, Summary of Planned Exposure to Study Drug, as of End of Study (Population: Safety)",
       "t-ae-incidence": "Table 14-5.01, Incidence of Treatment Emergent Adverse Events by Treatment Group (Population: Safety)",
-      "t-sae-incidence": "Table 14-5.02, Incidence of Treatment Emergent Serious Adverse Events by Treatment Group (Population: Safety)"
+      "t-sae-incidence": "Table 14-5.02, Incidence of Treatment Emergent Serious Adverse Events by Treatment Group (Population: Safety)",
+      "t-subjects-by-site": "Table 14-1.03, Summary of Number of Subjects By Site (Population: All Subjects)"
     },
     "produced_by": "SAS programs adsl1.sas and adsl2.sas, run 21:02 Monday, 26 June 2006, per the Source line printed on each table.",
     "analysis_plan": "Statistical Analysis Plan section 9.7.1.2: 'The number of subjects randomized, the number of subjects in each analysis dataset, and the disposition of subjects were tabulated by treatment group. Specific reasons for early study discontinuation (protocol completed, lack of efficacy, and adverse event) were compared using a Fisher's exact test.' The display shells are Attachment 13.1.1 Templates 1 and 2.",
@@ -48,10 +49,11 @@
           77,
           78
         ],
-        "t-sae-incidence": 79
+        "t-sae-incidence": 79,
+        "t-subjects-by-site": 45
       },
       "not_vendored": "The PDF is deliberately NOT vendored into this repository. Pages 154-409 of it — the protocol and the sample CRF — carry 'Copyright (c) 2006 Eli Lilly and Company' and are not ours to redistribute. The two pages this record transcribes, 43 and 44, are result tables authored by the CDISC SDTM/ADaM Pilot Project Team and sit outside that range; they are read, not copied.",
-      "verified": "2026-08-27, by `Rscript qc/reference-report-agreement.R --verify-transcription`, against the document whose SHA-256 is pinned above. Every cell, row label and printed p-value below was re-derived from the PDF text and matched. Extended 2026-09-02 (#61) to Tables 14-2.01 (pages 46-48) and 14-4.01 (page 62), re-verified against the same document by the same command. Extended 2026-09-02 (#62) to Tables 14-5.01 (pages 63-78) and 14-5.02 (page 79).",
+      "verified": "2026-08-27, by `Rscript qc/reference-report-agreement.R --verify-transcription`, against the document whose SHA-256 is pinned above. Every cell, row label and printed p-value below was re-derived from the PDF text and matched. Extended 2026-09-02 (#61) to Tables 14-2.01 (pages 46-48) and 14-4.01 (page 62), re-verified against the same document by the same command. Extended 2026-09-02 (#62) to Tables 14-5.01 (pages 63-78) and 14-5.02 (page 79). Extended 2026-09-02 (#63) to Table 14-1.03 (page 45).",
       "verification_found": "Two errors in the hand transcription, both introduced when this record was first written and both invisible to the three-route comparison because the specs were written from the same misreading: (1) a p-value of 0.5000 recorded against the Death row, which the report does not print — the report prints a p-value on exactly the three rows the SAP names; (2) the two tables' population labels recorded the wrong way round.",
       "not_in_ci": "This check is not a CI step. It needs the network and a PDF text extractor (poppler's pdftotext), and a build that fails because a third-party download was slow teaches people to ignore it. It is a maintainer command, to be run whenever this record is edited. What CI does run is the three-route comparison, which no longer has anything to compare against if this record is wrong — which is exactly why the record's own provenance is pinned here rather than asserted."
     }
@@ -5050,6 +5052,384 @@
           ]
         }
       ]
+    },
+    "t-subjects-by-site": {
+      "table": "14-1.03",
+      "columns": [
+        "Placebo ITT",
+        "Placebo Eff",
+        "Placebo Com",
+        "Xanomeline Low Dose ITT",
+        "Xanomeline Low Dose Eff",
+        "Xanomeline Low Dose Com",
+        "Xanomeline High Dose ITT",
+        "Xanomeline High Dose Eff",
+        "Xanomeline High Dose Com",
+        "Total ITT",
+        "Total Eff",
+        "Total Com"
+      ],
+      "column_n": [
+        86,
+        79,
+        60,
+        84,
+        81,
+        28,
+        84,
+        74,
+        30,
+        254,
+        234,
+        118
+      ],
+      "n_cells": 12,
+      "note": "Twelve bare counts per line, arm by population (intent-to-treat, efficacy, Week 24 completers) with the Total group last; one line per site labelled with its pooled id and its own id, then TOTAL. The rendered display prints the same twelve columns directly.",
+      "rows": [
+        {
+          "analysis": "site:701",
+          "label": "701 / 701",
+          "report_label": "701 701",
+          "printed": [
+            "14",
+            "14",
+            "11",
+            "13",
+            "13",
+            "5",
+            "14",
+            "14",
+            "7",
+            "41",
+            "41",
+            "23"
+          ]
+        },
+        {
+          "analysis": "site:703",
+          "label": "703 / 703",
+          "report_label": "703 703",
+          "printed": [
+            "6",
+            "5",
+            "4",
+            "6",
+            "5",
+            "1",
+            "6",
+            "5",
+            "2",
+            "18",
+            "15",
+            "7"
+          ]
+        },
+        {
+          "analysis": "site:704",
+          "label": "704 / 704",
+          "report_label": "704 704",
+          "printed": [
+            "9",
+            "9",
+            "5",
+            "8",
+            "7",
+            "3",
+            "8",
+            "8",
+            "0",
+            "25",
+            "24",
+            "8"
+          ]
+        },
+        {
+          "analysis": "site:705",
+          "label": "705 / 705",
+          "report_label": "705 705",
+          "printed": [
+            "5",
+            "3",
+            "2",
+            "5",
+            "5",
+            "3",
+            "6",
+            "4",
+            "1",
+            "16",
+            "12",
+            "6"
+          ]
+        },
+        {
+          "analysis": "site:708",
+          "label": "708 / 708",
+          "report_label": "708 708",
+          "printed": [
+            "9",
+            "9",
+            "7",
+            "8",
+            "8",
+            "2",
+            "8",
+            "5",
+            "2",
+            "25",
+            "22",
+            "11"
+          ]
+        },
+        {
+          "analysis": "site:709",
+          "label": "709 / 709",
+          "report_label": "709 709",
+          "printed": [
+            "7",
+            "7",
+            "5",
+            "7",
+            "6",
+            "2",
+            "7",
+            "7",
+            "3",
+            "21",
+            "20",
+            "10"
+          ]
+        },
+        {
+          "analysis": "site:710",
+          "label": "710 / 710",
+          "report_label": "710 710",
+          "printed": [
+            "11",
+            "8",
+            "6",
+            "10",
+            "10",
+            "2",
+            "10",
+            "8",
+            "5",
+            "31",
+            "26",
+            "13"
+          ]
+        },
+        {
+          "analysis": "site:713",
+          "label": "713 / 713",
+          "report_label": "713 713",
+          "printed": [
+            "3",
+            "3",
+            "3",
+            "3",
+            "3",
+            "2",
+            "3",
+            "2",
+            "2",
+            "9",
+            "8",
+            "7"
+          ]
+        },
+        {
+          "analysis": "site:716",
+          "label": "716 / 716",
+          "report_label": "716 716",
+          "printed": [
+            "8",
+            "8",
+            "7",
+            "8",
+            "8",
+            "3",
+            "8",
+            "8",
+            "3",
+            "24",
+            "24",
+            "13"
+          ]
+        },
+        {
+          "analysis": "site:718",
+          "label": "718 / 718",
+          "report_label": "718 718",
+          "printed": [
+            "4",
+            "4",
+            "3",
+            "5",
+            "5",
+            "1",
+            "4",
+            "4",
+            "1",
+            "13",
+            "13",
+            "5"
+          ]
+        },
+        {
+          "analysis": "site:702",
+          "label": "900 / 702",
+          "report_label": "900 702",
+          "printed": [
+            "0",
+            "0",
+            "0",
+            "1",
+            "1",
+            "0",
+            "0",
+            "0",
+            "0",
+            "1",
+            "1",
+            "0"
+          ]
+        },
+        {
+          "analysis": "site:706",
+          "label": "900 / 706",
+          "report_label": "900 706",
+          "printed": [
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "0",
+            "1",
+            "1",
+            "0",
+            "3",
+            "3",
+            "1"
+          ]
+        },
+        {
+          "analysis": "site:707",
+          "label": "900 / 707",
+          "report_label": "900 707",
+          "printed": [
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "0",
+            "0",
+            "0",
+            "0",
+            "2",
+            "2",
+            "1"
+          ]
+        },
+        {
+          "analysis": "site:711",
+          "label": "900 / 711",
+          "report_label": "900 711",
+          "printed": [
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "0",
+            "2",
+            "1",
+            "0",
+            "4",
+            "3",
+            "1"
+          ]
+        },
+        {
+          "analysis": "site:714",
+          "label": "900 / 714",
+          "report_label": "900 714",
+          "printed": [
+            "2",
+            "2",
+            "2",
+            "2",
+            "2",
+            "1",
+            "2",
+            "2",
+            "1",
+            "6",
+            "6",
+            "4"
+          ]
+        },
+        {
+          "analysis": "site:715",
+          "label": "900 / 715",
+          "report_label": "900 715",
+          "printed": [
+            "3",
+            "2",
+            "2",
+            "3",
+            "3",
+            "1",
+            "2",
+            "2",
+            "0",
+            "8",
+            "7",
+            "3"
+          ]
+        },
+        {
+          "analysis": "site:717",
+          "label": "900 / 717",
+          "report_label": "900 717",
+          "printed": [
+            "2",
+            "2",
+            "0",
+            "2",
+            "2",
+            "2",
+            "3",
+            "3",
+            "3",
+            "7",
+            "7",
+            "5"
+          ]
+        },
+        {
+          "analysis": "total",
+          "label": "TOTAL",
+          "report_label": "TOTAL",
+          "printed": [
+            "86",
+            "79",
+            "60",
+            "84",
+            "81",
+            "28",
+            "84",
+            "74",
+            "30",
+            "254",
+            "234",
+            "118"
+          ]
+        }
+      ],
+      "p_columns": 0
     }
   }
 }

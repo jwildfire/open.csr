@@ -286,6 +286,8 @@ prep_adsl <- function(adsl, vitals = NULL) {
   adsl$AGEGR1 <- factor(as.character(adsl$AGEGR1), levels = c("18-64", ">64"))
   adsl$ETHNIC <- factor(as.character(adsl$ETHNIC))
   adsl$RACEOR <- race_origin(adsl$RACE, adsl$ETHNIC)
+  adsl$RACEW <- race_white_other(adsl$RACEOR)
+  adsl$SITEID <- factor(as.character(adsl$SITEID), levels = sort(unique(as.character(adsl$SITEID))))
   adsl <- merge_baseline_vitals(adsl, vitals)
   tibble::as_tibble(adsl)
 }
@@ -345,6 +347,10 @@ prep_adsl_phuse <- function(adsl) {
   adsl$BLHT <- as.numeric(adsl$HEIGHTBL)
   adsl$BLBMI <- as.numeric(adsl$BMIBL)
   adsl$RACEOR <- race_origin(adsl$RACE, adsl$ETHNIC)
+  adsl$RACEW <- race_white_other(adsl$RACEOR)
+  # Site as a factor over every site in the study, so a count of nobody at a
+  # site is a row saying 0 rather than a row that is not there (#63).
+  adsl$SITEID <- factor(as.character(adsl$SITEID), levels = sort(unique(as.character(adsl$SITEID))))
   adsl$TRT01A <- factor(as.character(adsl$TRT01A), levels = trt_levels())
   # Actual and planned agree for all 254 subjects in this study, unlike the
   # pharmaverseadam one where twelve differ. Carried anyway, and as a factor
@@ -388,6 +394,15 @@ race_origin <- function(race, ethnic) {
     )
   )
   factor(out, levels = c("Caucasian", "African Descent", "Hispanic", "Other"))
+}
+
+#' Race as the report's in-text Table 11-1 groups it: White/Caucasian against everyone else
+#' @noRd
+race_white_other <- function(raceor) {
+  factor(
+    ifelse(as.character(raceor) == "Caucasian", "White/Caucasian", "Other"),
+    levels = c("White/Caucasian", "Other")
+  )
 }
 
 #' Derivations applied to every non-ADSL PHUSE dataset (see [prepare_data()])
