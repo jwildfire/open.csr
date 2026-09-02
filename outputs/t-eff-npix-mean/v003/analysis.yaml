@@ -1,0 +1,71 @@
+id: t-eff-npix-mean
+title: "Mean NPI-X Total Score from Week 4 through Week 24 - Windowed"
+regulatory_id: EFT09
+type: table
+dataset: adqsnpix
+analysis_set: efficacy
+denominator: adsl
+sources: phuse
+group:
+  - TRTP
+total: false
+# Visits are selected by AVISITN, never by AVISIT. ADQSNPIX ships AVISIT
+# right-aligned into a 16-character field ("      Weeks 4-24"), so the obvious
+# `AVISIT == 'Weeks 4-24'` selects nothing at all while looking correct. AVISITN
+# carries the same fact as a number: 0 baseline, 2..26 the scheduled weeks, 98
+# the study's own derived Weeks 4-24 average.
+analyses:
+  - name: population
+    method: continuous
+    custom: population_n
+    label: "Subjects in the analysis population"
+    filter: "PARAMCD == 'NPTOT' & AVISITN == 0"
+
+  - name: baseline
+    method: continuous
+    label: "NPI-X (9) total score at baseline"
+    variables: [AVAL]
+    filter: "PARAMCD == 'NPTOT' & AVISITN == 0"
+
+  # The SAP defines this endpoint as "the mean of all available total scores
+  # between Weeks 4 and 24, inclusive" (section 10.2.1) — one number per
+  # subject, derived here rather than read from the study's own NPTOTMN
+  # parameter. See the display's source note for why.
+  - name: mean_4_24
+    method: continuous
+    custom: subject_mean
+    label: "Per-subject mean NPI-X (9) total score over Weeks 4 to 24"
+    variables: [AVAL]
+    filter: "PARAMCD == 'NPTOT' & ANL01FL == 'Y' & AVISITN >= 4 & AVISITN <= 24"
+    derive:
+      statistic: mean
+      value: AVAL
+      id: USUBJID
+      carry: [TRTPN, SITEGR1, BASE]
+
+  - name: ancova
+    method: continuous
+    custom: subject_mean_ancova
+    label: "ANCOVA of the per-subject mean over Weeks 4 to 24"
+    variables: [AVAL]
+    filter: "PARAMCD == 'NPTOT' & ANL01FL == 'Y' & AVISITN >= 4 & AVISITN <= 24"
+    derive:
+      statistic: mean
+      value: AVAL
+      id: USUBJID
+      carry: [TRTPN, SITEGR1, BASE]
+    response: AVAL
+    covariates: [BASE]
+    factors: [SITEGR1]
+    treatment: TRTP
+    treatment_levels: ["Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"]
+    dose: TRTPN
+    conf_level: 0.95
+    contrasts:
+      - { name: dose_response, type: dose, column: "Xanomeline High Dose" }
+      - { name: xan_vs_placebo, type: pairwise, test: "Xanomeline Low Dose",
+          reference: "Placebo", column: "Xanomeline Low Dose" }
+      - { name: xan_vs_placebo, type: pairwise, test: "Xanomeline High Dose",
+          reference: "Placebo", column: "Xanomeline High Dose" }
+      - { name: high_vs_low, type: pairwise, test: "Xanomeline High Dose",
+          reference: "Xanomeline Low Dose", column: "Xanomeline High Dose" }

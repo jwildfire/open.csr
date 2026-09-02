@@ -43,14 +43,15 @@ default_patterns <- function() {
 #' format_stat(8.5865, "sd")     # "8.59"
 #' format_stat(8.2e-14, "pval", list(pval = 4)) # "<0.0001"
 #' @export
-format_stat <- function(value, stat_name, digits = list(), proportions = proportion_stats()) {
+format_stat <- function(value, stat_name, digits = list(), proportions = proportion_stats(),
+                        sub_one = FALSE) {
   if (is.null(value) || length(value) == 0) {
     return(NA_character_)
   }
   if (length(value) > 1) {
     return(paste(
       vapply(value, format_stat, character(1),
-        stat_name = stat_name, digits = digits, proportions = proportions
+        stat_name = stat_name, digits = digits, proportions = proportions, sub_one = sub_one
       ),
       collapse = ", "
     ))
@@ -70,6 +71,14 @@ format_stat <- function(value, stat_name, digits = list(), proportions = proport
     if (!is.na(bound)) {
       return(bound)
     }
+  }
+  # `format: sub_one_pct: true` — a percentage shown to no decimals that is
+  # greater than zero but rounds to zero prints as "<1", the way the report's
+  # demographics table wrote "1 ( <1%)". Opt-in per display: the same report's
+  # end-of-study table prints "1 ( 0%)" for the same share, so neither
+  # convention can be the engine's.
+  if (sub_one && stat_name %in% proportions && d == 0L && value > 0 && round_half_up(value, 0L) == 0) {
+    return("<1")
   }
   formatC(round_half_up(value, d), format = "f", digits = d, big.mark = "")
 }
@@ -138,6 +147,13 @@ render_display <- function(ard, display_spec, variant = "post_text") {
     )
   }
   vcfg <- display_spec$variants[[variant]] %||% list()
+  # A variant may redraw the display: its own rows, columns or format, over the
+  # same ARD. The report's in-text tables (11-1, 12-1, 12-3, 12-4) are exactly
+  # that — another view of a Section 14 table's numbers — and a variant that
+  # only filters cannot draw them (#63).
+  if (!is.null(vcfg$rows)) display_spec$rows <- vcfg$rows
+  if (!is.null(vcfg$columns)) display_spec$columns <- vcfg$columns
+  if (!is.null(vcfg$format)) display_spec$format <- utils::modifyList(display_spec$format %||% list(), vcfg$format)
   patterns <- utils::modifyList(
     default_patterns(),
     display_spec$format[setdiff(names(display_spec$format), c("digits", "proportions"))]
@@ -185,17 +201,35 @@ print.opencsr_display <- function(x, ...) {
 #' @noRd
 display_columns <- function(rows, display_spec) {
   present <- unique(rows$group1_level[!is.na(rows$group1_level) & rows$group1 != "record"])
-  order <- as.character(display_spec$columns$order %||% character(0))
-  cols <- if (length(order)) order[order %in% present] else present
-  if (!length(cols)) cols <- present
-  counts <- vapply(cols, function(cl) {
-    cand <- rows$stat[rows$stat_name == "N" & !is.na(rows$group1_level) & rows$group1_level == cl]
+  declared <- display_spec$columns$order %||% list()
+  # An entry may be a bare group level, or an object `{label, group, analysis}`:
+  # the column prints `label`, reads the ARD at group level `group`, and — when
+  # `analysis` is set — reads that analysis rather than the row's. Twelve
+  # columns of arm × population on the subjects-by-site table are that (#63).
+  specs <- lapply(declared, function(d) {
+    if (is.list(d)) {
+      list(label = as.character(d$label %||% d$group), group = as.character(d$group), analysis = d$analysis %||% NA_character_, pattern = d$pattern %||% NA_character_)
+    } else {
+      list(label = as.character(d), group = as.character(d), analysis = NA_character_, pattern = NA_character_)
+    }
+  })
+  specs <- Filter(function(s) s$group %in% present, specs)
+  if (!length(specs)) specs <- lapply(present, function(p) list(label = p, group = p, analysis = NA_character_, pattern = NA_character_))
+  cols <- vapply(specs, function(s) s$label, character(1))
+  groups <- vapply(specs, function(s) s$group, character(1))
+  analyses <- vapply(specs, function(s) as.character(s$analysis), character(1))
+  col_pattern <- vapply(specs, function(s) as.character(s$pattern), character(1))
+  counts <- vapply(seq_along(specs), function(i) {
+    keep <- rows$stat_name == "N" & !is.na(rows$group1_level) & rows$group1_level == groups[i]
+    if (!is.na(analyses[i])) keep <- keep & rows$analysis == analyses[i]
+    cand <- rows$stat[keep]
     if (!length(cand)) {
       return(NA_real_)
     }
     suppressWarnings(max(unlist(cand), na.rm = TRUE))
   }, numeric(1))
-  list(levels = cols, n = counts)
+  names(counts) <- cols
+  list(levels = cols, n = counts, groups = groups, analyses = analyses, patterns = col_pattern)
 }
 
 # ---- row plan ---------------------------------------------------------------
@@ -226,7 +260,7 @@ expand_rows <- function(rows, display_spec, vcfg) {
       label = r$label %||% r$level %||% r$variable %||% r$analysis,
       analysis = r$analysis, variable = r$variable, variable_level = r$level,
       pattern = r$pattern %||% "n_pct", indent = r$indent %||% 0,
-      digits = r$digits, na_text = r$na_text
+      digits = r$digits, na_text = r$na_text, p_from = r$p_from
     )
   }
   out <- drop_empty_sections(out)
@@ -238,7 +272,7 @@ expand_rows <- function(rows, display_spec, vcfg) {
 plan_row <- function(label, analysis = NA_character_, variable = NA_character_,
                      variable_level = NA_character_, group2_level = NA_character_,
                      pattern = NA_character_, indent = 0, section = FALSE,
-                     digits = list(), na_text = NA_character_) {
+                     digits = list(), na_text = NA_character_, p_from = NA_character_) {
   out <- data.frame(
     label = label, analysis = analysis %||% NA_character_,
     variable = variable %||% NA_character_,
@@ -247,6 +281,11 @@ plan_row <- function(label, analysis = NA_character_, variable = NA_character_,
     pattern = pattern %||% NA_character_,
     indent = as.integer(indent), section = section,
     na_text = na_text %||% NA_character_,
+    # `p_from:` names a sibling analysis whose hypothesis-test rows fill this
+    # row's p-value column — the reference demographics table prints a
+    # sub-block's test beside its first level, and that level's counts come
+    # from a different analysis than the test does.
+    p_from = p_from %||% NA_character_,
     stringsAsFactors = FALSE
   )
   out$digits <- list(digits %||% list())
@@ -267,11 +306,14 @@ expand_levels <- function(rows, r, min_pct) {
     passes_threshold(cand[cand$variable_level == lv, , drop = FALSE], min_pct)
   }, logical(1))
   levs <- levs[keep]
+  # `level_labels: { F: Female, M: Male }` prints a level under the report's
+  # word for it; the ARD keeps the data's own level so bindings stay addressable.
+  labels <- r$level_labels %||% list()
   lapply(levs, function(lv) {
     plan_row(
-      label = paste0(lv), analysis = r$analysis, variable = r$variable,
+      label = as.character(labels[[lv]] %||% lv), analysis = r$analysis, variable = r$variable,
       variable_level = lv, pattern = r$pattern %||% "n_pct",
-      indent = r$indent %||% 1, digits = r$digits
+      indent = r$indent %||% 1, digits = r$digits, p_from = r$p_from
     )
   })
 }
@@ -289,30 +331,63 @@ expand_hierarchical <- function(rows, r, min_pct) {
   }
   outer_rows <- cand[cand$variable == hier[1], , drop = FALSE]
   inner_rows <- cand[cand$variable == hier[2], , drop = FALSE]
+  # `sort:` on the row plan. The default is descending subject count then name
+  # at both levels. `outer: alpha` orders the outer level by name alone;
+  # `inner: { by_group: "<arm label>" }` orders the inner level by that arm's
+  # subject count, descending, then name — which is how the 2006 report orders
+  # preferred terms within an organ class (#62).
+  srt <- r$sort %||% list()
+  # `by_group` keys on one arm's count; `by: sum` on the subjects summed across
+  # the arms (the serious-events program's order); otherwise the largest count
+  # in any one arm, which is total_n()'s definition.
+  key_n <- function(df, opts = NULL) {
+    if (!is.null(opts$by_group)) {
+      df <- df[!is.na(df$group1_level) & df$group1_level == opts$by_group, , drop = FALSE]
+    }
+    if (identical(opts$by, "sum")) {
+      v <- unlist(df$stat[df$stat_name == "n" & df$group1 != "statistic"])
+      return(if (length(v)) sum(v, na.rm = TRUE) else 0)
+    }
+    total_n(df)
+  }
   outers <- unique(outer_rows$variable_level)
-  outers <- outers[order(-vapply(outers, function(o) {
-    total_n(outer_rows[outer_rows$variable_level == o, , drop = FALSE])
-  }, numeric(1)), outers)]
+  outers <- if (identical(srt$outer, "alpha")) {
+    sort(outers)
+  } else {
+    outers[order(-vapply(outers, function(o) {
+      key_n(outer_rows[outer_rows$variable_level == o, , drop = FALSE], srt$outer)
+    }, numeric(1)), outers)]
+  }
 
   out <- list()
   for (o in outers) {
     inner_o <- inner_rows[!is.na(inner_rows$group2_level) & inner_rows$group2_level == o, , drop = FALSE]
     inners <- unique(inner_o$variable_level)
-    inners <- inners[order(-vapply(inners, function(p) {
-      total_n(inner_o[inner_o$variable_level == p, , drop = FALSE])
-    }, numeric(1)), inners)]
+    inners <- if (identical(srt$inner, "alpha")) {
+      sort(inners)
+    } else {
+      inners[order(-vapply(inners, function(p) {
+        key_n(inner_o[inner_o$variable_level == p, , drop = FALSE], srt$inner)
+      }, numeric(1)), inners)]
+    }
     inners <- inners[vapply(inners, function(p) {
       passes_threshold(inner_o[inner_o$variable_level == p, , drop = FALSE], min_pct)
     }, logical(1))]
     if (!length(inners)) next
-    out[[length(out) + 1]] <- plan_row(
-      label = o, analysis = r$analysis, variable = hier[1], variable_level = o,
-      pattern = r$pattern %||% "n_pct", indent = 0
-    )
+    # `inner_only: true` prints the inner level flat, without its outer heading,
+    # and `label_case: title` prints a term in title case — the shape of the
+    # report's in-text list of common events (#63).
+    label_of <- function(x) if (identical(r$label_case, "title")) tools::toTitleCase(tolower(x)) else x
+    if (!isTRUE(r$inner_only)) {
+      out[[length(out) + 1]] <- plan_row(
+        label = label_of(o), analysis = r$analysis, variable = hier[1], variable_level = o,
+        pattern = r$pattern %||% "n_pct", indent = 0
+      )
+    }
     for (p in inners) {
       out[[length(out) + 1]] <- plan_row(
-        label = p, analysis = r$analysis, variable = hier[2], variable_level = p,
-        group2_level = o, pattern = r$pattern %||% "n_pct", indent = 1
+        label = label_of(p), analysis = r$analysis, variable = hier[2], variable_level = p,
+        group2_level = o, pattern = r$pattern %||% "n_pct", indent = if (isTRUE(r$inner_only)) 0 else 1
       )
     }
   }
@@ -425,7 +500,11 @@ table_body <- function(rows, display_spec, vcfg, patterns, digits,
     if (isTRUE(plan$section[i])) next
     for (j in seq_along(cols$levels)) {
       pat <- col_patterns[[cols$levels[j]]] %||% plan$pattern[i]
-      cells[i, j] <- cell_value(rows, plan[i, ], cols$levels[j], patterns, digits, pat, proportions)
+      if (!is.na(cols$patterns[j])) pat <- cols$patterns[j]
+      this <- plan[i, ]
+      if (!is.null(col_patterns[[cols$levels[j]]]) && !is.na(this$p_from)) this$analysis <- this$p_from
+      if (!is.na(cols$analyses[j])) this$analysis <- cols$analyses[j]
+      cells[i, j] <- cell_value(rows, this, cols$groups[j], patterns, digits, pat, proportions)
     }
   }
   tbl <- tibble::tibble(label = indent_label(plan$label, plan$indent))
@@ -463,13 +542,26 @@ cell_value <- function(rows, plan_row, col_level, patterns, digits,
     return("")
   }
   digits <- utils::modifyList(as.list(digits), as.list(plan_row$digits[[1]] %||% list()))
+  # `format: zero_count: "0"` prints a count of nobody as the bare figure the
+  # report prints, rather than "0 (0%)": a percentage of nobody says nothing.
+  zero_pattern <- patterns[[pattern_name]] %||% pattern_name
+  if (!is.null(patterns$zero_count) && grepl("{n}", zero_pattern, fixed = TRUE)) {
+    n_hit <- sub$stat[sub$stat_name == "n"]
+    if (length(n_hit) && isTRUE(unlist(n_hit[[1]]) == 0)) {
+      return(as.character(patterns$zero_count))
+    }
+  }
   pattern <- patterns[[pattern_name]] %||% pattern_name
   needed <- regmatches(pattern, gregexpr("\\{[^}]+\\}", pattern))[[1]]
   out <- pattern
   for (tok in needed) {
     nm <- substr(tok, 2, nchar(tok) - 1)
     hit <- sub$stat[sub$stat_name == nm]
-    val <- if (length(hit)) format_stat(unlist(hit[[1]]), nm, digits, proportions) else NA_character_
+    val <- if (length(hit)) {
+      format_stat(unlist(hit[[1]]), nm, digits, proportions, sub_one = isTRUE(patterns$sub_one_pct))
+    } else {
+      NA_character_
+    }
     if (is.na(val)) {
       # A statistic that exists but is not estimable is not the same as a cell
       # with nothing behind it. `na_text:` lets the row say which it is — a

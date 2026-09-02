@@ -1,9 +1,9 @@
 {
   "display": "t-weight",
-  "version": "v001",
-  "updated": "2026-08-27T04:10:09Z",
-  "path": "outputs/t-weight/v001",
-  "ard": "outputs/t-weight/v001/ard.json",
-  "table": "outputs/t-weight/v001/table.html",
-  "variants": "post_text"
+  "version": "v004",
+  "updated": "2026-09-02T16:11:30Z",
+  "path": "outputs/t-weight/v004",
+  "ard": "outputs/t-weight/v004/ard.json",
+  "table": "outputs/t-weight/v004/table.html",
+  "variants": ["post_text", "in_text"]
 }

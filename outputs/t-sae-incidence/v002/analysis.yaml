@@ -1,0 +1,34 @@
+# ------------------------------------------------------------------------------
+# t-sae-incidence — Incidence of Treatment Emergent Serious Adverse Events by Treatment Group
+# ------------------------------------------------------------------------------
+# Target: Table 14-5.02 of the CDISCPILOT01 clinical study report (27 June 2006).
+# The same statistics and tests as t-ae-incidence, on the treatment-emergent
+# events flagged serious. The functions are t-ae-incidence's, sourced through
+# `custom_from`, so the two tables cannot drift apart in how they count.
+# ------------------------------------------------------------------------------
+id: t-sae-incidence
+title: "Incidence of Treatment Emergent Serious Adverse Events by Treatment Group"
+regulatory_id: AET04
+type: table
+dataset: adae
+analysis_set: safety
+denominator: adsl
+custom_from: t-ae-incidence
+group:
+  - TRT01A
+total: false
+analyses:
+  - name: any
+    method: subject_count
+    custom: ard_incidence_any
+    reference_arm: Placebo
+    label: "Any body system"
+    variable: AEDECOD
+    filter: "TRTEMFL == 'Y' & AESER == 'Y'"
+  - name: by_soc_pt
+    method: hierarchical_count
+    custom: ard_incidence_hierarchy
+    reference_arm: Placebo
+    label: "Serious adverse events by system organ class and preferred term"
+    hierarchy: [AEBODSYS, AEDECOD]
+    filter: "TRTEMFL == 'Y' & AESER == 'Y'"

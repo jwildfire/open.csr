@@ -1,0 +1,98 @@
+id: t-demographics
+title: "Summary of Demographic and Baseline Characteristics"
+study: CDISCPILOT01
+population_label: "Intent-to-Treat"
+cutoff: "2014-07-01"
+source: "Source: adsl (CDISCPILOT01 ADaM package, phuse-org/phuse-scripts). Data cut-off: 2014-07-01."
+footnotes:
+  - "[1] P-values are results of ANOVA treatment group comparison for continuous variables and Pearson's chi-square test for categorical variables, as the reference report (Table 14-2.01) states; each block carries one test across the three treatment groups."
+  - "Race (Origin) is the reference report's classification, with Hispanic as a category. The study's ADaM carries race and ethnicity separately (230 White, 23 Black or African American, 1 American Indian or Alaska Native; 12 Hispanic or Latino, all of them White by race). The recode is ethnicity first, then race: 218 Caucasian, 23 African Descent, 12 Hispanic, 1 Other. It is a coding convention, not a disagreement between the data and the report."
+  - "Duration of disease is DURDIS, months from onset of the first definite symptoms of Alzheimer's disease to enrolment, as the study's ADaM carries it. Years of education is EDUCLVL. MMSE is MMSETOT."
+  - "n is the number of subjects with a value; one subject on low dose has no baseline weight or BMI. Percentages are based on the number of subjects in the intent-to-treat population for each treatment group; the Total column pools the three groups. Treatment groups are planned treatment, TRT01P, which agrees with actual treatment for every subject in this study."
+columns:
+  order: [Placebo, "Xanomeline Low Dose", "Xanomeline High Dose", Total, "p-value"]
+  patterns:
+    "p-value": pvalue
+format:
+  pvalue: "{p_value_fmt}"
+  zero_count: "0"
+  digits:
+    p: 0
+    mean: 1
+    sd: 2
+    median: 1
+    min: 1
+    max: 1
+rows:
+  - { label: "Age (y)", section: true }
+  - { analysis: age_n, variable: AGE, pattern: "{N}", label: "n", indent: 1 }
+  - { analysis: age, variable: AGE, pattern: "{mean}", label: "Mean", indent: 1 }
+  - { analysis: age, variable: AGE, pattern: "{sd}", label: "SD", indent: 1 }
+  - { analysis: age, variable: AGE, pattern: median, label: "Median", indent: 1 }
+  - { analysis: age, variable: AGE, pattern: "{min}", label: "Min", indent: 1 }
+  - { analysis: age, variable: AGE, pattern: "{max}", label: "Max", indent: 1 }
+  - { analysis: agegr, variable: AGEGR1, levels: all, pattern: n_pct, indent: 1,
+      level_order: ["<65", "65-80", ">80"],
+      level_labels: { "<65": "<65 yrs", "65-80": "65-80 yrs", ">80": ">80 yrs" },
+      p_from: agegr_n }
+  - { label: "Sex", section: true }
+  - { analysis: sex_n, variable: SEX, pattern: "{N}", label: "n", indent: 1 }
+  - { analysis: sex, variable: SEX, levels: all, pattern: n_pct, indent: 1,
+      level_order: [M, F], level_labels: { M: Male, F: Female } }
+  - { label: "Race (Origin)", section: true }
+  - { analysis: raceor_n, variable: RACEOR, pattern: "{N}", label: "n", indent: 1 }
+  - { analysis: raceor, variable: RACEOR, levels: all, pattern: n_pct, indent: 1,
+      level_order: [Caucasian, "African Descent", Hispanic, Other] }
+  - { label: "MMSE", section: true }
+  - { analysis: mmse_n, variable: MMSETOT, pattern: "{N}", label: "n", indent: 1 }
+  - { analysis: mmse, variable: MMSETOT, pattern: "{mean}", label: "Mean", indent: 1 }
+  - { analysis: mmse, variable: MMSETOT, pattern: "{sd}", label: "SD", indent: 1 }
+  - { analysis: mmse, variable: MMSETOT, pattern: median, label: "Median", indent: 1 }
+  - { analysis: mmse, variable: MMSETOT, pattern: "{min}", label: "Min", indent: 1 }
+  - { analysis: mmse, variable: MMSETOT, pattern: "{max}", label: "Max", indent: 1 }
+  - { label: "Duration of disease", section: true }
+  - { analysis: durdis_n, variable: DURDIS, pattern: "{N}", label: "n", indent: 1 }
+  - { analysis: durdis, variable: DURDIS, pattern: "{mean}", label: "Mean", indent: 1 }
+  - { analysis: durdis, variable: DURDIS, pattern: "{sd}", label: "SD", indent: 1 }
+  - { analysis: durdis, variable: DURDIS, pattern: median, label: "Median", indent: 1 }
+  - { analysis: durdis, variable: DURDIS, pattern: "{min}", label: "Min", indent: 1 }
+  - { analysis: durdis, variable: DURDIS, pattern: "{max}", label: "Max", indent: 1 }
+  - { analysis: durdisgr, variable: DURDSGR1, levels: all, pattern: n_pct, indent: 1,
+      level_order: ["<12", ">=12"],
+      level_labels: { "<12": "<12 months", ">=12": ">=12 months" },
+      p_from: durdisgr_n }
+  - { label: "Years of education", section: true }
+  - { analysis: educ_n, variable: EDUCLVL, pattern: "{N}", label: "n", indent: 1 }
+  - { analysis: educ, variable: EDUCLVL, pattern: "{mean}", label: "Mean", indent: 1 }
+  - { analysis: educ, variable: EDUCLVL, pattern: "{sd}", label: "SD", indent: 1 }
+  - { analysis: educ, variable: EDUCLVL, pattern: median, label: "Median", indent: 1 }
+  - { analysis: educ, variable: EDUCLVL, pattern: "{min}", label: "Min", indent: 1 }
+  - { analysis: educ, variable: EDUCLVL, pattern: "{max}", label: "Max", indent: 1 }
+  - { label: "Baseline weight(kg)", section: true }
+  - { analysis: weight_n, variable: BLWT, pattern: "{N}", label: "n", indent: 1 }
+  - { analysis: weight, variable: BLWT, pattern: "{mean}", label: "Mean", indent: 1 }
+  - { analysis: weight, variable: BLWT, pattern: "{sd}", label: "SD", indent: 1 }
+  - { analysis: weight, variable: BLWT, pattern: median, label: "Median", indent: 1 }
+  - { analysis: weight, variable: BLWT, pattern: "{min}", label: "Min", indent: 1 }
+  - { analysis: weight, variable: BLWT, pattern: "{max}", label: "Max", indent: 1 }
+  - { label: "Baseline height(cm)", section: true }
+  - { analysis: height_n, variable: BLHT, pattern: "{N}", label: "n", indent: 1 }
+  - { analysis: height, variable: BLHT, pattern: "{mean}", label: "Mean", indent: 1 }
+  - { analysis: height, variable: BLHT, pattern: "{sd}", label: "SD", indent: 1 }
+  - { analysis: height, variable: BLHT, pattern: median, label: "Median", indent: 1 }
+  - { analysis: height, variable: BLHT, pattern: "{min}", label: "Min", indent: 1 }
+  - { analysis: height, variable: BLHT, pattern: "{max}", label: "Max", indent: 1 }
+  - { label: "Baseline BMI", section: true }
+  - { analysis: bmi_n, variable: BLBMI, pattern: "{N}", label: "n", indent: 1 }
+  - { analysis: bmi, variable: BLBMI, pattern: "{mean}", label: "Mean", indent: 1 }
+  - { analysis: bmi, variable: BLBMI, pattern: "{sd}", label: "SD", indent: 1 }
+  - { analysis: bmi, variable: BLBMI, pattern: median, label: "Median", indent: 1 }
+  - { analysis: bmi, variable: BLBMI, pattern: "{min}", label: "Min", indent: 1 }
+  - { analysis: bmi, variable: BLBMI, pattern: "{max}", label: "Max", indent: 1 }
+  - { analysis: bmigr, variable: BMIBLGR1, levels: all, pattern: n_pct, indent: 1,
+      level_order: ["<25", "25-<30", ">=30"],
+      p_from: bmigr_n }
+variants:
+  post_text: {}
+  in_text:
+    title: "Demographic Characteristics (Summary)"

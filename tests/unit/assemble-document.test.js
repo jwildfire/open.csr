@@ -23,9 +23,31 @@ describe('Assembled CSR document model', () => {
       expect(Array.isArray(doc[key]), key).toBe(true);
     }
     expect(doc.provenanceAppendix.section).toBe('16.1.9');
-    for (const key of ['structure', 'bindingResolution', 'numericFidelity', 'approval', 'crossReferences']) {
+    for (const key of ['structure', 'bindingResolution', 'numericFidelity', 'approval', 'crossReferences', 'treatmentConsistency']) {
       expect(doc.gates[key], key).toBeDefined();
     }
+  });
+
+  it('QC-LINK-002: the document records what it was built from — template, study, every placed display with its iteration and datasets, every block with its state and derived inputs, every value cited — and every block records the displays its bindings resolved against (#78)', () => {
+    expect(doc.inputs.template.id).toBe('ich-e3');
+    expect(doc.inputs.study).toMatchObject({ id: 'CDISCPILOT01', file: 'library/study.yaml' });
+    const placed = doc.displayIndex.filter((d) => d.variants.length).map((d) => d.slug).sort();
+    expect(doc.inputs.displays.map((d) => d.slug).sort()).toEqual(placed);
+    for (const display of doc.inputs.displays) {
+      if (display.source === 'outputs') expect(display.iteration).toMatch(/^v\d{3}$/);
+      expect(Array.isArray(display.datasets)).toBe(true);
+    }
+    expect(doc.inputs.datasets.length).toBeGreaterThan(0);
+    for (const dataset of doc.inputs.datasets) expect(dataset.readBy.length).toBeGreaterThan(0);
+    const blocks = doc.sections.flatMap((s) => s.blocks);
+    expect(doc.inputs.textBlocks.map((b) => b.id)).toEqual(blocks.map((b) => b.id));
+    for (const block of blocks) {
+      expect(Array.isArray(block.inputs.displays)).toBe(true);
+      for (const d of block.inputs.displays) expect(block.bindings.some((b) => b.display === d.slug)).toBe(true);
+    }
+    const s1101 = blocks.find((b) => b.id === 'TXT-E3-1101');
+    expect(s1101.inputs.displays.map((d) => d.slug).sort()).toEqual(['t-disposition', 't-populations']);
+    expect(doc.inputs.values.every((id) => doc.values.values.some((v) => v.id === id))).toBe(true);
   });
 
   it('RPT-OUT-002: the section list is flat, in document order, and every child names a parent that is present (#1)', () => {
@@ -47,17 +69,21 @@ describe('Assembled CSR document model', () => {
   });
 
   it('RPT-ASM-008: in-text displays land in narrative sections and post-text displays only under Section 14 (#1)', () => {
-    expect(section('10.1').displays.map((d) => d.slug)).toEqual(['t-disposition']);
+    // the disposition table and, since #63, the report's Figure 10-1 beside it
+    expect(section('10.1').displays.map((d) => d.slug)).toEqual(['t-disposition', 'f-disposition']);
     expect(section('12.2.1').displays.map((d) => d.slug)).toEqual(['t-ae-overview']);
     for (const s of doc.sections) {
       for (const d of s.displays) expect(d.variant).toBe('in_text');
       if (s.postText.length) expect(s.number.startsWith('14')).toBe(true);
       for (const d of s.postText) expect(d.variant).toBe('post_text');
     }
+    // exposure, the two FDA-standard AE tables, and the reference report's
+    // incidence table (#62), numbered in placement order
     expect(section('14.3.1').postText.map((d) => d.number)).toEqual([
       '14.3.1.1',
       '14.3.1.2',
       '14.3.1.3',
+      '14.3.1.4',
     ]);
   });
 
@@ -110,10 +136,9 @@ describe('Assembled CSR document model', () => {
     const packagings = new Set(
       provenance.displays.flatMap((d) => d.data.map((x) => x.source_pkg))
     );
-    expect([...packagings].sort()).toEqual([
-      'pharmaverseadam',
-      'phuse-org/phuse-scripts:data/adam',
-    ]);
+    // One study, one packaging (D0032 R2, #60): the alternate lane is measured
+    // by qc/source-agreement.R and read by nothing the document places.
+    expect([...packagings].sort()).toEqual(['phuse-org/phuse-scripts:data/adam']);
     expect(section('16.1.9').populated).toBe(true);
   });
 

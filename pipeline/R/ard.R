@@ -59,7 +59,12 @@ build_ard <- function(spec, data, custom_env = NULL) {
   }
   out <- do.call(rbind, pieces)
   out <- tibble::as_tibble(out)
-  out[, ard_row_cols()]
+  out <- out[, ard_row_cols()]
+  # Who this ARD is about, for the assembler's treatment-consistency gate: the
+  # analysis set and the distinct subjects per arm in the denominator. Carried as
+  # an attribute so regenerate() can write it into the provenance envelope.
+  attr(out, "population") <- ard_population(spec, denom, group)
+  out
 }
 
 #' Evaluate an analysis entry's `filter` expression

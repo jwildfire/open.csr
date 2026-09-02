@@ -24,14 +24,18 @@ test_that("TFL-IO-001: ard.json matches the owned schema, top to bottom (#1)", {
 test_that("TFL-IO-002: the provenance envelope is complete and machine-checkable (#1)", {
   doc <- read_ard(file.path(csr_root(), current_iteration("t-demographics")$ard))
   p <- doc$provenance
-  expect_setequal(names(p), c("spec_hash", "display_hash", "data", "environment", "git_commit"))
+  expect_setequal(names(p), c("spec_hash", "display_hash", "data", "environment", "git_commit", "population"))
+  # who the ARD is about, for the treatment-consistency gate (#59)
+  expect_setequal(names(p$population), c("analysis_set", "group", "n", "total"))
+  expect_identical(p$population$analysis_set, "itt")
+  expect_setequal(names(p$population$n), trt_levels())
   expect_match(p$spec_hash, "^sha256:[0-9a-f]{64}$")
   expect_match(p$display_hash, "^sha256:[0-9a-f]{64}$")
   expect_gt(length(p$data), 0)
   for (d in p$data) {
     expect_setequal(names(d), c("dataset", "hash", "n_row", "n_col", "source_pkg", "source_version"))
     expect_match(d$hash, "^sha256:[0-9a-f]{64}$")
-    expect_identical(d$source_pkg, "pharmaverseadam")
+    expect_identical(d$source_pkg, "phuse-org/phuse-scripts:data/adam")
   }
   expect_true(nzchar(p$environment$r))
   expect_true(!is.null(p$environment$packages$cards))

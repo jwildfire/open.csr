@@ -58,7 +58,7 @@ study:
   design: "Randomised, double-blind, placebo-controlled, parallel-group"
   treatment_groups: ["Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"]
   primary_analysis_set: "Safety Analysis Set"
-  data_source: "CDISCPILOT01 ADaM — pharmaverseadam for the safety spine, and the CDISC pilot's own package (phuse-org/phuse-scripts) for Section 14.2"
+  data_source: "CDISCPILOT01 ADaM — the CDISC pilot's own package (phuse-org/phuse-scripts, data/adam/cdiscpilot01), every display"
   scope_note: >-
     The abbreviated form of the clinical study report for this study: the same
     prose and the same displays, in a document model with the efficacy-analysis
@@ -93,7 +93,7 @@ slots:
 
   - section: "10.1"
     text: [TXT-E3-1001, TXT-E3-1002]
-    displays: [t-disposition]
+    displays: [t-disposition, f-disposition]
 
   - section: "11.1"
     text: [TXT-E3-1101]
@@ -113,6 +113,9 @@ slots:
   - section: "12.2.2"
     text: [TXT-E3-1222]
     displays: [t-ae-common]
+
+  - section: "12.2.3"
+    displays: [t-ae-incidence]
 
   - section: "12.2.4"
     text: [TXT-E3-1224]
@@ -141,7 +144,7 @@ post_text:
   # Whoever owns Section 14 as a whole should make that call once, not a worker
   # landing two tables.
   - section: "14.1"
-    displays: [t-disposition, t-demographics, t-populations, t-end-of-study]
+    displays: [t-disposition, t-demographics, t-populations, t-end-of-study, t-subjects-by-site, f-disposition]
 
   # Mirrors library/templates/ich-e3/assembly.yaml. Same displays, same order,
   # so both reports assign the same numbers and neither is re-specified.
@@ -170,7 +173,7 @@ post_text:
       - f-derm-time-to-event               # Figure 14-1
 
   - section: "14.3.1"
-    displays: [t-exposure, t-ae-overview, t-ae-common]
+    displays: [t-exposure, t-ae-overview, t-ae-common, t-ae-incidence]
 
   - section: "14.3.2"
-    displays: [l-ae-serious]
+    displays: [l-ae-serious, t-sae-incidence]

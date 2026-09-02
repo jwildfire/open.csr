@@ -1,0 +1,24 @@
+display: t-subjects-by-site
+iterations:
+- version: v001
+  created: '2026-09-02T16:10:26Z'
+  actor: '@obotclaw'
+  change_request: 'Table 14-1.03 of the reference report (D0032, #63): intent-to-treat,
+    efficacy and Week 24 completer counts per site and arm, small sites pooled under
+    900, twelve columns of arm by population.'
+  git_commit: ''
+  spec_hash: sha256:9b145f6fe1f753e6a3729e757993d5ec669b342acacc0113077a63e9c112b56f
+  display_hash: sha256:3087fc570f550d7fdbfd30ed702860c09478358c9e310a12b02f9cbab1676108
+  ard_hash: sha256:77ce98179257dfdd0cb562eec2b9b3324ba2887e3d0ad5fc9e42631302839911
+  ard_rows: 600
+- version: v002
+  created: '2026-09-02T16:15:18Z'
+  actor: '@obotclaw'
+  change_request: Site carried as a factor over every site, so a site with no subjects
+    in a population prints 0 rather than nothing.
+  git_commit: ''
+  spec_hash: sha256:9b145f6fe1f753e6a3729e757993d5ec669b342acacc0113077a63e9c112b56f
+  display_hash: sha256:3087fc570f550d7fdbfd30ed702860c09478358c9e310a12b02f9cbab1676108
+  ard_hash: sha256:6887f57cfc4987e81823c8de7a4d6a2e452ea55848294db90f1997ccdf0d9747
+  ard_rows: 612
+

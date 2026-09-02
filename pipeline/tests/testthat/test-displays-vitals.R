@@ -3,7 +3,8 @@
 # These tests are the in-suite half of the qualification of `t-vitals`,
 # `t-vitals-change`, `t-weight` and `t-conmeds`. The standalone half is
 # `qc/vitals-conmeds-agreement.R`, which recomputes every publishable statistic in
-# the four committed ARDs from the raw {pharmaverseadam} datasets and compares
+# the four committed ARDs from the vendored CDISCPILOT01 ADSL and ADVS (and
+# {pharmaverseadam}'s ADCM) and compares
 # both against the sponsor's 2006 clinical study report. The two halves check
 # different things on purpose:
 #
@@ -27,8 +28,8 @@ vwc_ref <- function() {
 
 vwc_adsl <- function() {
   memo("vwc_adsl", {
-    d <- pharmaverseadam::adsl
-    d[d$ARM != "Screen Failure" & !is.na(d$SAFFL) & d$SAFFL == "Y", , drop = FALSE]
+    d <- ref_phuse_xpt("adsl")
+    d[blank_na(d$SAFFL) == "Y", , drop = FALSE]
   })
 }
 
@@ -37,9 +38,10 @@ vwc_adsl <- function() {
 vwc_advs <- function() {
   memo("vwc_advs", {
     ids <- vwc_adsl()$USUBJID
-    d <- pharmaverseadam::advs
-    d <- d[d$USUBJID %in% ids & is.na(d$DTYPE) & !is.na(d$AVAL), , drop = FALSE]
-    d$POS <- ifelse(is.na(d$ATPT), "-", as.character(d$ATPT))
+    d <- ref_phuse_xpt("advs")
+    # the pilot's ADVS has no derived records (and so no DTYPE column)
+    d <- d[d$USUBJID %in% ids & !is.na(d$AVAL), , drop = FALSE]
+    d$POS <- ifelse(is.na(d$ATPT) | !nzchar(as.character(d$ATPT)), "-", as.character(d$ATPT))
     d$SERIES <- paste(d$USUBJID, d$PARAMCD, d$POS, sep = "~")
     bl <- d[!is.na(d$AVISIT) & d$AVISIT == "Baseline", c("SERIES", "AVAL")]
     d$BASELINE <- bl$AVAL[match(d$SERIES, bl$SERIES)]
@@ -166,7 +168,8 @@ test_that("DSP-VS-002: baseline and end of treatment select one record per subje
   eot <- d[d$LAST, , drop = FALSE]
   # Inside the analysis plan's treatment period, and no unscheduled or derived record.
   expect_true(all(eot$AVISITN > 0 & eot$AVISITN <= 24))
-  expect_true(all(is.na(eot$DTYPE)))
+  # the pilot's ADVS carries no DTYPE column at all; the alternate's is all missing here
+  expect_true(!"DTYPE" %in% names(eot) || all(is.na(eot$DTYPE)))
   # It really is each series' last visit inside that period.
   win <- d[!is.na(d$AVISITN) & d$AVISITN > 0 & d$AVISITN <= 24, , drop = FALSE]
   latest <- vapply(split(win$AVISITN, win$SERIES), max, numeric(1))
@@ -331,10 +334,15 @@ test_that("DSP-VWC-001: all four displays group by planned treatment over the sa
   adsl <- vwc_adsl()
   planned <- vapply(vwc_arms(), function(a) sum(as.character(adsl$TRT01P) == a), numeric(1))
   actual <- vapply(vwc_arms(), function(a) sum(as.character(adsl$TRT01A) == a), numeric(1))
-  # The departure from the rest of the library is real, not cosmetic: twelve
-  # subjects received a treatment other than the one planned.
-  expect_false(identical(planned, actual))
-  expect_equal(sum(as.character(adsl$TRT01P) != as.character(adsl$TRT01A)), 12)
+  # Grouping by planned treatment was a real departure when the library read
+  # the pharmaverse re-derivation, where twelve subjects sit on a different
+  # actual arm; on the study's own package planned and actual agree for every
+  # subject (#60). Both facts are asserted so the choice stays visible.
+  expect_identical(planned, actual)
+  expect_equal(sum(as.character(adsl$TRT01P) != as.character(adsl$TRT01A)), 0)
+  pv <- pharmaverseadam::adsl
+  pv <- pv[pv$ARM != "Screen Failure", ]
+  expect_equal(sum(as.character(pv$TRT01P) != as.character(pv$TRT01A)), 12)
 
   for (slug in c("t-vitals", "t-vitals-change", "t-weight", "t-conmeds")) {
     spec <- read_analysis_spec(slug)

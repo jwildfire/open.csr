@@ -21,6 +21,13 @@
     "RPT-ARD-001": "Every display in the assembly resolves to a real ARD — the pipeline output pointed at by `outputs/<slug>/current.json` where one exists, a committed fixture otherwise — and the assembled document records which, so a report built from fixtures can never be mistaken for one built from a pipeline run.",
     "RPT-PROV-001": "Section 16.1.9 is generated from the provenance envelope of every ARD in the report: specification and display hashes, input dataset hashes with row counts and source package versions, the R and package versions, and the source commit. It is generated, never authored.",
     "RPT-OUT-001": "`assemble()` emits `docs/assembled/csr.json` in the documented `opencsr/csr/v1` shape: study, template, flat sections, display index, text blocks, provenance appendix and gate report.",
+    "STD-MODEL-001": "`library/study.yaml` loads with the study's arms in print order and every analysis set counted per arm; the default data source is the pilot's own package.",
+    "STD-MODEL-002": "An assembly that declares `study.treatment_groups` or `study.id` declares the model's arms in the model's order and the model's id; two files may not spell the study.",
+    "STD-GATE-001": "A placed display whose per-arm counts differ from the study model's for its analysis set fails the treatment-consistency gate, and the error names the display, the arm and both numbers.",
+    "STD-GATE-002": "Two placed displays reporting the same analysis set with different per-arm counts fail the gate with one error naming both, even when one of them agrees with the model.",
+    "STD-GATE-003": "A placed display with no population record is a warning that names it and says it is not gated; one with no arm grouping is warned and not counted as checked. Neither is a silent pass.",
+    "STD-GATE-004": "A population record naming an analysis set the model does not declare is an error, not a skipped check.",
+    "STD-GATE-005": "The committed clinical study report assembles green on the gate: every placed table and figure is gated by arm, every placed display read the pilot's own package, and no display is warned as ungated.",
     "RPT-OUT-002": "The section list is flat and in document order, and every section that names a parent names one that is present — the site builder can nest it without a second pass.",
     "RPT-OUT-003": "A build with any structural error, unresolved binding, unresolved cross-reference or numeric-fidelity violation reports `ok: false` and exits non-zero; the shipped configuration builds clean.",
     "RPT-OUT-004": "The assembled document contains the full E3 skeleton, with sections the demonstration does not fill marked unpopulated rather than dropped — the numbering is what makes the artifact recognisable as a CSR.",
@@ -224,6 +231,69 @@
       "id": "RPT-OUT-001",
       "area": "",
       "text": "`assemble()` emits `docs/assembled/csr.json` in the documented `opencsr/csr/v1` shape: study, template, flat sections, display index, text blocks, provenance appendix and gate report.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "STD-MODEL-001",
+      "area": "",
+      "text": "`library/study.yaml` loads with the study's arms in print order and every analysis set counted per arm; the default data source is the pilot's own package.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "STD-MODEL-002",
+      "area": "",
+      "text": "An assembly that declares `study.treatment_groups` or `study.id` declares the model's arms in the model's order and the model's id; two files may not spell the study.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "STD-GATE-001",
+      "area": "",
+      "text": "A placed display whose per-arm counts differ from the study model's for its analysis set fails the treatment-consistency gate, and the error names the display, the arm and both numbers.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "STD-GATE-002",
+      "area": "",
+      "text": "Two placed displays reporting the same analysis set with different per-arm counts fail the gate with one error naming both, even when one of them agrees with the model.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "STD-GATE-003",
+      "area": "",
+      "text": "A placed display with no population record is a warning that names it and says it is not gated; one with no arm grouping is warned and not counted as checked. Neither is a silent pass.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "STD-GATE-004",
+      "area": "",
+      "text": "A population record naming an analysis set the model does not declare is an error, not a skipped check.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "STD-GATE-005",
+      "area": "",
+      "text": "The committed clinical study report assembles green on the gate: every placed table and figure is gated by arm, every placed display read the pilot's own package, and no display is warned as ungated.",
       "source": "",
       "evidence": "",
       "link": "",

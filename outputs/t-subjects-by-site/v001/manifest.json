@@ -1,0 +1,55 @@
+{
+  "display": "t-subjects-by-site",
+  "version": "v001",
+  "created": "2026-09-02T16:10:26Z",
+  "actor": "@obotclaw",
+  "change_request": "Table 14-1.03 of the reference report (D0032, #63): intent-to-treat, efficacy and Week 24 completer counts per site and arm, small sites pooled under 900, twelve columns of arm by population.",
+  "regulatory_id": "DST04",
+  "git_commit": null,
+  "spec_hash": "sha256:9b145f6fe1f753e6a3729e757993d5ec669b342acacc0113077a63e9c112b56f",
+  "display_hash": "sha256:3087fc570f550d7fdbfd30ed702860c09478358c9e310a12b02f9cbab1676108",
+  "ard_hash": "sha256:77ce98179257dfdd0cb562eec2b9b3324ba2887e3d0ad5fc9e42631302839911",
+  "ard_rows": 600,
+  "ard_warnings": 0,
+  "ard_errors": 0,
+  "datasets": "adsl",
+  "data": [
+    {
+      "dataset": "adsl",
+      "hash": "sha256:b022f78fdd0ade028f6c4e9e7cc5187284a5249f30c16646931a1856d5fff2f6",
+      "n_row": 254,
+      "n_col": 55,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    }
+  ],
+  "environment": {
+    "r": "4.3.3",
+    "os": "Darwin 23.6.0",
+    "packages": {
+      "cards": "0.6.1",
+      "cardx": "0.2.5",
+      "gtsummary": "2.3.0",
+      "gt": "1.0.0",
+      "dplyr": "1.1.4",
+      "pharmaverseadam": "1.1.0",
+      "jsonlite": "2.0.0",
+      "yaml": "2.3.10",
+      "digest": "0.6.37"
+    }
+  },
+  "variants": {
+    "post_text": {
+      "file": "table.html",
+      "rtf": "table.rtf",
+      "rtf_hash": "sha256:486dd0a60bff955ae8b01950d5406b9717d4bcb83d3bba3e36e136fdf50eb1c1",
+      "n_rows": 18
+    },
+    "in_text": {
+      "file": "table-in-text.html",
+      "rtf": "table-in-text.rtf",
+      "rtf_hash": "sha256:6acff4eddb13668dd534394fcbeac542f30e94ad7fb29717b73b707cba0df252",
+      "n_rows": 18
+    }
+  }
+}

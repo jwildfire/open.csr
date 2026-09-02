@@ -1,0 +1,55 @@
+{
+  "display": "t-populations",
+  "version": "v003",
+  "created": "2026-09-02T15:23:26Z",
+  "actor": "@obotclaw",
+  "change_request": "One study (D0032 R2, #59): regenerated so the ARD carries its population record for the treatment-consistency gate. Spec and lane unchanged; every statistic identical.",
+  "regulatory_id": "DST02",
+  "git_commit": null,
+  "spec_hash": "sha256:c8dbaff2d4a4cad9b25ac1dcad574d029394f9730e76116bd44b52f60af38414",
+  "display_hash": "sha256:9ac815d290f719b956f05fbc8d2353a3d49e676edd6ddb6daedc7481524cccd0",
+  "ard_hash": "sha256:a78a73c17c1a5ae078f0fdf5a098aac06805bf9387675d823a8b849dce24fb2c",
+  "ard_rows": 60,
+  "ard_warnings": 0,
+  "ard_errors": 0,
+  "datasets": "adsl",
+  "data": [
+    {
+      "dataset": "adsl",
+      "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+      "n_row": 254,
+      "n_col": 53,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    }
+  ],
+  "environment": {
+    "r": "4.3.3",
+    "os": "Darwin 23.6.0",
+    "packages": {
+      "cards": "0.6.1",
+      "cardx": "0.2.5",
+      "gtsummary": "2.3.0",
+      "gt": "1.0.0",
+      "dplyr": "1.1.4",
+      "pharmaverseadam": "1.1.0",
+      "jsonlite": "2.0.0",
+      "yaml": "2.3.10",
+      "digest": "0.6.37"
+    }
+  },
+  "variants": {
+    "post_text": {
+      "file": "table.html",
+      "rtf": "table.rtf",
+      "rtf_hash": "sha256:7f11a39a81c39752435690726f522b4d7a64a732d2888ccdc9ab1653d5d46341",
+      "n_rows": 5
+    },
+    "in_text": {
+      "file": "table-in-text.html",
+      "rtf": "table-in-text.rtf",
+      "rtf_hash": "sha256:06cd8f885e57220460f194bd3c569ab6fe203c42eb90897c3d3d9c0e2bfa6c60",
+      "n_rows": 5
+    }
+  }
+}

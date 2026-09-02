@@ -1,0 +1,202 @@
+# ------------------------------------------------------------------------------
+# t-vitals — Summary of Vital Signs at Baseline and End of Treatment
+# ------------------------------------------------------------------------------
+# Target: Table 14-7.01 of the CDISCPILOT01 clinical study report (27 June 2006).
+#
+# Twenty-seven summaries: three measures (systolic and diastolic blood pressure,
+# pulse) x three positions x three time points. Each is its own `analyses` entry
+# because v0 supports one grouping variable, which the treatment column uses;
+# measure, position and visit are therefore selection, not grouping, and each
+# combination gets an addressable name of its own (`sbp_lying_bl`, ...).
+#
+# The reference table puts treatment in the rows and n / Mean / SD / Median /
+# Min / Max in the columns. This one transposes that: treatment is the column, as
+# it is everywhere else in this library, and the six statistics become four rows
+# under a Measure -> Position -> Visit heading stack. The statistics are the same
+# statistics; only the axis they are laid out on differs.
+#
+# Temperature, height, BMI, body surface area and mean arterial pressure are
+# collected in ADVS and are NOT summarised here: the reference report's vital
+# signs display covers blood pressure and pulse only, and Section 12.5 of its
+# narrative says so.
+# ------------------------------------------------------------------------------
+id: t-vitals
+title: "Summary of Vital Signs at Baseline and End of Treatment"
+regulatory_id: VST01
+type: table
+dataset: advs
+analysis_set: safety
+denominator: adsl
+group:
+  - TRT01P
+total: false
+analyses:
+  # Supplies the column denominators (N = subjects in the safety analysis set).
+  # Every other analysis here reports n, the number of subjects contributing a
+  # measurement at that visit, which is smaller and means something different.
+  - name: population
+    method: subject_count
+    label: "Subjects in the safety analysis set"
+    variable: POPFL
+
+  - name: sbp_lying_bl
+    method: continuous
+    label: "Systolic Blood Pressure (mmHg) — After lying down for 5 minutes — Baseline"
+    variables: [AVAL]
+    filter: 'PARAMCD == "SYSBP" & ATPT == "AFTER LYING DOWN FOR 5 MINUTES" & AVISIT == "Baseline" & is.na(DTYPE) & !is.na(AVAL)'
+
+  - name: sbp_lying_wk24
+    method: continuous
+    label: "Systolic Blood Pressure (mmHg) — After lying down for 5 minutes — Week 24"
+    variables: [AVAL]
+    filter: 'PARAMCD == "SYSBP" & ATPT == "AFTER LYING DOWN FOR 5 MINUTES" & AVISIT == "Week 24" & is.na(DTYPE) & !is.na(AVAL)'
+
+  - name: sbp_lying_eot
+    method: continuous
+    label: "Systolic Blood Pressure (mmHg) — After lying down for 5 minutes — End of treatment"
+    variables: [AVAL]
+    filter: 'PARAMCD == "SYSBP" & ATPT == "AFTER LYING DOWN FOR 5 MINUTES" & EOTFL == "Y" & !is.na(AVAL)'
+
+  - name: sbp_stand1_bl
+    method: continuous
+    label: "Systolic Blood Pressure (mmHg) — After standing for 1 minute — Baseline"
+    variables: [AVAL]
+    filter: 'PARAMCD == "SYSBP" & ATPT == "AFTER STANDING FOR 1 MINUTE" & AVISIT == "Baseline" & is.na(DTYPE) & !is.na(AVAL)'
+
+  - name: sbp_stand1_wk24
+    method: continuous
+    label: "Systolic Blood Pressure (mmHg) — After standing for 1 minute — Week 24"
+    variables: [AVAL]
+    filter: 'PARAMCD == "SYSBP" & ATPT == "AFTER STANDING FOR 1 MINUTE" & AVISIT == "Week 24" & is.na(DTYPE) & !is.na(AVAL)'
+
+  - name: sbp_stand1_eot
+    method: continuous
+    label: "Systolic Blood Pressure (mmHg) — After standing for 1 minute — End of treatment"
+    variables: [AVAL]
+    filter: 'PARAMCD == "SYSBP" & ATPT == "AFTER STANDING FOR 1 MINUTE" & EOTFL == "Y" & !is.na(AVAL)'
+
+  - name: sbp_stand3_bl
+    method: continuous
+    label: "Systolic Blood Pressure (mmHg) — After standing for 3 minutes — Baseline"
+    variables: [AVAL]
+    filter: 'PARAMCD == "SYSBP" & ATPT == "AFTER STANDING FOR 3 MINUTES" & AVISIT == "Baseline" & is.na(DTYPE) & !is.na(AVAL)'
+
+  - name: sbp_stand3_wk24
+    method: continuous
+    label: "Systolic Blood Pressure (mmHg) — After standing for 3 minutes — Week 24"
+    variables: [AVAL]
+    filter: 'PARAMCD == "SYSBP" & ATPT == "AFTER STANDING FOR 3 MINUTES" & AVISIT == "Week 24" & is.na(DTYPE) & !is.na(AVAL)'
+
+  - name: sbp_stand3_eot
+    method: continuous
+    label: "Systolic Blood Pressure (mmHg) — After standing for 3 minutes — End of treatment"
+    variables: [AVAL]
+    filter: 'PARAMCD == "SYSBP" & ATPT == "AFTER STANDING FOR 3 MINUTES" & EOTFL == "Y" & !is.na(AVAL)'
+
+  - name: dbp_lying_bl
+    method: continuous
+    label: "Diastolic Blood Pressure (mmHg) — After lying down for 5 minutes — Baseline"
+    variables: [AVAL]
+    filter: 'PARAMCD == "DIABP" & ATPT == "AFTER LYING DOWN FOR 5 MINUTES" & AVISIT == "Baseline" & is.na(DTYPE) & !is.na(AVAL)'
+
+  - name: dbp_lying_wk24
+    method: continuous
+    label: "Diastolic Blood Pressure (mmHg) — After lying down for 5 minutes — Week 24"
+    variables: [AVAL]
+    filter: 'PARAMCD == "DIABP" & ATPT == "AFTER LYING DOWN FOR 5 MINUTES" & AVISIT == "Week 24" & is.na(DTYPE) & !is.na(AVAL)'
+
+  - name: dbp_lying_eot
+    method: continuous
+    label: "Diastolic Blood Pressure (mmHg) — After lying down for 5 minutes — End of treatment"
+    variables: [AVAL]
+    filter: 'PARAMCD == "DIABP" & ATPT == "AFTER LYING DOWN FOR 5 MINUTES" & EOTFL == "Y" & !is.na(AVAL)'
+
+  - name: dbp_stand1_bl
+    method: continuous
+    label: "Diastolic Blood Pressure (mmHg) — After standing for 1 minute — Baseline"
+    variables: [AVAL]
+    filter: 'PARAMCD == "DIABP" & ATPT == "AFTER STANDING FOR 1 MINUTE" & AVISIT == "Baseline" & is.na(DTYPE) & !is.na(AVAL)'
+
+  - name: dbp_stand1_wk24
+    method: continuous
+    label: "Diastolic Blood Pressure (mmHg) — After standing for 1 minute — Week 24"
+    variables: [AVAL]
+    filter: 'PARAMCD == "DIABP" & ATPT == "AFTER STANDING FOR 1 MINUTE" & AVISIT == "Week 24" & is.na(DTYPE) & !is.na(AVAL)'
+
+  - name: dbp_stand1_eot
+    method: continuous
+    label: "Diastolic Blood Pressure (mmHg) — After standing for 1 minute — End of treatment"
+    variables: [AVAL]
+    filter: 'PARAMCD == "DIABP" & ATPT == "AFTER STANDING FOR 1 MINUTE" & EOTFL == "Y" & !is.na(AVAL)'
+
+  - name: dbp_stand3_bl
+    method: continuous
+    label: "Diastolic Blood Pressure (mmHg) — After standing for 3 minutes — Baseline"
+    variables: [AVAL]
+    filter: 'PARAMCD == "DIABP" & ATPT == "AFTER STANDING FOR 3 MINUTES" & AVISIT == "Baseline" & is.na(DTYPE) & !is.na(AVAL)'
+
+  - name: dbp_stand3_wk24
+    method: continuous
+    label: "Diastolic Blood Pressure (mmHg) — After standing for 3 minutes — Week 24"
+    variables: [AVAL]
+    filter: 'PARAMCD == "DIABP" & ATPT == "AFTER STANDING FOR 3 MINUTES" & AVISIT == "Week 24" & is.na(DTYPE) & !is.na(AVAL)'
+
+  - name: dbp_stand3_eot
+    method: continuous
+    label: "Diastolic Blood Pressure (mmHg) — After standing for 3 minutes — End of treatment"
+    variables: [AVAL]
+    filter: 'PARAMCD == "DIABP" & ATPT == "AFTER STANDING FOR 3 MINUTES" & EOTFL == "Y" & !is.na(AVAL)'
+
+  - name: pulse_lying_bl
+    method: continuous
+    label: "Pulse (beats/min) — After lying down for 5 minutes — Baseline"
+    variables: [AVAL]
+    filter: 'PARAMCD == "PULSE" & ATPT == "AFTER LYING DOWN FOR 5 MINUTES" & AVISIT == "Baseline" & is.na(DTYPE) & !is.na(AVAL)'
+
+  - name: pulse_lying_wk24
+    method: continuous
+    label: "Pulse (beats/min) — After lying down for 5 minutes — Week 24"
+    variables: [AVAL]
+    filter: 'PARAMCD == "PULSE" & ATPT == "AFTER LYING DOWN FOR 5 MINUTES" & AVISIT == "Week 24" & is.na(DTYPE) & !is.na(AVAL)'
+
+  - name: pulse_lying_eot
+    method: continuous
+    label: "Pulse (beats/min) — After lying down for 5 minutes — End of treatment"
+    variables: [AVAL]
+    filter: 'PARAMCD == "PULSE" & ATPT == "AFTER LYING DOWN FOR 5 MINUTES" & EOTFL == "Y" & !is.na(AVAL)'
+
+  - name: pulse_stand1_bl
+    method: continuous
+    label: "Pulse (beats/min) — After standing for 1 minute — Baseline"
+    variables: [AVAL]
+    filter: 'PARAMCD == "PULSE" & ATPT == "AFTER STANDING FOR 1 MINUTE" & AVISIT == "Baseline" & is.na(DTYPE) & !is.na(AVAL)'
+
+  - name: pulse_stand1_wk24
+    method: continuous
+    label: "Pulse (beats/min) — After standing for 1 minute — Week 24"
+    variables: [AVAL]
+    filter: 'PARAMCD == "PULSE" & ATPT == "AFTER STANDING FOR 1 MINUTE" & AVISIT == "Week 24" & is.na(DTYPE) & !is.na(AVAL)'
+
+  - name: pulse_stand1_eot
+    method: continuous
+    label: "Pulse (beats/min) — After standing for 1 minute — End of treatment"
+    variables: [AVAL]
+    filter: 'PARAMCD == "PULSE" & ATPT == "AFTER STANDING FOR 1 MINUTE" & EOTFL == "Y" & !is.na(AVAL)'
+
+  - name: pulse_stand3_bl
+    method: continuous
+    label: "Pulse (beats/min) — After standing for 3 minutes — Baseline"
+    variables: [AVAL]
+    filter: 'PARAMCD == "PULSE" & ATPT == "AFTER STANDING FOR 3 MINUTES" & AVISIT == "Baseline" & is.na(DTYPE) & !is.na(AVAL)'
+
+  - name: pulse_stand3_wk24
+    method: continuous
+    label: "Pulse (beats/min) — After standing for 3 minutes — Week 24"
+    variables: [AVAL]
+    filter: 'PARAMCD == "PULSE" & ATPT == "AFTER STANDING FOR 3 MINUTES" & AVISIT == "Week 24" & is.na(DTYPE) & !is.na(AVAL)'
+
+  - name: pulse_stand3_eot
+    method: continuous
+    label: "Pulse (beats/min) — After standing for 3 minutes — End of treatment"
+    variables: [AVAL]
+    filter: 'PARAMCD == "PULSE" & ATPT == "AFTER STANDING FOR 3 MINUTES" & EOTFL == "Y" & !is.na(AVAL)'

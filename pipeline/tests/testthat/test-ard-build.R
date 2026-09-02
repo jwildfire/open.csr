@@ -1,6 +1,6 @@
 test_that("TFL-ARD-001: build_ard returns one row per computed statistic, tagged with its analysis (#1)", {
   spec <- read_analysis_spec("t-demographics")
-  rows <- build_ard(spec, fixture_data())
+  rows <- build_ard(spec, fixture_data(), display_dir("t-demographics"))
   expect_true(all(ard_row_cols() %in% names(rows)))
   expect_setequal(unique(rows$analysis), names(spec$analyses))
   # every row is one statistic
@@ -15,7 +15,7 @@ test_that("TFL-ARD-001: build_ard returns one row per computed statistic, tagged
 })
 
 test_that("TFL-ARD-001: continuous statistics equal a direct dplyr computation (#1)", {
-  rows <- build_ard(read_analysis_spec("t-demographics"), fixture_data())
+  rows <- build_ard(read_analysis_spec("t-demographics"), fixture_data(), display_dir("t-demographics"))
   ref <- ref_adsl()
   for (arm in c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose")) {
     age <- ref$AGE[ref$TRT01A == arm]
@@ -114,14 +114,16 @@ test_that("TFL-ARD-006: an analysis may dispatch to a function in custom.R (#1)"
 
 test_that("TFL-ARD-007: an analysis filter restricts the records it summarises (#1)", {
   rows <- build_ard(read_analysis_spec("t-exposure"), fixture_data())
-  dur <- ref_adex()[ref_adex()$PARAMCD == "TDURD" & ref_adex()$TRT01A == "Placebo", ]
-  expect_equal(ard_binding(rows, "duration:N;group=Placebo"), nrow(dur))
-  expect_equal(ard_binding(rows, "duration:mean;group=Placebo"), mean(dur$AVAL))
+  ref <- ref_adsl()
+  comp <- ref[ref$TRT01A == "Placebo" & blank_na(ref$COMP24FL) == "Y", ]
+  expect_equal(ard_binding(rows, "avg_daily_dose_comp:N;group=Placebo"), nrow(comp))
+  expect_equal(ard_binding(rows, "total_dose_comp:mean;group=Placebo"), mean(comp$CUMDOSE))
+  expect_equal(ard_binding(rows, "total_dose:N;group=Placebo"), sum(ref$TRT01A == "Placebo"))
   # a filter that does not yield one logical per row is rejected
   spec <- read_analysis_spec("t-exposure")
-  spec$analyses[[1]]$filter <- "PARAMCD"
+  spec$analyses[[3]]$filter <- "AVGDD"
   expect_error(build_ard(spec, fixture_data()), "one logical per row")
-  spec$analyses[[1]]$filter <- "NOSUCHVAR == 1"
+  spec$analyses[[3]]$filter <- "NOSUCHVAR == 1"
   expect_error(build_ard(spec, fixture_data()), "could not evaluate filter")
 })
 
@@ -130,16 +132,16 @@ test_that("TFL-ARD-008: cards' per-statistic warning and error columns survive i
   expect_true(all(c("warning", "error") %in% names(rows)))
   expect_true(is.character(rows$warning))
   expect_true(is.character(rows$error))
-  # Placebo has no ADEX dose-intensity records at all, so cards computes those
-  # statistics on an empty vector: the result is retained (as NA / NaN), never dropped.
-  di <- rows[rows$analysis == "dose_intensity" & rows$group1_level == "Placebo", ]
-  expect_gt(nrow(di), 0)
-  expect_equal(unlist(di$stat[di$stat_name == "N"]), 0)
+  # Placebo's planned dose is zero for every subject, so its dispersion is
+  # computed on a constant vector: the result is retained as 0, never dropped.
+  pl <- rows[rows$analysis == "avg_daily_dose" & rows$group1_level == "Placebo", ]
+  expect_gt(nrow(pl), 0)
+  expect_equal(unlist(pl$stat[pl$stat_name == "sd"]), 0)
   expect_equal(sum(rows$error != "", na.rm = TRUE), 0)
 })
 
 test_that("TFL-ARD-009: a binding address must resolve to exactly one ARD row (#1)", {
-  rows <- build_ard(read_analysis_spec("t-demographics"), fixture_data())
+  rows <- build_ard(read_analysis_spec("t-demographics"), fixture_data(), display_dir("t-demographics"))
   expect_equal(ard_binding(rows, "sex:n;group=Placebo;variable_level=F"), sum(ref_adsl()$SEX == "F" & ref_adsl()$TRT01A == "Placebo"))
   expect_error(ard_binding(rows, "sex:n;group=Placebo"), "resolved 2 ARD rows")
   expect_error(ard_binding(rows, "nope:n;group=Placebo"), "resolved 0 ARD rows")
@@ -148,11 +150,11 @@ test_that("TFL-ARD-009: a binding address must resolve to exactly one ARD row (#
 
 test_that("TFL-QNT-001: quartiles follow the SAS-compatible type-2 definition (#1)", {
   rows <- build_ard(read_analysis_spec("t-exposure"), fixture_data())
-  x <- ref_adex()$AVAL[ref_adex()$PARAMCD == "TDURD" & ref_adex()$TRT01A == "Placebo"]
-  expect_equal(
-    ard_binding(rows, "duration:p25;group=Placebo"),
-    unname(stats::quantile(x, 0.25, type = 2))
-  )
+  ref <- ref_adsl()
+  x <- ref$CUMDOSE[ref$TRT01A == "Xanomeline High Dose"]
+  got <- rows[rows$analysis == "total_dose" & rows$group1_level == "Xanomeline High Dose" & rows$stat_name == "p25", ]
+  expect_equal(nrow(got), 1)
+  expect_equal(unlist(got$stat), unname(stats::quantile(x, 0.25, type = 2)))
   # and that is NOT R's default; the difference is the point of the requirement
   expect_false(isTRUE(all.equal(
     unname(stats::quantile(x, 0.25, type = 2)),

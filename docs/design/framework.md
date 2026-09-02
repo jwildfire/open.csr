@@ -29,13 +29,20 @@ directories.
 | Text | `library/text/TXT-E3-<section>.md` | Prose keyed to an ICH E3 section, binding numbers rather than stating them |
 | Templates | `library/templates/<id>/` | What a document of this kind is, and what this study puts in it. Two objects today: the full ICH E3 report and its Annex I synopsis |
 
+Beside the four is one file that is not a part but a premise: `library/study.yaml`, the
+study model. It declares the arms in print order, the analysis sets with the subjects each
+holds per arm, the cut-off and the data source, once. The R band reads it for its treatment
+vocabulary and analysis-set registry; the Node band reads it to hold every placed display to
+the same counts — the treatment-consistency gate, which fails the document when two
+displays disagree about who was in the study (D0032, #59).
+
 Everything else in the repository is either the machinery that reads them (`pipeline/`,
 `scripts/`), or generated output that is never hand-edited (`outputs/`, `docs/assembled/`,
 `docs/evidence/`, `docs/requirements/`, `site/_build/`).
 
 ```
- ADaM study data (pharmaverseadam · CDISCPILOT01)
-        │  prepare_data()
+ ADaM study data (CDISCPILOT01, the pilot's own package)   library/study.yaml — arms, sets, source
+        │  prepare_data()                                          declared once; read by both bands
         ▼
  ┌──────────────────────────────┐  build_ard()   ┌──────────┐  render_display()  ┌───────────────┐
  │ 1 · DISPLAY SPEC             │ ─────────────▶ │ ard.json │ ─────────────────▶ │ table.html    │

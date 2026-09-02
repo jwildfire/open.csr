@@ -1,7 +1,19 @@
 {
   "module": "quality",
-  "generated": "2026-08-27T14:58:26.704Z",
+  "generated": "2026-09-02T23:26:54.745Z",
   "records": [
+    {
+      "requirementIds": [
+        "QC-FLOW-004"
+      ],
+      "title": "a dataset and a function QC-FLOW-004: a vendored dataset flows from its upstream file through vendoring and preparation to the prepared frame and the displays computed from it; a derived one from its source; a function from what it reads to what it writes (#83)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-flow.test.js",
+      "issueRefs": [
+        83
+      ]
+    },
     {
       "requirementIds": [
         "QC-SITE-013"
@@ -64,6 +76,18 @@
     },
     {
       "requirementIds": [
+        "QC-LINK-001"
+      ],
+      "title": "a display links what it was built against and what was built from it QC-LINK-001: given the links, the header names the analysis set from the study model, the specification history, the environment, the blocks that bind it and the values sourced from it, each a link; without them the header prints as before (#78)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-links.test.js",
+      "issueRefs": [
+        78
+      ]
+    },
+    {
+      "requirementIds": [
         "QC-SITE-015"
       ],
       "title": "a display page lists its own requirements QC-SITE-015: a display declaring no prefixes lists none rather than all of them (#1)",
@@ -120,6 +144,18 @@
       "file": "tests/unit/display-requirements.test.js",
       "issueRefs": [
         1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-FLOW-002"
+      ],
+      "title": "a display QC-FLOW-002: the flow lists the datasets with rows and hash, the specs and the study model, the four functions, and the iteration's files (#83)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-flow.test.js",
+      "issueRefs": [
+        83
       ]
     },
     {
@@ -268,6 +304,30 @@
     },
     {
       "requirementIds": [
+        "QC-LINK-002"
+      ],
+      "title": "a document links what it was built from QC-LINK-002: the inputs panel links the document model, the study model, every placed display with its iteration, every block with its state, every value cited and every dataset reached (#78)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-links.test.js",
+      "issueRefs": [
+        78
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-LINK-002"
+      ],
+      "title": "a document links what it was built from QC-LINK-002: the Reader carries the panel above the text and renders the provenance appendix as links to the display, each dataset and the environment (#78)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-links.test.js",
+      "issueRefs": [
+        78
+      ]
+    },
+    {
+      "requirementIds": [
         "QC-SITE-012"
       ],
       "title": "a document's contents follow the selection and nothing else QC-SITE-012: no rule survives that could hide the open document's contents (#40)",
@@ -408,6 +468,90 @@
       "file": "tests/unit/site-demo.test.js",
       "issueRefs": [
         36
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-LINK-003"
+      ],
+      "title": "a text block lists its inputs, derived from its bindings QC-LINK-003: a value cited is listed, and a declared display the block binds nothing from is named as drift rather than hidden (#78)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-links.test.js",
+      "issueRefs": [
+        78
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-LINK-003"
+      ],
+      "title": "a text block lists its inputs, derived from its bindings QC-LINK-003: the card lists each display the block binds with the iteration and ARD hash resolved against, the values it cites, its section and its approval, each a link (#78)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-links.test.js",
+      "issueRefs": [
+        78
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-FLOW-003"
+      ],
+      "title": "a value, a text block, a document QC-FLOW-003: a value flows from one ARD row or its inputs through regenerate_values() to its store entry; a block through the renderer into the documents that place it; a document through the assembler's gates into its JSON and HTML (#83)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-flow.test.js",
+      "issueRefs": [
+        83
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-META-003"
+      ],
+      "title": "approvals, environments, models and requirements QC-META-003: every text block is listed with its tier, version, approval state, approver, date and drafting model (#77)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-metadata.test.js",
+      "issueRefs": [
+        77
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-META-004"
+      ],
+      "title": "approvals, environments, models and requirements QC-META-004: document models are the template objects on disk, with the documents assembled from each, and an empty library says so (#77)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-metadata.test.js",
+      "issueRefs": [
+        77
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-META-004"
+      ],
+      "title": "approvals, environments, models and requirements QC-META-004: environments are deduplicated across every iteration, each listing the iterations built in it (#77)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-metadata.test.js",
+      "issueRefs": [
+        77
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-META-004"
+      ],
+      "title": "approvals, environments, models and requirements QC-META-004: the requirements page lists every matrix with its row count and a route to its evidence (#77)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-metadata.test.js",
+      "issueRefs": [
+        77
       ]
     },
     {
@@ -756,6 +900,66 @@
       "file": "tests/unit/site-validate.test.js",
       "issueRefs": [
         1
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-GATE-001"
+      ],
+      "title": "Gate: treatment consistency STD-GATE-001: a display whose arm counts differ from the study model fails the gate, and the error names the display, the arm and both numbers (#59)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/study-model.test.js",
+      "issueRefs": [
+        59
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-GATE-002"
+      ],
+      "title": "Gate: treatment consistency STD-GATE-002: two displays reporting the same analysis set with different counts in one document is an error naming both, even when one of them matches the model (#59)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/study-model.test.js",
+      "issueRefs": [
+        59
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-GATE-003"
+      ],
+      "title": "Gate: treatment consistency STD-GATE-003: a display with no population record is a named warning, never a silent pass; one with no arm grouping is warned and not counted as checked (#59)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/study-model.test.js",
+      "issueRefs": [
+        59
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-GATE-004"
+      ],
+      "title": "Gate: treatment consistency STD-GATE-004: an analysis set the model does not declare is an error, not a skipped check (#59)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/study-model.test.js",
+      "issueRefs": [
+        59
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-GATE-005"
+      ],
+      "title": "Gate: treatment consistency STD-GATE-005: the committed report assembles green on the gate, every placed display is gated by arm, and none of them read the alternate lane (#60)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/study-model.test.js",
+      "issueRefs": [
+        60
       ]
     },
     {
@@ -1312,6 +1516,66 @@
     },
     {
       "requirementIds": [
+        "QC-META-002"
+      ],
+      "title": "specifications and their history QC-META-002: every display is listed with its two specification files and every iteration with the actor, request and hashes its manifest recorded (#77)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-metadata.test.js",
+      "issueRefs": [
+        77
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-META-002"
+      ],
+      "title": "specifications and their history QC-META-002: shared custom code is stated from the borrowing side and the owning side (#77)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-metadata.test.js",
+      "issueRefs": [
+        77
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-META-002"
+      ],
+      "title": "specifications and their history QC-META-002: value declarations are read from the source file and link to the store (#77)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-metadata.test.js",
+      "issueRefs": [
+        77
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-MODEL-001"
+      ],
+      "title": "Study model STD-MODEL-001: library/study.yaml loads with three arms in print order and every analysis set counted per arm (#59)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/study-model.test.js",
+      "issueRefs": [
+        59
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-MODEL-002"
+      ],
+      "title": "Study model STD-MODEL-002: every assembly that declares treatment groups declares the model's arms, in the model's order (#59)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/study-model.test.js",
+      "issueRefs": [
+        59
+      ]
+    },
+    {
+      "requirementIds": [
         "QC-EVID-001"
       ],
       "title": "suite normalization QC-EVID-001: missing or empty reporter output normalizes to no records (#1)",
@@ -1612,6 +1876,42 @@
     },
     {
       "requirementIds": [
+        "QC-DATA-001"
+      ],
+      "title": "the data registry and the package record QC-DATA-001: a registered dataset with no vendored file is planned, a derived or alternate one is not a missing file, and a vendored file nobody registered is published with a warning (#76)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-data.test.js",
+      "issueRefs": [
+        76
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DATA-001"
+      ],
+      "title": "the data registry and the package record QC-DATA-001: a repository with no data registry renders the empty state rather than throwing (#76)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-data.test.js",
+      "issueRefs": [
+        76
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DATA-001"
+      ],
+      "title": "the data registry and the package record QC-DATA-001: every registered dataset is read with its provenance, and the package carries its pinned commit (#76)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-data.test.js",
+      "issueRefs": [
+        76
+      ]
+    },
+    {
+      "requirementIds": [
         "QC-SITE-005"
       ],
       "title": "the display registry QC-SITE-005: status is derived from the filesystem, not from the declared value (#1)",
@@ -1792,6 +2092,54 @@
     },
     {
       "requirementIds": [
+        "QC-DATA-005"
+      ],
+      "title": "the explorer and the deep links QC-DATA-005: a dataset permalink is absorbed into the Data view with that dataset in focus, and the lanes and index likewise (#76)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-data.test.js",
+      "issueRefs": [
+        76
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DATA-005"
+      ],
+      "title": "the explorer and the deep links QC-DATA-005: Data is a view of the study, after Values, and a collection in the tree with one item per dataset (#76)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-data.test.js",
+      "issueRefs": [
+        76
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-PIPE-002"
+      ],
+      "title": "the explorer and the pane QC-PIPE-002: the explorer has three parts in the pipeline's order, each holding its groups, while the flat groups list still carries every group; the strip follows the same order (#82)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-pipeline.test.js",
+      "issueRefs": [
+        82
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-PIPE-003"
+      ],
+      "title": "the explorer and the pane QC-PIPE-003: the pane opens with the whole pipeline as one flow and carries every function by id; a function permalink is absorbed into the view with that function in focus (#82)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-pipeline.test.js",
+      "issueRefs": [
+        82
+      ]
+    },
+    {
+      "requirementIds": [
         "QC-DEMO-020"
       ],
       "title": "the explorer wiring QC-DEMO-020: the group-level collapse the tree still needs is untouched (#40)",
@@ -1824,6 +2172,30 @@
       "file": "tests/unit/site-demo.test.js",
       "issueRefs": [
         40
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DATA-004"
+      ],
+      "title": "the links from a display to its data QC-DATA-004: a dataset the header names but this iteration’s ARD does not is still linked, and says so (#76)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-data.test.js",
+      "issueRefs": [
+        76
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DATA-004"
+      ],
+      "title": "the links from a display to its data QC-DATA-004: given the index, the display header links each dataset to its page with the hash and rows this iteration recorded; without it, the labels print as before (#76)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-data.test.js",
+      "issueRefs": [
+        76
       ]
     },
     {
@@ -1960,6 +2332,102 @@
     },
     {
       "requirementIds": [
+        "QC-DATA-003"
+      ],
+      "title": "the pages QC-DATA-003: a dataset has a standalone page with the same facts and the read-by table (#76)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-data.test.js",
+      "issueRefs": [
+        76
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DATA-003"
+      ],
+      "title": "the pages QC-DATA-003: the Data pane carries the package, one section per dataset with its facts, and the lanes, each addressable by id (#76)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-data.test.js",
+      "issueRefs": [
+        76
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DATA-003"
+      ],
+      "title": "the pages QC-DATA-003: the lanes section names both packagings and lists only the variables that differ, from the agreement record (#76)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-data.test.js",
+      "issueRefs": [
+        76
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-META-005"
+      ],
+      "title": "the pane, the explorer and the deep links QC-META-005: a metadata page permalink is absorbed into the Metadata view with that section in focus (#77)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-metadata.test.js",
+      "issueRefs": [
+        77
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-META-005"
+      ],
+      "title": "the pane, the explorer and the deep links QC-META-005: the pane carries every section by id, and Metadata is a view of the study after Data with one explorer item per page (#77)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-metadata.test.js",
+      "issueRefs": [
+        77
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-PIPE-001"
+      ],
+      "title": "the registry and the function pages QC-PIPE-001: a call to an unregistered function is a warning, and no registry renders the empty state (#82)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-pipeline.test.js",
+      "issueRefs": [
+        82
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-PIPE-001"
+      ],
+      "title": "the registry and the function pages QC-PIPE-001: every declared function is read with its kind, code, reads, writes, calls and gates, and lists what it produced from the records (#82)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-pipeline.test.js",
+      "issueRefs": [
+        82
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-FLOW-001"
+      ],
+      "title": "the renderer QC-FLOW-001: three lanes, every box a link when it has one, sub-lines kept, empty lanes say so, nothing external (#83)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-flow.test.js",
+      "issueRefs": [
+        83
+      ]
+    },
+    {
+      "requirementIds": [
         "QC-SITE-009"
       ],
       "title": "the repository this site is built from QC-SITE-009: this repo's own library is plural and every object is assembled (#32)",
@@ -1980,6 +2448,30 @@
       "file": "tests/unit/site-documents.test.js",
       "issueRefs": [
         32
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DATA-002"
+      ],
+      "title": "the reverse index: from a dataset to every display that read it QC-DATA-002: a dataset no current ARD names has an empty index entry, and a dataset an ARD names that the registry does not know still gets one (#76)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-data.test.js",
+      "issueRefs": [
+        76
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DATA-002"
+      ],
+      "title": "the reverse index: from a dataset to every display that read it QC-DATA-002: a display whose current ARD names a dataset appears under it with the iteration, rows and hash that ARD recorded (#76)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-data.test.js",
+      "issueRefs": [
+        76
       ]
     },
     {
@@ -2052,6 +2544,30 @@
       "file": "tests/unit/site-render.test.js",
       "issueRefs": [
         1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-META-001"
+      ],
+      "title": "the study model QC-META-001: a repository without a study model renders the empty state and says so in the warnings (#77)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-metadata.test.js",
+      "issueRefs": [
+        77
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-META-001"
+      ],
+      "title": "the study model QC-META-001: the study page states the arms in print order, the columns that carry an arm label, and every analysis set with its flag and subjects per arm (#77)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-metadata.test.js",
+      "issueRefs": [
+        77
       ]
     },
     {
@@ -2392,6 +2908,30 @@
     },
     {
       "requirementIds": [
+        "QC-LINK-004"
+      ],
+      "title": "values and the explorer QC-LINK-004: the values pane links the arm a source address names to the study model, the data behind its display, and the documents that place the blocks citing it (#78)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-links.test.js",
+      "issueRefs": [
+        78
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-LINK-005"
+      ],
+      "title": "values and the explorer QC-LINK-005: a document whose build failed a gate is flagged in the explorer, and one that passed is not (#78)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-links.test.js",
+      "issueRefs": [
+        78
+      ]
+    },
+    {
+      "requirementIds": [
         "QC-DEMO-031"
       ],
       "title": "which document the pane shows QC-DEMO-031: a document resolves from its id or from its reader page's name (#36)",
@@ -2448,6 +2988,102 @@
       "file": "test-displays.R",
       "issueRefs": [
         1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-INTXT-001"
+      ],
+      "title": "DSP-INTXT-001: the in-text demographics redraw is the report's Table 11-1 — mean and range, percentages, race as White/Caucasian or other — from the same ARD as the full table (#63)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        63
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-INTXT-002"
+      ],
+      "title": "DSP-INTXT-002: the in-text incidence redraw is the report's Table 12-1 — terms at 5% or more in any arm, flat, in title case, an asterisk where the placebo comparison has p < 0.15 (#63)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        63
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-INTXT-003"
+      ],
+      "title": "DSP-INTXT-003: the in-text weight redraw is the report's Table 12-4 — n and mean per arm for baseline and the changes at Week 24 and end of treatment — from the weight table's own ARD (#63)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        63
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-MODEL-003"
+      ],
+      "title": "STD-MODEL-003: the treatment vocabulary and the analysis-set registry resolve from the study model, not from code (#59)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-study-model.R",
+      "issueRefs": [
+        59
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-MODEL-004"
+      ],
+      "title": "STD-MODEL-004: every count the model declares is what the default lane's ADSL holds, per arm and per set (#59)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-study-model.R",
+      "issueRefs": [
+        59
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-MODEL-005"
+      ],
+      "title": "STD-MODEL-005: every committed ARD carries a population record that agrees with the study model for its analysis set (#59)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-study-model.R",
+      "issueRefs": [
+        59
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-SRC-001"
+      ],
+      "title": "STD-SRC-001: the default registry serves every pilot dataset from the study's own package, and only the two datasets it lacks come from the alternate (#60)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-study-model.R",
+      "issueRefs": [
+        60
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-SRC-002"
+      ],
+      "title": "STD-SRC-002: the pilot's ADVS prepares without derived-record or timepoint columns the alternate carries, and its series keys match (#60)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-study-model.R",
+      "issueRefs": [
+        60
       ]
     },
     {

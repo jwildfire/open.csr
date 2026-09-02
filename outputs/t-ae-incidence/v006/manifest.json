@@ -1,0 +1,63 @@
+{
+  "display": "t-ae-incidence",
+  "version": "v006",
+  "created": "2026-09-02T16:10:29Z",
+  "actor": "@obotclaw",
+  "change_request": "In-text variant redrawn as the reference report prints it (Tables 11-1, 12-1, 12-4; D0032, #63).",
+  "regulatory_id": "AET03",
+  "git_commit": null,
+  "spec_hash": "sha256:a94b85b6e974ae8cc4f19deacfc41f440b4ec4b68c0c8edcc69ca4d6aea3a0ec",
+  "display_hash": "sha256:eec75feb7bc7a2f440fb67df52fb0cae0357d898bbb966bd64ef73cc5e9fb1a3",
+  "ard_hash": "sha256:4ded03570bc321199bb8e5807b318f29261d4baec353f696ead566b3e90b3802",
+  "ard_rows": 4826,
+  "ard_warnings": 0,
+  "ard_errors": 0,
+  "datasets": ["adsl", "adae"],
+  "data": [
+    {
+      "dataset": "adsl",
+      "hash": "sha256:b022f78fdd0ade028f6c4e9e7cc5187284a5249f30c16646931a1856d5fff2f6",
+      "n_row": 254,
+      "n_col": 55,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    },
+    {
+      "dataset": "adae",
+      "hash": "sha256:4ffe4e4c90c8a531e95e4931b601c258ed0b83638d4b346e66635d79e78a7bf1",
+      "n_row": 1191,
+      "n_col": 57,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    }
+  ],
+  "environment": {
+    "r": "4.3.3",
+    "os": "Darwin 23.6.0",
+    "packages": {
+      "cards": "0.6.1",
+      "cardx": "0.2.5",
+      "gtsummary": "2.3.0",
+      "gt": "1.0.0",
+      "dplyr": "1.1.4",
+      "pharmaverseadam": "1.1.0",
+      "jsonlite": "2.0.0",
+      "yaml": "2.3.10",
+      "digest": "0.6.37"
+    }
+  },
+  "variants": {
+    "post_text": {
+      "file": "table.html",
+      "rtf": "table.rtf",
+      "rtf_hash": "sha256:6946cff5d25a37fad2a519704cfef0bce27035d536c1a18d94e176cf4c194d22",
+      "n_rows": 254
+    },
+    "in_text": {
+      "file": "table-in-text.html",
+      "rtf": "table-in-text.rtf",
+      "rtf_hash": "sha256:c92ad7d557cfa499e076fa40eb4104e473ff69c2c2d6910bf7d14ca9ce8faba9",
+      "n_rows": 29
+    }
+  }
+}

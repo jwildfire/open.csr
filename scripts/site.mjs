@@ -73,6 +73,11 @@ import {
   renderValuesPane
 } from './app-lib.mjs';
 import { loadAssembly, loadSections } from './template-lib.mjs';
+import { buildDataIndex, datasetStatus, loadDataPackage, renderDataPane, renderDatasetPage, renderLanesPage } from './data-lib.mjs';
+import { METADATA_PAGES, loadMetadata, metadataNavItems, renderMetadataPage, renderMetadataPane } from './metadata-lib.mjs';
+import { loadStudyModel } from './study-lib.mjs';
+import { loadPipeline, pipelineNavItems, renderFunctionPage, renderPipelinePane } from './pipeline-lib.mjs';
+import yaml from 'js-yaml';
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const buildDir = path.join(rootDir, 'site', '_build');
@@ -142,6 +147,81 @@ const ards = Object.fromEntries(
     .map((display) => [display.slug, display.outputs.current.ard])
 );
 
+// --- Data: what was measured (#76) -----------------------------------------
+// The registry names the package and its datasets; the pages are built from
+// the package's provenance record and from every current ARD's envelope.
+const dataPackage = loadDataPackage(rootDir, config);
+warnings.push(...dataPackage.warnings);
+const dataIndex = buildDataIndex({ datasets: dataPackage.datasets, displays });
+// The links both ways (#78): what each display was built against (the study
+// model's analysis set, its iterations, its environment) and what was built
+// from it (the text blocks that bind it, the values sourced from it); the
+// datasets behind each display; the documents that place each text block.
+let studyModel = null;
+try {
+  studyModel = loadStudyModel(rootDir);
+} catch (error) {
+  warnings.push(`library/study.yaml: ${error.message}`);
+}
+const boundBy = new Map();
+for (const block of textBlocks) {
+  if (block.exists === false) continue;
+  for (const address of block.bindings || []) {
+    const slug = String(address).split(':')[0];
+    if (!slug) continue;
+    if (!boundBy.has(slug)) boundBy.set(slug, []);
+    if (!boundBy.get(slug).includes(block.id)) boundBy.get(slug).push(block.id);
+  }
+}
+const valuesByDisplay = new Map();
+for (const value of valueStore?.values || []) {
+  const slug = value.source?.display;
+  if (!slug) continue;
+  if (!valuesByDisplay.has(slug)) valuesByDisplay.set(slug, []);
+  valuesByDisplay.get(slug).push(value.id);
+}
+const datasetsByDisplay = new Map(
+  displays.map((display) => [
+    display.slug,
+    (display.outputs?.current?.ard?.provenance?.data || []).map((entry) => entry.dataset).filter(Boolean)
+  ])
+);
+const documentsByBlock = new Map();
+for (const doc of documents) {
+  for (const block of doc.json?.textBlocks || []) {
+    if (!documentsByBlock.has(block.id)) documentsByBlock.set(block.id, []);
+    documentsByBlock.get(block.id).push({ id: doc.id, title: doc.title, readerPath: doc.readerPath || null });
+  }
+}
+const displayLinks = (display) => {
+  let spec = null;
+  try {
+    spec = display.outputs?.specs?.analysis?.text ? yaml.load(display.outputs.specs.analysis.text) : null;
+  } catch {
+    spec = null;
+  }
+  const setName = spec?.analysis_set ?? null;
+  const set = setName && studyModel?.analysis_sets ? studyModel.analysis_sets[setName] : null;
+  return {
+    studyId: studyModel?.id ?? null,
+    analysisSet: setName ? { name: setName, label: set?.label ?? null, flag: set?.flag ?? null } : null,
+    group: Array.isArray(spec?.group) ? spec.group.join(', ') : spec?.group ?? null,
+    iterations: display.outputs?.versions?.length ?? 0,
+    environment: display.outputs?.current?.ard?.provenance?.environment ?? null,
+    textBlocks: boundBy.get(display.slug) || [],
+    values: valuesByDisplay.get(display.slug) || []
+  };
+};
+
+const navDatasets = [
+  ...dataPackage.datasets.map((dataset) => ({
+    id: dataset.id,
+    title: dataset.title,
+    status: datasetStatus(dataset, dataIndex)
+  })),
+  ...(dataPackage.configured ? [{ id: 'lanes', title: 'Source lanes', status: 'ok' }] : [])
+];
+
 const KIND_LABEL = {
   engine: 'Engine',
   text: 'Text Library',
@@ -210,7 +290,15 @@ const displayFragments = displays.map((display) => {
     regulatoryId: display.regulatoryId,
     type: display.type,
     status: display.status,
-    html: renderDisplayPage({ config, display, evidence, requirements, usedIn: usage.get(display.slug) })
+    html: renderDisplayPage({
+      config,
+      display,
+      evidence,
+      requirements,
+      usedIn: usage.get(display.slug),
+      datasets: dataIndex,
+      links: displayLinks(display)
+    })
   };
 });
 
@@ -286,7 +374,7 @@ page(path.join(buildDir, 'text', 'index.html'), {
   description:
     'ICH E3-aligned prose blocks in three tiers, with approval state and every number bound to an ' +
     'ARD address rather than typed.',
-  content: renderTextLibrary({ textBlocks, ards, traceIndex })
+  content: renderTextLibrary({ textBlocks, ards, traceIndex, documentsByBlock })
 });
 
 // The template model comes from template-lib, the same tested loaders the
@@ -431,8 +519,81 @@ const templatesContent = renderTemplatesPane({
 const valuesContent = renderValuesPane({
   store: valueStore,
   usage: valueUsageIndex,
-  gate: valueGate
+  gate: valueGate,
+  datasetsByDisplay,
+  documentsByBlock,
+  root: '../',
+  config
 });
+
+// The Data pane and its standalone pages (#76): one page per dataset, one for
+// the lanes, and the index that is also the pane — the Values arrangement.
+const dataContent = renderDataPane({ data: dataPackage, index: dataIndex, root: '../' });
+page(path.join(buildDir, 'data', 'index.html'), {
+  title: `Data · ${config.siteTitle}`,
+  root: '../',
+  description:
+    'What was measured: every dataset the study\'s package carries, where each file came from, ' +
+    'what the preparation layer did to it, and every display whose results were computed from it.',
+  content: dataContent
+});
+if (dataPackage.configured) {
+  for (const dataset of dataPackage.datasets) {
+    page(path.join(buildDir, 'data', `${dataset.id}.html`), {
+      title: `${dataset.title} · data · ${config.siteTitle}`,
+      root: '../',
+      description: dataset.blurb || `The ${dataset.id} dataset: provenance, preparation, and the displays that read it.`,
+      content: renderDatasetPage({ data: dataPackage, dataset, index: dataIndex, root: '../' })
+    });
+  }
+  page(path.join(buildDir, 'data', 'lanes.html'), {
+    title: `Source lanes · data · ${config.siteTitle}`,
+    root: '../',
+    description: 'The two packagings of the study, which one each dataset resolves to, and the measured divergences between them.',
+    content: renderLanesPage({ data: dataPackage, root: '../' })
+  });
+}
+
+// The Metadata pane and its standalone pages (#77): six sections, one page
+// each, and the index that is also the pane.
+const metadata = loadMetadata(rootDir, { config, displays, textBlocks, documents });
+warnings.push(...metadata.warnings);
+const metadataContent = renderMetadataPane({ meta: metadata, config, root: '../' });
+page(path.join(buildDir, 'metadata', 'index.html'), {
+  title: `Metadata · ${config.siteTitle}`,
+  root: '../',
+  description:
+    'What was declared: the study model, the document models, every specification with its history, ' +
+    'every text block\'s approval, the environments the iterations were built in, and the requirements.',
+  content: metadataContent
+});
+for (const entry of METADATA_PAGES) {
+  page(path.join(buildDir, 'metadata', `${entry.id}.html`), {
+    title: `${entry.label} · metadata · ${config.siteTitle}`,
+    root: '../',
+    description: entry.blurb,
+    content: renderMetadataPage(entry.id, { meta: metadata, config, root: '../' })
+  });
+}
+
+// The Pipeline pane and its function pages (#82).
+const pipeline = loadPipeline(rootDir, { config, dataIndex, dataPackage, displays, valueStore, documents });
+warnings.push(...pipeline.warnings);
+const pipelineContent = renderPipelinePane({ pipeline, root: '../' });
+page(path.join(buildDir, 'pipeline', 'index.html'), {
+  title: `Pipeline · ${config.siteTitle}`,
+  root: '../',
+  description: 'What turns inputs into outputs: every pipeline function, what it reads, what it writes, where its code is, and every element it produced.',
+  content: pipelineContent
+});
+for (const fn of pipeline.functions) {
+  page(path.join(buildDir, 'pipeline', `${fn.id}.html`), {
+    title: `${fn.label} · pipeline · ${config.siteTitle}`,
+    root: '../',
+    description: fn.blurb || `The ${fn.label} function: what it reads, what it writes, and what it produced.`,
+    content: renderFunctionPage(fn.id, { pipeline, root: '../' })
+  });
+}
 
 const appPanes = [
   { id: 'documents', html: readerAppContent },
@@ -450,6 +611,9 @@ const appPanes = [
   },
   { id: 'text', html: textStatusContent },
   { id: 'values', html: valuesContent },
+  { id: 'data', html: dataContent },
+  { id: 'metadata', html: metadataContent },
+  { id: 'pipeline', html: pipelineContent },
   { id: 'templates', html: templatesContent }
 ];
 
@@ -459,6 +623,9 @@ const navTree = buildNavTree({
   displays,
   textBlocks,
   values: valueStore?.values || [],
+  datasets: navDatasets,
+  metadata: metadataNavItems(metadata),
+  pipeline: pipelineNavItems(pipeline),
   documents,
   current: csr.id,
   rendered: documentEntries.map((entry) => entry.id),

@@ -1,9 +1,9 @@
 {
   "display": "t-exposure",
-  "version": "v002",
-  "updated": "2026-07-27T03:23:36Z",
-  "path": "outputs/t-exposure/v002",
-  "ard": "outputs/t-exposure/v002/ard.json",
-  "table": "outputs/t-exposure/v002/table.html",
+  "version": "v004",
+  "updated": "2026-09-02T15:23:19Z",
+  "path": "outputs/t-exposure/v004",
+  "ard": "outputs/t-exposure/v004/ard.json",
+  "table": "outputs/t-exposure/v004/table.html",
   "variants": ["post_text", "in_text"]
 }

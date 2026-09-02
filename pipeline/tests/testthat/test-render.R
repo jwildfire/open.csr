@@ -45,9 +45,11 @@ test_that("TFL-RND-003: columns follow the declared order and carry group counts
   disp <- fixture_display("t-demographics")
   expect_identical(
     disp$columns$levels,
-    c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose", "Total")
+    c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose", "Total", "p-value")
   )
-  expect_equal(unname(disp$columns$n), c(86, 96, 72, 254))
+  # the pilot's own package: planned and actual agree, 86 / 84 / 84 (#60); the
+  # p-value column heads no subjects
+  expect_equal(unname(disp$columns$n), c(86, 84, 84, 254, NA))
   expect_match(disp$html, "\\(N=86\\)")
   # a column declared but absent from the ARD is simply not rendered
   spec <- read_display_spec("t-demographics")
@@ -92,4 +94,60 @@ test_that("TFL-RND-007: a listing renders one column per listed variable with it
   expect_true("System organ class" %in% disp$columns$levels)
   expect_equal(nrow(disp$table), sum(ref_adae()$AESER %in% "Y"))
   expect_match(disp$html, "SYNCOPE")
+})
+
+test_that("TFL-RND-008: a level prints under its declared label, a sub-block's test comes from the sibling analysis `p_from` names and sits on its first level only, and the report's zero and sub-1% presentations are display options (#61)", {
+  disp <- fixture_display("t-demographics")
+  lab <- plain(disp$table$label)
+  expect_true(all(c("Male", "Female", "<65 yrs") %in% lab))
+  expect_false(any(c("M", "F", "<65") %in% lab))
+  expect_match(cell(disp, "<65 yrs", "p-value"), "^0\\.[0-9]{4}$")
+  expect_identical(cell(disp, "65-80 yrs", "p-value"), "")
+  expect_identical(cell(disp, ">80 yrs", "p-value"), "")
+  expect_identical(cell(disp, "Other", "Placebo"), "0")
+  expect_identical(cell(disp, "Other", "Total"), "1 (<1%)")
+  # the sub-1% presentation is opt-in: the same report prints "1 ( 0%)" elsewhere
+  expect_identical(format_stat(1 / 254, "p", list(p = 0), sub_one = TRUE), "<1")
+  expect_identical(format_stat(1 / 254, "p", list(p = 0)), "0")
+  expect_identical(format_stat(1 / 254, "p", list(p = 1), sub_one = TRUE), "0.4")
+  expect_identical(format_stat(0, "p", list(p = 0), sub_one = TRUE), "0")
+})
+
+test_that("TFL-RND-009: a hierarchical row plan can order its levels by name, by one arm's count, or by the subjects summed across arms, and a bare-zero option applies to any pattern that prints a count (#62)", {
+  ard <- fixture_ard("t-ae-incidence")
+  spec <- read_display_spec("t-ae-incidence")
+  hier <- which(vapply(spec$rows, function(r) identical(r$type, "hierarchical"), logical(1)))
+  by_high <- render_display(ard, spec)
+  spec$rows[[hier]]$sort <- list(outer = "alpha", inner = list(by = "sum"))
+  by_sum <- render_display(ard, spec)
+  spec$rows[[hier]]$sort <- NULL
+  by_default <- render_display(ard, spec)
+  socs <- function(d) { l <- plain(d$table$label); ind <- attr(regexpr("^(\u00a0\u00a0\u00a0)*", d$table$label), "match.length"); l[ind == 0 & l != "ANY BODY SYSTEM"] }
+  expect_identical(socs(by_high), sort(socs(by_high)))
+  expect_false(identical(socs(by_default), sort(socs(by_default))))
+  expect_false(identical(by_high$table$label, by_sum$table$label))
+  # a count of nobody prints bare under the events pattern too
+  expect_identical(cell(by_high, "CARDIAC DISORDER", "Placebo"), "0")
+  spec$format$zero_count <- NULL
+  long <- render_display(ard, spec)
+  expect_identical(cell(long, "CARDIAC DISORDER", "Placebo"), "0 (0.0%) [0]")
+})
+
+test_that("TFL-RND-010: a column may name its group, its analysis and its pattern, and a variant may redraw the display with its own rows, columns and format over the same ARD (#63)", {
+  site <- fixture_display("t-subjects-by-site")
+  expect_length(site$columns$levels, 12)
+  expect_identical(site$columns$groups[1:3], rep("Placebo", 3))
+  expect_identical(site$columns$analyses[1:3], c("itt", "eff", "com"))
+  wt <- fixture_display("t-weight", "in_text")
+  expect_identical(wt$columns$patterns[1:2], c("{N}", "{mean}"))
+  # the redraw and the full rendering share one ARD and disagree about nothing
+  full <- fixture_display("t-weight")
+  bl_full <- full$table$col1[which(plain(full$table$label) == "Mean (SD)")[1]]
+  expect_identical(sub(" .*$", "", bl_full), wt$table$col2[which(plain(wt$table$label) == "Baseline")])
+  # a variant without a redraw still renders the display's own rows
+  spec <- read_display_spec("t-weight")
+  spec$variants$in_text$rows <- NULL
+  spec$variants$in_text$columns <- NULL
+  plain_variant <- render_display(fixture_ard("t-weight"), spec, "in_text")
+  expect_identical(plain_variant$columns$levels, full$columns$levels)
 })

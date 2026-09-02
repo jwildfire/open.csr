@@ -1,0 +1,9 @@
+{
+  "display": "t-subjects-by-site",
+  "version": "v002",
+  "updated": "2026-09-02T16:15:18Z",
+  "path": "outputs/t-subjects-by-site/v002",
+  "ard": "outputs/t-subjects-by-site/v002/ard.json",
+  "table": "outputs/t-subjects-by-site/v002/table.html",
+  "variants": ["post_text", "in_text"]
+}

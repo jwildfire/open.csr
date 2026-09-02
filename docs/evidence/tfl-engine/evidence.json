@@ -1,7 +1,91 @@
 {
   "module": "tfl-engine",
-  "generated": "2026-08-27T14:58:26.704Z",
+  "generated": "2026-09-02T23:26:54.745Z",
   "records": [
+    {
+      "requirementIds": [
+        "STD-GATE-001"
+      ],
+      "title": "Gate: treatment consistency STD-GATE-001: a display whose arm counts differ from the study model fails the gate, and the error names the display, the arm and both numbers (#59)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/study-model.test.js",
+      "issueRefs": [
+        59
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-GATE-002"
+      ],
+      "title": "Gate: treatment consistency STD-GATE-002: two displays reporting the same analysis set with different counts in one document is an error naming both, even when one of them matches the model (#59)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/study-model.test.js",
+      "issueRefs": [
+        59
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-GATE-003"
+      ],
+      "title": "Gate: treatment consistency STD-GATE-003: a display with no population record is a named warning, never a silent pass; one with no arm grouping is warned and not counted as checked (#59)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/study-model.test.js",
+      "issueRefs": [
+        59
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-GATE-004"
+      ],
+      "title": "Gate: treatment consistency STD-GATE-004: an analysis set the model does not declare is an error, not a skipped check (#59)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/study-model.test.js",
+      "issueRefs": [
+        59
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-GATE-005"
+      ],
+      "title": "Gate: treatment consistency STD-GATE-005: the committed report assembles green on the gate, every placed display is gated by arm, and none of them read the alternate lane (#60)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/study-model.test.js",
+      "issueRefs": [
+        60
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-MODEL-001"
+      ],
+      "title": "Study model STD-MODEL-001: library/study.yaml loads with three arms in print order and every analysis set counted per arm (#59)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/study-model.test.js",
+      "issueRefs": [
+        59
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-MODEL-002"
+      ],
+      "title": "Study model STD-MODEL-002: every assembly that declares treatment groups declares the model's arms, in the model's order (#59)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/study-model.test.js",
+      "issueRefs": [
+        59
+      ]
+    },
     {
       "requirementIds": [
         "DSP-ALL-001"
@@ -24,6 +108,102 @@
       "file": "test-displays.R",
       "issueRefs": [
         1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-INTXT-001"
+      ],
+      "title": "DSP-INTXT-001: the in-text demographics redraw is the report's Table 11-1 — mean and range, percentages, race as White/Caucasian or other — from the same ARD as the full table (#63)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        63
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-INTXT-002"
+      ],
+      "title": "DSP-INTXT-002: the in-text incidence redraw is the report's Table 12-1 — terms at 5% or more in any arm, flat, in title case, an asterisk where the placebo comparison has p < 0.15 (#63)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        63
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-INTXT-003"
+      ],
+      "title": "DSP-INTXT-003: the in-text weight redraw is the report's Table 12-4 — n and mean per arm for baseline and the changes at Week 24 and end of treatment — from the weight table's own ARD (#63)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        63
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-MODEL-003"
+      ],
+      "title": "STD-MODEL-003: the treatment vocabulary and the analysis-set registry resolve from the study model, not from code (#59)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-study-model.R",
+      "issueRefs": [
+        59
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-MODEL-004"
+      ],
+      "title": "STD-MODEL-004: every count the model declares is what the default lane's ADSL holds, per arm and per set (#59)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-study-model.R",
+      "issueRefs": [
+        59
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-MODEL-005"
+      ],
+      "title": "STD-MODEL-005: every committed ARD carries a population record that agrees with the study model for its analysis set (#59)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-study-model.R",
+      "issueRefs": [
+        59
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-SRC-001"
+      ],
+      "title": "STD-SRC-001: the default registry serves every pilot dataset from the study's own package, and only the two datasets it lacks come from the alternate (#60)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-study-model.R",
+      "issueRefs": [
+        60
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-SRC-002"
+      ],
+      "title": "STD-SRC-002: the pilot's ADVS prepares without derived-record or timepoint columns the alternate carries, and its series keys match (#60)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-study-model.R",
+      "issueRefs": [
+        60
       ]
     },
     {
@@ -570,7 +750,7 @@
       "requirementIds": [
         "TFL-PREP-014"
       ],
-      "title": "TFL-PREP-014: adding PHUSE data moves nothing the displays already stand on (#39)",
+      "title": "TFL-PREP-014: the alternate lane still prepares whole, with its own derivations and arms (#39)",
       "suite": "r-unit",
       "passed": true,
       "file": "test-data-phuse.R",
@@ -600,6 +780,42 @@
       "file": "test-displays-cibic.R",
       "issueRefs": [
         1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TFL-PREP-017"
+      ],
+      "title": "TFL-PREP-017: Race (Origin) is derived on both lanes — ethnicity first, then race, with the report's labels (#61)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-data-prep.R",
+      "issueRefs": [
+        61
+      ]
+    },
+    {
+      "requirementIds": [
+        "TFL-PREP-018"
+      ],
+      "title": "TFL-PREP-018: the medication analysis dataset is derived from the study's own SDTM CM domain and reproduces every statistic the remapped PHUSE copy gave the medication table (#65)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-data-phuse.R",
+      "issueRefs": [
+        65
+      ]
+    },
+    {
+      "requirementIds": [
+        "TFL-PREP-019"
+      ],
+      "title": "TFL-PREP-019: DM is the screened population and is the one dataset prepare_data() does not restrict to the subjects in ADSL (#63)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-data-phuse.R",
+      "issueRefs": [
+        63
       ]
     },
     {
@@ -708,6 +924,42 @@
       "file": "test-render.R",
       "issueRefs": [
         1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TFL-RND-008"
+      ],
+      "title": "TFL-RND-008: a level prints under its declared label, a sub-block's test comes from the sibling analysis `p_from` names and sits on its first level only, and the report's zero and sub-1% presentations are display options (#61)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-render.R",
+      "issueRefs": [
+        61
+      ]
+    },
+    {
+      "requirementIds": [
+        "TFL-RND-009"
+      ],
+      "title": "TFL-RND-009: a hierarchical row plan can order its levels by name, by one arm's count, or by the subjects summed across arms, and a bare-zero option applies to any pattern that prints a count (#62)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-render.R",
+      "issueRefs": [
+        62
+      ]
+    },
+    {
+      "requirementIds": [
+        "TFL-RND-010"
+      ],
+      "title": "TFL-RND-010: a column may name its group, its analysis and its pattern, and a variant may redraw the display with its own rows, columns and format over the same ARD (#63)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-render.R",
+      "issueRefs": [
+        63
       ]
     },
     {

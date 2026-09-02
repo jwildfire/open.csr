@@ -5,22 +5,128 @@
   "hubUrl": "https://jwildfire.github.io/obot.roadmap/",
   "matrixBaseUrl": "https://github.com/jwildfire/open.csr/blob/main/quality/requirements",
   "issue": 1,
-  "study": { "id": "CDISCPILOT01", "cutoff": "2014-07-01" },
+  "study": {
+    "id": "CDISCPILOT01",
+    "cutoff": "2014-07-01"
+  },
   "components": [
-    { "module": "tfl-engine", "kind": "engine", "title": "TFL Engine", "matrix": "tfl-engine.md", "status": "planned" },
-    { "module": "text", "kind": "text", "title": "Text Library", "matrix": "text.md", "status": "planned" }
+    {
+      "module": "tfl-engine",
+      "kind": "engine",
+      "title": "TFL Engine",
+      "matrix": "tfl-engine.md",
+      "status": "planned"
+    },
+    {
+      "module": "text",
+      "kind": "text",
+      "title": "Text Library",
+      "matrix": "text.md",
+      "status": "planned"
+    }
   ],
   "displays": [
-    { "module": "t-demo", "slug": "t-demo", "title": "Demo display", "regulatoryId": "AET01",
-      "type": "table", "e3Section": "14.3.1", "matrix": "displays.md", "status": "planned",
-      "datasets": ["adae", "adsl"], "blurb": "A fixture display." },
-    { "module": "t-missing", "slug": "t-missing", "title": "Never generated", "type": "table",
-      "matrix": "displays.md", "status": "planned", "datasets": [], "blurb": "No outputs on disk." }
+    {
+      "module": "t-demo",
+      "slug": "t-demo",
+      "title": "Demo display",
+      "regulatoryId": "AET01",
+      "type": "table",
+      "e3Section": "14.3.1",
+      "matrix": "displays.md",
+      "status": "planned",
+      "datasets": [
+        "adae",
+        "adsl"
+      ],
+      "blurb": "A fixture display."
+    },
+    {
+      "module": "t-missing",
+      "slug": "t-missing",
+      "title": "Never generated",
+      "type": "table",
+      "matrix": "displays.md",
+      "status": "planned",
+      "datasets": [],
+      "blurb": "No outputs on disk."
+    }
   ],
   "textBlocks": [
-    { "id": "TXT-E3-1202", "e3Section": "12.2.1", "title": "Brief Summary of Adverse Events",
-      "tier": "parameterized", "displays": ["t-demo"] }
+    {
+      "id": "TXT-E3-1202",
+      "e3Section": "12.2.1",
+      "title": "Brief Summary of Adverse Events",
+      "tier": "parameterized",
+      "displays": [
+        "t-demo"
+      ]
+    }
   ],
-  "template": { "module": "templates", "dir": "library/templates/ich-e3" },
-  "docs": []
+  "template": {
+    "module": "templates",
+    "dir": "library/templates/ich-e3"
+  },
+  "docs": [],
+  "data": {
+    "package": {
+      "dir": "pipeline/inst/extdata/fixture-pkg",
+      "provenance": "PROVENANCE.json",
+      "title": "Fixture package",
+      "blurb": "A fixture package.",
+      "verify": "Rscript qc/vendor-fixture.R --check"
+    },
+    "lanes": {
+      "file": "quality/data/source-agreement.json",
+      "default": "phuse",
+      "alternate": "pharmaverseadam"
+    },
+    "datasets": [
+      {
+        "id": "adae",
+        "domain": "adam",
+        "title": "Adverse events",
+        "blurb": "Fixture events.",
+        "source": "pipeline",
+        "notes": [
+          "TRT01A from ADSL."
+        ]
+      },
+      {
+        "id": "adsl",
+        "domain": "adam",
+        "title": "Subject level",
+        "blurb": "Fixture subjects.",
+        "source": "pipeline",
+        "notes": []
+      },
+      {
+        "id": "advs",
+        "domain": "adam",
+        "title": "Vital signs",
+        "blurb": "Registered, never vendored.",
+        "source": "pipeline",
+        "notes": []
+      },
+      {
+        "id": "adcm",
+        "domain": "adam",
+        "title": "Derived medications",
+        "blurb": "Derived from cm.",
+        "source": "derived",
+        "derivedFrom": "cm",
+        "notes": [
+          "derive_adcm()."
+        ]
+      },
+      {
+        "id": "adex",
+        "domain": "adam",
+        "title": "Exposure (alternate only)",
+        "blurb": "Alternate lane.",
+        "source": "alternate",
+        "notes": []
+      }
+    ]
+  }
 }

@@ -5,7 +5,7 @@
 #' these levels rather than relying on alphabetical ordering.
 #' @noRd
 trt_levels <- function() {
-  c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose")
+  study_arm_labels()
 }
 
 #' Screen-failure arm label used by CDISCPILOT01
@@ -139,7 +139,7 @@ treatment_period_last_week <- function() 24
 #' efficacy <- prepare_data(c("adqsadas", "adqscibc"), sources = "phuse")
 #' }
 #' @export
-prepare_data <- function(datasets = c("adsl", "adae", "adex", "adlb", "advs", "adcm"),
+prepare_data <- function(datasets = c("adsl", "adae", "advs", "adcm"),
                          source_pkg = "pharmaverseadam",
                          sources = NULL) {
   registry <- data_sources(sources)
@@ -178,8 +178,11 @@ prepare_data <- function(datasets = c("adsl", "adae", "adex", "adlb", "advs", "a
   out <- list(adsl = adsl)
   for (nm in setdiff(datasets, "adsl")) {
     df <- raw[[nm]]
-    if (identical(src[[nm]], "phuse")) df <- prep_phuse_common(df, nm)
-    df <- df[df$USUBJID %in% keep_ids, , drop = FALSE]
+    if (identical(src[[nm]], "phuse")) df <- prep_phuse_common(df, nm, adsl = adsl)
+    # DM is the screened population — the one dataset whose rows are not
+    # restricted to the subjects in ADSL, because its point is the 52 who never
+    # reached it (the disposition figure, #63). Everything else is.
+    if (nm != "dm") df <- df[df$USUBJID %in% keep_ids, , drop = FALSE]
     df <- attach_trt(df, adsl)
     if (nm == "adae") df <- prep_adae(df)
     if (nm == "advs") df <- prep_advs(df)
@@ -235,6 +238,10 @@ data_sources_used <- function(prepared) {
 #' @noRd
 read_source <- function(name, source, source_pkg) {
   if (identical(source, "phuse")) {
+    # ADCM is derived from the study's own SDTM medications domain since
+    # v0.4.0 (#65); the remapped PHUSE copy stays vendored and readable as
+    # `read_phuse("adcm")` for the agreement check that proves the derivation.
+    if (identical(name, "adcm")) return(derive_adcm(read_phuse("cm")))
     return(read_phuse(name))
   }
   tryCatch(
@@ -263,6 +270,10 @@ attach_trt <- function(df, adsl) {
   i <- match(df$USUBJID, adsl$USUBJID)
   df$TRT01A <- adsl$TRT01A[i]
   if ("TRT01P" %in% names(adsl)) df$TRT01P <- adsl$TRT01P[i]
+  # A dataset the study publishes without a safety flag (its SDTM domains, and
+  # the medications dataset derived from one) takes it from ADSL by subject, so
+  # `analysis_set: safety` means the same thing on every dataset.
+  if (!"SAFFL" %in% names(df) && "SAFFL" %in% names(adsl)) df$SAFFL <- adsl$SAFFL[i]
   df
 }
 
@@ -285,6 +296,9 @@ prep_adsl <- function(adsl, vitals = NULL) {
   adsl$RACE <- factor(as.character(adsl$RACE))
   adsl$AGEGR1 <- factor(as.character(adsl$AGEGR1), levels = c("18-64", ">64"))
   adsl$ETHNIC <- factor(as.character(adsl$ETHNIC))
+  adsl$RACEOR <- race_origin(adsl$RACE, adsl$ETHNIC)
+  adsl$RACEW <- race_white_other(adsl$RACEOR)
+  adsl$SITEID <- factor(as.character(adsl$SITEID), levels = sort(unique(as.character(adsl$SITEID))))
   adsl <- merge_baseline_vitals(adsl, vitals)
   tibble::as_tibble(adsl)
 }
@@ -332,6 +346,7 @@ prep_adsl_phuse <- function(adsl) {
   adsl$SAFFL <- blank_to(adsl$SAFFL, "N")
   adsl$ITTFL <- blank_to(adsl$ITTFL, "N")
   adsl$EFFFL <- blank_to(adsl$EFFFL, "N")
+  adsl$COMP24FL <- blank_to(adsl$COMP24FL, "N")
   disc <- blank_to(adsl$DISCONFL, "N")
   dth <- blank_to(adsl$DTHFL, "N")
   adsl$COMPLFL <- ifelse(disc == "Y", "N", "Y")
@@ -342,6 +357,11 @@ prep_adsl_phuse <- function(adsl) {
   adsl$BLWT <- as.numeric(adsl$WEIGHTBL)
   adsl$BLHT <- as.numeric(adsl$HEIGHTBL)
   adsl$BLBMI <- as.numeric(adsl$BMIBL)
+  adsl$RACEOR <- race_origin(adsl$RACE, adsl$ETHNIC)
+  adsl$RACEW <- race_white_other(adsl$RACEOR)
+  # Site as a factor over every site in the study, so a count of nobody at a
+  # site is a row saying 0 rather than a row that is not there (#63).
+  adsl$SITEID <- factor(as.character(adsl$SITEID), levels = sort(unique(as.character(adsl$SITEID))))
   adsl$TRT01A <- factor(as.character(adsl$TRT01A), levels = trt_levels())
   # Actual and planned agree for all 254 subjects in this study, unlike the
   # pharmaverseadam one where twelve differ. Carried anyway, and as a factor
@@ -363,9 +383,42 @@ prep_adsl_phuse <- function(adsl) {
 #' @noRd
 phuse_agegr1_levels <- function() c("<65", "65-80", ">80")
 
+#' Race (Origin), as the 2006 report coded it
+#'
+#' The reference clinical study report prints one "Race (Origin)" classification
+#' with Hispanic as a category of its own — 218 Caucasian, 23 African Descent,
+#' 12 Hispanic, 1 Other — where CDISC-era ADaM carries race and ethnicity as two
+#' variables (230 White, 23 Black or African American, 1 American Indian or
+#' Alaska Native; 12 Hispanic or Latino). The two say the same thing: every
+#' Hispanic subject is White by race, so 218 + 12 = 230. This derivation states
+#' the recode rather than leaving a reader to infer it: ethnicity first, then
+#' race, with the report's own labels. It is not a data conflict and needs no
+#' source-priority rule (D0032, #61).
+#' @noRd
+race_origin <- function(race, ethnic) {
+  race <- as.character(race)
+  ethnic <- as.character(ethnic)
+  out <- ifelse(
+    !is.na(ethnic) & ethnic == "HISPANIC OR LATINO", "Hispanic",
+    ifelse(race == "WHITE", "Caucasian",
+      ifelse(race == "BLACK OR AFRICAN AMERICAN", "African Descent", "Other")
+    )
+  )
+  factor(out, levels = c("Caucasian", "African Descent", "Hispanic", "Other"))
+}
+
+#' Race as the report's in-text Table 11-1 groups it: White/Caucasian against everyone else
+#' @noRd
+race_white_other <- function(raceor) {
+  factor(
+    ifelse(as.character(raceor) == "Caucasian", "White/Caucasian", "Other"),
+    levels = c("White/Caucasian", "Other")
+  )
+}
+
 #' Derivations applied to every non-ADSL PHUSE dataset (see [prepare_data()])
 #' @noRd
-prep_phuse_common <- function(df, name) {
+prep_phuse_common <- function(df, name, adsl = NULL) {
   if (identical(name, "adcm")) df <- prep_adcm_phuse(df)
   df
 }
@@ -389,6 +442,45 @@ prep_phuse_common <- function(df, name) {
 #' The remap is asserted, not assumed: a subject that does not match ADSL after
 #' remapping is an error, not a silently dropped row.
 #' @noRd
+#' ADCM from the study's own SDTM CM domain
+#'
+#' The only ADCM PHUSE publishes for this study is a relabelled copy from a
+#' folder its own README calls out of place ([prep_adcm_phuse()] reverses the
+#' relabelling). The study's SDTM CM domain is in the same repository at the
+#' same commit, so the analysis dataset is derived from it here, with the
+#' derivation on record rather than assumed (#65, D0032):
+#'
+#' * one record per CM record, every CM column carried as published;
+#' * `ASTDT` / `AENDT` from `CMSTDTC` / `CMENDTC` where the date is complete
+#'   to the day, otherwise missing — no imputation, because no display reads a
+#'   date and an imputed one would be an assertion nothing checks;
+#' * `SAFFL`, `TRT01P`, `TRT01A`, `TRTSDT`, `TRTEDT` joined from the prepared
+#'   ADSL by subject in [prepare_data()] (the treatment columns by
+#'   `attach_trt()`, as for every dataset);
+#' * `CMFL = "Y"` on every record, the flag the medication table counts.
+#'
+#' Coded term and therapeutic class are CM's own `CMDECOD` and `CMCLAS`; the
+#' medication table reads nothing else. The derived dataset is held to the
+#' remapped copy on every statistic that table publishes by
+#' `test-data-phuse.R` (TFL-PREP-018).
+#' @noRd
+derive_adcm <- function(cm) {
+  cm <- as.data.frame(cm)
+  cm$USUBJID <- as.character(cm$USUBJID)
+  cm$SITEID <- substr(cm$USUBJID, 4, 6)
+  full_day <- function(x) {
+    x <- as.character(x)
+    out <- rep(as.Date(NA), length(x))
+    ok <- !is.na(x) & grepl("^[0-9]{4}-[0-9]{2}-[0-9]{2}", x)
+    out[ok] <- as.Date(substr(x[ok], 1, 10))
+    out
+  }
+  cm$ASTDT <- full_day(cm$CMSTDTC)
+  cm$AENDT <- full_day(cm$CMENDTC)
+  cm$CMFL <- "Y"
+  cm
+}
+
 prep_adcm_phuse <- function(adcm) {
   relabelled <- as.character(adcm$STUDYID) == "CDISCPILOT02"
   adcm$USUBJID <- ifelse(
@@ -425,11 +517,10 @@ merge_baseline_vitals <- function(adsl, vitals) {
 #' standing for three minutes is not the baseline for their supine SBP.
 #' @noRd
 advs_series_key <- function(advs) {
-  paste(
-    advs$USUBJID, advs$PARAMCD,
-    ifelse(is.na(advs$ATPT), "", as.character(advs$ATPT)),
-    sep = "\r"
-  )
+  atpt <- as.character(advs$ATPT)
+  # SAS-era ADaM writes an unset timepoint as a blank string; pharmaverse as NA.
+  atpt[is.na(atpt)] <- ""
+  paste(advs$USUBJID, advs$PARAMCD, atpt, sep = "\r")
 }
 
 #' ADVS derivations (see [prepare_data()])
@@ -441,6 +532,12 @@ advs_series_key <- function(advs) {
 #' @noRd
 prep_advs <- function(advs) {
   key <- advs_series_key(advs)
+  # The pharmaverse re-derivation carries derived records (DTYPE = AVERAGE, LOV)
+  # that must not feed a baseline or a last value; the pilot's own ADVS has no
+  # DTYPE column because it has no derived records. The column is added, all
+  # missing, so "observed" reads the same on both lanes — here and in every
+  # display filter that says `is.na(DTYPE)`.
+  if (!"DTYPE" %in% names(advs)) advs$DTYPE <- NA_character_
   observed <- is.na(advs$DTYPE) & !is.na(advs$AVAL)
 
   is_baseline <- observed & !is.na(advs$AVISIT) & advs$AVISIT == "Baseline"
@@ -488,18 +585,16 @@ data_manifest <- function(prepared) {
 #'
 #' @noRd
 analysis_set_flag <- function(analysis_set) {
-  reg <- c(
-    safety = "SAFFL", itt = "ITTFL", efficacy = "EFFFL",
-    completers = "COMPLFL", all = NA_character_
-  )
-  if (!analysis_set %in% names(reg)) {
+  sets <- study_model()$analysis_sets
+  if (!analysis_set %in% names(sets)) {
     stop(
       "Unknown analysis_set '", analysis_set, "'. Known sets: ",
-      paste(names(reg), collapse = ", "), ".",
+      paste(names(sets), collapse = ", "), " (library/study.yaml).",
       call. = FALSE
     )
   }
-  unname(reg[analysis_set])
+  flag <- sets[[analysis_set]]$flag
+  if (is.null(flag) || isTRUE(is.na(flag))) NA_character_ else as.character(flag)
 }
 
 #' Apply an analysis set to a dataset

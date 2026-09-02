@@ -57,6 +57,7 @@ import { fileURLToPath } from 'node:url';
 import yaml from 'js-yaml';
 
 import { checkValueStore, hashFile, loadValueStore, valueIndex } from './values-lib.mjs';
+import { checkAssemblyStudy, checkTreatmentConsistency, loadStudyModel } from './study-lib.mjs';
 import {
   loadTextLibrary,
   loadArd,
@@ -459,6 +460,16 @@ export function assemble({ write = true, template = 'ich-e3' } = {}) {
     checked: valueReport.checked,
     violations: valueReport.violations
   };
+  // One study: every placed display's per-arm counts must be the study model's
+  // for its analysis set, and no two displays may report the same set with
+  // different counts (D0032 R2, #59). A display with no population record is a
+  // named warning — "not gated" is reported, never passed off as clean.
+  const studyModel = loadStudyModel(ROOT);
+  gates.treatmentConsistency = checkTreatmentConsistency(studyModel, ards);
+  for (const e of checkAssemblyStudy(studyModel, assembly.study)) gates.treatmentConsistency.errors.push(e);
+  gates.treatmentConsistency.ok = gates.treatmentConsistency.errors.length === 0;
+  for (const w of gates.treatmentConsistency.warnings) gates.warnings.push(w);
+  gates.ok = gates.ok && gates.treatmentConsistency.ok;
 
   // The same accounting for the TFL Library. A display the library holds but this
   // document does not carry is reported, exactly as an unassembled text block is:
@@ -518,6 +529,10 @@ export function assemble({ write = true, template = 'ich-e3' } = {}) {
           html: renderMarkdown(rendered.text),
           bindings: rendered.bindings.map(({ start, ...b }) => b),
           crossReferences: rendered.xrefs.map(({ start, ...x }) => x),
+          // What this block was built from, derived from its bindings rather
+          // than declared (#78): the displays it binds, each with the iteration
+          // and ARD hash the build resolved against, and the values it cites.
+          inputs: blockInputs(rendered, ardMeta, ardHashes),
           numericFidelity: {
             ok: fidelity.ok,
             violations: fidelity.violations,
@@ -561,10 +576,16 @@ export function assemble({ write = true, template = 'ich-e3' } = {}) {
     ...missingArds.map((s) => `no ARD (outputs or fixture) for display ${s}`),
   ];
 
+  const inputs = documentInputs({ sectionModel, tpl, sections, displayIndex, ards, ardMeta, ardHashes, studyModel });
   const doc = {
     schema: 'opencsr/csr/v1',
     generated: new Date().toISOString(),
     study: assembly.study,
+    // Everything this document was built from, as links can be made from it
+    // (#78): the template object, the study model, every placed display with
+    // its iteration and datasets, every block with its state, every value
+    // cited, and every dataset reached through the displays.
+    inputs,
     template: {
       id: sectionModel.model.id ?? 'ich-e3',
       title: sectionModel.model.title ?? null,
@@ -668,6 +689,87 @@ function renderPlacedDisplay(slug, variant, displayIndex, ards, ardMeta) {
     populationLabel: entry.specs?.display?.population_label ?? null,
     footnotes: entry.specs?.display?.footnotes ?? [],
     source: entry.specs?.display?.source ?? null,
+  };
+}
+
+/** The iteration an ARD path names: outputs/<slug>/vNNN/ard.json → vNNN. */
+function iterationOf(ardPath) {
+  const match = String(ardPath ?? '').match(/\/(v\d{3})\//);
+  return match ? match[1] : null;
+}
+
+/** A block's derived inputs (#78): the displays its bindings resolved against, and the values it cites. */
+function blockInputs(rendered, ardMeta, ardHashes) {
+  const displays = new Map();
+  for (const binding of rendered.bindings) {
+    if (!binding.display) continue;
+    if (!displays.has(binding.display)) {
+      displays.set(binding.display, {
+        slug: binding.display,
+        iteration: iterationOf(ardMeta.get(binding.display)?.path),
+        ardHash: ardHashes.get(binding.display) ?? null,
+        source: ardMeta.get(binding.display)?.source ?? null,
+        bindings: 0,
+      });
+    }
+    displays.get(binding.display).bindings += 1;
+  }
+  const values = [...new Set((rendered.values ?? []).map((value) => value.id))].sort();
+  return { displays: [...displays.values()], values };
+}
+
+/** A document's inputs (#78): what it was built from, in a shape every link can be made from. */
+function documentInputs({ sectionModel, tpl, sections, displayIndex, ards, ardMeta, ardHashes, studyModel }) {
+  const displays = [...displayIndex.values()]
+    .filter((entry) => entry.variants.length)
+    .map((entry) => {
+      const ard = ards.get(entry.slug);
+      const data = Array.isArray(ard?.provenance?.data) ? ard.provenance.data : [];
+      return {
+        slug: entry.slug,
+        number: entry.number,
+        title: entry.title,
+        variants: entry.variants.slice(),
+        iteration: iterationOf(ardMeta.get(entry.slug)?.path),
+        ardHash: ardHashes.get(entry.slug) ?? null,
+        source: ardMeta.get(entry.slug)?.source ?? null,
+        datasets: data.map((d) => ({ dataset: d.dataset, hash: d.hash ?? null, n_row: d.n_row ?? null })),
+      };
+    });
+  const datasets = new Map();
+  for (const display of displays) {
+    for (const d of display.datasets) {
+      if (!datasets.has(d.dataset)) datasets.set(d.dataset, { dataset: d.dataset, hash: d.hash, n_row: d.n_row, readBy: [] });
+      datasets.get(d.dataset).readBy.push(display.slug);
+    }
+  }
+  const textBlocks = [];
+  const values = new Set();
+  for (const section of sections) {
+    for (const block of section.blocks) {
+      textBlocks.push({
+        id: block.id,
+        section: section.number,
+        tier: block.tier,
+        state: block.approval?.state ?? 'draft',
+        included: block.included,
+        displays: block.inputs.displays.map((d) => d.slug),
+        values: block.inputs.values,
+      });
+      for (const id of block.inputs.values) values.add(id);
+    }
+  }
+  return {
+    template: {
+      id: sectionModel.model.id ?? tpl.id,
+      title: sectionModel.model.title ?? null,
+      version: sectionModel.model.version ?? null,
+    },
+    study: { id: studyModel.id, file: 'library/study.yaml', cutoff: studyModel.cutoff ?? null },
+    displays,
+    datasets: [...datasets.values()],
+    textBlocks,
+    values: [...values].sort(),
   };
 }
 
@@ -1054,6 +1156,13 @@ function reportBuild(doc, tpl) {
     'approval',
     true,
     gates.approval.excluded.length ? `${gates.approval.excluded.length} draft block(s) excluded` : 'all blocks included'
+  );
+  line(
+    'treatment consistency',
+    gates.treatmentConsistency.ok,
+    gates.treatmentConsistency.errors.length
+      ? gates.treatmentConsistency.errors.join('; ')
+      : `${gates.treatmentConsistency.checked.length} display(s) agree with library/study.yaml on who was in the study`
   );
   if (doc.buildErrors.length) for (const e of doc.buildErrors) console.log(`  ! ${e}`);
   for (const w of gates.warnings) console.log(`  ~ ${w}`);

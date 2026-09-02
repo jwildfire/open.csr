@@ -1,9 +1,9 @@
 {
   "display": "l-ae-serious",
-  "version": "v002",
-  "updated": "2026-07-27T03:23:31Z",
-  "path": "outputs/l-ae-serious/v002",
-  "ard": "outputs/l-ae-serious/v002/ard.json",
-  "table": "outputs/l-ae-serious/v002/table.html",
+  "version": "v003",
+  "updated": "2026-09-02T15:19:13Z",
+  "path": "outputs/l-ae-serious/v003",
+  "ard": "outputs/l-ae-serious/v003/ard.json",
+  "table": "outputs/l-ae-serious/v003/table.html",
   "variants": "post_text"
 }

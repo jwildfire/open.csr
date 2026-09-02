@@ -32,7 +32,12 @@ FILES <- c(
   adqscibc = "data/adam/cdiscpilot01/adqscibc.xpt",
   adqsnpix = "data/adam/cdiscpilot01/adqsnpix.xpt",
   adtte    = "data/adam/cdiscpilot01/adtte.xpt",
-  adcm     = "data/adam/cdisc/adcm.xpt"
+  adcm     = "data/adam/cdisc/adcm.xpt",
+  # The study's own SDTM medications and demographics domains (#65, #63): ADCM
+  # is derived from CM rather than taken from the relabelled PHUSE copy, and DM
+  # carries the screened subjects the ADaM package does not.
+  cm       = "data/sdtm/cdiscpilot01/cm.xpt",
+  dm       = "data/sdtm/cdiscpilot01/dm.xpt"
 )
 
 git_blob_sha1 <- function(path) {

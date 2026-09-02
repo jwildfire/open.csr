@@ -19,4 +19,15 @@ iterations:
   display_hash: sha256:b865356eb33a50fb5cabae395251d60df06c7607485231ce1ae9516804af6523
   ard_hash: sha256:0395149df9ea9e04395bc28a568415b8cec29d736acb92dce4613453f72728b0
   ard_rows: 33
+- version: v003
+  created: '2026-09-02T15:19:13Z'
+  actor: '@obotclaw'
+  change_request: 'One study (D0032 R2, #60): read the CDISC pilot own ADaM package,
+    which assigns every subject the arm the rest of the report uses. Spec unchanged;
+    lane changed.'
+  git_commit: ''
+  spec_hash: sha256:a046fb1cdc11ed10d586284efeb97e30ab743f4ad394869bd83ae1bfb401d140
+  display_hash: sha256:11a00d098fef3df8b121fb620738945ccf9e734b004c50eac13702efc5dfd705
+  ard_hash: sha256:cde82561c80104b90b6cd633c27d62bdfbfd1e835fa8b6b761af9cc1d9142276
+  ard_rows: 33
 

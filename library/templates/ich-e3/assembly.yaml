@@ -30,13 +30,15 @@ study:
   design: "Randomised, double-blind, placebo-controlled, parallel-group"
   treatment_groups: ["Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"]
   primary_analysis_set: "Safety Analysis Set"
-  data_source: "CDISCPILOT01 ADaM — pharmaverseadam, and the CDISC pilot's own package (phuse-org/phuse-scripts)"
+  data_source: "CDISCPILOT01 ADaM — the CDISC pilot's own package (phuse-org/phuse-scripts, data/adam/cdiscpilot01), every display"
   scope_note: >-
-    Safety and efficacy demonstration. The safety displays are built from
-    pharmaverseadam; the efficacy displays in Section 14.2 are built from the
-    CDISC pilot's own ADaM package, vendored from phuse-org/phuse-scripts, which
-    is the only packaging of CDISCPILOT01 that carries the efficacy domains
-    (design decision D12). Section 11.4 remains unpopulated: its narrative
+    Safety and efficacy demonstration. Every display is built from the CDISC
+    pilot's own ADaM package, vendored from phuse-org/phuse-scripts, since
+    v0.4.0 (D0032 R2): the pharmaverse re-derivation of the same study assigns
+    twelve subjects to a different actual treatment, and a report that read both
+    told two versions of the study. The re-derivation remains readable and is
+    measured against the package by qc/source-agreement.R; nothing this
+    document places reads it. Section 11.4 remains unpopulated: its narrative
     analysis of efficacy is not yet written.
 
 # Where the assembler writes the auto-generated provenance appendix.
@@ -61,7 +63,7 @@ slots:
 
   - section: "10.1"
     text: [TXT-E3-1001, TXT-E3-1002]
-    displays: [t-disposition]
+    displays: [t-disposition, f-disposition]
 
   - section: "11.1"
     text: [TXT-E3-1101]
@@ -82,8 +84,14 @@ slots:
     text: [TXT-E3-1222]
     displays: [t-ae-common]
 
+  - section: "12.2.3"
+    displays: [t-ae-incidence]
+
   - section: "12.2.4"
     text: [TXT-E3-1224]
+
+  - section: "12.5"
+    displays: [t-weight]
 
   - section: "12.3.1"
     text: [TXT-E3-1231]
@@ -111,7 +119,7 @@ post_text:
   # Whoever owns Section 14 as a whole should make that call once, not a worker
   # landing two tables.
   - section: "14.1"
-    displays: [t-disposition, t-demographics, t-populations, t-end-of-study]
+    displays: [t-disposition, t-demographics, t-populations, t-end-of-study, t-subjects-by-site, f-disposition]
 
   # Efficacy. Ordered as the CDISCPILOT01 reference report orders its own
   # Section 14.3 efficacy displays — the two Week-24 primaries first, then the
@@ -149,10 +157,10 @@ post_text:
       - f-derm-time-to-event               # Figure 14-1
 
   - section: "14.3.1"
-    displays: [t-exposure, t-ae-overview, t-ae-common]
+    displays: [t-exposure, t-ae-overview, t-ae-common, t-ae-incidence]
 
   - section: "14.3.2"
-    displays: [l-ae-serious]
+    displays: [l-ae-serious, t-sae-incidence]
 
   - section: "14.3.5"
     displays: [t-vitals, t-vitals-change, t-weight, t-conmeds]

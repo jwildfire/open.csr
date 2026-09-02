@@ -12,7 +12,7 @@
     "id": "CDISCPILOT01",
     "title": "Safety and Efficacy of the Xanomeline Transdermal Therapeutic System (TTS) in Patients with Mild to Moderate Alzheimer's Disease",
     "cutoff": "2014-07-01",
-    "source": "pharmaverseadam (CDISC Pilot 01)"
+    "source": "CDISCPILOT01 ADaM package (phuse-org/phuse-scripts)"
   },
   "documents": [
     {
@@ -645,6 +645,80 @@
         "DSP-WT",
         "DSP-VWC"
       ]
+    },
+    {
+      "module": "t-ae-incidence",
+      "slug": "t-ae-incidence",
+      "title": "Incidence of Treatment Emergent Adverse Events by Treatment Group",
+      "regulatoryId": "AET03",
+      "type": "table",
+      "e3Section": "14.3.1",
+      "matrix": "displays.md",
+      "status": "planned",
+      "datasets": [
+        "adae",
+        "adsl"
+      ],
+      "blurb": "The reference report's Table 14-5.01: subjects, percentages and event counts per system organ class and preferred term, with Fisher's exact test of placebo against each active arm.",
+      "prefixes": [
+        "DSP-AEI",
+        "DSP-REF"
+      ]
+    },
+    {
+      "module": "t-sae-incidence",
+      "slug": "t-sae-incidence",
+      "title": "Incidence of Treatment Emergent Serious Adverse Events by Treatment Group",
+      "regulatoryId": "AET04",
+      "type": "table",
+      "e3Section": "14.3.2",
+      "matrix": "displays.md",
+      "status": "planned",
+      "datasets": [
+        "adae",
+        "adsl"
+      ],
+      "blurb": "The reference report's Table 14-5.02: the serious treatment-emergent events, counted and tested the same way as the full incidence table.",
+      "prefixes": [
+        "DSP-AEI",
+        "DSP-REF"
+      ]
+    },
+    {
+      "module": "t-subjects-by-site",
+      "slug": "t-subjects-by-site",
+      "title": "Summary of Number of Subjects By Site",
+      "regulatoryId": "DST04",
+      "type": "table",
+      "e3Section": "14.1",
+      "matrix": "displays.md",
+      "status": "planned",
+      "datasets": [
+        "adsl"
+      ],
+      "blurb": "The reference report's Table 14-1.03: intent-to-treat, efficacy and Week 24 completer counts per site and treatment group, small sites pooled under id 900.",
+      "prefixes": [
+        "DSP-SITE",
+        "DSP-REF"
+      ]
+    },
+    {
+      "module": "f-disposition",
+      "slug": "f-disposition",
+      "title": "Subject Disposition",
+      "regulatoryId": "DSF01",
+      "type": "figure",
+      "e3Section": "10.1",
+      "matrix": "displays.md",
+      "status": "planned",
+      "datasets": [
+        "dm",
+        "adsl"
+      ],
+      "blurb": "The reference report's Figure 10-1: subjects screened, screen failures, randomised, completed Week 24 and completed the study, drawn as a flow from the study's SDTM DM and its ADSL.",
+      "prefixes": [
+        "DSP-FLOW"
+      ]
     }
   ],
   "textBlocks": [
@@ -840,5 +914,449 @@
       "title": "05 · The safety.viz evidence framework",
       "group": "Research"
     }
-  ]
+  ],
+  "data": {
+    "package": {
+      "dir": "pipeline/inst/extdata/phuse-cdiscpilot01",
+      "provenance": "PROVENANCE.json",
+      "readme": "README.md",
+      "title": "The study's own data package",
+      "blurb": "CDISCPILOT01's ADaM datasets and two SDTM domains, vendored from phuse-org/phuse-scripts at a pinned commit under its MIT licence; every file's git blob SHA-1 was recomputed from the downloaded bytes and matched against the commit's tree.",
+      "verify": "Rscript qc/vendor-phuse-data.R --check"
+    },
+    "lanes": {
+      "file": "quality/data/source-agreement.json",
+      "default": "phuse",
+      "alternate": "pharmaverseadam"
+    },
+    "datasets": [
+      {
+        "id": "adsl",
+        "domain": "adam",
+        "title": "Subject-level analysis dataset",
+        "blurb": "One record per subject: demographics, the study's own population flags, baseline measures, treatment and disposition. The denominator for every display.",
+        "source": "pipeline",
+        "notes": [
+          "SAFFL, ITTFL and EFFFL as the study states them, blank recoded to N; no population flag is guessed.",
+          "Baseline weight, height and BMI and the study's own age groups (<65, 65-80, >80) as shipped.",
+          "RACEOR, the race-with-origin recode the reference report prints (ethnicity first, then race), added for the demographics table; the CDISC-coded RACE stays.",
+          "SITEID kept as a factor in the site order the reference report uses."
+        ]
+      },
+      {
+        "id": "adae",
+        "domain": "adam",
+        "title": "Adverse events",
+        "blurb": "One record per reported event; treatment-emergent, serious and relationship flags as shipped.",
+        "source": "pipeline",
+        "notes": [
+          "TRT01A is taken from the prepared ADSL by USUBJID, never from the dataset's own treatment columns.",
+          "The treatment-emergent flag is the study's own; nothing is re-derived."
+        ]
+      },
+      {
+        "id": "advs",
+        "domain": "adam",
+        "title": "Vital signs",
+        "blurb": "Six parameters over every visit; the input to the vital-sign and weight displays.",
+        "source": "pipeline",
+        "notes": [
+          "TRT01A from the prepared ADSL by USUBJID.",
+          "A DTYPE column is added as all-missing when the package ships none, so filters on derived records apply the same way on both lanes; blank AVISIT and ATPT are treated as unset."
+        ]
+      },
+      {
+        "id": "adlbc",
+        "domain": "adam",
+        "title": "Laboratory: chemistry",
+        "blurb": "Vendored for the laboratory families; read by no display until v0.4.1.",
+        "source": "pipeline",
+        "notes": []
+      },
+      {
+        "id": "adlbh",
+        "domain": "adam",
+        "title": "Laboratory: haematology",
+        "blurb": "Vendored for the laboratory families; read by no display until v0.4.1.",
+        "source": "pipeline",
+        "notes": []
+      },
+      {
+        "id": "adlbhy",
+        "domain": "adam",
+        "title": "Laboratory: Hy's-law parameters",
+        "blurb": "Derived by the study from its chemistry data; vendored for the laboratory families; read by no display until v0.4.1.",
+        "source": "pipeline",
+        "notes": []
+      },
+      {
+        "id": "adqsadas",
+        "domain": "adam",
+        "title": "ADAS-Cog (11)",
+        "blurb": "The study's first primary efficacy endpoint at Week 24; the input to the ADAS-Cog displays.",
+        "source": "pipeline",
+        "notes": [
+          "TRT01A from the prepared ADSL by USUBJID.",
+          "Visits are selected by AVISITN in every specification."
+        ]
+      },
+      {
+        "id": "adqscibc",
+        "domain": "adam",
+        "title": "CIBIC+",
+        "blurb": "The study's second primary efficacy endpoint at Week 24; the input to the CIBIC+ displays.",
+        "source": "pipeline",
+        "notes": [
+          "TRT01A from the prepared ADSL by USUBJID."
+        ]
+      },
+      {
+        "id": "adqsnpix",
+        "domain": "adam",
+        "title": "NPI-X",
+        "blurb": "The secondary efficacy endpoint; the input to the NPI-X mean display.",
+        "source": "pipeline",
+        "notes": [
+          "TRT01A from the prepared ADSL by USUBJID.",
+          "AVISIT ships right-aligned in a sixteen-character field, so the specification selects visits by AVISITN."
+        ]
+      },
+      {
+        "id": "adtte",
+        "domain": "adam",
+        "title": "Time to first dermatologic event",
+        "blurb": "A safety analysis: dermatologic events are the study's adverse events of special interest; the input to the one time-to-event figure.",
+        "source": "pipeline",
+        "notes": [
+          "TRT01A from the prepared ADSL by USUBJID."
+        ]
+      },
+      {
+        "id": "adcm",
+        "domain": "adam",
+        "title": "Concomitant medications (analysis dataset)",
+        "blurb": "Derived by the pipeline from the study's SDTM CM domain; the input to the medication table.",
+        "source": "derived",
+        "derivedFrom": "cm",
+        "lane": "phuse",
+        "notes": [
+          "derive_adcm(): every CM column as published; ASTDT and AENDT only where the source states a full date; CMFL = Y on every record.",
+          "SAFFL and TRT01A from the prepared ADSL by USUBJID.",
+          "Reproduces every one of the 414 statistics the medication table published from the relabelled copy (TFL-PREP-018)."
+        ]
+      },
+      {
+        "id": "cm",
+        "domain": "sdtm",
+        "title": "Concomitant medications (SDTM domain)",
+        "blurb": "The study's SDTM CM domain, 7,510 records for 229 subjects; the input to adcm.",
+        "source": "pipeline",
+        "notes": [
+          "Read whole; the derivation to adcm is the only preparation."
+        ]
+      },
+      {
+        "id": "dm",
+        "domain": "sdtm",
+        "title": "Demographics (SDTM domain)",
+        "blurb": "All 306 screened subjects, including the 52 screen failures the ADaM package does not carry; the input to the disposition flow.",
+        "source": "pipeline",
+        "notes": [
+          "The one dataset prepare_data() keeps whole: screen failures are not removed, because the screened population is what this domain is for."
+        ]
+      },
+      {
+        "id": "adcm-copy",
+        "file": "adcm",
+        "domain": "adam",
+        "title": "Concomitant medications: PHUSE's relabelled copy",
+        "blurb": "Not part of the CDISC pilot package: a copy from a folder the upstream README calls out of place, with half its subjects relabelled into a second study. Read by no display since v0.4.0.",
+        "source": "pipeline",
+        "notes": [
+          "Kept for the check that the derived adcm reproduces its 414 statistics (TFL-PREP-018); whether to remove it is a question for the v0.4.0 review."
+        ]
+      },
+      {
+        "id": "adex",
+        "domain": "adam",
+        "title": "Exposure (pharmaverseadam only)",
+        "blurb": "Served only by the alternate lane; the exposure display reads ADSL's own dose columns instead. Read by no display.",
+        "source": "alternate",
+        "notes": []
+      },
+      {
+        "id": "adlb",
+        "domain": "adam",
+        "title": "Laboratory (pharmaverseadam only)",
+        "blurb": "Served only by the alternate lane; the study's own package carries adlbc, adlbh and adlbhy instead. Read by no display.",
+        "source": "alternate",
+        "notes": []
+      }
+    ]
+  },
+  "pipeline": {
+    "functions": [
+      {
+        "id": "prepare-data",
+        "label": "prepare_data()",
+        "kind": "R",
+        "code": "pipeline/R/data-prep.R",
+        "produces": "datasets",
+        "blurb": "Reads each dataset the specs name from its source lane, applies the documented derivations, and hands the prepared frames to the ARD builder; every ARD records each frame's hash and row count.",
+        "reads": [
+          {
+            "label": "vendored transport files",
+            "sub": "the study's own package",
+            "href": "data/index.html"
+          },
+          {
+            "label": "the source registry",
+            "sub": "data_sources(): which lane each dataset resolves to",
+            "href": "data/lanes.html"
+          },
+          {
+            "label": "the study model",
+            "sub": "analysis-set flags, arm labels",
+            "href": "metadata/study.html"
+          }
+        ],
+        "writes": [
+          {
+            "label": "prepared datasets",
+            "sub": "in memory; hash and rows recorded in every ARD envelope"
+          }
+        ]
+      },
+      {
+        "id": "build-ard",
+        "label": "build_ard()",
+        "kind": "R",
+        "code": "pipeline/R/ard.R",
+        "produces": "displays",
+        "blurb": "Runs each analysis in analysis.yaml — built-in or the display's own custom.R — over the prepared datasets and stacks the results into the ARD, one row per statistic, with the population record.",
+        "reads": [
+          {
+            "label": "analysis.yaml",
+            "sub": "what to compute",
+            "href": "metadata/specs.html"
+          },
+          {
+            "label": "custom.R",
+            "sub": "where a built-in method does not fit",
+            "href": "metadata/specs.html"
+          },
+          {
+            "label": "prepared datasets",
+            "href": "pipeline/prepare-data.html"
+          },
+          {
+            "label": "the study model",
+            "sub": "arms in print order",
+            "href": "metadata/study.html"
+          }
+        ],
+        "writes": [
+          {
+            "label": "ARD rows",
+            "sub": "opencsr/ard/v1, plus the population record"
+          }
+        ]
+      },
+      {
+        "id": "render-display",
+        "label": "render_display()",
+        "kind": "R",
+        "code": "pipeline/R/render.R",
+        "produces": "displays",
+        "blurb": "Draws each variant of the display from the ARD and display.yaml: columns, rows, formats, footnotes, and the figure where the display is one.",
+        "reads": [
+          {
+            "label": "ARD rows",
+            "href": "pipeline/build-ard.html"
+          },
+          {
+            "label": "display.yaml",
+            "sub": "how to show it",
+            "href": "metadata/specs.html"
+          }
+        ],
+        "writes": [
+          {
+            "label": "table.html per variant",
+            "sub": "the rendered cells"
+          }
+        ]
+      },
+      {
+        "id": "render-rtf",
+        "label": "render_rtf()",
+        "kind": "R",
+        "code": "pipeline/R/rtf.R",
+        "produces": "displays",
+        "blurb": "Writes the same rendered cells as submission-format RTF, hash-recorded in the manifest so a hand-edited copy cannot pass as the pipeline's.",
+        "reads": [
+          {
+            "label": "the rendered cells",
+            "href": "pipeline/render-display.html"
+          }
+        ],
+        "writes": [
+          {
+            "label": "table.rtf per variant",
+            "sub": "sha256 in the manifest"
+          }
+        ]
+      },
+      {
+        "id": "regenerate",
+        "label": "regenerate()",
+        "kind": "R",
+        "code": "pipeline/R/regenerate.R",
+        "produces": "displays",
+        "calls": [
+          "prepare-data",
+          "build-ard",
+          "render-display",
+          "render-rtf"
+        ],
+        "blurb": "One display, one rebuild: prepares the data, builds the ARD, renders every variant, and writes a new iteration folder with its manifest — never editing an earlier one.",
+        "reads": [
+          {
+            "label": "analysis.yaml + display.yaml + custom.R",
+            "href": "metadata/specs.html"
+          },
+          {
+            "label": "prepared datasets",
+            "href": "pipeline/prepare-data.html"
+          },
+          {
+            "label": "the study model",
+            "href": "metadata/study.html"
+          }
+        ],
+        "writes": [
+          {
+            "label": "outputs/<slug>/vNNN/",
+            "sub": "spec snapshots, ard.json, table.html, table.rtf, manifest.json"
+          },
+          {
+            "label": "current.json",
+            "sub": "which iteration is current"
+          }
+        ]
+      },
+      {
+        "id": "regenerate-values",
+        "label": "regenerate_values()",
+        "kind": "R",
+        "code": "pipeline/R/values.R",
+        "produces": "values",
+        "blurb": "Resolves every named value's address against the committed ARDs, evaluates the declared arithmetic, and writes the store with each value's provenance.",
+        "reads": [
+          {
+            "label": "values.yaml",
+            "sub": "names, addresses, arithmetic",
+            "href": "metadata/specs.html#value-declarations"
+          },
+          {
+            "label": "committed ARDs",
+            "sub": "each display's current iteration",
+            "href": "gallery/index.html"
+          }
+        ],
+        "writes": [
+          {
+            "label": "outputs/values/values.json",
+            "sub": "value, formatted value, ARD row and hash",
+            "href": "values/index.html"
+          }
+        ]
+      },
+      {
+        "id": "assemble",
+        "label": "assemble.mjs",
+        "kind": "node",
+        "code": "scripts/assemble.mjs",
+        "produces": "documents",
+        "blurb": "Fills a template object with this study's text, displays and values, numbers the displays from assembly order, records what each block and the document were built from, and runs the seven gates.",
+        "reads": [
+          {
+            "label": "sections.yaml + assembly.yaml",
+            "sub": "the document model and what this study puts in it",
+            "href": "metadata/models.html"
+          },
+          {
+            "label": "text blocks",
+            "sub": "approved ones, for generated prose",
+            "href": "text/index.html"
+          },
+          {
+            "label": "current ARDs and rendered variants",
+            "href": "gallery/index.html"
+          },
+          {
+            "label": "values.json",
+            "href": "values/index.html"
+          },
+          {
+            "label": "the study model",
+            "sub": "the treatment-consistency gate",
+            "href": "metadata/study.html"
+          }
+        ],
+        "writes": [
+          {
+            "label": "docs/assembled/<document>.json",
+            "sub": "the document as data, with every gate's result and its inputs record"
+          },
+          {
+            "label": "docs/assembled/<document>.html",
+            "sub": "the rendered document",
+            "href": "reader/index.html"
+          }
+        ],
+        "gates": [
+          "structure",
+          "binding resolution",
+          "numeric fidelity",
+          "cross-references",
+          "values",
+          "treatment consistency",
+          "display coverage"
+        ]
+      },
+      {
+        "id": "site",
+        "label": "site.mjs",
+        "kind": "node",
+        "code": "scripts/site.mjs",
+        "produces": "site",
+        "blurb": "Builds every page of this site from the registry, the outputs, the assembled documents and the evidence — including the pages you are reading — and fails on any internal link that does not resolve or any external resource.",
+        "reads": [
+          {
+            "label": "site/config.json",
+            "sub": "the registry"
+          },
+          {
+            "label": "outputs/",
+            "sub": "every iteration"
+          },
+          {
+            "label": "docs/assembled/",
+            "href": "reader/index.html"
+          },
+          {
+            "label": "docs/evidence/ + docs/requirements/",
+            "href": "quality/index.html"
+          }
+        ],
+        "writes": [
+          {
+            "label": "site/_build/",
+            "sub": "every page, no external resource"
+          }
+        ]
+      }
+    ]
+  }
 }

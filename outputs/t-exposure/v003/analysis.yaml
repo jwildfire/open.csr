@@ -1,0 +1,49 @@
+# ------------------------------------------------------------------------------
+# t-exposure — Summary of Planned Exposure to Study Drug, as of End of Study
+# ------------------------------------------------------------------------------
+# Target: Table 14-4.01 of the CDISCPILOT01 clinical study report (27 June 2006).
+#
+# The reference summarises two ADSL columns — average daily dose (AVGDD) and
+# cumulative dose at end of study (CUMDOSE) — for the safety population and, in
+# a second column group, for the subjects who completed Week 24. No exposure
+# dataset is involved: the pilot's ADaM package ships no ADEX, and the table
+# never needed one. Until v0.4.0 this display read the pharmaverse
+# re-derivation's ADEX and grouped by an actual-treatment column that moved
+# twelve subjects between arms; it now reads the study's own package and agrees
+# with the rest of the report on who was in it (D0032 R2, #60).
+#
+# The reference lays the two populations out as column groups. v0 supports one
+# grouping variable, which the treatment column uses, so the completers appear
+# as a second block of ROWS under the same three columns — the same transposition
+# t-vitals makes. Every number is the reference's number; only the axis differs,
+# and the display's footnote says so.
+# ------------------------------------------------------------------------------
+id: t-exposure
+title: "Summary of Planned Exposure to Study Drug, as of End of Study"
+regulatory_id: EXT01
+type: table
+dataset: adsl
+analysis_set: safety
+denominator: adsl
+group:
+  - TRT01A
+total: false
+analyses:
+  - name: avgdd
+    method: continuous
+    label: "Average daily dose (mg) — safety population"
+    variables: [AVGDD]
+  - name: cumdose
+    method: continuous
+    label: "Cumulative dose at end of study (mg) — safety population"
+    variables: [CUMDOSE]
+  - name: avgdd_comp
+    method: continuous
+    label: "Average daily dose (mg) — completers at Week 24"
+    variables: [AVGDD]
+    filter: "COMP24FL == 'Y'"
+  - name: cumdose_comp
+    method: continuous
+    label: "Cumulative dose at end of study (mg) — completers at Week 24"
+    variables: [CUMDOSE]
+    filter: "COMP24FL == 'Y'"

@@ -1,7 +1,7 @@
 {
   "schema": "opencsr/values/v1",
   "study": "CDISCPILOT01",
-  "created": "2026-07-27T03:26:37Z",
+  "created": "2026-09-02T16:14:21Z",
   "provenance": {
     "source_file": "library/values/values.yaml",
     "source_hash": "sha256:36d11e4f5ca874ce784c46f13996aa0108bb88fbb4ae1c54d8ba024cd8309374",
@@ -37,9 +37,9 @@
         "address": "t-disposition:randomised:n;group=Total",
         "display": "t-disposition",
         "analysis": "randomised",
-        "iteration": "v002",
-        "ard_file": "outputs/t-disposition/v002/ard.json",
-        "ard_hash": "sha256:26f56529e5e4b993c332b35a296957e7fcb8dcd3a8cf19ed6a3802c19bd42f89"
+        "iteration": "v003",
+        "ard_file": "outputs/t-disposition/v003/ard.json",
+        "ard_hash": "sha256:5a073a0a558678bc67b89573bc98619270f854d3af5d5cbdc18cd0ce8ed4f530"
       },
       "notes": "The denominator for every disposition percentage in section 10.1."
     },
@@ -57,9 +57,9 @@
         "address": "t-disposition:treated:n;group=Total",
         "display": "t-disposition",
         "analysis": "treated",
-        "iteration": "v002",
-        "ard_file": "outputs/t-disposition/v002/ard.json",
-        "ard_hash": "sha256:26f56529e5e4b993c332b35a296957e7fcb8dcd3a8cf19ed6a3802c19bd42f89"
+        "iteration": "v003",
+        "ard_file": "outputs/t-disposition/v003/ard.json",
+        "ard_hash": "sha256:5a073a0a558678bc67b89573bc98619270f854d3af5d5cbdc18cd0ce8ed4f530"
       },
       "notes": null
     },
@@ -77,9 +77,9 @@
         "address": "t-disposition:completed:n;group=Total",
         "display": "t-disposition",
         "analysis": "completed",
-        "iteration": "v002",
-        "ard_file": "outputs/t-disposition/v002/ard.json",
-        "ard_hash": "sha256:26f56529e5e4b993c332b35a296957e7fcb8dcd3a8cf19ed6a3802c19bd42f89"
+        "iteration": "v003",
+        "ard_file": "outputs/t-disposition/v003/ard.json",
+        "ard_hash": "sha256:5a073a0a558678bc67b89573bc98619270f854d3af5d5cbdc18cd0ce8ed4f530"
       },
       "notes": null
     },
@@ -97,9 +97,9 @@
         "address": "t-disposition:discontinued:n;group=Total",
         "display": "t-disposition",
         "analysis": "discontinued",
-        "iteration": "v002",
-        "ard_file": "outputs/t-disposition/v002/ard.json",
-        "ard_hash": "sha256:26f56529e5e4b993c332b35a296957e7fcb8dcd3a8cf19ed6a3802c19bd42f89"
+        "iteration": "v003",
+        "ard_file": "outputs/t-disposition/v003/ard.json",
+        "ard_hash": "sha256:5a073a0a558678bc67b89573bc98619270f854d3af5d5cbdc18cd0ce8ed4f530"
       },
       "notes": null
     },
@@ -117,9 +117,9 @@
         "address": "t-disposition:completed:p;group=Total",
         "display": "t-disposition",
         "analysis": "completed",
-        "iteration": "v002",
-        "ard_file": "outputs/t-disposition/v002/ard.json",
-        "ard_hash": "sha256:26f56529e5e4b993c332b35a296957e7fcb8dcd3a8cf19ed6a3802c19bd42f89"
+        "iteration": "v003",
+        "ard_file": "outputs/t-disposition/v003/ard.json",
+        "ard_hash": "sha256:5a073a0a558678bc67b89573bc98619270f854d3af5d5cbdc18cd0ce8ed4f530"
       },
       "notes": null
     },
@@ -137,9 +137,9 @@
         "address": "t-demographics:age:median;group=Total",
         "display": "t-demographics",
         "analysis": "age",
-        "iteration": "v002",
-        "ard_file": "outputs/t-demographics/v002/ard.json",
-        "ard_hash": "sha256:e03ca473fd5d976fa5732f0881bea51715104a90494eb4a8ffa5104186299f6c"
+        "iteration": "v007",
+        "ard_file": "outputs/t-demographics/v007/ard.json",
+        "ard_hash": "sha256:87af02747ecd7e74df308ac7fc521b68e22f7fad3fb86607e5e93d9d28cb82a5"
       },
       "notes": null
     },
@@ -157,9 +157,9 @@
         "address": "t-demographics:sex:n;group=Total;variable_level=F",
         "display": "t-demographics",
         "analysis": "sex",
-        "iteration": "v002",
-        "ard_file": "outputs/t-demographics/v002/ard.json",
-        "ard_hash": "sha256:e03ca473fd5d976fa5732f0881bea51715104a90494eb4a8ffa5104186299f6c"
+        "iteration": "v007",
+        "ard_file": "outputs/t-demographics/v007/ard.json",
+        "ard_hash": "sha256:87af02747ecd7e74df308ac7fc521b68e22f7fad3fb86607e5e93d9d28cb82a5"
       },
       "notes": null
     },
@@ -167,8 +167,8 @@
       "id": "ae-any-n-total",
       "label": "Subjects with at least one adverse event",
       "kind": "ard",
-      "value": 217,
-      "formatted": "217",
+      "value": 218,
+      "formatted": "218",
       "format": {
         "scale": 1,
         "digits": 0
@@ -177,9 +177,9 @@
         "address": "t-ae-overview:any_ae:n;group=Total",
         "display": "t-ae-overview",
         "analysis": "any_ae",
-        "iteration": "v002",
-        "ard_file": "outputs/t-ae-overview/v002/ard.json",
-        "ard_hash": "sha256:96f9dbfd9a826be61b5edbdd269eede08c59dc8f9b5748b66fa5bfdb72ded7a3"
+        "iteration": "v003",
+        "ard_file": "outputs/t-ae-overview/v003/ard.json",
+        "ard_hash": "sha256:c428956bd34e0625304d2feeb54999dda3a3a9455412ad41606f19562a208cd7"
       },
       "notes": null
     },
@@ -197,9 +197,9 @@
         "address": "t-ae-overview:any_ae:n;group=Placebo",
         "display": "t-ae-overview",
         "analysis": "any_ae",
-        "iteration": "v002",
-        "ard_file": "outputs/t-ae-overview/v002/ard.json",
-        "ard_hash": "sha256:96f9dbfd9a826be61b5edbdd269eede08c59dc8f9b5748b66fa5bfdb72ded7a3"
+        "iteration": "v003",
+        "ard_file": "outputs/t-ae-overview/v003/ard.json",
+        "ard_hash": "sha256:c428956bd34e0625304d2feeb54999dda3a3a9455412ad41606f19562a208cd7"
       },
       "notes": null
     },
@@ -207,8 +207,8 @@
       "id": "ae-any-n-low",
       "label": "Subjects with at least one adverse event (Xanomeline Low Dose)",
       "kind": "ard",
-      "value": 84,
-      "formatted": "84",
+      "value": 77,
+      "formatted": "77",
       "format": {
         "scale": 1,
         "digits": 0
@@ -217,9 +217,9 @@
         "address": "t-ae-overview:any_ae:n;group=Xanomeline Low Dose",
         "display": "t-ae-overview",
         "analysis": "any_ae",
-        "iteration": "v002",
-        "ard_file": "outputs/t-ae-overview/v002/ard.json",
-        "ard_hash": "sha256:96f9dbfd9a826be61b5edbdd269eede08c59dc8f9b5748b66fa5bfdb72ded7a3"
+        "iteration": "v003",
+        "ard_file": "outputs/t-ae-overview/v003/ard.json",
+        "ard_hash": "sha256:c428956bd34e0625304d2feeb54999dda3a3a9455412ad41606f19562a208cd7"
       },
       "notes": null
     },
@@ -227,8 +227,8 @@
       "id": "ae-any-n-high",
       "label": "Subjects with at least one adverse event (Xanomeline High Dose)",
       "kind": "ard",
-      "value": 68,
-      "formatted": "68",
+      "value": 76,
+      "formatted": "76",
       "format": {
         "scale": 1,
         "digits": 0
@@ -237,9 +237,9 @@
         "address": "t-ae-overview:any_ae:n;group=Xanomeline High Dose",
         "display": "t-ae-overview",
         "analysis": "any_ae",
-        "iteration": "v002",
-        "ard_file": "outputs/t-ae-overview/v002/ard.json",
-        "ard_hash": "sha256:96f9dbfd9a826be61b5edbdd269eede08c59dc8f9b5748b66fa5bfdb72ded7a3"
+        "iteration": "v003",
+        "ard_file": "outputs/t-ae-overview/v003/ard.json",
+        "ard_hash": "sha256:c428956bd34e0625304d2feeb54999dda3a3a9455412ad41606f19562a208cd7"
       },
       "notes": null
     },
@@ -247,8 +247,8 @@
       "id": "ae-any-pct-high",
       "label": "Percentage of high-dose subjects with at least one adverse event",
       "kind": "ard",
-      "value": 0.944444444444444,
-      "formatted": "94.4",
+      "value": 0.904761904761905,
+      "formatted": "90.5",
       "format": {
         "scale": 100,
         "digits": 1
@@ -257,9 +257,9 @@
         "address": "t-ae-overview:any_ae:p;group=Xanomeline High Dose",
         "display": "t-ae-overview",
         "analysis": "any_ae",
-        "iteration": "v002",
-        "ard_file": "outputs/t-ae-overview/v002/ard.json",
-        "ard_hash": "sha256:96f9dbfd9a826be61b5edbdd269eede08c59dc8f9b5748b66fa5bfdb72ded7a3"
+        "iteration": "v003",
+        "ard_file": "outputs/t-ae-overview/v003/ard.json",
+        "ard_hash": "sha256:c428956bd34e0625304d2feeb54999dda3a3a9455412ad41606f19562a208cd7"
       },
       "notes": null
     },
@@ -267,8 +267,8 @@
       "id": "safety-n-high",
       "label": "Subjects in the safety analysis set (Xanomeline High Dose)",
       "kind": "ard",
-      "value": 72,
-      "formatted": "72",
+      "value": 84,
+      "formatted": "84",
       "format": {
         "scale": 1,
         "digits": 0
@@ -277,9 +277,9 @@
         "address": "t-ae-overview:any_ae:N;group=Xanomeline High Dose",
         "display": "t-ae-overview",
         "analysis": "any_ae",
-        "iteration": "v002",
-        "ard_file": "outputs/t-ae-overview/v002/ard.json",
-        "ard_hash": "sha256:96f9dbfd9a826be61b5edbdd269eede08c59dc8f9b5748b66fa5bfdb72ded7a3"
+        "iteration": "v003",
+        "ard_file": "outputs/t-ae-overview/v003/ard.json",
+        "ard_hash": "sha256:c428956bd34e0625304d2feeb54999dda3a3a9455412ad41606f19562a208cd7"
       },
       "notes": null
     },
@@ -287,8 +287,8 @@
       "id": "ae-any-n-xanomeline",
       "label": "Subjects with at least one adverse event, both xanomeline arms",
       "kind": "derived",
-      "value": 152,
-      "formatted": "152",
+      "value": 153,
+      "formatted": "153",
       "format": {
         "scale": 1,
         "digits": 0
@@ -303,8 +303,8 @@
       "id": "ae-excess-high-vs-placebo",
       "label": "Additional subjects with an adverse event, high dose versus placebo",
       "kind": "derived",
-      "value": 3,
-      "formatted": "3",
+      "value": 11,
+      "formatted": "11",
       "format": {
         "scale": 1,
         "digits": 0

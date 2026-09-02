@@ -50,12 +50,19 @@ test_that("TFL-FMT-003: format_stat honours an explicit digit plan (#1)", {
 })
 
 test_that("TFL-FMT-003: the row-level digit plan overrides the display digit plan (#1)", {
-  disp <- fixture_display("t-demographics")
-  idx <- which(plain(disp$table$label) == "Mean (SD)")
-  expect_gt(length(idx), 1)
-  vals <- disp$table$col1[idx]
-  # Age uses the display-level plan (mean 1 dp, sd 2 dp) …
-  expect_identical(vals[1], "75.2 (8.59)")
-  # … baseline weight overrides the mean to 2 dp on its own rows.
-  expect_true("62.76 (12.77)" %in% vals)
+  spec <- read_display_spec("t-demographics")
+  ard <- fixture_ard("t-demographics")
+  before <- render_display(ard, spec)
+  means <- which(plain(before$table$label) == "Mean")
+  # the display-level plan prints every mean to one decimal …
+  expect_identical(before$table$col1[means[1]], "75.2")
+  # … and a row-level plan on the weight row alone overrides it to two
+  i <- which(vapply(spec$rows, function(r) identical(r$analysis, "weight") && identical(r$pattern, "{mean}"), logical(1)))
+  expect_length(i, 1)
+  spec$rows[[i]]$digits <- list(mean = 2)
+  after <- render_display(ard, spec)
+  w <- which(plain(after$table$label) == "Mean" & seq_along(after$table$label) > which(plain(after$table$label) == "Baseline weight(kg)"))[1]
+  expect_identical(before$table$col1[w], "62.8")
+  expect_identical(after$table$col1[w], "62.76")
+  expect_identical(after$table$col1[means[1]], "75.2")
 })

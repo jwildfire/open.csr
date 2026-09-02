@@ -1,14 +1,14 @@
 {
   "suite": "r-unit",
   "package": "opencsr",
-  "generated": "2026-08-27T14:58:55Z",
+  "generated": "2026-09-02T23:26:02Z",
   "environment": {
     "r": "4.3.3",
     "os": "Darwin 23.6.0"
   },
   "summary": {
-    "total": 140,
-    "passed": 140,
+    "total": 166,
+    "passed": 166,
     "failed": 0,
     "errored": 0,
     "skipped": 0
@@ -126,7 +126,7 @@
     },
     {
       "file": "test-data-phuse.R",
-      "test": "TFL-PREP-014: adding PHUSE data moves nothing the displays already stand on (#39)",
+      "test": "TFL-PREP-014: the alternate lane still prepares whole, with its own derivations and arms (#39)",
       "status": "pass"
     },
     {
@@ -137,6 +137,16 @@
     {
       "file": "test-data-phuse.R",
       "test": "TFL-SRC-001: the two sources' overlap matches the committed record (#39)",
+      "status": "pass"
+    },
+    {
+      "file": "test-data-phuse.R",
+      "test": "TFL-PREP-018: the medication analysis dataset is derived from the study's own SDTM CM domain and reproduces every statistic the remapped PHUSE copy gave the medication table (#65)",
+      "status": "pass"
+    },
+    {
+      "file": "test-data-phuse.R",
+      "test": "TFL-PREP-019: DM is the screened population and is the one dataset prepare_data() does not restrict to the subjects in ADSL (#63)",
       "status": "pass"
     },
     {
@@ -172,6 +182,11 @@
     {
       "file": "test-data-prep.R",
       "test": "TFL-PREP-007: treatment arms are ordered by dose, not alphabetically (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-data-prep.R",
+      "test": "TFL-PREP-017: Race (Origin) is derived on both lanes — ethnicity first, then race, with the report's labels (#61)",
       "status": "pass"
     },
     {
@@ -336,12 +351,22 @@
     },
     {
       "file": "test-displays.R",
-      "test": "DSP-DEMO-001: the age summary matches ADSL computed directly (#1)",
+      "test": "DSP-DEMO-001: the age summary matches the pilot's ADSL computed directly, and the display is the intent-to-treat population with a Total column (#61)",
       "status": "pass"
     },
     {
       "file": "test-displays.R",
-      "test": "DSP-DEMO-002: sex, race and age-group counts match ADSL (#1)",
+      "test": "DSP-DEMO-002: sex, Race (Origin) and age-group counts and percentages match ADSL, printed the way the report prints them (#61)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays.R",
+      "test": "DSP-DEMO-003: every p-value on the display is the one-way ANOVA or Pearson chi-square the report's footnote names, recomputed independently (#61)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays.R",
+      "test": "DSP-DEMO-004: Race (Origin) is a stated recode of race and ethnicity, not a data conflict — 218 + 12 = 230 (#61)",
       "status": "pass"
     },
     {
@@ -356,12 +381,12 @@
     },
     {
       "file": "test-displays.R",
-      "test": "DSP-EXP-001: exposure duration matches the ADEX TDURD parameter (#1)",
+      "test": "DSP-EXP-001: average daily dose and cumulative dose match the pilot's ADSL computed directly (#60)",
       "status": "pass"
     },
     {
       "file": "test-displays.R",
-      "test": "DSP-EXP-002: cumulative exposure categories are monotone non-increasing (#1)",
+      "test": "DSP-EXP-002: the completers block summarises the subjects flagged COMP24FL, the exposure categories are monotone, and no exposure dataset is read (#60)",
       "status": "pass"
     },
     {
@@ -447,6 +472,71 @@
     {
       "file": "test-displays.R",
       "test": "DSP-REF-001: both displays publish the figures the pilot's own report printed (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays.R",
+      "test": "DSP-REF-002: the demographics and exposure displays publish every cell the pilot's own report printed for Tables 14-2.01 and 14-4.01 (#61)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays.R",
+      "test": "DSP-AEI-001: the any-event row and every organ-class row count subjects, percentages and events as the reference does, recomputed directly from ADAE (#62)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays.R",
+      "test": "DSP-AEI-002: every p-value is Fisher's exact test of placebo against the arm on subject incidence, starred below 0.15, >0.99 when it rounds to one, and blank where neither arm has a subject with the event (#62)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays.R",
+      "test": "DSP-AEI-003: organ classes print alphabetically and preferred terms by high-dose subjects then name, the order the reference prints; the serious-events table orders terms by subjects summed across the arms (#62)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays.R",
+      "test": "DSP-AEI-004: the serious-events table counts the same way as the incidence table through one shared implementation (#62)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays.R",
+      "test": "DSP-REF-003: the incidence and serious-events displays publish every cell the pilot's own report printed for Tables 14-5.01 and 14-5.02 — 258 lines of three cells and two p-values (#62)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays.R",
+      "test": "DSP-FLOW-001: the disposition figure counts screened, screen-failure, randomised, Week 24 and study completers from DM and ADSL directly, prints them in its table and draws them in its flow (#63)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays.R",
+      "test": "DSP-SITE-001: every site row counts the intent-to-treat, efficacy and Week 24 completer subjects per arm and overall, equal to a direct count of ADSL (#63)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays.R",
+      "test": "DSP-SITE-002: the seven small sites are listed under pooled id 900, each on its own line, after the ten that stand alone (#63)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays.R",
+      "test": "DSP-REF-004: the subjects-by-site display publishes every cell the pilot's own report printed for Table 14-1.03 (#63)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays.R",
+      "test": "DSP-INTXT-001: the in-text demographics redraw is the report's Table 11-1 — mean and range, percentages, race as White/Caucasian or other — from the same ARD as the full table (#63)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays.R",
+      "test": "DSP-INTXT-002: the in-text incidence redraw is the report's Table 12-1 — terms at 5% or more in any arm, flat, in title case, an asterisk where the placebo comparison has p < 0.15 (#63)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays.R",
+      "test": "DSP-INTXT-003: the in-text weight redraw is the report's Table 12-4 — n and mean per arm for baseline and the changes at Week 24 and end of treatment — from the weight table's own ARD (#63)",
       "status": "pass"
     },
     {
@@ -580,6 +670,21 @@
       "status": "pass"
     },
     {
+      "file": "test-render.R",
+      "test": "TFL-RND-008: a level prints under its declared label, a sub-block's test comes from the sibling analysis `p_from` names and sits on its first level only, and the report's zero and sub-1% presentations are display options (#61)",
+      "status": "pass"
+    },
+    {
+      "file": "test-render.R",
+      "test": "TFL-RND-009: a hierarchical row plan can order its levels by name, by one arm's count, or by the subjects summed across arms, and a bare-zero option applies to any pattern that prints a count (#62)",
+      "status": "pass"
+    },
+    {
+      "file": "test-render.R",
+      "test": "TFL-RND-010: a column may name its group, its analysis and its pattern, and a variant may redraw the display with its own rows, columns and format over the same ARD (#63)",
+      "status": "pass"
+    },
+    {
       "file": "test-rtf.R",
       "test": "TFL-RTF-001: a rendered display encodes as a complete RTF document (#1)",
       "status": "pass"
@@ -662,6 +767,31 @@
     {
       "file": "test-spec-validation.R",
       "test": "TFL-SPEC-006: every committed display in the library validates (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-study-model.R",
+      "test": "STD-MODEL-003: the treatment vocabulary and the analysis-set registry resolve from the study model, not from code (#59)",
+      "status": "pass"
+    },
+    {
+      "file": "test-study-model.R",
+      "test": "STD-MODEL-004: every count the model declares is what the default lane's ADSL holds, per arm and per set (#59)",
+      "status": "pass"
+    },
+    {
+      "file": "test-study-model.R",
+      "test": "STD-MODEL-005: every committed ARD carries a population record that agrees with the study model for its analysis set (#59)",
+      "status": "pass"
+    },
+    {
+      "file": "test-study-model.R",
+      "test": "STD-SRC-001: the default registry serves every pilot dataset from the study's own package, and only the two datasets it lacks come from the alternate (#60)",
+      "status": "pass"
+    },
+    {
+      "file": "test-study-model.R",
+      "test": "STD-SRC-002: the pilot's ADVS prepares without derived-record or timepoint columns the alternate carries, and its series keys match (#60)",
       "status": "pass"
     },
     {

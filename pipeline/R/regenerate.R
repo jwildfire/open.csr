@@ -104,7 +104,7 @@ current_iteration <- function(slug, root = csr_root()) {
 #' }
 #' @export
 regenerate <- function(slug, root = csr_root(), change_request = "Initial generation.",
-                       actor = "@jwildfire", data = NULL) {
+                       actor = "@jwildfire", data = NULL, sources = NULL) {
   analysis_spec <- read_analysis_spec(slug, root)
   display_spec <- read_display_spec(slug, root)
   check_specs_consistent(analysis_spec, display_spec)
@@ -113,6 +113,10 @@ regenerate <- function(slug, root = csr_root(), change_request = "Initial genera
   }
 
   needed <- unique(c("adsl", analysis_spec$dataset, analysis_spec$denominator))
+  # An explicit `sources` is the lane THIS iteration is built on, recorded in its
+  # provenance; it exists so qc/regenerate-library.R can replay the iterations
+  # that were built on the alternate lane before v0.4.0 without lying about it.
+  if (!is.null(sources)) analysis_spec$sources <- normalise_sources(sources)
   if (is.null(data)) data <- prepare_data(datasets = needed, sources = analysis_spec$sources)
   missing <- setdiff(needed, names(data))
   if (length(missing)) {
@@ -120,7 +124,10 @@ regenerate <- function(slug, root = csr_root(), change_request = "Initial genera
   }
   check_data_sources(data, analysis_spec, needed, slug)
 
-  custom_env <- source_custom(display_dir(slug, root))
+  # `custom_from: <slug>` lets a display borrow another display's custom.R, so
+  # two tables that must count the same way (the incidence table and its
+  # serious-events companion) share one implementation rather than a copy.
+  custom_env <- source_custom(display_dir(analysis_spec$custom_from %||% slug, root))
   rows <- build_ard(analysis_spec, data, custom_env)
 
   version <- version_label(next_version(slug, root))
@@ -134,6 +141,7 @@ regenerate <- function(slug, root = csr_root(), change_request = "Initial genera
     attr(analysis_spec, "path"), attr(display_spec, "path"),
     data_manifest(data), needed, root
   )
+  provenance$population <- attr(rows, "population")
   created <- iso_now()
   ard_path <- file.path(dir, "ard.json")
   write_ard(rows, ard_path, display = slug, provenance = provenance, created = created)

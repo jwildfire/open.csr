@@ -34,11 +34,18 @@
 #' data_sources("phuse")[["adsl"]]
 #' @export
 data_sources <- function(source = NULL) {
+  # What the pharmaverse re-derivation can serve, and the two datasets only it
+  # serves. Since v0.4.0 the study's own package is the default for everything
+  # it publishes (D0032 R2, #60): the re-derivation assigns twelve subjects to a
+  # different actual treatment, and a report that read both told two versions
+  # of the study. ADEX and ADLB have no pilot equivalent and no display reads
+  # them; they stay reachable so the alternate lane can still be measured.
   pv <- c("adsl", "adae", "adex", "adlb", "advs")
+  pv_only <- c("adex", "adlb")
   ph <- phuse_datasets()
   default <- c(
-    stats::setNames(rep("pharmaverseadam", length(pv)), pv),
-    stats::setNames(rep("phuse", length(setdiff(ph, pv))), setdiff(ph, pv))
+    stats::setNames(rep("phuse", length(ph)), ph),
+    stats::setNames(rep("pharmaverseadam", length(pv_only)), pv_only)
   )
   if (is.null(source)) {
     return(default)

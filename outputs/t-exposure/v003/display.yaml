@@ -1,0 +1,56 @@
+id: t-exposure
+title: "Summary of Planned Exposure to Study Drug, as of End of Study"
+study: CDISCPILOT01
+population_label: "Safety Analysis Set"
+cutoff: "2014-07-01"
+source: "Source: adsl (CDISCPILOT01 ADaM package, phuse-org/phuse-scripts). Data cut-off: 2014-07-01."
+footnotes:
+  - "Average daily dose and cumulative dose are the subject-level AVGDD and CUMDOSE the study's own ADaM package carries; no exposure (ADEX) dataset is used. End of study is Week 26 or early termination."
+  - "The reference report (Table 14-4.01) presents completers at Week 24 and the safety population as two column groups. This display presents the same statistics with the two populations as row blocks under one set of treatment columns; no number differs."
+  - "Completers at Week 24 are the subjects flagged COMP24FL = 'Y' in the safety analysis set: 60, 28 and 30 subjects."
+  - "Placebo subjects have a planned dose of zero, so every placebo dose statistic is 0."
+columns:
+  order: [Placebo, "Xanomeline Low Dose", "Xanomeline High Dose"]
+format:
+  digits:
+    mean: 1
+    sd: 2
+    median: 1
+    min: 1
+    max: 1
+rows:
+  - { label: "Safety population", section: true }
+  - { label: "Average daily dose (mg)", section: true, indent: 1 }
+  - { analysis: avgdd, variable: AVGDD, pattern: "{N}", label: "n", indent: 2 }
+  - { analysis: avgdd, variable: AVGDD, pattern: "{mean}", label: "Mean", indent: 2 }
+  - { analysis: avgdd, variable: AVGDD, pattern: "{sd}", label: "SD", indent: 2 }
+  - { analysis: avgdd, variable: AVGDD, pattern: median, label: "Median", indent: 2 }
+  - { analysis: avgdd, variable: AVGDD, pattern: "{min}", label: "Min", indent: 2 }
+  - { analysis: avgdd, variable: AVGDD, pattern: "{max}", label: "Max", indent: 2 }
+  - { label: "Cumulative dose at end of study (mg)", section: true, indent: 1 }
+  - { analysis: cumdose, variable: CUMDOSE, pattern: "{N}", label: "n", indent: 2 }
+  - { analysis: cumdose, variable: CUMDOSE, pattern: "{mean}", label: "Mean", indent: 2 }
+  - { analysis: cumdose, variable: CUMDOSE, pattern: "{sd}", label: "SD", indent: 2 }
+  - { analysis: cumdose, variable: CUMDOSE, pattern: median, label: "Median", indent: 2 }
+  - { analysis: cumdose, variable: CUMDOSE, pattern: "{min}", label: "Min", indent: 2 }
+  - { analysis: cumdose, variable: CUMDOSE, pattern: "{max}", label: "Max", indent: 2 }
+  - { label: "Completers at Week 24", section: true }
+  - { label: "Average daily dose (mg)", section: true, indent: 1 }
+  - { analysis: avgdd_comp, variable: AVGDD, pattern: "{N}", label: "n", indent: 2 }
+  - { analysis: avgdd_comp, variable: AVGDD, pattern: "{mean}", label: "Mean", indent: 2 }
+  - { analysis: avgdd_comp, variable: AVGDD, pattern: "{sd}", label: "SD", indent: 2 }
+  - { analysis: avgdd_comp, variable: AVGDD, pattern: median, label: "Median", indent: 2 }
+  - { analysis: avgdd_comp, variable: AVGDD, pattern: "{min}", label: "Min", indent: 2 }
+  - { analysis: avgdd_comp, variable: AVGDD, pattern: "{max}", label: "Max", indent: 2 }
+  - { label: "Cumulative dose at end of study (mg)", section: true, indent: 1 }
+  - { analysis: cumdose_comp, variable: CUMDOSE, pattern: "{N}", label: "n", indent: 2 }
+  - { analysis: cumdose_comp, variable: CUMDOSE, pattern: "{mean}", label: "Mean", indent: 2 }
+  - { analysis: cumdose_comp, variable: CUMDOSE, pattern: "{sd}", label: "SD", indent: 2 }
+  - { analysis: cumdose_comp, variable: CUMDOSE, pattern: median, label: "Median", indent: 2 }
+  - { analysis: cumdose_comp, variable: CUMDOSE, pattern: "{min}", label: "Min", indent: 2 }
+  - { analysis: cumdose_comp, variable: CUMDOSE, pattern: "{max}", label: "Max", indent: 2 }
+variants:
+  post_text:
+    title: "Summary of Planned Exposure to Study Drug, as of End of Study"
+  in_text:
+    title: "Extent of exposure"

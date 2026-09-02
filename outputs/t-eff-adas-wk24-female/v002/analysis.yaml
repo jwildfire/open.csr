@@ -1,0 +1,43 @@
+id: t-eff-adas-wk24-female
+title: "ADAS-Cog (11) - Change from Baseline to Week 24 in Female Subjects - LOCF"
+regulatory_id: EFT06
+type: table
+dataset: adqsadas
+analysis_set: efficacy
+denominator: adsl
+sources: phuse
+group:
+  - TRTP
+total: false
+analyses:
+  - name: population
+    method: continuous
+    custom: population_n
+    label: "Subjects in the analysis population"
+    filter: "PARAMCD == 'ACTOT' & SEX == 'F'"
+  - name: summary
+    method: continuous
+    label: "ADAS-Cog (11) total score at baseline, at Week 24, and its change"
+    variables: [BASE, AVAL, CHG]
+    filter: "PARAMCD == 'ACTOT' & ANL01FL == 'Y' & SEX == 'F' & AVISIT == 'Week 24'"
+  - name: ancova
+    method: continuous
+    custom: ancova_change
+    label: "ANCOVA of the change from baseline to Week 24"
+    variables: [CHG]
+    filter: "PARAMCD == 'ACTOT' & ANL01FL == 'Y' & SEX == 'F' & AVISIT == 'Week 24'"
+    response: CHG
+    covariates: [BASE]
+    factors: [SITEGR1]
+    treatment: TRTP
+    treatment_levels: ["Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"]
+    dose: TRTPN
+    conf_level: 0.95
+    contrasts:
+      - { name: dose_response, type: dose, column: "Xanomeline High Dose" }
+      - { name: xan_vs_placebo, type: pairwise, test: "Xanomeline Low Dose",
+          reference: "Placebo", column: "Xanomeline Low Dose" }
+      - { name: xan_vs_placebo, type: pairwise, test: "Xanomeline High Dose",
+          reference: "Placebo", column: "Xanomeline High Dose" }
+      - { name: high_vs_low, type: pairwise, test: "Xanomeline High Dose",
+          reference: "Xanomeline Low Dose", column: "Xanomeline High Dose" }

@@ -15,7 +15,7 @@
 # demonstrate.
 #
 # Efficacy is unpopulated ON PURPOSE, not by omission. No efficacy ADaM exists for
-# CDISCPILOT01 in pharmaverseadam (design decision D12), so sections 9.1 (Criteria
+# CDISCPILOT01 as first demonstrated (design decision D12), so sections 9.1 (Criteria
 # for Evaluation: Efficacy) and 11.1 (Efficacy Results) claim no text block and
 # appear in the assembled synopsis as headings marked not populated. The reference
 # clinical study report for this dataset devotes thirteen tables to efficacy; this
@@ -38,7 +38,7 @@ study:
   design: "Randomised, double-blind, placebo-controlled, parallel-group"
   treatment_groups: ["Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"]
   primary_analysis_set: "Safety Analysis Set"
-  data_source: "CDISCPILOT01 ADaM — pharmaverseadam, and the CDISC pilot's own package (phuse-org/phuse-scripts)"
+  data_source: "CDISCPILOT01 ADaM — the CDISC pilot's own package (phuse-org/phuse-scripts, data/adam/cdiscpilot01), every display"
   scope_note: >-
     Safety-focused synopsis assembled from the same library as the full ICH E3
     clinical study report for this study. Efficacy fields are intentionally

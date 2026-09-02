@@ -19,4 +19,60 @@ iterations:
   display_hash: sha256:47d64c3c97e9a311b8b5bfdd7ae6d2a3cb1ff5a6442ad77664da993634c629bd
   ard_hash: sha256:e03ca473fd5d976fa5732f0881bea51715104a90494eb4a8ffa5104186299f6c
   ard_rows: 236
+- version: v003
+  created: '2026-09-02T15:19:11Z'
+  actor: '@obotclaw'
+  change_request: 'One study (D0032 R2, #60): read the CDISC pilot own ADaM package,
+    which assigns every subject the arm the rest of the report uses. Spec unchanged;
+    lane changed.'
+  git_commit: ''
+  spec_hash: sha256:0f1e9b9029b61b70bfa00f93c9f0c52050859ff26cacb67ee2fed50c39392854
+  display_hash: sha256:42749da6e08b70f58cbdc3f69f07e6afcd08ae9761af5069ee77881ec9c95c3c
+  ard_hash: sha256:f2f974ad782c763956477535f2bf8649cf311d2e2c8e45dbee80c8ae5aa8408c
+  ard_rows: 248
+- version: v004
+  created: '2026-09-02T15:39:23Z'
+  actor: '@obotclaw'
+  change_request: 'Table 14-2.01 of the reference report (D0032, #61): intent-to-treat
+    population, a Total and a p-value column (one-way ANOVA / Pearson chi-square per
+    block), the report rows — age and its groups, sex, Race (Origin) recoded from
+    race and ethnicity, MMSE, duration of disease and its groups, years of education,
+    baseline weight, height, BMI and its groups. The FDA-standard DMT01 shape is superseded;
+    CDISC-coded race and ethnicity stay in the ARD for the narrative bindings.'
+  git_commit: ''
+  spec_hash: sha256:1db216cf8f6d81a73469c0afb0c7ffaa6ae987f22f7e9ce0d047af310da061b2
+  display_hash: sha256:b2e005bfe913dfdd4b86b1e3be1500bb29f9b2312000b5767af62ff124b89c8a
+  ard_hash: sha256:c9e63ef82035c2cc33bfe7817451343c1df0c62b1a389834b78f652193d252ab
+  ard_rows: 524
+- version: v005
+  created: '2026-09-02T15:44:12Z'
+  actor: '@obotclaw'
+  change_request: 'The sub-1% percentage presentation made a display option (format:
+    sub_one_pct) rather than an engine rule: the reference end-of-study table prints
+    1 ( 0%) where its demographics table prints 1 ( <1%). Every cell unchanged.'
+  git_commit: ''
+  spec_hash: sha256:1db216cf8f6d81a73469c0afb0c7ffaa6ae987f22f7e9ce0d047af310da061b2
+  display_hash: sha256:ce6678b15ca47b2e0515c5e641b4b8eb28da7159f2365403c0890efde5cdb306
+  ard_hash: sha256:3516f690df3588f12fb1b589645820308174a25130219b0bc6c0cf67e51d112e
+  ard_rows: 524
+- version: v006
+  created: '2026-09-02T16:10:27Z'
+  actor: '@obotclaw'
+  change_request: 'In-text variant redrawn as the reference report prints it (Tables
+    11-1, 12-1, 12-4; D0032, #63).'
+  git_commit: ''
+  spec_hash: sha256:1db216cf8f6d81a73469c0afb0c7ffaa6ae987f22f7e9ce0d047af310da061b2
+  display_hash: sha256:ce6678b15ca47b2e0515c5e641b4b8eb28da7159f2365403c0890efde5cdb306
+  ard_hash: sha256:7e45dc8db8a0e477efb13091b020841d2c61ca495fcd2b37859532d4d1091bcb
+  ard_rows: 524
+- version: v007
+  created: '2026-09-02T16:11:27Z'
+  actor: '@obotclaw'
+  change_request: 'In-text variant redrawn as the reference report prints it (Tables
+    11-1, 12-1, 12-4; D0032, #63).'
+  git_commit: ''
+  spec_hash: sha256:bc60600be035071da384b07199fb4b48cfc3f8b46e764e2db96d568a2bd34e20
+  display_hash: sha256:c2a1f1710bcf057a83819c6e6e29b95aeaa30bc0bedf5d3c7bbca9d63d356b0c
+  ard_hash: sha256:87af02747ecd7e74df308ac7fc521b68e22f7fad3fb86607e5e93d9d28cb82a5
+  ard_rows: 548
 

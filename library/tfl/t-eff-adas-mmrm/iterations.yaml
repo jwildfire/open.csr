@@ -21,4 +21,26 @@ iterations:
   display_hash: sha256:edf500134e53cb5b38327998d146394ae02c95250e84483692bb11b48656c174
   ard_hash: sha256:9df5a5383226227390b036da06a51c8091fd384e0f03005309a70a07f06cb54d
   ard_rows: 34
+- version: v003
+  created: '2026-09-02T15:23:22Z'
+  actor: '@obotclaw'
+  change_request: 'One study (D0032 R2, #59): regenerated so the ARD carries its population
+    record for the treatment-consistency gate. Spec and lane unchanged; every statistic
+    identical.'
+  git_commit: ''
+  spec_hash: sha256:3070e2ae555ebd380a243e788f94e58d8b53d122f15a7bfa7ebfff80bc48324d
+  display_hash: sha256:edf500134e53cb5b38327998d146394ae02c95250e84483692bb11b48656c174
+  ard_hash: sha256:3f78c39a01368b70c854af6ba7cef8d2a8c193264602d8eece8a238008e6c5dd
+  ard_rows: 34
+- version: v004
+  created: '2026-09-02T16:32:01Z'
+  actor: '@obotclaw'
+  change_request: 'Footnote records the Kenward-Roger spike (D0032 Issue H, #66):
+    tried with mmrm, reproduces the REML criterion, moves one of the five cells and
+    not the other four; model-based fit kept. Every statistic unchanged.'
+  git_commit: ''
+  spec_hash: sha256:3070e2ae555ebd380a243e788f94e58d8b53d122f15a7bfa7ebfff80bc48324d
+  display_hash: sha256:2b6b8354af167c95b5cca54dd0172177c473fe62cc59edb3645f8c365338117e
+  ard_hash: sha256:8953a87538065b43903e4c30de05fc1b94ce3019a5073fb119b5dfe694f0127f
+  ard_rows: 34
 

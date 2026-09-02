@@ -1,0 +1,77 @@
+display: t-ae-incidence
+iterations:
+- version: v001
+  created: '2026-09-02T15:52:27Z'
+  actor: '@obotclaw'
+  change_request: 'Table 14-5.01 of the reference report (D0032, #62): subjects, percentages
+    and event counts per system organ class and preferred term, with Fisher exact
+    tests of placebo against each active arm; organ classes alphabetical, terms by
+    high-dose count then name.'
+  git_commit: ''
+  spec_hash: sha256:a94b85b6e974ae8cc4f19deacfc41f440b4ec4b68c0c8edcc69ca4d6aea3a0ec
+  display_hash: sha256:3834d196a2ce2a14b1216debf6f2572f09d08420b426ea8deeec32a485e51c3c
+  ard_hash: sha256:8e97f642415db7a9122d534a7655478fc2f1d322dc57dbf10a81688d149497f7
+  ard_rows: 4064
+- version: v002
+  created: '2026-09-02T15:53:49Z'
+  actor: '@obotclaw'
+  change_request: Event counts printed as integers; serious-events terms ordered as
+    the reference serious-events program orders them (descending subjects across groups,
+    then name).
+  git_commit: ''
+  spec_hash: sha256:a94b85b6e974ae8cc4f19deacfc41f440b4ec4b68c0c8edcc69ca4d6aea3a0ec
+  display_hash: sha256:607f4ae84c927699cf417a66c958a3a177b371ed4c2be7ccd28172f0b500263c
+  ard_hash: sha256:9940015c87fae9440008ead872c4f20537f8f8f93190c2adc8c2571fa8d72ae5
+  ard_rows: 4064
+- version: v003
+  created: '2026-09-02T15:56:53Z'
+  actor: '@obotclaw'
+  change_request: A p-value under 0.0005 prints as 0.000, as the reference report
+    prints it.
+  git_commit: ''
+  spec_hash: sha256:a94b85b6e974ae8cc4f19deacfc41f440b4ec4b68c0c8edcc69ca4d6aea3a0ec
+  display_hash: sha256:607f4ae84c927699cf417a66c958a3a177b371ed4c2be7ccd28172f0b500263c
+  ard_hash: sha256:36521737dcf98516c3c989fb9d07e59b96ca7311421f7753549b93e7915e9080
+  ard_rows: 4064
+- version: v004
+  created: '2026-09-02T16:01:54Z'
+  actor: '@obotclaw'
+  change_request: A trailing zero at the third decimal of a p-value is dropped, as
+    the report prints it; the four p-values the reference rounded a thousandth higher
+    are stated in the footnotes.
+  git_commit: ''
+  spec_hash: sha256:a94b85b6e974ae8cc4f19deacfc41f440b4ec4b68c0c8edcc69ca4d6aea3a0ec
+  display_hash: sha256:eec75feb7bc7a2f440fb67df52fb0cae0357d898bbb966bd64ef73cc5e9fb1a3
+  ard_hash: sha256:129545c3331e31ff88a7cb0b66e0348399964729a4cd3439329f82435f67f555
+  ard_rows: 4064
+- version: v005
+  created: '2026-09-02T16:02:56Z'
+  actor: '@obotclaw'
+  change_request: A p-value of 0.000 keeps its zeros; only a single trailing zero
+    at the third decimal is dropped, as the report prints.
+  git_commit: ''
+  spec_hash: sha256:a94b85b6e974ae8cc4f19deacfc41f440b4ec4b68c0c8edcc69ca4d6aea3a0ec
+  display_hash: sha256:eec75feb7bc7a2f440fb67df52fb0cae0357d898bbb966bd64ef73cc5e9fb1a3
+  ard_hash: sha256:c8613b34897ae56c92b93e497e48031ac30a5f0888afb638b04c1b48d681784b
+  ard_rows: 4064
+- version: v006
+  created: '2026-09-02T16:10:29Z'
+  actor: '@obotclaw'
+  change_request: 'In-text variant redrawn as the reference report prints it (Tables
+    11-1, 12-1, 12-4; D0032, #63).'
+  git_commit: ''
+  spec_hash: sha256:a94b85b6e974ae8cc4f19deacfc41f440b4ec4b68c0c8edcc69ca4d6aea3a0ec
+  display_hash: sha256:eec75feb7bc7a2f440fb67df52fb0cae0357d898bbb966bd64ef73cc5e9fb1a3
+  ard_hash: sha256:4ded03570bc321199bb8e5807b318f29261d4baec353f696ead566b3e90b3802
+  ard_rows: 4826
+- version: v007
+  created: '2026-09-02T16:11:28Z'
+  actor: '@obotclaw'
+  change_request: 'In-text variant redrawn as the reference report prints it (Tables
+    11-1, 12-1, 12-4; D0032, #63).'
+  git_commit: ''
+  spec_hash: sha256:a94b85b6e974ae8cc4f19deacfc41f440b4ec4b68c0c8edcc69ca4d6aea3a0ec
+  display_hash: sha256:0511d99eff8bd1d012504f3c1f2857d6c1f9198a71a166450641e2a19444c556
+  ard_hash: sha256:091de5139418fc160d23400a54f2b6895a2981c8e71fbca4b478665e4a0d4293
+  ard_rows: 4826
+

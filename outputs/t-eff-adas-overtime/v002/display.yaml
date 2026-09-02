@@ -1,0 +1,79 @@
+id: t-eff-adas-overtime
+title: "ADAS-Cog (11) - Mean and Mean Change from Baseline over Time"
+study: CDISCPILOT01
+population_label: "Efficacy Analysis Set"
+cutoff: "2015-02-17"
+source: "Source: adqsadas (ADAS-Cog (11) total score, PARAMCD ACTOT) and adsl, from the CDISC pilot's own ADaM package (phuse-org/phuse-scripts, MIT). Analysis as specified in the CDISCPILOT01 statistical analysis plan, sections 8.1, 8.2 and 10.1.1, and its display specification Template 9. Reference report display: Table 14-3.10. Data cut-off: 2015-02-17."
+footnotes:
+  - "Windowed rows include only assessments that fell inside the visit's assessment window, and impute nothing; a subject with no assessment in that window contributes to none of the statistics for that row, so n is below the column N. LOCF rows carry the last observation forward, so every subject contributes at every visit and n equals the column N."
+  - "The baseline row of each visit is the mean baseline score of the subjects contributing to that visit, not the baseline of the whole column. The two differ wherever a visit is missing for some subjects, which is why the windowed rows are the ones that move."
+  - "ORIENTED HERE, NOT INHERITED: the reference report lays this table out with treatment as row groups and thirteen statistic columns. It is presented here with treatment in the columns, as every other display in this library does, and the statistics as rows. No number, no record selection and no rounding differs; only the axis the reader scans. The reference orientation is recoverable from the same ARD without recomputation."
+  - "Assessments are selected by AVISITN rather than the AVISIT label throughout."
+  - "Treatment columns are planned treatment (TRTP), which is how the CDISCPILOT01 reference report presents them."
+  - "CDISCPILOT01 states no data cut-off date. The date shown is the latest ADAS-Cog assessment date present in the vendored ADaM package."
+columns:
+  order: ["Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"]
+format:
+  mean_sd: "{mean} ({sd})"
+  median_range: "{median} ({min};{max})"
+  digits:
+    mean: 1
+    sd: 2
+    median: 1
+    min: 0
+    max: 0
+rows:
+  - { label: "Baseline", section: true }
+  - { analysis: baseline, variable: AVAL, pattern: "N", label: "n", indent: 1 }
+  - { analysis: baseline, variable: AVAL, pattern: mean_sd, label: "Mean (SD)", indent: 1 }
+  - { analysis: baseline, variable: AVAL, pattern: median_range, label: "Median (Range)", indent: 1 }
+
+  - { label: "Week 8 (windowed)", section: true }
+  - { analysis: wk8_win, variable: AVAL, pattern: "N", label: "n", indent: 1 }
+  - { analysis: wk8_win, variable: AVAL, pattern: mean_sd, label: "Mean (SD)", indent: 1 }
+  - { analysis: wk8_win, variable: AVAL, pattern: median_range, label: "Median (Range)", indent: 1 }
+  - { analysis: wk8_win, variable: BASE, pattern: mean_sd, label: "Baseline of these subjects, mean (SD)", indent: 1 }
+  - { analysis: wk8_win, variable: CHG, pattern: mean_sd, label: "Change from baseline, mean (SD)", indent: 1 }
+  - { analysis: wk8_win, variable: CHG, pattern: median_range, label: "Change from baseline, median (Range)", indent: 1 }
+
+  - { label: "Week 16 (windowed)", section: true }
+  - { analysis: wk16_win, variable: AVAL, pattern: "N", label: "n", indent: 1 }
+  - { analysis: wk16_win, variable: AVAL, pattern: mean_sd, label: "Mean (SD)", indent: 1 }
+  - { analysis: wk16_win, variable: AVAL, pattern: median_range, label: "Median (Range)", indent: 1 }
+  - { analysis: wk16_win, variable: BASE, pattern: mean_sd, label: "Baseline of these subjects, mean (SD)", indent: 1 }
+  - { analysis: wk16_win, variable: CHG, pattern: mean_sd, label: "Change from baseline, mean (SD)", indent: 1 }
+  - { analysis: wk16_win, variable: CHG, pattern: median_range, label: "Change from baseline, median (Range)", indent: 1 }
+
+  - { label: "Week 24 (windowed)", section: true }
+  - { analysis: wk24_win, variable: AVAL, pattern: "N", label: "n", indent: 1 }
+  - { analysis: wk24_win, variable: AVAL, pattern: mean_sd, label: "Mean (SD)", indent: 1 }
+  - { analysis: wk24_win, variable: AVAL, pattern: median_range, label: "Median (Range)", indent: 1 }
+  - { analysis: wk24_win, variable: BASE, pattern: mean_sd, label: "Baseline of these subjects, mean (SD)", indent: 1 }
+  - { analysis: wk24_win, variable: CHG, pattern: mean_sd, label: "Change from baseline, mean (SD)", indent: 1 }
+  - { analysis: wk24_win, variable: CHG, pattern: median_range, label: "Change from baseline, median (Range)", indent: 1 }
+
+  - { label: "Week 8 (LOCF)", section: true }
+  - { analysis: wk8_locf, variable: AVAL, pattern: "N", label: "n", indent: 1 }
+  - { analysis: wk8_locf, variable: AVAL, pattern: mean_sd, label: "Mean (SD)", indent: 1 }
+  - { analysis: wk8_locf, variable: AVAL, pattern: median_range, label: "Median (Range)", indent: 1 }
+  - { analysis: wk8_locf, variable: BASE, pattern: mean_sd, label: "Baseline of these subjects, mean (SD)", indent: 1 }
+  - { analysis: wk8_locf, variable: CHG, pattern: mean_sd, label: "Change from baseline, mean (SD)", indent: 1 }
+  - { analysis: wk8_locf, variable: CHG, pattern: median_range, label: "Change from baseline, median (Range)", indent: 1 }
+
+  - { label: "Week 16 (LOCF)", section: true }
+  - { analysis: wk16_locf, variable: AVAL, pattern: "N", label: "n", indent: 1 }
+  - { analysis: wk16_locf, variable: AVAL, pattern: mean_sd, label: "Mean (SD)", indent: 1 }
+  - { analysis: wk16_locf, variable: AVAL, pattern: median_range, label: "Median (Range)", indent: 1 }
+  - { analysis: wk16_locf, variable: BASE, pattern: mean_sd, label: "Baseline of these subjects, mean (SD)", indent: 1 }
+  - { analysis: wk16_locf, variable: CHG, pattern: mean_sd, label: "Change from baseline, mean (SD)", indent: 1 }
+  - { analysis: wk16_locf, variable: CHG, pattern: median_range, label: "Change from baseline, median (Range)", indent: 1 }
+
+  - { label: "Week 24 (LOCF)", section: true }
+  - { analysis: wk24_locf, variable: AVAL, pattern: "N", label: "n", indent: 1 }
+  - { analysis: wk24_locf, variable: AVAL, pattern: mean_sd, label: "Mean (SD)", indent: 1 }
+  - { analysis: wk24_locf, variable: AVAL, pattern: median_range, label: "Median (Range)", indent: 1 }
+  - { analysis: wk24_locf, variable: BASE, pattern: mean_sd, label: "Baseline of these subjects, mean (SD)", indent: 1 }
+  - { analysis: wk24_locf, variable: CHG, pattern: mean_sd, label: "Change from baseline, mean (SD)", indent: 1 }
+  - { analysis: wk24_locf, variable: CHG, pattern: median_range, label: "Change from baseline, median (Range)", indent: 1 }
+variants:
+  post_text: {}

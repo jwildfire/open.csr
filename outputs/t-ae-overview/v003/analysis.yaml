@@ -1,0 +1,51 @@
+id: t-ae-overview
+title: "Overview of Treatment-Emergent Adverse Events"
+regulatory_id: AET01
+type: table
+dataset: adae
+analysis_set: safety
+denominator: adsl
+group:
+  - TRT01A
+total: true
+analyses:
+  - name: n_events
+    method: subject_count
+    custom: ard_event_count
+    label: "Number of treatment-emergent adverse events"
+    filter: "TRTEMFL == 'Y'"
+  - name: any_ae
+    method: subject_count
+    label: "Subjects with at least one treatment-emergent adverse event"
+    variable: AEFL
+    filter: "TRTEMFL == 'Y'"
+  - name: serious_ae
+    method: subject_count
+    label: "Subjects with a serious adverse event"
+    variable: AESERFL
+    filter: "TRTEMFL == 'Y' & AESER == 'Y'"
+  - name: fatal_ae
+    method: subject_count
+    label: "Subjects with a fatal adverse event"
+    variable: AEFATFL
+    filter: "TRTEMFL == 'Y' & AEOUT == 'FATAL'"
+  - name: related_ae
+    method: subject_count
+    label: "Subjects with a related adverse event"
+    variable: AERELFL
+    filter: "TRTEMFL == 'Y' & AEREL %in% c('POSSIBLE', 'PROBABLE')"
+  - name: sev_mild
+    method: subject_count
+    label: "Maximum severity mild"
+    variable: AESEVFL
+    filter: "TRTEMFL == 'Y' & AESEV == 'MILD'"
+  - name: sev_moderate
+    method: subject_count
+    label: "Maximum severity moderate"
+    variable: AESEVFL
+    filter: "TRTEMFL == 'Y' & AESEV == 'MODERATE'"
+  - name: sev_severe
+    method: subject_count
+    label: "Maximum severity severe"
+    variable: AESEVFL
+    filter: "TRTEMFL == 'Y' & AESEV == 'SEVERE'"

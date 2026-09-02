@@ -1,12 +1,17 @@
 {
   "record": "reference-report-agreement",
-  "what": "The figures the CDISC pilot's own clinical study report printed for Tables 14-1.01 and 14-1.02, transcribed cell by cell. open.csr rebuilds those two displays as t-populations and t-end-of-study; qc/reference-report-agreement.R checks that a from-scratch recomputation and the committed rendered HTML both land on every string below.",
+  "what": "The figures the CDISC pilot's own clinical study report printed for Tables 14-1.01, 14-1.02, 14-2.01, 14-4.01, 14-5.01, 14-5.02 and 14-1.03, transcribed cell by cell. open.csr rebuilds those seven displays as t-populations, t-end-of-study, t-demographics, t-exposure, t-ae-incidence, t-sae-incidence and t-subjects-by-site; qc/reference-report-agreement.R checks that a from-scratch recomputation and the committed rendered HTML both land on every string below.",
   "reference": {
     "document": "Clinical Study Report, CDISC SDTM/ADaM Pilot Project, protocol CDISCPILOT01, FINAL, 27 June 2006",
     "published_by": "CDISC SDTM/ADaM Pilot Project Team",
     "tables": {
       "t-populations": "Table 14-1.01, Summary of Populations (Population: All Subjects)",
-      "t-end-of-study": "Table 14-1.02, Summary of End of Study Data (Population: Intent-to-Treat)"
+      "t-end-of-study": "Table 14-1.02, Summary of End of Study Data (Population: Intent-to-Treat)",
+      "t-demographics": "Table 14-2.01, Summary of Demographic and Baseline Characteristics (Population: Intent-to-Treat)",
+      "t-exposure": "Table 14-4.01, Summary of Planned Exposure to Study Drug, as of End of Study (Population: Safety)",
+      "t-ae-incidence": "Table 14-5.01, Incidence of Treatment Emergent Adverse Events by Treatment Group (Population: Safety)",
+      "t-sae-incidence": "Table 14-5.02, Incidence of Treatment Emergent Serious Adverse Events by Treatment Group (Population: Safety)",
+      "t-subjects-by-site": "Table 14-1.03, Summary of Number of Subjects By Site (Population: All Subjects)"
     },
     "produced_by": "SAS programs adsl1.sas and adsl2.sas, run 21:02 Monday, 26 June 2006, per the Source line printed on each table.",
     "analysis_plan": "Statistical Analysis Plan section 9.7.1.2: 'The number of subjects randomized, the number of subjects in each analysis dataset, and the disposition of subjects were tabulated by treatment group. Specific reasons for early study discontinuation (protocol completed, lack of efficacy, and adverse event) were compared using a Fisher's exact test.' The display shells are Attachment 13.1.1 Templates 1 and 2.",
@@ -19,16 +24,42 @@
       "sha256": "0cab016c76abb3dcaef31110611c95dbd9cd00df083b35e6d28fd69fca0d842d",
       "pages": {
         "t-populations": 43,
-        "t-end-of-study": 44
+        "t-end-of-study": 44,
+        "t-demographics": [
+          46,
+          47,
+          48
+        ],
+        "t-exposure": 62,
+        "t-ae-incidence": [
+          63,
+          64,
+          65,
+          66,
+          67,
+          68,
+          69,
+          70,
+          71,
+          72,
+          73,
+          74,
+          75,
+          76,
+          77,
+          78
+        ],
+        "t-sae-incidence": 79,
+        "t-subjects-by-site": 45
       },
       "not_vendored": "The PDF is deliberately NOT vendored into this repository. Pages 154-409 of it — the protocol and the sample CRF — carry 'Copyright (c) 2006 Eli Lilly and Company' and are not ours to redistribute. The two pages this record transcribes, 43 and 44, are result tables authored by the CDISC SDTM/ADaM Pilot Project Team and sit outside that range; they are read, not copied.",
-      "verified": "2026-08-27, by `Rscript qc/reference-report-agreement.R --verify-transcription`, against the document whose SHA-256 is pinned above. Every cell, row label and printed p-value below was re-derived from the PDF text and matched.",
+      "verified": "2026-08-27, by `Rscript qc/reference-report-agreement.R --verify-transcription`, against the document whose SHA-256 is pinned above. Every cell, row label and printed p-value below was re-derived from the PDF text and matched. Extended 2026-09-02 (#61) to Tables 14-2.01 (pages 46-48) and 14-4.01 (page 62), re-verified against the same document by the same command. Extended 2026-09-02 (#62) to Tables 14-5.01 (pages 63-78) and 14-5.02 (page 79). Extended 2026-09-02 (#63) to Table 14-1.03 (page 45).",
       "verification_found": "Two errors in the hand transcription, both introduced when this record was first written and both invisible to the three-route comparison because the specs were written from the same misreading: (1) a p-value of 0.5000 recorded against the Death row, which the report does not print — the report prints a p-value on exactly the three rows the SAP names; (2) the two tables' population labels recorded the wrong way round.",
       "not_in_ci": "This check is not a CI step. It needs the network and a PDF text extractor (poppler's pdftotext), and a build that fails because a third-party download was slow teaches people to ignore it. It is a maintainer command, to be run whenever this record is edited. What CI does run is the three-route comparison, which no longer has anything to compare against if this record is wrong — which is exactly why the record's own provenance is pinned here rather than asserted."
     }
   },
   "comparison": {
-    "route_a": "A from-scratch recomputation in qc/reference-report-agreement.R that reads the vendored adsl.xpt.gz with {haven} and never loads {opencsr}.",
+    "route_a": "A from-scratch recomputation in qc/reference-report-agreement.R that reads the vendored adsl.xpt.gz with {haven} and never loads {opencsr}: subject-level flags for the two disposition tables; means, SDs, medians, extremes, ANOVA and chi-square p-values for the demographics table; dose summaries for the exposure table. SAS rounding throughout.",
     "route_b": "The cell text parsed out of the committed outputs/<slug>/<version>/table.html, which is what the pipeline published.",
     "route_c": "This record: what the 2006 SAS programs printed.",
     "rule": "All three must agree on every cell. Any disagreement is exit status 1."
@@ -251,6 +282,5154 @@
           ]
         }
       ]
+    },
+    "t-demographics": {
+      "table": "14-2.01",
+      "columns": [
+        "Placebo",
+        "Xanomeline Low Dose",
+        "Xanomeline High Dose",
+        "Total"
+      ],
+      "column_n": [
+        86,
+        84,
+        84,
+        254
+      ],
+      "note": "The report prints a p-value beside each block's n row (or beside the first level of a sub-block without one): one-way ANOVA for a continuous measure, Pearson's chi-square for a categorical one. `report_label` is the text the report prints before the cells on that line; `label` is what the rendered display prints, which the published-display route reads.",
+      "rows": [
+        {
+          "analysis": "age:N",
+          "label": "n",
+          "report_label": "Age (y) n",
+          "printed": [
+            "86",
+            "84",
+            "84",
+            "254"
+          ],
+          "p_value_printed": "0.5934"
+        },
+        {
+          "analysis": "age:mean",
+          "label": "Mean",
+          "report_label": "Mean",
+          "printed": [
+            "75.2",
+            "75.7",
+            "74.4",
+            "75.1"
+          ]
+        },
+        {
+          "analysis": "age:sd",
+          "label": "SD",
+          "report_label": "SD",
+          "printed": [
+            "8.59",
+            "8.29",
+            "7.89",
+            "8.25"
+          ]
+        },
+        {
+          "analysis": "age:median",
+          "label": "Median",
+          "report_label": "Median",
+          "printed": [
+            "76.0",
+            "77.5",
+            "76.0",
+            "77.0"
+          ]
+        },
+        {
+          "analysis": "age:min",
+          "label": "Min",
+          "report_label": "Min",
+          "printed": [
+            "52.0",
+            "51.0",
+            "56.0",
+            "51.0"
+          ]
+        },
+        {
+          "analysis": "age:max",
+          "label": "Max",
+          "report_label": "Max",
+          "printed": [
+            "89.0",
+            "88.0",
+            "88.0",
+            "89.0"
+          ]
+        },
+        {
+          "analysis": "agegr:<65",
+          "label": "<65 yrs",
+          "report_label": "<65 yrs",
+          "printed": [
+            "14 (16%)",
+            "8 (10%)",
+            "11 (13%)",
+            "33 (13%)"
+          ],
+          "p_value_printed": "0.1439"
+        },
+        {
+          "analysis": "agegr:65-80",
+          "label": "65-80 yrs",
+          "report_label": "65-80 yrs",
+          "printed": [
+            "42 (49%)",
+            "47 (56%)",
+            "55 (65%)",
+            "144 (57%)"
+          ]
+        },
+        {
+          "analysis": "agegr:>80",
+          "label": ">80 yrs",
+          "report_label": ">80 yrs",
+          "printed": [
+            "30 (35%)",
+            "29 (35%)",
+            "18 (21%)",
+            "77 (30%)"
+          ]
+        },
+        {
+          "analysis": "sex:N",
+          "label": "n",
+          "report_label": "Sex n",
+          "printed": [
+            "86",
+            "84",
+            "84",
+            "254"
+          ],
+          "p_value_printed": "0.1409"
+        },
+        {
+          "analysis": "sex:M",
+          "label": "Male",
+          "report_label": "Male",
+          "printed": [
+            "33 (38%)",
+            "34 (40%)",
+            "44 (52%)",
+            "111 (44%)"
+          ]
+        },
+        {
+          "analysis": "sex:F",
+          "label": "Female",
+          "report_label": "Female",
+          "printed": [
+            "53 (62%)",
+            "50 (60%)",
+            "40 (48%)",
+            "143 (56%)"
+          ]
+        },
+        {
+          "analysis": "raceor:N",
+          "label": "n",
+          "report_label": "Race (Origin) n",
+          "printed": [
+            "86",
+            "84",
+            "84",
+            "254"
+          ],
+          "p_value_printed": "0.6477"
+        },
+        {
+          "analysis": "raceor:Caucasian",
+          "label": "Caucasian",
+          "report_label": "Caucasian",
+          "printed": [
+            "75 (87%)",
+            "72 (86%)",
+            "71 (85%)",
+            "218 (86%)"
+          ]
+        },
+        {
+          "analysis": "raceor:African Descent",
+          "label": "African Descent",
+          "report_label": "African Descent",
+          "printed": [
+            "8 (9%)",
+            "6 (7%)",
+            "9 (11%)",
+            "23 (9%)"
+          ]
+        },
+        {
+          "analysis": "raceor:Hispanic",
+          "label": "Hispanic",
+          "report_label": "Hispanic",
+          "printed": [
+            "3 (3%)",
+            "6 (7%)",
+            "3 (4%)",
+            "12 (5%)"
+          ]
+        },
+        {
+          "analysis": "raceor:Other",
+          "label": "Other",
+          "report_label": "Other",
+          "printed": [
+            "0",
+            "0",
+            "1 (1%)",
+            "1 (<1%)"
+          ]
+        },
+        {
+          "analysis": "mmse:N",
+          "label": "n",
+          "report_label": "MMSE n",
+          "printed": [
+            "86",
+            "84",
+            "84",
+            "254"
+          ],
+          "p_value_printed": "0.5947"
+        },
+        {
+          "analysis": "mmse:mean",
+          "label": "Mean",
+          "report_label": "Mean",
+          "printed": [
+            "18.0",
+            "17.9",
+            "18.5",
+            "18.1"
+          ]
+        },
+        {
+          "analysis": "mmse:sd",
+          "label": "SD",
+          "report_label": "SD",
+          "printed": [
+            "4.27",
+            "4.22",
+            "4.16",
+            "4.21"
+          ]
+        },
+        {
+          "analysis": "mmse:median",
+          "label": "Median",
+          "report_label": "Median",
+          "printed": [
+            "19.5",
+            "18.0",
+            "20.0",
+            "19.0"
+          ]
+        },
+        {
+          "analysis": "mmse:min",
+          "label": "Min",
+          "report_label": "Min",
+          "printed": [
+            "10.0",
+            "10.0",
+            "10.0",
+            "10.0"
+          ]
+        },
+        {
+          "analysis": "mmse:max",
+          "label": "Max",
+          "report_label": "Max",
+          "printed": [
+            "23.0",
+            "24.0",
+            "24.0",
+            "24.0"
+          ]
+        },
+        {
+          "analysis": "durdis:N",
+          "label": "n",
+          "report_label": "Duration of disease n",
+          "printed": [
+            "86",
+            "84",
+            "84",
+            "254"
+          ],
+          "p_value_printed": "0.1530"
+        },
+        {
+          "analysis": "durdis:mean",
+          "label": "Mean",
+          "report_label": "Mean",
+          "printed": [
+            "42.7",
+            "48.7",
+            "40.5",
+            "43.9"
+          ]
+        },
+        {
+          "analysis": "durdis:sd",
+          "label": "SD",
+          "report_label": "SD",
+          "printed": [
+            "30.24",
+            "29.58",
+            "24.69",
+            "28.40"
+          ]
+        },
+        {
+          "analysis": "durdis:median",
+          "label": "Median",
+          "report_label": "Median",
+          "printed": [
+            "35.3",
+            "40.3",
+            "36.0",
+            "36.3"
+          ]
+        },
+        {
+          "analysis": "durdis:min",
+          "label": "Min",
+          "report_label": "Min",
+          "printed": [
+            "7.2",
+            "7.8",
+            "2.2",
+            "2.2"
+          ]
+        },
+        {
+          "analysis": "durdis:max",
+          "label": "Max",
+          "report_label": "Max",
+          "printed": [
+            "183.1",
+            "130.8",
+            "135.0",
+            "183.1"
+          ]
+        },
+        {
+          "analysis": "durdisgr:<12",
+          "label": "<12 months",
+          "report_label": "<12 months",
+          "printed": [
+            "5 (6%)",
+            "3 (4%)",
+            "4 (5%)",
+            "12 (5%)"
+          ],
+          "p_value_printed": "0.7885"
+        },
+        {
+          "analysis": "durdisgr:>=12",
+          "label": ">=12 months",
+          "report_label": ">=12 months",
+          "printed": [
+            "81 (94%)",
+            "81 (96%)",
+            "80 (95%)",
+            "242 (95%)"
+          ]
+        },
+        {
+          "analysis": "educ:N",
+          "label": "n",
+          "report_label": "Years of education n",
+          "printed": [
+            "86",
+            "84",
+            "84",
+            "254"
+          ],
+          "p_value_printed": "0.3875"
+        },
+        {
+          "analysis": "educ:mean",
+          "label": "Mean",
+          "report_label": "Mean",
+          "printed": [
+            "12.6",
+            "13.2",
+            "12.5",
+            "12.8"
+          ]
+        },
+        {
+          "analysis": "educ:sd",
+          "label": "SD",
+          "report_label": "SD",
+          "printed": [
+            "2.95",
+            "4.15",
+            "2.92",
+            "3.38"
+          ]
+        },
+        {
+          "analysis": "educ:median",
+          "label": "Median",
+          "report_label": "Median",
+          "printed": [
+            "12.0",
+            "12.0",
+            "12.0",
+            "12.0"
+          ]
+        },
+        {
+          "analysis": "educ:min",
+          "label": "Min",
+          "report_label": "Min",
+          "printed": [
+            "6.0",
+            "3.0",
+            "6.0",
+            "3.0"
+          ]
+        },
+        {
+          "analysis": "educ:max",
+          "label": "Max",
+          "report_label": "Max",
+          "printed": [
+            "21.0",
+            "24.0",
+            "20.0",
+            "24.0"
+          ]
+        },
+        {
+          "analysis": "weight:N",
+          "label": "n",
+          "report_label": "Baseline weight(kg) n",
+          "printed": [
+            "86",
+            "83",
+            "84",
+            "253"
+          ],
+          "p_value_printed": "0.0030"
+        },
+        {
+          "analysis": "weight:mean",
+          "label": "Mean",
+          "report_label": "Mean",
+          "printed": [
+            "62.8",
+            "67.3",
+            "70.0",
+            "66.6"
+          ]
+        },
+        {
+          "analysis": "weight:sd",
+          "label": "SD",
+          "report_label": "SD",
+          "printed": [
+            "12.77",
+            "14.12",
+            "14.65",
+            "14.13"
+          ]
+        },
+        {
+          "analysis": "weight:median",
+          "label": "Median",
+          "report_label": "Median",
+          "printed": [
+            "60.6",
+            "64.9",
+            "69.2",
+            "66.7"
+          ]
+        },
+        {
+          "analysis": "weight:min",
+          "label": "Min",
+          "report_label": "Min",
+          "printed": [
+            "34.0",
+            "45.4",
+            "41.7",
+            "34.0"
+          ]
+        },
+        {
+          "analysis": "weight:max",
+          "label": "Max",
+          "report_label": "Max",
+          "printed": [
+            "86.2",
+            "106.1",
+            "108.0",
+            "108.0"
+          ]
+        },
+        {
+          "analysis": "height:N",
+          "label": "n",
+          "report_label": "Baseline height(cm) n",
+          "printed": [
+            "86",
+            "84",
+            "84",
+            "254"
+          ],
+          "p_value_printed": "0.1262"
+        },
+        {
+          "analysis": "height:mean",
+          "label": "Mean",
+          "report_label": "Mean",
+          "printed": [
+            "162.6",
+            "163.4",
+            "165.8",
+            "163.9"
+          ]
+        },
+        {
+          "analysis": "height:sd",
+          "label": "SD",
+          "report_label": "SD",
+          "printed": [
+            "11.52",
+            "10.42",
+            "10.13",
+            "10.76"
+          ]
+        },
+        {
+          "analysis": "height:median",
+          "label": "Median",
+          "report_label": "Median",
+          "printed": [
+            "162.6",
+            "162.6",
+            "165.1",
+            "162.9"
+          ]
+        },
+        {
+          "analysis": "height:min",
+          "label": "Min",
+          "report_label": "Min",
+          "printed": [
+            "137.2",
+            "135.9",
+            "146.1",
+            "135.9"
+          ]
+        },
+        {
+          "analysis": "height:max",
+          "label": "Max",
+          "report_label": "Max",
+          "printed": [
+            "185.4",
+            "195.6",
+            "190.5",
+            "195.6"
+          ]
+        },
+        {
+          "analysis": "bmi:N",
+          "label": "n",
+          "report_label": "Baseline BMI n",
+          "printed": [
+            "86",
+            "83",
+            "84",
+            "253"
+          ],
+          "p_value_printed": "0.0133"
+        },
+        {
+          "analysis": "bmi:mean",
+          "label": "Mean",
+          "report_label": "Mean",
+          "printed": [
+            "23.6",
+            "25.1",
+            "25.3",
+            "24.7"
+          ]
+        },
+        {
+          "analysis": "bmi:sd",
+          "label": "SD",
+          "report_label": "SD",
+          "printed": [
+            "3.67",
+            "4.27",
+            "4.16",
+            "4.09"
+          ]
+        },
+        {
+          "analysis": "bmi:median",
+          "label": "Median",
+          "report_label": "Median",
+          "printed": [
+            "23.4",
+            "24.3",
+            "24.8",
+            "24.2"
+          ]
+        },
+        {
+          "analysis": "bmi:min",
+          "label": "Min",
+          "report_label": "Min",
+          "printed": [
+            "15.1",
+            "17.7",
+            "13.7",
+            "13.7"
+          ]
+        },
+        {
+          "analysis": "bmi:max",
+          "label": "Max",
+          "report_label": "Max",
+          "printed": [
+            "33.3",
+            "40.1",
+            "34.5",
+            "40.1"
+          ]
+        },
+        {
+          "analysis": "bmigr:<25",
+          "label": "<25",
+          "report_label": "<25",
+          "printed": [
+            "59 (69%)",
+            "47 (56%)",
+            "44 (52%)",
+            "150 (59%)"
+          ],
+          "p_value_printed": "0.2326"
+        },
+        {
+          "analysis": "bmigr:25-<30",
+          "label": "25-<30",
+          "report_label": "25-<30",
+          "printed": [
+            "21 (24%)",
+            "27 (32%)",
+            "28 (33%)",
+            "76 (30%)"
+          ]
+        },
+        {
+          "analysis": "bmigr:>=30",
+          "label": ">=30",
+          "report_label": ">=30",
+          "printed": [
+            "6 (7%)",
+            "10 (12%)",
+            "12 (14%)",
+            "28 (11%)"
+          ]
+        }
+      ]
+    },
+    "t-exposure": {
+      "table": "14-4.01",
+      "columns": [
+        "Completers at Week 24: Placebo",
+        "Completers at Week 24: Xanomeline Low Dose",
+        "Completers at Week 24: Xanomeline High Dose",
+        "Safety Population: Placebo",
+        "Safety Population: Xanomeline Low Dose",
+        "Safety Population: Xanomeline High Dose"
+      ],
+      "column_n": [
+        60,
+        28,
+        30,
+        86,
+        84,
+        84
+      ],
+      "n_cells": 6,
+      "note": "The report lays the two populations out as column groups; the rendered display lays them out as row blocks under one set of treatment columns. `published_from` says which rendered row (by its label and the occurrence of that label in reading order) and which columns supply each of the six report cells, in order.",
+      "rows": [
+        {
+          "analysis": "avg_daily_dose:N",
+          "label": "n",
+          "report_label": "Average daily dose (mg) n",
+          "printed": [
+            "60",
+            "28",
+            "30",
+            "86",
+            "84",
+            "84"
+          ],
+          "published_from": [
+            {
+              "label": "n",
+              "occurrence": 3,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "label": "n",
+              "occurrence": 1,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "analysis": "avg_daily_dose:mean",
+          "label": "Mean",
+          "report_label": "mean",
+          "printed": [
+            "0.0",
+            "54.0",
+            "77.0",
+            "0.0",
+            "54.0",
+            "71.6"
+          ],
+          "published_from": [
+            {
+              "label": "Mean",
+              "occurrence": 3,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "label": "Mean",
+              "occurrence": 1,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "analysis": "avg_daily_dose:sd",
+          "label": "SD",
+          "report_label": "std",
+          "printed": [
+            "0.00",
+            "0.00",
+            "0.58",
+            "0.00",
+            "0.00",
+            "8.11"
+          ],
+          "published_from": [
+            {
+              "label": "SD",
+              "occurrence": 3,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "label": "SD",
+              "occurrence": 1,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "analysis": "avg_daily_dose:median",
+          "label": "Median",
+          "report_label": "median",
+          "printed": [
+            "0.0",
+            "54.0",
+            "76.9",
+            "0.0",
+            "54.0",
+            "75.1"
+          ],
+          "published_from": [
+            {
+              "label": "Median",
+              "occurrence": 3,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "label": "Median",
+              "occurrence": 1,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "analysis": "avg_daily_dose:min",
+          "label": "Min",
+          "report_label": "min",
+          "printed": [
+            "0.0",
+            "54.0",
+            "76.1",
+            "0.0",
+            "54.0",
+            "54.0"
+          ],
+          "published_from": [
+            {
+              "label": "Min",
+              "occurrence": 3,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "label": "Min",
+              "occurrence": 1,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "analysis": "avg_daily_dose:max",
+          "label": "Max",
+          "report_label": "max",
+          "printed": [
+            "0.0",
+            "54.0",
+            "78.6",
+            "0.0",
+            "54.0",
+            "78.6"
+          ],
+          "published_from": [
+            {
+              "label": "Max",
+              "occurrence": 3,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "label": "Max",
+              "occurrence": 1,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "analysis": "total_dose:N",
+          "label": "n",
+          "report_label": "Cumulative dose at end of study n",
+          "printed": [
+            "60",
+            "28",
+            "30",
+            "86",
+            "84",
+            "84"
+          ],
+          "published_from": [
+            {
+              "label": "n",
+              "occurrence": 4,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "label": "n",
+              "occurrence": 2,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "analysis": "total_dose:mean",
+          "label": "Mean",
+          "report_label": "mean",
+          "printed": [
+            "0.0",
+            "9918.6",
+            "14089.5",
+            "0.0",
+            "5347.3",
+            "7551.0"
+          ],
+          "published_from": [
+            {
+              "label": "Mean",
+              "occurrence": 4,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "label": "Mean",
+              "occurrence": 2,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "analysis": "total_dose:sd",
+          "label": "SD",
+          "report_label": "std",
+          "printed": [
+            "0.00",
+            "603.84",
+            "481.01",
+            "0.00",
+            "3680.35",
+            "5531.04"
+          ],
+          "published_from": [
+            {
+              "label": "SD",
+              "occurrence": 4,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "label": "SD",
+              "occurrence": 2,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "analysis": "total_dose:median",
+          "label": "Median",
+          "report_label": "median",
+          "printed": [
+            "0.0",
+            "9936.0",
+            "14080.5",
+            "0.0",
+            "4455.0",
+            "5778.0"
+          ],
+          "published_from": [
+            {
+              "label": "Median",
+              "occurrence": 4,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "label": "Median",
+              "occurrence": 2,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "analysis": "total_dose:min",
+          "label": "Min",
+          "report_label": "min",
+          "printed": [
+            "0.0",
+            "7884.0",
+            "12960.0",
+            "0.0",
+            "108.0",
+            "54.0"
+          ],
+          "published_from": [
+            {
+              "label": "Min",
+              "occurrence": 4,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "label": "Min",
+              "occurrence": 2,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "analysis": "total_dose:max",
+          "label": "Max",
+          "report_label": "max",
+          "printed": [
+            "0.0",
+            "11448.0",
+            "15417.0",
+            "0.0",
+            "11448.0",
+            "15417.0"
+          ],
+          "published_from": [
+            {
+              "label": "Max",
+              "occurrence": 4,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "label": "Max",
+              "occurrence": 2,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "t-ae-incidence": {
+      "table": "14-5.01",
+      "columns": [
+        "Placebo",
+        "Xanomeline Low Dose",
+        "Xanomeline High Dose"
+      ],
+      "column_n": [
+        86,
+        84,
+        84
+      ],
+      "n_cells": 3,
+      "p_columns": 2,
+      "note": "Three cells per line — n (%) [events] per arm — and two p-value columns, Fisher's exact test of placebo against each active arm; a blank p-value is a comparison with no subjects on either side. `report_label` keeps the report's wrapped or truncated text; `label` is the term as the data spells it, which the rendered display prints.",
+      "rows": [
+        {
+          "analysis": "any",
+          "label": "ANY BODY SYSTEM",
+          "report_label": "ANY BODY SYSTEM",
+          "printed": [
+            "65 (75.6%) [281]",
+            "77 (91.7%) [412]",
+            "76 (90.5%) [433]"
+          ],
+          "p_values_printed": [
+            "0.007*",
+            "0.014*"
+          ]
+        },
+        {
+          "analysis": "soc:CARDIAC DISORDERS",
+          "label": "CARDIAC DISORDERS",
+          "report_label": "CARDIAC DISORDERS",
+          "printed": [
+            "12 (14.0%) [26]",
+            "13 (15.5%) [30]",
+            "15 (17.9%) [30]"
+          ],
+          "p_values_printed": [
+            "0.831",
+            "0.534"
+          ]
+        },
+        {
+          "analysis": "pt:CARDIAC DISORDERS|SINUS BRADYCARDIA",
+          "label": "SINUS BRADYCARDIA",
+          "report_label": "SINUS BRADYCARDIA",
+          "printed": [
+            "2 (2.3%) [2]",
+            "7 (8.3%) [10]",
+            "8 (9.5%) [12]"
+          ],
+          "p_values_printed": [
+            "0.097*",
+            "0.056*"
+          ]
+        },
+        {
+          "analysis": "pt:CARDIAC DISORDERS|MYOCARDIAL INFARCTION",
+          "label": "MYOCARDIAL INFARCTION",
+          "report_label": "MYOCARDIAL INFARCTION",
+          "printed": [
+            "4 (4.7%) [4]",
+            "2 (2.4%) [4]",
+            "4 (4.8%) [8]"
+          ],
+          "p_values_printed": [
+            "0.682",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:CARDIAC DISORDERS|ATRIAL FIBRILLATION",
+          "label": "ATRIAL FIBRILLATION",
+          "report_label": "ATRIAL FIBRILLATION",
+          "printed": [
+            "1 (1.2%) [1]",
+            "1 (1.2%) [1]",
+            "3 (3.6%) [5]"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            "0.365"
+          ]
+        },
+        {
+          "analysis": "pt:CARDIAC DISORDERS|ATRIAL FLUTTER",
+          "label": "ATRIAL FLUTTER",
+          "report_label": "ATRIAL FLUTTER",
+          "printed": [
+            "0",
+            "1 (1.2%) [1]",
+            "1 (1.2%) [2]"
+          ],
+          "p_values_printed": [
+            "0.494",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:CARDIAC DISORDERS|CARDIAC DISORDER",
+          "label": "CARDIAC DISORDER",
+          "report_label": "CARDIAC DISORDER",
+          "printed": [
+            "0",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:CARDIAC DISORDERS|SUPRAVENTRICULAR EXTRASYSTOLES",
+          "label": "SUPRAVENTRICULAR EXTRASYSTOLES",
+          "report_label": "SUPRAVENTRICULAR EXTRASYSTOLES",
+          "printed": [
+            "1 (1.2%) [2]",
+            "1 (1.2%) [2]",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:CARDIAC DISORDERS|VENTRICULAR EXTRASYSTOLES",
+          "label": "VENTRICULAR EXTRASYSTOLES",
+          "report_label": "VENTRICULAR EXTRASYSTOLES",
+          "printed": [
+            "0",
+            "2 (2.4%) [4]",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "0.243",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:CARDIAC DISORDERS|ATRIAL HYPERTROPHY",
+          "label": "ATRIAL HYPERTROPHY",
+          "report_label": "ATRIAL HYPERTROPHY",
+          "printed": [
+            "1 (1.2%) [2]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:CARDIAC DISORDERS|ATRIOVENTRICULAR BLOCK FIRST DEGREE",
+          "label": "ATRIOVENTRICULAR BLOCK FIRST DEGREE",
+          "report_label": "ATRIOVENTRICULAR BLOCK FIRST DEGREE",
+          "printed": [
+            "1 (1.2%) [1]",
+            "1 (1.2%) [1]",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:CARDIAC DISORDERS|ATRIOVENTRICULAR BLOCK SECOND DEGREE",
+          "label": "ATRIOVENTRICULAR BLOCK SECOND DEGREE",
+          "report_label": "ATRIOVENTRICULAR BLOCK SECOND DEGREE",
+          "printed": [
+            "1 (1.2%) [1]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:CARDIAC DISORDERS|BRADYCARDIA",
+          "label": "BRADYCARDIA",
+          "report_label": "BRADYCARDIA",
+          "printed": [
+            "1 (1.2%) [4]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:CARDIAC DISORDERS|BUNDLE BRANCH BLOCK LEFT",
+          "label": "BUNDLE BRANCH BLOCK LEFT",
+          "report_label": "BUNDLE BRANCH BLOCK LEFT",
+          "printed": [
+            "1 (1.2%) [1]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:CARDIAC DISORDERS|BUNDLE BRANCH BLOCK RIGHT",
+          "label": "BUNDLE BRANCH BLOCK RIGHT",
+          "report_label": "BUNDLE BRANCH BLOCK RIGHT",
+          "printed": [
+            "1 (1.2%) [2]",
+            "1 (1.2%) [1]",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:CARDIAC DISORDERS|CARDIAC FAILURE CONGESTIVE",
+          "label": "CARDIAC FAILURE CONGESTIVE",
+          "report_label": "CARDIAC FAILURE CONGESTIVE",
+          "printed": [
+            "1 (1.2%) [1]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:CARDIAC DISORDERS|PALPITATIONS",
+          "label": "PALPITATIONS",
+          "report_label": "PALPITATIONS",
+          "printed": [
+            "0",
+            "2 (2.4%) [2]",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.243",
+            ""
+          ]
+        },
+        {
+          "analysis": "pt:CARDIAC DISORDERS|SINUS ARRHYTHMIA",
+          "label": "SINUS ARRHYTHMIA",
+          "report_label": "SINUS ARRHYTHMIA",
+          "printed": [
+            "1 (1.2%) [2]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:CARDIAC DISORDERS|SUPRAVENTRICULAR TACHYCARDIA",
+          "label": "SUPRAVENTRICULAR TACHYCARDIA",
+          "report_label": "SUPRAVENTRICULAR TACHYCARDIA",
+          "printed": [
+            "0",
+            "1 (1.2%) [2]",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.494",
+            ""
+          ]
+        },
+        {
+          "analysis": "pt:CARDIAC DISORDERS|TACHYCARDIA",
+          "label": "TACHYCARDIA",
+          "report_label": "TACHYCARDIA",
+          "printed": [
+            "1 (1.2%) [2]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:CARDIAC DISORDERS|VENTRICULAR HYPERTROPHY",
+          "label": "VENTRICULAR HYPERTROPHY",
+          "report_label": "VENTRICULAR HYPERTROPHY",
+          "printed": [
+            "1 (1.2%) [1]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:CARDIAC DISORDERS|WOLFF-PARKINSON-WHITE SYNDROME",
+          "label": "WOLFF-PARKINSON-WHITE SYNDROME",
+          "report_label": "WOLFF-PARKINSON-WHITE SYNDROME",
+          "printed": [
+            "0",
+            "1 (1.2%) [2]",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.494",
+            ""
+          ]
+        },
+        {
+          "analysis": "soc:CONGENITAL, FAMILIAL AND GENETIC DISORDERS",
+          "label": "CONGENITAL, FAMILIAL AND GENETIC DISORDERS",
+          "report_label": "CONGENITAL, FAMILIAL AND GENETIC DISORDE",
+          "printed": [
+            "0",
+            "1 (1.2%) [1]",
+            "2 (2.4%) [2]"
+          ],
+          "p_values_printed": [
+            "0.494",
+            "0.243"
+          ]
+        },
+        {
+          "analysis": "pt:CONGENITAL, FAMILIAL AND GENETIC DISORDERS|VENTRICULAR SEPTAL DEFECT",
+          "label": "VENTRICULAR SEPTAL DEFECT",
+          "report_label": "VENTRICULAR SEPTAL DEFECT",
+          "printed": [
+            "0",
+            "1 (1.2%) [1]",
+            "2 (2.4%) [2]"
+          ],
+          "p_values_printed": [
+            "0.494",
+            "0.243"
+          ]
+        },
+        {
+          "analysis": "soc:EAR AND LABYRINTH DISORDERS",
+          "label": "EAR AND LABYRINTH DISORDERS",
+          "report_label": "EAR AND LABYRINTH DISORDERS",
+          "printed": [
+            "1 (1.2%) [2]",
+            "2 (2.4%) [2]",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "0.618",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:EAR AND LABYRINTH DISORDERS|VERTIGO",
+          "label": "VERTIGO",
+          "report_label": "VERTIGO",
+          "printed": [
+            "0",
+            "1 (1.2%) [1]",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "0.494",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:EAR AND LABYRINTH DISORDERS|CERUMEN IMPACTION",
+          "label": "CERUMEN IMPACTION",
+          "report_label": "CERUMEN IMPACTION",
+          "printed": [
+            "0",
+            "1 (1.2%) [1]",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.494",
+            ""
+          ]
+        },
+        {
+          "analysis": "pt:EAR AND LABYRINTH DISORDERS|EAR PAIN",
+          "label": "EAR PAIN",
+          "report_label": "EAR PAIN",
+          "printed": [
+            "1 (1.2%) [2]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "soc:EYE DISORDERS",
+          "label": "EYE DISORDERS",
+          "report_label": "EYE DISORDERS",
+          "printed": [
+            "2 (2.3%) [5]",
+            "2 (2.4%) [2]",
+            "1 (1.2%) [2]"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:EYE DISORDERS|VISION BLURRED",
+          "label": "VISION BLURRED",
+          "report_label": "VISION BLURRED",
+          "printed": [
+            "0",
+            "1 (1.2%) [1]",
+            "1 (1.2%) [2]"
+          ],
+          "p_values_printed": [
+            "0.494",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:EYE DISORDERS|CONJUNCTIVAL HAEMORRHAGE",
+          "label": "CONJUNCTIVAL HAEMORRHAGE",
+          "report_label": "CONJUNCTIVAL HAEMORRHAGE",
+          "printed": [
+            "0",
+            "1 (1.2%) [1]",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.494",
+            ""
+          ]
+        },
+        {
+          "analysis": "pt:EYE DISORDERS|CONJUNCTIVITIS",
+          "label": "CONJUNCTIVITIS",
+          "report_label": "CONJUNCTIVITIS",
+          "printed": [
+            "1 (1.2%) [2]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:EYE DISORDERS|EYE ALLERGY",
+          "label": "EYE ALLERGY",
+          "report_label": "EYE ALLERGY",
+          "printed": [
+            "1 (1.2%) [1]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:EYE DISORDERS|EYE PRURITUS",
+          "label": "EYE PRURITUS",
+          "report_label": "EYE PRURITUS",
+          "printed": [
+            "1 (1.2%) [1]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:EYE DISORDERS|EYE SWELLING",
+          "label": "EYE SWELLING",
+          "report_label": "EYE SWELLING",
+          "printed": [
+            "1 (1.2%) [1]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "soc:GASTROINTESTINAL DISORDERS",
+          "label": "GASTROINTESTINAL DISORDERS",
+          "report_label": "GASTROINTESTINAL DISORDERS",
+          "printed": [
+            "17 (19.8%) [26]",
+            "14 (16.7%) [22]",
+            "20 (23.8%) [36]"
+          ],
+          "p_values_printed": [
+            "0.692",
+            "0.58"
+          ]
+        },
+        {
+          "analysis": "pt:GASTROINTESTINAL DISORDERS|VOMITING",
+          "label": "VOMITING",
+          "report_label": "VOMITING",
+          "printed": [
+            "3 (3.5%) [3]",
+            "3 (3.6%) [4]",
+            "7 (8.3%) [9]"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            "0.209"
+          ]
+        },
+        {
+          "analysis": "pt:GASTROINTESTINAL DISORDERS|NAUSEA",
+          "label": "NAUSEA",
+          "report_label": "NAUSEA",
+          "printed": [
+            "3 (3.5%) [3]",
+            "3 (3.6%) [5]",
+            "6 (7.1%) [13]"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            "0.326"
+          ]
+        },
+        {
+          "analysis": "pt:GASTROINTESTINAL DISORDERS|DIARRHOEA",
+          "label": "DIARRHOEA",
+          "report_label": "DIARRHOEA",
+          "printed": [
+            "9 (10.5%) [10]",
+            "4 (4.8%) [5]",
+            "4 (4.8%) [4]"
+          ],
+          "p_values_printed": [
+            "0.248",
+            "0.248"
+          ]
+        },
+        {
+          "analysis": "pt:GASTROINTESTINAL DISORDERS|SALIVARY HYPERSECRETION",
+          "label": "SALIVARY HYPERSECRETION",
+          "report_label": "SALIVARY HYPERSECRETION",
+          "printed": [
+            "0",
+            "0",
+            "4 (4.8%) [5]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.058*"
+          ]
+        },
+        {
+          "analysis": "pt:GASTROINTESTINAL DISORDERS|ABDOMINAL DISCOMFORT",
+          "label": "ABDOMINAL DISCOMFORT",
+          "report_label": "ABDOMINAL DISCOMFORT",
+          "printed": [
+            "0",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:GASTROINTESTINAL DISORDERS|ABDOMINAL PAIN",
+          "label": "ABDOMINAL PAIN",
+          "report_label": "ABDOMINAL PAIN",
+          "printed": [
+            "1 (1.2%) [1]",
+            "3 (3.6%) [3]",
+            "1 (1.2%) [2]"
+          ],
+          "p_values_printed": [
+            "0.365",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:GASTROINTESTINAL DISORDERS|GASTROINTESTINAL HAEMORRHAGE",
+          "label": "GASTROINTESTINAL HAEMORRHAGE",
+          "report_label": "GASTROINTESTINAL HAEMORRHAGE",
+          "printed": [
+            "0",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:GASTROINTESTINAL DISORDERS|STOMACH DISCOMFORT",
+          "label": "STOMACH DISCOMFORT",
+          "report_label": "STOMACH DISCOMFORT",
+          "printed": [
+            "0",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:GASTROINTESTINAL DISORDERS|CONSTIPATION",
+          "label": "CONSTIPATION",
+          "report_label": "CONSTIPATION",
+          "printed": [
+            "1 (1.2%) [1]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:GASTROINTESTINAL DISORDERS|DYSPEPSIA",
+          "label": "DYSPEPSIA",
+          "report_label": "DYSPEPSIA",
+          "printed": [
+            "1 (1.2%) [2]",
+            "1 (1.2%) [2]",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:GASTROINTESTINAL DISORDERS|DYSPHAGIA",
+          "label": "DYSPHAGIA",
+          "report_label": "DYSPHAGIA",
+          "printed": [
+            "0",
+            "1 (1.2%) [1]",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.494",
+            ""
+          ]
+        },
+        {
+          "analysis": "pt:GASTROINTESTINAL DISORDERS|FLATULENCE",
+          "label": "FLATULENCE",
+          "report_label": "FLATULENCE",
+          "printed": [
+            "1 (1.2%) [2]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:GASTROINTESTINAL DISORDERS|GASTROOESOPHAGEAL REFLUX DISEASE",
+          "label": "GASTROOESOPHAGEAL REFLUX DISEASE",
+          "report_label": "GASTROOESOPHAGEAL REFLUX DISEASE",
+          "printed": [
+            "1 (1.2%) [1]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:GASTROINTESTINAL DISORDERS|GLOSSITIS",
+          "label": "GLOSSITIS",
+          "report_label": "GLOSSITIS",
+          "printed": [
+            "1 (1.2%) [1]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:GASTROINTESTINAL DISORDERS|HIATUS HERNIA",
+          "label": "HIATUS HERNIA",
+          "report_label": "HIATUS HERNIA",
+          "printed": [
+            "1 (1.2%) [2]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:GASTROINTESTINAL DISORDERS|RECTAL HAEMORRHAGE",
+          "label": "RECTAL HAEMORRHAGE",
+          "report_label": "RECTAL HAEMORRHAGE",
+          "printed": [
+            "0",
+            "1 (1.2%) [2]",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.494",
+            ""
+          ]
+        },
+        {
+          "analysis": "soc:GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS",
+          "label": "GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS",
+          "report_label": "GENERAL DISORDERS AND ADMINISTRATION SIT",
+          "printed": [
+            "21 (24.4%) [46]",
+            "47 (56.0%) [118]",
+            "40 (47.6%) [124]"
+          ],
+          "p_values_printed": [
+            "0.000*",
+            "0.002*"
+          ]
+        },
+        {
+          "analysis": "pt:GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS|APPLICATION SITE PRURITUS",
+          "label": "APPLICATION SITE PRURITUS",
+          "report_label": "APPLICATION SITE PRURITUS",
+          "printed": [
+            "6 (7.0%) [10]",
+            "22 (26.2%) [32]",
+            "22 (26.2%) [35]"
+          ],
+          "p_values_printed": [
+            "0.001*",
+            "0.001*"
+          ]
+        },
+        {
+          "analysis": "pt:GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS|APPLICATION SITE ERYTHEMA",
+          "label": "APPLICATION SITE ERYTHEMA",
+          "report_label": "APPLICATION SITE ERYTHEMA",
+          "printed": [
+            "3 (3.5%) [3]",
+            "12 (14.3%) [20]",
+            "15 (17.9%) [23]"
+          ],
+          "p_values_printed": [
+            "0.015*",
+            "0.003*"
+          ]
+        },
+        {
+          "analysis": "pt:GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS|APPLICATION SITE IRRITATION",
+          "label": "APPLICATION SITE IRRITATION",
+          "report_label": "APPLICATION SITE IRRITATION",
+          "printed": [
+            "3 (3.5%) [7]",
+            "9 (10.7%) [18]",
+            "9 (10.7%) [16]"
+          ],
+          "p_values_printed": [
+            "0.078*",
+            "0.078*"
+          ]
+        },
+        {
+          "analysis": "pt:GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS|APPLICATION SITE DERMATITIS",
+          "label": "APPLICATION SITE DERMATITIS",
+          "report_label": "APPLICATION SITE DERMATITIS",
+          "printed": [
+            "5 (5.8%) [9]",
+            "9 (10.7%) [15]",
+            "7 (8.3%) [12]"
+          ],
+          "p_values_printed": [
+            "0.277",
+            "0.563"
+          ]
+        },
+        {
+          "analysis": "pt:GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS|APPLICATION SITE VESICLES",
+          "label": "APPLICATION SITE VESICLES",
+          "report_label": "APPLICATION SITE VESICLES",
+          "printed": [
+            "1 (1.2%) [2]",
+            "4 (4.8%) [5]",
+            "6 (7.1%) [6]"
+          ],
+          "p_values_printed": [
+            "0.208",
+            "0.062*"
+          ]
+        },
+        {
+          "analysis": "pt:GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS|FATIGUE",
+          "label": "FATIGUE",
+          "report_label": "FATIGUE",
+          "printed": [
+            "1 (1.2%) [2]",
+            "5 (6.0%) [5]",
+            "5 (6.0%) [5]"
+          ],
+          "p_values_printed": [
+            "0.115*",
+            "0.115*"
+          ]
+        },
+        {
+          "analysis": "pt:GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS|APPLICATION SITE PAIN",
+          "label": "APPLICATION SITE PAIN",
+          "report_label": "APPLICATION SITE PAIN",
+          "printed": [
+            "0",
+            "0",
+            "2 (2.4%) [2]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.243"
+          ]
+        },
+        {
+          "analysis": "pt:GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS|APPLICATION SITE PERSPIRATION",
+          "label": "APPLICATION SITE PERSPIRATION",
+          "report_label": "APPLICATION SITE PERSPIRATION",
+          "printed": [
+            "0",
+            "0",
+            "2 (2.4%) [3]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.243"
+          ]
+        },
+        {
+          "analysis": "pt:GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS|APPLICATION SITE SWELLING",
+          "label": "APPLICATION SITE SWELLING",
+          "report_label": "APPLICATION SITE SWELLING",
+          "printed": [
+            "0",
+            "1 (1.2%) [1]",
+            "2 (2.4%) [3]"
+          ],
+          "p_values_printed": [
+            "0.494",
+            "0.243"
+          ]
+        },
+        {
+          "analysis": "pt:GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS|CHEST DISCOMFORT",
+          "label": "CHEST DISCOMFORT",
+          "report_label": "CHEST DISCOMFORT",
+          "printed": [
+            "0",
+            "0",
+            "2 (2.4%) [2]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.243"
+          ]
+        },
+        {
+          "analysis": "pt:GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS|CHEST PAIN",
+          "label": "CHEST PAIN",
+          "report_label": "CHEST PAIN",
+          "printed": [
+            "0",
+            "0",
+            "2 (2.4%) [2]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.243"
+          ]
+        },
+        {
+          "analysis": "pt:GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS|MALAISE",
+          "label": "MALAISE",
+          "report_label": "MALAISE",
+          "printed": [
+            "0",
+            "1 (1.2%) [2]",
+            "2 (2.4%) [3]"
+          ],
+          "p_values_printed": [
+            "0.494",
+            "0.243"
+          ]
+        },
+        {
+          "analysis": "pt:GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS|OEDEMA PERIPHERAL",
+          "label": "OEDEMA PERIPHERAL",
+          "report_label": "OEDEMA PERIPHERAL",
+          "printed": [
+            "2 (2.3%) [3]",
+            "1 (1.2%) [1]",
+            "2 (2.4%) [3]"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS|APPLICATION SITE DISCHARGE",
+          "label": "APPLICATION SITE DISCHARGE",
+          "report_label": "APPLICATION SITE DISCHARGE",
+          "printed": [
+            "0",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS|APPLICATION SITE REACTION",
+          "label": "APPLICATION SITE REACTION",
+          "report_label": "APPLICATION SITE REACTION",
+          "printed": [
+            "1 (1.2%) [2]",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS|APPLICATION SITE URTICARIA",
+          "label": "APPLICATION SITE URTICARIA",
+          "report_label": "APPLICATION SITE URTICARIA",
+          "printed": [
+            "0",
+            "2 (2.4%) [2]",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "0.243",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS|ASTHENIA",
+          "label": "ASTHENIA",
+          "report_label": "ASTHENIA",
+          "printed": [
+            "1 (1.2%) [2]",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS|CHILLS",
+          "label": "CHILLS",
+          "report_label": "CHILLS",
+          "printed": [
+            "1 (1.2%) [3]",
+            "1 (1.2%) [2]",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS|FEELING ABNORMAL",
+          "label": "FEELING ABNORMAL",
+          "report_label": "FEELING ABNORMAL",
+          "printed": [
+            "0",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS|FEELING COLD",
+          "label": "FEELING COLD",
+          "report_label": "FEELING COLD",
+          "printed": [
+            "0",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS|PAIN",
+          "label": "PAIN",
+          "report_label": "PAIN",
+          "printed": [
+            "0",
+            "1 (1.2%) [2]",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "0.494",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS|PYREXIA",
+          "label": "PYREXIA",
+          "report_label": "PYREXIA",
+          "printed": [
+            "2 (2.3%) [2]",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "0.497",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS|APPLICATION SITE BLEEDING",
+          "label": "APPLICATION SITE BLEEDING",
+          "report_label": "APPLICATION SITE BLEEDING",
+          "printed": [
+            "0",
+            "1 (1.2%) [1]",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.494",
+            ""
+          ]
+        },
+        {
+          "analysis": "pt:GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS|APPLICATION SITE DESQUAMATION",
+          "label": "APPLICATION SITE DESQUAMATION",
+          "report_label": "APPLICATION SITE DESQUAMATION",
+          "printed": [
+            "0",
+            "1 (1.2%) [1]",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.494",
+            ""
+          ]
+        },
+        {
+          "analysis": "pt:GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS|APPLICATION SITE DISCOLOURATION",
+          "label": "APPLICATION SITE DISCOLOURATION",
+          "report_label": "APPLICATION SITE DISCOLOURATION",
+          "printed": [
+            "0",
+            "1 (1.2%) [1]",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.494",
+            ""
+          ]
+        },
+        {
+          "analysis": "pt:GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS|APPLICATION SITE INDURATION",
+          "label": "APPLICATION SITE INDURATION",
+          "report_label": "APPLICATION SITE INDURATION",
+          "printed": [
+            "1 (1.2%) [1]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS|APPLICATION SITE WARMTH",
+          "label": "APPLICATION SITE WARMTH",
+          "report_label": "APPLICATION SITE WARMTH",
+          "printed": [
+            "0",
+            "1 (1.2%) [2]",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.494",
+            ""
+          ]
+        },
+        {
+          "analysis": "pt:GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS|INFLAMMATION",
+          "label": "INFLAMMATION",
+          "report_label": "INFLAMMATION",
+          "printed": [
+            "0",
+            "1 (1.2%) [1]",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.494",
+            ""
+          ]
+        },
+        {
+          "analysis": "pt:GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS|OEDEMA",
+          "label": "OEDEMA",
+          "report_label": "OEDEMA",
+          "printed": [
+            "0",
+            "2 (2.4%) [2]",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.243",
+            ""
+          ]
+        },
+        {
+          "analysis": "pt:GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS|SECRETION DISCHARGE",
+          "label": "SECRETION DISCHARGE",
+          "report_label": "SECRETION DISCHARGE",
+          "printed": [
+            "0",
+            "1 (1.2%) [2]",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.494",
+            ""
+          ]
+        },
+        {
+          "analysis": "pt:GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS|SUDDEN DEATH",
+          "label": "SUDDEN DEATH",
+          "report_label": "SUDDEN DEATH",
+          "printed": [
+            "0",
+            "1 (1.2%) [1]",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.494",
+            ""
+          ]
+        },
+        {
+          "analysis": "pt:GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS|SWELLING",
+          "label": "SWELLING",
+          "report_label": "SWELLING",
+          "printed": [
+            "0",
+            "1 (1.2%) [1]",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.494",
+            ""
+          ]
+        },
+        {
+          "analysis": "pt:GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS|ULCER",
+          "label": "ULCER",
+          "report_label": "ULCER",
+          "printed": [
+            "0",
+            "1 (1.2%) [1]",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.494",
+            ""
+          ]
+        },
+        {
+          "analysis": "soc:HEPATOBILIARY DISORDERS",
+          "label": "HEPATOBILIARY DISORDERS",
+          "report_label": "HEPATOBILIARY DISORDERS",
+          "printed": [
+            "1 (1.2%) [1]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:HEPATOBILIARY DISORDERS|HYPERBILIRUBINAEMIA",
+          "label": "HYPERBILIRUBINAEMIA",
+          "report_label": "HYPERBILIRUBINAEMIA",
+          "printed": [
+            "1 (1.2%) [1]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "soc:IMMUNE SYSTEM DISORDERS",
+          "label": "IMMUNE SYSTEM DISORDERS",
+          "report_label": "IMMUNE SYSTEM DISORDERS",
+          "printed": [
+            "0",
+            "1 (1.2%) [2]",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.494",
+            ""
+          ]
+        },
+        {
+          "analysis": "pt:IMMUNE SYSTEM DISORDERS|HYPERSENSITIVITY",
+          "label": "HYPERSENSITIVITY",
+          "report_label": "HYPERSENSITIVITY",
+          "printed": [
+            "0",
+            "1 (1.2%) [2]",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.494",
+            ""
+          ]
+        },
+        {
+          "analysis": "soc:INFECTIONS AND INFESTATIONS",
+          "label": "INFECTIONS AND INFESTATIONS",
+          "report_label": "INFECTIONS AND INFESTATIONS",
+          "printed": [
+            "16 (18.6%) [35]",
+            "9 (10.7%) [16]",
+            "13 (15.5%) [20]"
+          ],
+          "p_values_printed": [
+            "0.194",
+            "0.685"
+          ]
+        },
+        {
+          "analysis": "pt:INFECTIONS AND INFESTATIONS|NASOPHARYNGITIS",
+          "label": "NASOPHARYNGITIS",
+          "report_label": "NASOPHARYNGITIS",
+          "printed": [
+            "2 (2.3%) [4]",
+            "4 (4.8%) [9]",
+            "6 (7.1%) [8]"
+          ],
+          "p_values_printed": [
+            "0.441",
+            "0.166"
+          ]
+        },
+        {
+          "analysis": "pt:INFECTIONS AND INFESTATIONS|UPPER RESPIRATORY TRACT INFECTION",
+          "label": "UPPER RESPIRATORY TRACT INFECTION",
+          "report_label": "UPPER RESPIRATORY TRACT INFECTION",
+          "printed": [
+            "6 (7.0%) [12]",
+            "1 (1.2%) [2]",
+            "3 (3.6%) [5]"
+          ],
+          "p_values_printed": [
+            "0.117*",
+            "0.496"
+          ]
+        },
+        {
+          "analysis": "pt:INFECTIONS AND INFESTATIONS|CYSTITIS",
+          "label": "CYSTITIS",
+          "report_label": "CYSTITIS",
+          "printed": [
+            "1 (1.2%) [1]",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:INFECTIONS AND INFESTATIONS|HORDEOLUM",
+          "label": "HORDEOLUM",
+          "report_label": "HORDEOLUM",
+          "printed": [
+            "0",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:INFECTIONS AND INFESTATIONS|INFLUENZA",
+          "label": "INFLUENZA",
+          "report_label": "INFLUENZA",
+          "printed": [
+            "1 (1.2%) [2]",
+            "1 (1.2%) [1]",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:INFECTIONS AND INFESTATIONS|LOWER RESPIRATORY TRACT INFECTION",
+          "label": "LOWER RESPIRATORY TRACT INFECTION",
+          "report_label": "LOWER RESPIRATORY TRACT INFECTION",
+          "printed": [
+            "0",
+            "0",
+            "1 (1.2%) [2]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:INFECTIONS AND INFESTATIONS|RHINITIS",
+          "label": "RHINITIS",
+          "report_label": "RHINITIS",
+          "printed": [
+            "0",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:INFECTIONS AND INFESTATIONS|URINARY TRACT INFECTION",
+          "label": "URINARY TRACT INFECTION",
+          "report_label": "URINARY TRACT INFECTION",
+          "printed": [
+            "2 (2.3%) [4]",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "0.497",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:INFECTIONS AND INFESTATIONS|BRONCHITIS",
+          "label": "BRONCHITIS",
+          "report_label": "BRONCHITIS",
+          "printed": [
+            "1 (1.2%) [1]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:INFECTIONS AND INFESTATIONS|CELLULITIS",
+          "label": "CELLULITIS",
+          "report_label": "CELLULITIS",
+          "printed": [
+            "0",
+            "1 (1.2%) [1]",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.494",
+            ""
+          ]
+        },
+        {
+          "analysis": "pt:INFECTIONS AND INFESTATIONS|CERVICITIS",
+          "label": "CERVICITIS",
+          "report_label": "CERVICITIS",
+          "printed": [
+            "1 (1.2%) [2]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:INFECTIONS AND INFESTATIONS|EAR INFECTION",
+          "label": "EAR INFECTION",
+          "report_label": "EAR INFECTION",
+          "printed": [
+            "2 (2.3%) [4]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.497",
+            "0.497"
+          ]
+        },
+        {
+          "analysis": "pt:INFECTIONS AND INFESTATIONS|GASTROENTERITIS VIRAL",
+          "label": "GASTROENTERITIS VIRAL",
+          "report_label": "GASTROENTERITIS VIRAL",
+          "printed": [
+            "1 (1.2%) [1]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:INFECTIONS AND INFESTATIONS|LOCALISED INFECTION",
+          "label": "LOCALISED INFECTION",
+          "report_label": "LOCALISED INFECTION",
+          "printed": [
+            "1 (1.2%) [2]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:INFECTIONS AND INFESTATIONS|PNEUMONIA",
+          "label": "PNEUMONIA",
+          "report_label": "PNEUMONIA",
+          "printed": [
+            "0",
+            "1 (1.2%) [2]",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.494",
+            ""
+          ]
+        },
+        {
+          "analysis": "pt:INFECTIONS AND INFESTATIONS|VAGINAL MYCOSIS",
+          "label": "VAGINAL MYCOSIS",
+          "report_label": "VAGINAL MYCOSIS",
+          "printed": [
+            "1 (1.2%) [2]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:INFECTIONS AND INFESTATIONS|VIRAL INFECTION",
+          "label": "VIRAL INFECTION",
+          "report_label": "VIRAL INFECTION",
+          "printed": [
+            "0",
+            "1 (1.2%) [1]",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.494",
+            ""
+          ]
+        },
+        {
+          "analysis": "soc:INJURY, POISONING AND PROCEDURAL COMPLICATIONS",
+          "label": "INJURY, POISONING AND PROCEDURAL COMPLICATIONS",
+          "report_label": "INJURY, POISONING AND PROCEDURAL COMPLIC",
+          "printed": [
+            "4 (4.7%) [9]",
+            "5 (6.0%) [12]",
+            "5 (6.0%) [8]"
+          ],
+          "p_values_printed": [
+            "0.745",
+            "0.745"
+          ]
+        },
+        {
+          "analysis": "pt:INJURY, POISONING AND PROCEDURAL COMPLICATIONS|CONTUSION",
+          "label": "CONTUSION",
+          "report_label": "CONTUSION",
+          "printed": [
+            "1 (1.2%) [1]",
+            "1 (1.2%) [3]",
+            "2 (2.4%) [3]"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            "0.618"
+          ]
+        },
+        {
+          "analysis": "pt:INJURY, POISONING AND PROCEDURAL COMPLICATIONS|HIP FRACTURE",
+          "label": "HIP FRACTURE",
+          "report_label": "HIP FRACTURE",
+          "printed": [
+            "1 (1.2%) [2]",
+            "0",
+            "2 (2.4%) [2]"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            "0.618"
+          ]
+        },
+        {
+          "analysis": "pt:INJURY, POISONING AND PROCEDURAL COMPLICATIONS|EXCORIATION",
+          "label": "EXCORIATION",
+          "report_label": "EXCORIATION",
+          "printed": [
+            "2 (2.3%) [3]",
+            "1 (1.2%) [2]",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:INJURY, POISONING AND PROCEDURAL COMPLICATIONS|FACIAL BONES FRACTURE",
+          "label": "FACIAL BONES FRACTURE",
+          "report_label": "FACIAL BONES FRACTURE",
+          "printed": [
+            "0",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:INJURY, POISONING AND PROCEDURAL COMPLICATIONS|FALL",
+          "label": "FALL",
+          "report_label": "FALL",
+          "printed": [
+            "1 (1.2%) [2]",
+            "2 (2.4%) [2]",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "0.618",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:INJURY, POISONING AND PROCEDURAL COMPLICATIONS|JOINT DISLOCATION",
+          "label": "JOINT DISLOCATION",
+          "report_label": "JOINT DISLOCATION",
+          "printed": [
+            "0",
+            "1 (1.2%) [1]",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.494",
+            ""
+          ]
+        },
+        {
+          "analysis": "pt:INJURY, POISONING AND PROCEDURAL COMPLICATIONS|SKIN LACERATION",
+          "label": "SKIN LACERATION",
+          "report_label": "SKIN LACERATION",
+          "printed": [
+            "1 (1.2%) [1]",
+            "2 (2.4%) [2]",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.618",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:INJURY, POISONING AND PROCEDURAL COMPLICATIONS|WOUND",
+          "label": "WOUND",
+          "report_label": "WOUND",
+          "printed": [
+            "0",
+            "1 (1.2%) [2]",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.494",
+            ""
+          ]
+        },
+        {
+          "analysis": "soc:INVESTIGATIONS",
+          "label": "INVESTIGATIONS",
+          "report_label": "INVESTIGATIONS",
+          "printed": [
+            "10 (11.6%) [19]",
+            "6 (7.1%) [7]",
+            "6 (7.1%) [8]"
+          ],
+          "p_values_printed": [
+            "0.432",
+            "0.432"
+          ]
+        },
+        {
+          "analysis": "pt:INVESTIGATIONS|BIOPSY",
+          "label": "BIOPSY",
+          "report_label": "BIOPSY",
+          "printed": [
+            "0",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:INVESTIGATIONS|BIOPSY PROSTATE",
+          "label": "BIOPSY PROSTATE",
+          "report_label": "BIOPSY PROSTATE",
+          "printed": [
+            "0",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:INVESTIGATIONS|BLOOD CHOLESTEROL INCREASED",
+          "label": "BLOOD CHOLESTEROL INCREASED",
+          "report_label": "BLOOD CHOLESTEROL INCREASED",
+          "printed": [
+            "0",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:INVESTIGATIONS|BLOOD GLUCOSE INCREASED",
+          "label": "BLOOD GLUCOSE INCREASED",
+          "report_label": "BLOOD GLUCOSE INCREASED",
+          "printed": [
+            "0",
+            "1 (1.2%) [1]",
+            "1 (1.2%) [2]"
+          ],
+          "p_values_printed": [
+            "0.494",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:INVESTIGATIONS|ELECTROCARDIOGRAM T WAVE INVERSION",
+          "label": "ELECTROCARDIOGRAM T WAVE INVERSION",
+          "report_label": "ELECTROCARDIOGRAM T WAVE INVERSION",
+          "printed": [
+            "2 (2.3%) [3]",
+            "1 (1.2%) [1]",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:INVESTIGATIONS|WEIGHT DECREASED",
+          "label": "WEIGHT DECREASED",
+          "report_label": "WEIGHT DECREASED",
+          "printed": [
+            "0",
+            "0",
+            "1 (1.2%) [2]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:INVESTIGATIONS|BLOOD ALKALINE PHOSPHATASE INCREASED",
+          "label": "BLOOD ALKALINE PHOSPHATASE INCREASED",
+          "report_label": "BLOOD ALKALINE PHOSPHATASE INCREASED",
+          "printed": [
+            "1 (1.2%) [1]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:INVESTIGATIONS|BLOOD CREATINE PHOSPHOKINASE INCREASED",
+          "label": "BLOOD CREATINE PHOSPHOKINASE INCREASED",
+          "report_label": "BLOOD CREATINE PHOSPHOKINASE INCREASED",
+          "printed": [
+            "1 (1.2%) [2]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:INVESTIGATIONS|BLOOD URINE PRESENT",
+          "label": "BLOOD URINE PRESENT",
+          "report_label": "BLOOD URINE PRESENT",
+          "printed": [
+            "1 (1.2%) [1]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:INVESTIGATIONS|BODY TEMPERATURE INCREASED",
+          "label": "BODY TEMPERATURE INCREASED",
+          "report_label": "BODY TEMPERATURE INCREASED",
+          "printed": [
+            "0",
+            "1 (1.2%) [1]",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.494",
+            ""
+          ]
+        },
+        {
+          "analysis": "pt:INVESTIGATIONS|CYSTOSCOPY",
+          "label": "CYSTOSCOPY",
+          "report_label": "CYSTOSCOPY",
+          "printed": [
+            "1 (1.2%) [1]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:INVESTIGATIONS|ELECTROCARDIOGRAM ST SEGMENT DEPRESSION",
+          "label": "ELECTROCARDIOGRAM ST SEGMENT DEPRESSION",
+          "report_label": "ELECTROCARDIOGRAM ST SEGMENT DEPRESSIO",
+          "printed": [
+            "4 (4.7%) [4]",
+            "1 (1.2%) [2]",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.368",
+            "0.121*"
+          ]
+        },
+        {
+          "analysis": "pt:INVESTIGATIONS|ELECTROCARDIOGRAM T WAVE AMPLITUDE DECREASED",
+          "label": "ELECTROCARDIOGRAM T WAVE AMPLITUDE DECREASED",
+          "report_label": "ELECTROCARDIOGRAM T WAVE AMPLITUDE DEC",
+          "printed": [
+            "1 (1.2%) [1]",
+            "1 (1.2%) [1]",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:INVESTIGATIONS|HEART RATE INCREASED",
+          "label": "HEART RATE INCREASED",
+          "report_label": "HEART RATE INCREASED",
+          "printed": [
+            "1 (1.2%) [2]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:INVESTIGATIONS|HEART RATE IRREGULAR",
+          "label": "HEART RATE IRREGULAR",
+          "report_label": "HEART RATE IRREGULAR",
+          "printed": [
+            "1 (1.2%) [4]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:INVESTIGATIONS|NASAL MUCOSA BIOPSY",
+          "label": "NASAL MUCOSA BIOPSY",
+          "report_label": "NASAL MUCOSA BIOPSY",
+          "printed": [
+            "0",
+            "1 (1.2%) [1]",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.494",
+            ""
+          ]
+        },
+        {
+          "analysis": "soc:METABOLISM AND NUTRITION DISORDERS",
+          "label": "METABOLISM AND NUTRITION DISORDERS",
+          "report_label": "METABOLISM AND NUTRITION DISORDERS",
+          "printed": [
+            "6 (7.0%) [8]",
+            "1 (1.2%) [1]",
+            "2 (2.4%) [4]"
+          ],
+          "p_values_printed": [
+            "0.117*",
+            "0.278"
+          ]
+        },
+        {
+          "analysis": "pt:METABOLISM AND NUTRITION DISORDERS|DECREASED APPETITE",
+          "label": "DECREASED APPETITE",
+          "report_label": "DECREASED APPETITE",
+          "printed": [
+            "1 (1.2%) [2]",
+            "0",
+            "1 (1.2%) [2]"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:METABOLISM AND NUTRITION DISORDERS|INCREASED APPETITE",
+          "label": "INCREASED APPETITE",
+          "report_label": "INCREASED APPETITE",
+          "printed": [
+            "1 (1.2%) [2]",
+            "0",
+            "1 (1.2%) [2]"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:METABOLISM AND NUTRITION DISORDERS|DEHYDRATION",
+          "label": "DEHYDRATION",
+          "report_label": "DEHYDRATION",
+          "printed": [
+            "1 (1.2%) [1]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:METABOLISM AND NUTRITION DISORDERS|DIABETES MELLITUS",
+          "label": "DIABETES MELLITUS",
+          "report_label": "DIABETES MELLITUS",
+          "printed": [
+            "1 (1.2%) [1]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:METABOLISM AND NUTRITION DISORDERS|FOOD CRAVING",
+          "label": "FOOD CRAVING",
+          "report_label": "FOOD CRAVING",
+          "printed": [
+            "1 (1.2%) [1]",
+            "1 (1.2%) [1]",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:METABOLISM AND NUTRITION DISORDERS|HYPONATRAEMIA",
+          "label": "HYPONATRAEMIA",
+          "report_label": "HYPONATRAEMIA",
+          "printed": [
+            "1 (1.2%) [1]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "soc:MUSCULOSKELETAL AND CONNECTIVE TISSUE DISORDERS",
+          "label": "MUSCULOSKELETAL AND CONNECTIVE TISSUE DISORDERS",
+          "report_label": "MUSCULOSKELETAL AND CONNECTIVE TISSUE DI",
+          "printed": [
+            "4 (4.7%) [6]",
+            "7 (8.3%) [10]",
+            "7 (8.3%) [10]"
+          ],
+          "p_values_printed": [
+            "0.367",
+            "0.367"
+          ]
+        },
+        {
+          "analysis": "pt:MUSCULOSKELETAL AND CONNECTIVE TISSUE DISORDERS|BACK PAIN",
+          "label": "BACK PAIN",
+          "report_label": "BACK PAIN",
+          "printed": [
+            "1 (1.2%) [2]",
+            "1 (1.2%) [1]",
+            "3 (3.6%) [4]"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            "0.365"
+          ]
+        },
+        {
+          "analysis": "pt:MUSCULOSKELETAL AND CONNECTIVE TISSUE DISORDERS|ARTHRALGIA",
+          "label": "ARTHRALGIA",
+          "report_label": "ARTHRALGIA",
+          "printed": [
+            "1 (1.2%) [1]",
+            "2 (2.4%) [4]",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "0.618",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:MUSCULOSKELETAL AND CONNECTIVE TISSUE DISORDERS|ARTHRITIS",
+          "label": "ARTHRITIS",
+          "report_label": "ARTHRITIS",
+          "printed": [
+            "0",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:MUSCULOSKELETAL AND CONNECTIVE TISSUE DISORDERS|FLANK PAIN",
+          "label": "FLANK PAIN",
+          "report_label": "FLANK PAIN",
+          "printed": [
+            "0",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:MUSCULOSKELETAL AND CONNECTIVE TISSUE DISORDERS|MUSCLE SPASMS",
+          "label": "MUSCLE SPASMS",
+          "report_label": "MUSCLE SPASMS",
+          "printed": [
+            "0",
+            "1 (1.2%) [1]",
+            "1 (1.2%) [2]"
+          ],
+          "p_values_printed": [
+            "0.494",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:MUSCULOSKELETAL AND CONNECTIVE TISSUE DISORDERS|MYALGIA",
+          "label": "MYALGIA",
+          "report_label": "MYALGIA",
+          "printed": [
+            "0",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:MUSCULOSKELETAL AND CONNECTIVE TISSUE DISORDERS|MUSCULAR WEAKNESS",
+          "label": "MUSCULAR WEAKNESS",
+          "report_label": "MUSCULAR WEAKNESS",
+          "printed": [
+            "0",
+            "1 (1.2%) [2]",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.494",
+            ""
+          ]
+        },
+        {
+          "analysis": "pt:MUSCULOSKELETAL AND CONNECTIVE TISSUE DISORDERS|PAIN IN EXTREMITY",
+          "label": "PAIN IN EXTREMITY",
+          "report_label": "PAIN IN EXTREMITY",
+          "printed": [
+            "1 (1.2%) [1]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:MUSCULOSKELETAL AND CONNECTIVE TISSUE DISORDERS|SHOULDER PAIN",
+          "label": "SHOULDER PAIN",
+          "report_label": "SHOULDER PAIN",
+          "printed": [
+            "1 (1.2%) [2]",
+            "2 (2.4%) [2]",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.618",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "soc:NEOPLASMS BENIGN, MALIGNANT AND UNSPECIFIED (INCL CYSTS AND POLYPS)",
+          "label": "NEOPLASMS BENIGN, MALIGNANT AND UNSPECIFIED (INCL CYSTS AND POLYPS)",
+          "report_label": "NEOPLASMS BENIGN, MALIGNANT AND UNSPECIF",
+          "printed": [
+            "0",
+            "2 (2.4%) [3]",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "0.243",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:NEOPLASMS BENIGN, MALIGNANT AND UNSPECIFIED (INCL CYSTS AND POLYPS)|PROSTATE CANCER",
+          "label": "PROSTATE CANCER",
+          "report_label": "PROSTATE CANCER",
+          "printed": [
+            "0",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:NEOPLASMS BENIGN, MALIGNANT AND UNSPECIFIED (INCL CYSTS AND POLYPS)|COLON CANCER",
+          "label": "COLON CANCER",
+          "report_label": "COLON CANCER",
+          "printed": [
+            "0",
+            "1 (1.2%) [1]",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.494",
+            ""
+          ]
+        },
+        {
+          "analysis": "pt:NEOPLASMS BENIGN, MALIGNANT AND UNSPECIFIED (INCL CYSTS AND POLYPS)|MALIGNANT FIBROUS HISTIOCYTOMA",
+          "label": "MALIGNANT FIBROUS HISTIOCYTOMA",
+          "report_label": "MALIGNANT FIBROUS HISTIOCYTOMA",
+          "printed": [
+            "0",
+            "1 (1.2%) [2]",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.494",
+            ""
+          ]
+        },
+        {
+          "analysis": "soc:NERVOUS SYSTEM DISORDERS",
+          "label": "NERVOUS SYSTEM DISORDERS",
+          "report_label": "NERVOUS SYSTEM DISORDERS",
+          "printed": [
+            "8 (9.3%) [11]",
+            "20 (23.8%) [40]",
+            "25 (29.8%) [41]"
+          ],
+          "p_values_printed": [
+            "0.013*",
+            "0.001*"
+          ]
+        },
+        {
+          "analysis": "pt:NERVOUS SYSTEM DISORDERS|DIZZINESS",
+          "label": "DIZZINESS",
+          "report_label": "DIZZINESS",
+          "printed": [
+            "2 (2.3%) [3]",
+            "8 (9.5%) [13]",
+            "11 (13.1%) [15]"
+          ],
+          "p_values_printed": [
+            "0.056*",
+            "0.009*"
+          ]
+        },
+        {
+          "analysis": "pt:NERVOUS SYSTEM DISORDERS|HEADACHE",
+          "label": "HEADACHE",
+          "report_label": "HEADACHE",
+          "printed": [
+            "3 (3.5%) [3]",
+            "3 (3.6%) [4]",
+            "5 (6.0%) [8]"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            "0.493"
+          ]
+        },
+        {
+          "analysis": "pt:NERVOUS SYSTEM DISORDERS|SYNCOPE",
+          "label": "SYNCOPE",
+          "report_label": "SYNCOPE",
+          "printed": [
+            "0",
+            "4 (4.8%) [6]",
+            "3 (3.6%) [4]"
+          ],
+          "p_values_printed": [
+            "0.058*",
+            "0.118*"
+          ]
+        },
+        {
+          "analysis": "pt:NERVOUS SYSTEM DISORDERS|BURNING SENSATION",
+          "label": "BURNING SENSATION",
+          "report_label": "BURNING SENSATION",
+          "printed": [
+            "0",
+            "0",
+            "2 (2.4%) [2]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.243"
+          ]
+        },
+        {
+          "analysis": "pt:NERVOUS SYSTEM DISORDERS|AMNESIA",
+          "label": "AMNESIA",
+          "report_label": "AMNESIA",
+          "printed": [
+            "0",
+            "0",
+            "1 (1.2%) [2]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:NERVOUS SYSTEM DISORDERS|COGNITIVE DISORDER",
+          "label": "COGNITIVE DISORDER",
+          "report_label": "COGNITIVE DISORDER",
+          "printed": [
+            "0",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:NERVOUS SYSTEM DISORDERS|HYPERSOMNIA",
+          "label": "HYPERSOMNIA",
+          "report_label": "HYPERSOMNIA",
+          "printed": [
+            "0",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:NERVOUS SYSTEM DISORDERS|LETHARGY",
+          "label": "LETHARGY",
+          "report_label": "LETHARGY",
+          "printed": [
+            "0",
+            "1 (1.2%) [1]",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "0.494",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:NERVOUS SYSTEM DISORDERS|PARAESTHESIA",
+          "label": "PARAESTHESIA",
+          "report_label": "PARAESTHESIA",
+          "printed": [
+            "0",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:NERVOUS SYSTEM DISORDERS|PAROSMIA",
+          "label": "PAROSMIA",
+          "report_label": "PAROSMIA",
+          "printed": [
+            "0",
+            "0",
+            "1 (1.2%) [2]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:NERVOUS SYSTEM DISORDERS|PARTIAL SEIZURES WITH SECONDARY GENERALISATION",
+          "label": "PARTIAL SEIZURES WITH SECONDARY GENERALISATION",
+          "report_label": "PARTIAL SEIZURES WITH SECONDARY GENERA",
+          "printed": [
+            "0",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:NERVOUS SYSTEM DISORDERS|SOMNOLENCE",
+          "label": "SOMNOLENCE",
+          "report_label": "SOMNOLENCE",
+          "printed": [
+            "2 (2.3%) [3]",
+            "3 (3.6%) [5]",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "0.68",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:NERVOUS SYSTEM DISORDERS|SYNCOPE VASOVAGAL",
+          "label": "SYNCOPE VASOVAGAL",
+          "report_label": "SYNCOPE VASOVAGAL",
+          "printed": [
+            "0",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:NERVOUS SYSTEM DISORDERS|TRANSIENT ISCHAEMIC ATTACK",
+          "label": "TRANSIENT ISCHAEMIC ATTACK",
+          "report_label": "TRANSIENT ISCHAEMIC ATTACK",
+          "printed": [
+            "0",
+            "2 (2.4%) [3]",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "0.243",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:NERVOUS SYSTEM DISORDERS|BALANCE DISORDER",
+          "label": "BALANCE DISORDER",
+          "report_label": "BALANCE DISORDER",
+          "printed": [
+            "0",
+            "1 (1.2%) [3]",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.494",
+            ""
+          ]
+        },
+        {
+          "analysis": "pt:NERVOUS SYSTEM DISORDERS|COMPLEX PARTIAL SEIZURES",
+          "label": "COMPLEX PARTIAL SEIZURES",
+          "report_label": "COMPLEX PARTIAL SEIZURES",
+          "printed": [
+            "0",
+            "1 (1.2%) [1]",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.494",
+            ""
+          ]
+        },
+        {
+          "analysis": "pt:NERVOUS SYSTEM DISORDERS|COORDINATION ABNORMAL",
+          "label": "COORDINATION ABNORMAL",
+          "report_label": "COORDINATION ABNORMAL",
+          "printed": [
+            "0",
+            "1 (1.2%) [1]",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.494",
+            ""
+          ]
+        },
+        {
+          "analysis": "pt:NERVOUS SYSTEM DISORDERS|HEMIANOPIA HOMONYMOUS",
+          "label": "HEMIANOPIA HOMONYMOUS",
+          "report_label": "HEMIANOPIA HOMONYMOUS",
+          "printed": [
+            "0",
+            "1 (1.2%) [1]",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.494",
+            ""
+          ]
+        },
+        {
+          "analysis": "pt:NERVOUS SYSTEM DISORDERS|PARAESTHESIA ORAL",
+          "label": "PARAESTHESIA ORAL",
+          "report_label": "PARAESTHESIA ORAL",
+          "printed": [
+            "0",
+            "1 (1.2%) [1]",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.494",
+            ""
+          ]
+        },
+        {
+          "analysis": "pt:NERVOUS SYSTEM DISORDERS|PARKINSON'S DISEASE",
+          "label": "PARKINSON'S DISEASE",
+          "report_label": "PARKINSON'S DISEASE",
+          "printed": [
+            "1 (1.2%) [1]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:NERVOUS SYSTEM DISORDERS|PSYCHOMOTOR HYPERACTIVITY",
+          "label": "PSYCHOMOTOR HYPERACTIVITY",
+          "report_label": "PSYCHOMOTOR HYPERACTIVITY",
+          "printed": [
+            "1 (1.2%) [1]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:NERVOUS SYSTEM DISORDERS|STUPOR",
+          "label": "STUPOR",
+          "report_label": "STUPOR",
+          "printed": [
+            "0",
+            "1 (1.2%) [1]",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.494",
+            ""
+          ]
+        },
+        {
+          "analysis": "soc:PSYCHIATRIC DISORDERS",
+          "label": "PSYCHIATRIC DISORDERS",
+          "report_label": "PSYCHIATRIC DISORDERS",
+          "printed": [
+            "10 (11.6%) [12]",
+            "10 (11.9%) [14]",
+            "8 (9.5%) [11]"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            "0.804"
+          ]
+        },
+        {
+          "analysis": "pt:PSYCHIATRIC DISORDERS|INSOMNIA",
+          "label": "INSOMNIA",
+          "report_label": "INSOMNIA",
+          "printed": [
+            "2 (2.3%) [3]",
+            "0",
+            "2 (2.4%) [2]"
+          ],
+          "p_values_printed": [
+            "0.497",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:PSYCHIATRIC DISORDERS|AGITATION",
+          "label": "AGITATION",
+          "report_label": "AGITATION",
+          "printed": [
+            "2 (2.3%) [2]",
+            "2 (2.4%) [2]",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:PSYCHIATRIC DISORDERS|CONFUSIONAL STATE",
+          "label": "CONFUSIONAL STATE",
+          "report_label": "CONFUSIONAL STATE",
+          "printed": [
+            "2 (2.3%) [2]",
+            "3 (3.6%) [3]",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "0.68",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:PSYCHIATRIC DISORDERS|DELIRIUM",
+          "label": "DELIRIUM",
+          "report_label": "DELIRIUM",
+          "printed": [
+            "0",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:PSYCHIATRIC DISORDERS|DELUSION",
+          "label": "DELUSION",
+          "report_label": "DELUSION",
+          "printed": [
+            "1 (1.2%) [1]",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:PSYCHIATRIC DISORDERS|HALLUCINATION",
+          "label": "HALLUCINATION",
+          "report_label": "HALLUCINATION",
+          "printed": [
+            "0",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:PSYCHIATRIC DISORDERS|HALLUCINATION, VISUAL",
+          "label": "HALLUCINATION, VISUAL",
+          "report_label": "HALLUCINATION, VISUAL",
+          "printed": [
+            "0",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:PSYCHIATRIC DISORDERS|LIBIDO DECREASED",
+          "label": "LIBIDO DECREASED",
+          "report_label": "LIBIDO DECREASED",
+          "printed": [
+            "0",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:PSYCHIATRIC DISORDERS|LISTLESS",
+          "label": "LISTLESS",
+          "report_label": "LISTLESS",
+          "printed": [
+            "0",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:PSYCHIATRIC DISORDERS|NIGHTMARE",
+          "label": "NIGHTMARE",
+          "report_label": "NIGHTMARE",
+          "printed": [
+            "0",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:PSYCHIATRIC DISORDERS|ANXIETY",
+          "label": "ANXIETY",
+          "report_label": "ANXIETY",
+          "printed": [
+            "0",
+            "3 (3.6%) [4]",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.118*",
+            ""
+          ]
+        },
+        {
+          "analysis": "pt:PSYCHIATRIC DISORDERS|COMPLETED SUICIDE",
+          "label": "COMPLETED SUICIDE",
+          "report_label": "COMPLETED SUICIDE",
+          "printed": [
+            "1 (1.2%) [1]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:PSYCHIATRIC DISORDERS|DEPRESSED MOOD",
+          "label": "DEPRESSED MOOD",
+          "report_label": "DEPRESSED MOOD",
+          "printed": [
+            "0",
+            "1 (1.2%) [2]",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.494",
+            ""
+          ]
+        },
+        {
+          "analysis": "pt:PSYCHIATRIC DISORDERS|DISORIENTATION",
+          "label": "DISORIENTATION",
+          "report_label": "DISORIENTATION",
+          "printed": [
+            "1 (1.2%) [1]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:PSYCHIATRIC DISORDERS|IRRITABILITY",
+          "label": "IRRITABILITY",
+          "report_label": "IRRITABILITY",
+          "printed": [
+            "1 (1.2%) [2]",
+            "1 (1.2%) [1]",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:PSYCHIATRIC DISORDERS|RESTLESSNESS",
+          "label": "RESTLESSNESS",
+          "report_label": "RESTLESSNESS",
+          "printed": [
+            "0",
+            "1 (1.2%) [2]",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.494",
+            ""
+          ]
+        },
+        {
+          "analysis": "soc:RENAL AND URINARY DISORDERS",
+          "label": "RENAL AND URINARY DISORDERS",
+          "report_label": "RENAL AND URINARY DISORDERS",
+          "printed": [
+            "4 (4.7%) [5]",
+            "3 (3.6%) [3]",
+            "3 (3.6%) [4]"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:RENAL AND URINARY DISORDERS|CALCULUS URETHRAL",
+          "label": "CALCULUS URETHRAL",
+          "report_label": "CALCULUS URETHRAL",
+          "printed": [
+            "0",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:RENAL AND URINARY DISORDERS|MICTURITION URGENCY",
+          "label": "MICTURITION URGENCY",
+          "report_label": "MICTURITION URGENCY",
+          "printed": [
+            "1 (1.2%) [1]",
+            "1 (1.2%) [1]",
+            "1 (1.2%) [2]"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:RENAL AND URINARY DISORDERS|NEPHROLITHIASIS",
+          "label": "NEPHROLITHIASIS",
+          "report_label": "NEPHROLITHIASIS",
+          "printed": [
+            "1 (1.2%) [1]",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:RENAL AND URINARY DISORDERS|DYSURIA",
+          "label": "DYSURIA",
+          "report_label": "DYSURIA",
+          "printed": [
+            "1 (1.2%) [1]",
+            "1 (1.2%) [1]",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:RENAL AND URINARY DISORDERS|INCONTINENCE",
+          "label": "INCONTINENCE",
+          "report_label": "INCONTINENCE",
+          "printed": [
+            "0",
+            "1 (1.2%) [1]",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.494",
+            ""
+          ]
+        },
+        {
+          "analysis": "pt:RENAL AND URINARY DISORDERS|POLLAKIURIA",
+          "label": "POLLAKIURIA",
+          "report_label": "POLLAKIURIA",
+          "printed": [
+            "1 (1.2%) [2]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "soc:REPRODUCTIVE SYSTEM AND BREAST DISORDERS",
+          "label": "REPRODUCTIVE SYSTEM AND BREAST DISORDERS",
+          "report_label": "REPRODUCTIVE SYSTEM AND BREAST DISORDERS",
+          "printed": [
+            "2 (2.3%) [4]",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "0.497",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:REPRODUCTIVE SYSTEM AND BREAST DISORDERS|BENIGN PROSTATIC HYPERPLASIA",
+          "label": "BENIGN PROSTATIC HYPERPLASIA",
+          "report_label": "BENIGN PROSTATIC HYPERPLASIA",
+          "printed": [
+            "1 (1.2%) [2]",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:REPRODUCTIVE SYSTEM AND BREAST DISORDERS|PELVIC PAIN",
+          "label": "PELVIC PAIN",
+          "report_label": "PELVIC PAIN",
+          "printed": [
+            "1 (1.2%) [2]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "soc:RESPIRATORY, THORACIC AND MEDIASTINAL DISORDERS",
+          "label": "RESPIRATORY, THORACIC AND MEDIASTINAL DISORDERS",
+          "report_label": "RESPIRATORY, THORACIC AND MEDIASTINAL DI",
+          "printed": [
+            "8 (9.3%) [12]",
+            "9 (10.7%) [14]",
+            "10 (11.9%) [22]"
+          ],
+          "p_values_printed": [
+            "0.803",
+            "0.626"
+          ]
+        },
+        {
+          "analysis": "pt:RESPIRATORY, THORACIC AND MEDIASTINAL DISORDERS|COUGH",
+          "label": "COUGH",
+          "report_label": "COUGH",
+          "printed": [
+            "1 (1.2%) [1]",
+            "5 (6.0%) [7]",
+            "5 (6.0%) [7]"
+          ],
+          "p_values_printed": [
+            "0.115*",
+            "0.115*"
+          ]
+        },
+        {
+          "analysis": "pt:RESPIRATORY, THORACIC AND MEDIASTINAL DISORDERS|NASAL CONGESTION",
+          "label": "NASAL CONGESTION",
+          "report_label": "NASAL CONGESTION",
+          "printed": [
+            "3 (3.5%) [3]",
+            "1 (1.2%) [1]",
+            "3 (3.6%) [4]"
+          ],
+          "p_values_printed": [
+            "0.621",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:RESPIRATORY, THORACIC AND MEDIASTINAL DISORDERS|EPISTAXIS",
+          "label": "EPISTAXIS",
+          "report_label": "EPISTAXIS",
+          "printed": [
+            "0",
+            "1 (1.2%) [1]",
+            "2 (2.4%) [2]"
+          ],
+          "p_values_printed": [
+            "0.494",
+            "0.243"
+          ]
+        },
+        {
+          "analysis": "pt:RESPIRATORY, THORACIC AND MEDIASTINAL DISORDERS|ALLERGIC GRANULOMATOUS ANGIITIS",
+          "label": "ALLERGIC GRANULOMATOUS ANGIITIS",
+          "report_label": "ALLERGIC GRANULOMATOUS ANGIITIS",
+          "printed": [
+            "0",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:RESPIRATORY, THORACIC AND MEDIASTINAL DISORDERS|DYSPNOEA",
+          "label": "DYSPNOEA",
+          "report_label": "DYSPNOEA",
+          "printed": [
+            "1 (1.2%) [1]",
+            "1 (1.2%) [1]",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:RESPIRATORY, THORACIC AND MEDIASTINAL DISORDERS|PHARYNGEAL ERYTHEMA",
+          "label": "PHARYNGEAL ERYTHEMA",
+          "report_label": "PHARYNGEAL ERYTHEMA",
+          "printed": [
+            "0",
+            "0",
+            "1 (1.2%) [2]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:RESPIRATORY, THORACIC AND MEDIASTINAL DISORDERS|PHARYNGOLARYNGEAL PAIN",
+          "label": "PHARYNGOLARYNGEAL PAIN",
+          "report_label": "PHARYNGOLARYNGEAL PAIN",
+          "printed": [
+            "0",
+            "1 (1.2%) [1]",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "0.494",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:RESPIRATORY, THORACIC AND MEDIASTINAL DISORDERS|PRODUCTIVE COUGH",
+          "label": "PRODUCTIVE COUGH",
+          "report_label": "PRODUCTIVE COUGH",
+          "printed": [
+            "0",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:RESPIRATORY, THORACIC AND MEDIASTINAL DISORDERS|RESPIRATORY TRACT CONGESTION",
+          "label": "RESPIRATORY TRACT CONGESTION",
+          "report_label": "RESPIRATORY TRACT CONGESTION",
+          "printed": [
+            "0",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:RESPIRATORY, THORACIC AND MEDIASTINAL DISORDERS|RHINORRHOEA",
+          "label": "RHINORRHOEA",
+          "report_label": "RHINORRHOEA",
+          "printed": [
+            "0",
+            "1 (1.2%) [2]",
+            "1 (1.2%) [2]"
+          ],
+          "p_values_printed": [
+            "0.494",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:RESPIRATORY, THORACIC AND MEDIASTINAL DISORDERS|DYSPHONIA",
+          "label": "DYSPHONIA",
+          "report_label": "DYSPHONIA",
+          "printed": [
+            "0",
+            "1 (1.2%) [1]",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.494",
+            ""
+          ]
+        },
+        {
+          "analysis": "pt:RESPIRATORY, THORACIC AND MEDIASTINAL DISORDERS|EMPHYSEMA",
+          "label": "EMPHYSEMA",
+          "report_label": "EMPHYSEMA",
+          "printed": [
+            "1 (1.2%) [1]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:RESPIRATORY, THORACIC AND MEDIASTINAL DISORDERS|HAEMOPTYSIS",
+          "label": "HAEMOPTYSIS",
+          "report_label": "HAEMOPTYSIS",
+          "printed": [
+            "1 (1.2%) [2]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:RESPIRATORY, THORACIC AND MEDIASTINAL DISORDERS|POSTNASAL DRIP",
+          "label": "POSTNASAL DRIP",
+          "report_label": "POSTNASAL DRIP",
+          "printed": [
+            "1 (1.2%) [2]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:RESPIRATORY, THORACIC AND MEDIASTINAL DISORDERS|RALES",
+          "label": "RALES",
+          "report_label": "RALES",
+          "printed": [
+            "1 (1.2%) [2]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "soc:SKIN AND SUBCUTANEOUS TISSUE DISORDERS",
+          "label": "SKIN AND SUBCUTANEOUS TISSUE DISORDERS",
+          "report_label": "SKIN AND SUBCUTANEOUS TISSUE DISORDERS",
+          "printed": [
+            "20 (23.3%) [45]",
+            "39 (46.4%) [111]",
+            "40 (47.6%) [104]"
+          ],
+          "p_values_printed": [
+            "0.002*",
+            "0.001*"
+          ]
+        },
+        {
+          "analysis": "pt:SKIN AND SUBCUTANEOUS TISSUE DISORDERS|PRURITUS",
+          "label": "PRURITUS",
+          "report_label": "PRURITUS",
+          "printed": [
+            "8 (9.3%) [11]",
+            "21 (25.0%) [31]",
+            "26 (31.0%) [38]"
+          ],
+          "p_values_printed": [
+            "0.008*",
+            "0.000*"
+          ]
+        },
+        {
+          "analysis": "pt:SKIN AND SUBCUTANEOUS TISSUE DISORDERS|ERYTHEMA",
+          "label": "ERYTHEMA",
+          "report_label": "ERYTHEMA",
+          "printed": [
+            "8 (9.3%) [12]",
+            "14 (16.7%) [22]",
+            "14 (16.7%) [22]"
+          ],
+          "p_values_printed": [
+            "0.175",
+            "0.175"
+          ]
+        },
+        {
+          "analysis": "pt:SKIN AND SUBCUTANEOUS TISSUE DISORDERS|RASH",
+          "label": "RASH",
+          "report_label": "RASH",
+          "printed": [
+            "5 (5.8%) [9]",
+            "13 (15.5%) [18]",
+            "9 (10.7%) [15]"
+          ],
+          "p_values_printed": [
+            "0.048*",
+            "0.277"
+          ]
+        },
+        {
+          "analysis": "pt:SKIN AND SUBCUTANEOUS TISSUE DISORDERS|HYPERHIDROSIS",
+          "label": "HYPERHIDROSIS",
+          "report_label": "HYPERHIDROSIS",
+          "printed": [
+            "2 (2.3%) [2]",
+            "4 (4.8%) [5]",
+            "8 (9.5%) [10]"
+          ],
+          "p_values_printed": [
+            "0.441",
+            "0.056*"
+          ]
+        },
+        {
+          "analysis": "pt:SKIN AND SUBCUTANEOUS TISSUE DISORDERS|SKIN IRRITATION",
+          "label": "SKIN IRRITATION",
+          "report_label": "SKIN IRRITATION",
+          "printed": [
+            "3 (3.5%) [4]",
+            "6 (7.1%) [13]",
+            "5 (6.0%) [8]"
+          ],
+          "p_values_printed": [
+            "0.326",
+            "0.493"
+          ]
+        },
+        {
+          "analysis": "pt:SKIN AND SUBCUTANEOUS TISSUE DISORDERS|RASH PRURITIC",
+          "label": "RASH PRURITIC",
+          "report_label": "RASH PRURITIC",
+          "printed": [
+            "0",
+            "1 (1.2%) [2]",
+            "2 (2.4%) [3]"
+          ],
+          "p_values_printed": [
+            "0.494",
+            "0.243"
+          ]
+        },
+        {
+          "analysis": "pt:SKIN AND SUBCUTANEOUS TISSUE DISORDERS|ACTINIC KERATOSIS",
+          "label": "ACTINIC KERATOSIS",
+          "report_label": "ACTINIC KERATOSIS",
+          "printed": [
+            "0",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:SKIN AND SUBCUTANEOUS TISSUE DISORDERS|BLISTER",
+          "label": "BLISTER",
+          "report_label": "BLISTER",
+          "printed": [
+            "0",
+            "5 (6.0%) [8]",
+            "1 (1.2%) [2]"
+          ],
+          "p_values_printed": [
+            "0.028*",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:SKIN AND SUBCUTANEOUS TISSUE DISORDERS|PRURITUS GENERALISED",
+          "label": "PRURITUS GENERALISED",
+          "report_label": "PRURITUS GENERALISED",
+          "printed": [
+            "0",
+            "1 (1.2%) [4]",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "0.494",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:SKIN AND SUBCUTANEOUS TISSUE DISORDERS|RASH MACULO-PAPULAR",
+          "label": "RASH MACULO-PAPULAR",
+          "report_label": "RASH MACULO-PAPULAR",
+          "printed": [
+            "0",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:SKIN AND SUBCUTANEOUS TISSUE DISORDERS|SKIN ODOUR ABNORMAL",
+          "label": "SKIN ODOUR ABNORMAL",
+          "report_label": "SKIN ODOUR ABNORMAL",
+          "printed": [
+            "0",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:SKIN AND SUBCUTANEOUS TISSUE DISORDERS|URTICARIA",
+          "label": "URTICARIA",
+          "report_label": "URTICARIA",
+          "printed": [
+            "0",
+            "1 (1.2%) [3]",
+            "1 (1.2%) [2]"
+          ],
+          "p_values_printed": [
+            "0.494",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:SKIN AND SUBCUTANEOUS TISSUE DISORDERS|ALOPECIA",
+          "label": "ALOPECIA",
+          "report_label": "ALOPECIA",
+          "printed": [
+            "1 (1.2%) [1]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:SKIN AND SUBCUTANEOUS TISSUE DISORDERS|COLD SWEAT",
+          "label": "COLD SWEAT",
+          "report_label": "COLD SWEAT",
+          "printed": [
+            "1 (1.2%) [3]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:SKIN AND SUBCUTANEOUS TISSUE DISORDERS|DERMATITIS CONTACT",
+          "label": "DERMATITIS CONTACT",
+          "report_label": "DERMATITIS CONTACT",
+          "printed": [
+            "0",
+            "1 (1.2%) [2]",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.494",
+            ""
+          ]
+        },
+        {
+          "analysis": "pt:SKIN AND SUBCUTANEOUS TISSUE DISORDERS|DRUG ERUPTION",
+          "label": "DRUG ERUPTION",
+          "report_label": "DRUG ERUPTION",
+          "printed": [
+            "1 (1.2%) [1]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:SKIN AND SUBCUTANEOUS TISSUE DISORDERS|RASH ERYTHEMATOUS",
+          "label": "RASH ERYTHEMATOUS",
+          "report_label": "RASH ERYTHEMATOUS",
+          "printed": [
+            "0",
+            "1 (1.2%) [1]",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.494",
+            ""
+          ]
+        },
+        {
+          "analysis": "pt:SKIN AND SUBCUTANEOUS TISSUE DISORDERS|SKIN EXFOLIATION",
+          "label": "SKIN EXFOLIATION",
+          "report_label": "SKIN EXFOLIATION",
+          "printed": [
+            "0",
+            "1 (1.2%) [2]",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.494",
+            ""
+          ]
+        },
+        {
+          "analysis": "pt:SKIN AND SUBCUTANEOUS TISSUE DISORDERS|SKIN ULCER",
+          "label": "SKIN ULCER",
+          "report_label": "SKIN ULCER",
+          "printed": [
+            "1 (1.2%) [2]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "soc:SOCIAL CIRCUMSTANCES",
+          "label": "SOCIAL CIRCUMSTANCES",
+          "report_label": "SOCIAL CIRCUMSTANCES",
+          "printed": [
+            "0",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:SOCIAL CIRCUMSTANCES|ALCOHOL USE",
+          "label": "ALCOHOL USE",
+          "report_label": "ALCOHOL USE",
+          "printed": [
+            "0",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "soc:SURGICAL AND MEDICAL PROCEDURES",
+          "label": "SURGICAL AND MEDICAL PROCEDURES",
+          "report_label": "SURGICAL AND MEDICAL PROCEDURES",
+          "printed": [
+            "2 (2.3%) [2]",
+            "1 (1.2%) [1]",
+            "2 (2.4%) [2]"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:SURGICAL AND MEDICAL PROCEDURES|ACROCHORDON EXCISION",
+          "label": "ACROCHORDON EXCISION",
+          "report_label": "ACROCHORDON EXCISION",
+          "printed": [
+            "0",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:SURGICAL AND MEDICAL PROCEDURES|SKIN LESION EXCISION",
+          "label": "SKIN LESION EXCISION",
+          "report_label": "SKIN LESION EXCISION",
+          "printed": [
+            "0",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:SURGICAL AND MEDICAL PROCEDURES|CATARACT OPERATION",
+          "label": "CATARACT OPERATION",
+          "report_label": "CATARACT OPERATION",
+          "printed": [
+            "1 (1.2%) [1]",
+            "1 (1.2%) [1]",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:SURGICAL AND MEDICAL PROCEDURES|EYE LASER SURGERY",
+          "label": "EYE LASER SURGERY",
+          "report_label": "EYE LASER SURGERY",
+          "printed": [
+            "1 (1.2%) [1]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "soc:VASCULAR DISORDERS",
+          "label": "VASCULAR DISORDERS",
+          "report_label": "VASCULAR DISORDERS",
+          "printed": [
+            "3 (3.5%) [7]",
+            "3 (3.6%) [3]",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            "0.621"
+          ]
+        },
+        {
+          "analysis": "pt:VASCULAR DISORDERS|WOUND HAEMORRHAGE",
+          "label": "WOUND HAEMORRHAGE",
+          "report_label": "WOUND HAEMORRHAGE",
+          "printed": [
+            "0",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:VASCULAR DISORDERS|HOT FLUSH",
+          "label": "HOT FLUSH",
+          "report_label": "HOT FLUSH",
+          "printed": [
+            "0",
+            "1 (1.2%) [1]",
+            "0"
+          ],
+          "p_values_printed": [
+            "0.494",
+            ""
+          ]
+        },
+        {
+          "analysis": "pt:VASCULAR DISORDERS|HYPERTENSION",
+          "label": "HYPERTENSION",
+          "report_label": "HYPERTENSION",
+          "printed": [
+            "1 (1.2%) [2]",
+            "1 (1.2%) [1]",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        },
+        {
+          "analysis": "pt:VASCULAR DISORDERS|HYPOTENSION",
+          "label": "HYPOTENSION",
+          "report_label": "HYPOTENSION",
+          "printed": [
+            "2 (2.3%) [3]",
+            "1 (1.2%) [1]",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            "0.497"
+          ]
+        },
+        {
+          "analysis": "pt:VASCULAR DISORDERS|ORTHOSTATIC HYPOTENSION",
+          "label": "ORTHOSTATIC HYPOTENSION",
+          "report_label": "ORTHOSTATIC HYPOTENSION",
+          "printed": [
+            "1 (1.2%) [2]",
+            "0",
+            "0"
+          ],
+          "p_values_printed": [
+            ">0.99",
+            ">0.99"
+          ]
+        }
+      ],
+      "known_differences": [
+        {
+          "analysis": "pt:GASTROINTESTINAL DISORDERS|VOMITING",
+          "column": 5,
+          "recomputed": "0.208",
+          "report": "0.209",
+          "counts": "3 of 86 placebo vs 7 of 84 high dose",
+          "exact": "0.208498"
+        },
+        {
+          "analysis": "pt:GASTROINTESTINAL DISORDERS|SALIVARY HYPERSECRETION",
+          "column": 5,
+          "recomputed": "0.057*",
+          "report": "0.058*",
+          "counts": "0 of 86 placebo vs 4 of 84 high dose",
+          "exact": "0.057451"
+        },
+        {
+          "analysis": "pt:GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS|APPLICATION SITE ERYTHEMA",
+          "column": 5,
+          "recomputed": "0.002*",
+          "report": "0.003*",
+          "counts": "3 of 86 placebo vs 15 of 84 high dose",
+          "exact": "0.002480"
+        },
+        {
+          "analysis": "pt:NERVOUS SYSTEM DISORDERS|SYNCOPE",
+          "column": 4,
+          "recomputed": "0.057*",
+          "report": "0.058*",
+          "counts": "0 of 86 placebo vs 4 of 84 low dose",
+          "exact": "0.057451"
+        }
+      ],
+      "known_differences_note": "Four of the 227 printed p-values differ from R's two-sided Fisher exact test at the third decimal, each by one thousandth upward, on tables whose exact p sits just under the rounding boundary (0.2085, 0.0575, 0.0025). The subject counts and denominators agree, and no alternative definition tried — the any-event denominator, doubled one-sided, chi-square, denominators within two of the stated N — reproduces all four. They are recorded here as the 2006 program's figures and held to: the comparison fails if any of them closes or any other cell opens."
+    },
+    "t-sae-incidence": {
+      "table": "14-5.02",
+      "columns": [
+        "Placebo",
+        "Xanomeline Low Dose",
+        "Xanomeline High Dose"
+      ],
+      "column_n": [
+        86,
+        84,
+        84
+      ],
+      "n_cells": 3,
+      "p_columns": 2,
+      "note": "Three cells per line — n (%) [events] per arm — and two p-value columns, Fisher's exact test of placebo against each active arm; a blank p-value is a comparison with no subjects on either side. `report_label` keeps the report's wrapped or truncated text; `label` is the term as the data spells it, which the rendered display prints.",
+      "rows": [
+        {
+          "analysis": "any",
+          "label": "ANY BODY SYSTEM",
+          "report_label": "ANY BODY SYSTEM",
+          "printed": [
+            "0",
+            "1 (1.2%) [1]",
+            "2 (2.4%) [2]"
+          ],
+          "p_values_printed": [
+            "0.494",
+            "0.243"
+          ]
+        },
+        {
+          "analysis": "soc:NERVOUS SYSTEM DISORDERS",
+          "label": "NERVOUS SYSTEM DISORDERS",
+          "report_label": "NERVOUS SYSTEM DISORDERS",
+          "printed": [
+            "0",
+            "1 (1.2%) [1]",
+            "2 (2.4%) [2]"
+          ],
+          "p_values_printed": [
+            "0.494",
+            "0.243"
+          ]
+        },
+        {
+          "analysis": "pt:NERVOUS SYSTEM DISORDERS|SYNCOPE",
+          "label": "SYNCOPE",
+          "report_label": "SYNCOPE",
+          "printed": [
+            "0",
+            "1 (1.2%) [1]",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "0.494",
+            "0.494"
+          ]
+        },
+        {
+          "analysis": "pt:NERVOUS SYSTEM DISORDERS|PARTIAL SEIZURES WITH SECONDARY GENERALISATION",
+          "label": "PARTIAL SEIZURES WITH SECONDARY GENERALISATION",
+          "report_label": "PARTIAL SEIZURES WITH SECONDARY GENERA",
+          "printed": [
+            "0",
+            "0",
+            "1 (1.2%) [1]"
+          ],
+          "p_values_printed": [
+            "",
+            "0.494"
+          ]
+        }
+      ]
+    },
+    "t-subjects-by-site": {
+      "table": "14-1.03",
+      "columns": [
+        "Placebo ITT",
+        "Placebo Eff",
+        "Placebo Com",
+        "Xanomeline Low Dose ITT",
+        "Xanomeline Low Dose Eff",
+        "Xanomeline Low Dose Com",
+        "Xanomeline High Dose ITT",
+        "Xanomeline High Dose Eff",
+        "Xanomeline High Dose Com",
+        "Total ITT",
+        "Total Eff",
+        "Total Com"
+      ],
+      "column_n": [
+        86,
+        79,
+        60,
+        84,
+        81,
+        28,
+        84,
+        74,
+        30,
+        254,
+        234,
+        118
+      ],
+      "n_cells": 12,
+      "note": "Twelve bare counts per line, arm by population (intent-to-treat, efficacy, Week 24 completers) with the Total group last; one line per site labelled with its pooled id and its own id, then TOTAL. The rendered display prints the same twelve columns directly.",
+      "rows": [
+        {
+          "analysis": "site:701",
+          "label": "701 / 701",
+          "report_label": "701 701",
+          "printed": [
+            "14",
+            "14",
+            "11",
+            "13",
+            "13",
+            "5",
+            "14",
+            "14",
+            "7",
+            "41",
+            "41",
+            "23"
+          ]
+        },
+        {
+          "analysis": "site:703",
+          "label": "703 / 703",
+          "report_label": "703 703",
+          "printed": [
+            "6",
+            "5",
+            "4",
+            "6",
+            "5",
+            "1",
+            "6",
+            "5",
+            "2",
+            "18",
+            "15",
+            "7"
+          ]
+        },
+        {
+          "analysis": "site:704",
+          "label": "704 / 704",
+          "report_label": "704 704",
+          "printed": [
+            "9",
+            "9",
+            "5",
+            "8",
+            "7",
+            "3",
+            "8",
+            "8",
+            "0",
+            "25",
+            "24",
+            "8"
+          ]
+        },
+        {
+          "analysis": "site:705",
+          "label": "705 / 705",
+          "report_label": "705 705",
+          "printed": [
+            "5",
+            "3",
+            "2",
+            "5",
+            "5",
+            "3",
+            "6",
+            "4",
+            "1",
+            "16",
+            "12",
+            "6"
+          ]
+        },
+        {
+          "analysis": "site:708",
+          "label": "708 / 708",
+          "report_label": "708 708",
+          "printed": [
+            "9",
+            "9",
+            "7",
+            "8",
+            "8",
+            "2",
+            "8",
+            "5",
+            "2",
+            "25",
+            "22",
+            "11"
+          ]
+        },
+        {
+          "analysis": "site:709",
+          "label": "709 / 709",
+          "report_label": "709 709",
+          "printed": [
+            "7",
+            "7",
+            "5",
+            "7",
+            "6",
+            "2",
+            "7",
+            "7",
+            "3",
+            "21",
+            "20",
+            "10"
+          ]
+        },
+        {
+          "analysis": "site:710",
+          "label": "710 / 710",
+          "report_label": "710 710",
+          "printed": [
+            "11",
+            "8",
+            "6",
+            "10",
+            "10",
+            "2",
+            "10",
+            "8",
+            "5",
+            "31",
+            "26",
+            "13"
+          ]
+        },
+        {
+          "analysis": "site:713",
+          "label": "713 / 713",
+          "report_label": "713 713",
+          "printed": [
+            "3",
+            "3",
+            "3",
+            "3",
+            "3",
+            "2",
+            "3",
+            "2",
+            "2",
+            "9",
+            "8",
+            "7"
+          ]
+        },
+        {
+          "analysis": "site:716",
+          "label": "716 / 716",
+          "report_label": "716 716",
+          "printed": [
+            "8",
+            "8",
+            "7",
+            "8",
+            "8",
+            "3",
+            "8",
+            "8",
+            "3",
+            "24",
+            "24",
+            "13"
+          ]
+        },
+        {
+          "analysis": "site:718",
+          "label": "718 / 718",
+          "report_label": "718 718",
+          "printed": [
+            "4",
+            "4",
+            "3",
+            "5",
+            "5",
+            "1",
+            "4",
+            "4",
+            "1",
+            "13",
+            "13",
+            "5"
+          ]
+        },
+        {
+          "analysis": "site:702",
+          "label": "900 / 702",
+          "report_label": "900 702",
+          "printed": [
+            "0",
+            "0",
+            "0",
+            "1",
+            "1",
+            "0",
+            "0",
+            "0",
+            "0",
+            "1",
+            "1",
+            "0"
+          ]
+        },
+        {
+          "analysis": "site:706",
+          "label": "900 / 706",
+          "report_label": "900 706",
+          "printed": [
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "0",
+            "1",
+            "1",
+            "0",
+            "3",
+            "3",
+            "1"
+          ]
+        },
+        {
+          "analysis": "site:707",
+          "label": "900 / 707",
+          "report_label": "900 707",
+          "printed": [
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "0",
+            "0",
+            "0",
+            "0",
+            "2",
+            "2",
+            "1"
+          ]
+        },
+        {
+          "analysis": "site:711",
+          "label": "900 / 711",
+          "report_label": "900 711",
+          "printed": [
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "0",
+            "2",
+            "1",
+            "0",
+            "4",
+            "3",
+            "1"
+          ]
+        },
+        {
+          "analysis": "site:714",
+          "label": "900 / 714",
+          "report_label": "900 714",
+          "printed": [
+            "2",
+            "2",
+            "2",
+            "2",
+            "2",
+            "1",
+            "2",
+            "2",
+            "1",
+            "6",
+            "6",
+            "4"
+          ]
+        },
+        {
+          "analysis": "site:715",
+          "label": "900 / 715",
+          "report_label": "900 715",
+          "printed": [
+            "3",
+            "2",
+            "2",
+            "3",
+            "3",
+            "1",
+            "2",
+            "2",
+            "0",
+            "8",
+            "7",
+            "3"
+          ]
+        },
+        {
+          "analysis": "site:717",
+          "label": "900 / 717",
+          "report_label": "900 717",
+          "printed": [
+            "2",
+            "2",
+            "0",
+            "2",
+            "2",
+            "2",
+            "3",
+            "3",
+            "3",
+            "7",
+            "7",
+            "5"
+          ]
+        },
+        {
+          "analysis": "total",
+          "label": "TOTAL",
+          "report_label": "TOTAL",
+          "printed": [
+            "86",
+            "79",
+            "60",
+            "84",
+            "81",
+            "28",
+            "84",
+            "74",
+            "30",
+            "254",
+            "234",
+            "118"
+          ]
+        }
+      ],
+      "p_columns": 0
     }
   }
 }

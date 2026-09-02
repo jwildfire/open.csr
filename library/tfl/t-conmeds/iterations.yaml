@@ -10,4 +10,26 @@ iterations:
   display_hash: sha256:6f1a46f8b7d057f930f1afffb6ed27c0566d1d981b0a59d2cdbde42f28853519
   ard_hash: sha256:87b879c9777a8c73321f8f9bad5b0ad516e2a7671a4fc01847434abe14c1a8b8
   ard_rows: 414
+- version: v002
+  created: '2026-09-02T15:19:45Z'
+  actor: '@obotclaw'
+  change_request: 'One study (D0032 R2, #60): read the CDISC pilot own ADaM package,
+    which assigns every subject the arm the rest of the report uses. Spec unchanged;
+    lane changed.'
+  git_commit: ''
+  spec_hash: sha256:5b8045eb70da88bc2f3876b8a6fc2d35c907e604991fe8e467f4f32c097c32d1
+  display_hash: sha256:a79342e396606c4bc2932b2c164b228aadba158339e805bdb2a514ba0e477534
+  ard_hash: sha256:f548b4f541d3f63b6c9cfc90f40f38a8dde9f664138dfea03abd379fe6d0769d
+  ard_rows: 414
+- version: v003
+  created: '2026-09-02T16:21:44Z'
+  actor: '@obotclaw'
+  change_request: 'Concomitant medications derived from the study own SDTM CM domain
+    (D0032, #65): every statistic identical to the relabelled PHUSE copy it replaces,
+    which stays vendored for the check that proves it.'
+  git_commit: ''
+  spec_hash: sha256:5b8045eb70da88bc2f3876b8a6fc2d35c907e604991fe8e467f4f32c097c32d1
+  display_hash: sha256:a79342e396606c4bc2932b2c164b228aadba158339e805bdb2a514ba0e477534
+  ard_hash: sha256:95799f768cea8ad4a42678bfed452e799de35b67b257f647c9260b4292b20a07
+  ard_rows: 414
 

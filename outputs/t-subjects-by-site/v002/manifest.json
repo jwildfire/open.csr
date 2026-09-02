@@ -1,0 +1,55 @@
+{
+  "display": "t-subjects-by-site",
+  "version": "v002",
+  "created": "2026-09-02T16:15:18Z",
+  "actor": "@obotclaw",
+  "change_request": "Site carried as a factor over every site, so a site with no subjects in a population prints 0 rather than nothing.",
+  "regulatory_id": "DST04",
+  "git_commit": null,
+  "spec_hash": "sha256:9b145f6fe1f753e6a3729e757993d5ec669b342acacc0113077a63e9c112b56f",
+  "display_hash": "sha256:3087fc570f550d7fdbfd30ed702860c09478358c9e310a12b02f9cbab1676108",
+  "ard_hash": "sha256:6887f57cfc4987e81823c8de7a4d6a2e452ea55848294db90f1997ccdf0d9747",
+  "ard_rows": 612,
+  "ard_warnings": 0,
+  "ard_errors": 0,
+  "datasets": "adsl",
+  "data": [
+    {
+      "dataset": "adsl",
+      "hash": "sha256:1f6fa03914a74aa185bd5ee8453806779abe240f7b88f483d932b8eec9680da6",
+      "n_row": 254,
+      "n_col": 55,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    }
+  ],
+  "environment": {
+    "r": "4.3.3",
+    "os": "Darwin 23.6.0",
+    "packages": {
+      "cards": "0.6.1",
+      "cardx": "0.2.5",
+      "gtsummary": "2.3.0",
+      "gt": "1.0.0",
+      "dplyr": "1.1.4",
+      "pharmaverseadam": "1.1.0",
+      "jsonlite": "2.0.0",
+      "yaml": "2.3.10",
+      "digest": "0.6.37"
+    }
+  },
+  "variants": {
+    "post_text": {
+      "file": "table.html",
+      "rtf": "table.rtf",
+      "rtf_hash": "sha256:0c9d104aec1902a86e47493a15a1512eae539d193f872b1804382725e96a64e9",
+      "n_rows": 18
+    },
+    "in_text": {
+      "file": "table-in-text.html",
+      "rtf": "table-in-text.rtf",
+      "rtf_hash": "sha256:14eef9466aa2171088a5b5a5304cda64f091fb13d0a40691ad3587f95049a062",
+      "n_rows": 18
+    }
+  }
+}

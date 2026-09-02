@@ -4,10 +4,9 @@ Requirements for the individual tables and listings in the v0 TFL library. Each
 requirement is a statement about *the numbers a display reports*, verified by
 recomputing them directly from the source datasets with `dplyr` and comparing
 against the rendered cells — value-level regression rather than pixel comparison
-(design decision D4). Which source depends on the display: the first six read
-`{pharmaverseadam}`, and the two specified against the CDISC pilot's own ADaM
-packaging are recomputed from the vendored `.xpt.gz` read straight with
-`{haven}`, never through `prepare_data()`.
+(design decision D4). Since v0.4.0 every display reads the CDISC pilot's own
+ADaM packaging (D0032 R2), and the second measurement is recomputed from the
+vendored `.xpt.gz` read straight with `{haven}`, never through `prepare_data()`.
 
 Requirements for the individual tables, listings and figures in the v0 TFL
 library. Each requirement is a statement about *the numbers a display reports*,
@@ -16,8 +15,8 @@ rendered cells — value-level regression rather than pixel comparison (design
 decision D4).
 
 Where the second measurement comes from depends on what the display claims. The
-six safety displays are recomputed directly from the source `{pharmaverseadam}`
-datasets with `dplyr`; the five efficacy and time-to-event displays are checked
+six safety displays are recomputed directly from the vendored source datasets
+with base R; the five efficacy and time-to-event displays are checked
 against the analysis the study's own report published, because a display that
 carries a model cannot be qualified by two implementations of the same
 misunderstanding. That distinction is set out under
@@ -45,8 +44,20 @@ live in [`tfl-engine.md`](tfl-engine.md).
 
 | ID | Requirement | Type | Verification | Status |
 |---|---|---|---|---|
-| DSP-DEMO-001 | The age summary (n, mean, SD, median, min, max) by treatment arm equals the value computed directly from ADSL, at the display's declared precision. | Functional | `test-displays.R` | Verified |
-| DSP-DEMO-002 | Sex, race and age-group counts and percentages by treatment arm and overall equal the values computed directly from ADSL. | Functional | `test-displays.R` | Verified |
+| DSP-DEMO-001 | The age summary (n, mean, SD, median, min, max) by treatment arm equals the value computed directly from the vendored pilot ADSL on the intent-to-treat population; the display carries the report's Placebo, low dose, high dose, Total and p-value columns. | Correctness | `test-displays.R` | Verified |
+| DSP-DEMO-002 | Sex, Race (Origin) and age-group counts and percentages by treatment arm and overall equal the values computed directly from ADSL, printed as the report prints them: integer percentages, a bare 0 for nobody, `<1%` for a share under half a percent. | Correctness | `test-displays.R` | Verified |
+| DSP-DEMO-003 | Every p-value the display prints is the test the report's footnote names — one-way ANOVA across the three arms for a continuous block, Pearson's chi-square (no continuity correction) for a categorical one — recomputed independently and printed to four decimals, on the block's n row (or the first level of a sub-block) and nowhere else. | Correctness | `test-displays.R` | Verified |
+| DSP-DEMO-004 | Race (Origin) is the report's classification recoded from the study's race and ethnicity — ethnicity first, then race — and reproduces 218 Caucasian, 23 African Descent, 12 Hispanic, 1 Other, with every Hispanic subject White by race so 218 + 12 = 230; the CDISC-coded race stays in the ARD for the narrative and is not rendered. | Traceability | `test-displays.R` | Verified |
+| DSP-AEI-001 | The incidence display's any-event row and every organ-class and preferred-term row report, per arm, the subjects with at least one treatment-emergent event, the percentage of the safety population and the number of events in brackets, equal to a direct computation from the vendored ADAE and ADSL; the columns are the three arms and the two placebo comparisons. | Correctness | `test-displays.R` | Verified |
+| DSP-AEI-002 | Every p-value is Fisher's exact test of placebo against the active arm on subject incidence, printed to three decimals with an asterisk below 0.15 and `>0.99` when it rounds to one, and blank where neither arm has a subject with the event. | Correctness | `test-displays.R` | Verified |
+| DSP-AEI-003 | Organ classes print alphabetically and preferred terms within a class by high-dose subjects descending then name, the order the reference prints; the serious-events table orders its terms by subjects summed across the arms, as its own program does. | Regulatory | `test-displays.R` | Verified |
+| DSP-AEI-004 | The serious-events display counts through the incidence display's implementation (`custom_from`), carries no custom code of its own, and reports the three serious treatment-emergent events the data hold. | Traceability | `test-displays.R` | Verified |
+| DSP-FLOW-001 | The disposition figure counts the subjects screened (every subject in the study's SDTM DM), the screen failures (DM's arm label), the randomised (every subject in ADSL), the Week 24 completers (COMP24FL) and the study completers (the complement of DISCONFL), equal to a direct count of the vendored files — 306, 52, 254, 118 and 110 as the reference report's Figure 10-1 prints — draws them as a self-contained flow, and prints them in its table. | Correctness | `test-displays.R` | Verified |
+| DSP-SITE-001 | The subjects-by-site display counts, per site, per arm and overall, the intent-to-treat, efficacy and Week 24 completer subjects, equal to a direct count of the vendored ADSL, in twelve columns of arm by population with the TOTAL line last. | Correctness | `test-displays.R` | Verified |
+| DSP-SITE-002 | Every site is listed on its own line labelled with its pooled id and its own id; the seven small sites pool under 900 and follow the ten that stand alone, in the reference's order. | Regulatory | `test-displays.R` | Verified |
+| DSP-INTXT-001 | The demographics display's in-text variant is the report's Table 11-1 — mean and range, percentages, race as White/Caucasian or other, no p-value column — rendered from the same ARD as the full table. | Correctness | `test-displays.R` | Verified |
+| DSP-INTXT-002 | The incidence display's in-text variant is the report's Table 12-1: preferred terms reported by at least 5% of subjects in any arm, listed flat in title case without organ-class headings, an asterisk on an active-arm cell whose placebo comparison has p < 0.15. | Correctness | `test-displays.R` | Verified |
+| DSP-INTXT-003 | The weight display's in-text variant is the report's Table 12-4: n and mean per arm for baseline weight and the change from baseline at Week 24 and at end of treatment, six columns from the weight table's own ARD. | Correctness | `test-displays.R` | Verified |
 
 ## Disposition (DST01)
 
@@ -88,6 +99,9 @@ completion-status source, and it prints no denominator rule for the reason rows.
 | ID | Requirement | Type | Verification | Status |
 |---|---|---|---|---|
 | DSP-REF-001 | Every cell `t-populations` and `t-end-of-study` publish equals the figure the CDISC pilot's own clinical study report printed for Tables 14-1.01 and 14-1.02 in 2006, from SAS programs sharing no code with this repository. The transcribed reference is at `quality/data/reference-report-agreement.json`; `qc/reference-report-agreement.R` compares it against both a from-scratch recomputation and the committed rendered HTML and exits non-zero on any disagreement, and `--verify-transcription` re-derives the transcription itself from the source document. | Quality evidence | `test-displays.R`, `qc/reference-report-agreement.R` | Verified |
+| DSP-REF-002 | Every cell `t-demographics` and `t-exposure` publish equals the figure the CDISC pilot's own clinical study report printed for Tables 14-2.01 and 14-4.01 — 58 report lines of four cells and a p-value, and 12 lines of six cells gathered from the rendered blocks the record names — as transcribed in `quality/data/reference-report-agreement.json` and re-derived from the pinned document by `--verify-transcription`. | Regulatory | `test-displays.R` | Verified |
+| DSP-REF-003 | Every cell `t-ae-incidence` and `t-sae-incidence` publish equals the figure the CDISC pilot's own report printed for Tables 14-5.01 and 14-5.02 — 258 lines of three cells and two p-values, wrapped and truncated labels resolved to the data's terms — as transcribed in the agreement record and re-derived from the pinned document; the four p-values the 2006 program rounded a thousandth higher are recorded as known differences, printed as recomputed, and tracked. | Regulatory | `test-displays.R` | Verified |
+| DSP-REF-004 | Every cell `t-subjects-by-site` publishes equals the figure the CDISC pilot's own report printed for Table 14-1.03 — eighteen lines of twelve counts — as transcribed in the agreement record and re-derived from the pinned document. | Regulatory | `test-displays.R` | Verified |
 
 ## Exposure (EXT01)
 
@@ -149,7 +163,7 @@ own footnotes so a reader of the table sees it:
 | DSP-CM-001 | Subject counts by therapeutic class and coded medication equal those computed directly from ADCM, with each subject counted once per class and once per medication however many records they have, and the rendered percentage is that count over the treatment group's safety analysis set. | Functional | `test-displays-vitals.R` | Verified |
 | DSP-CM-002 | No therapeutic class count exceeds the number of subjects taking any concomitant medication, and no medication count exceeds the class it is nested under -- a subject counted in a part is counted in the whole. | Consistency | `test-displays-vitals.R` | Verified |
 | DSP-CM-003 | The in-text variant of CMT01 applies the 5% threshold declared in its spec: medications reaching 5% in any treatment group are shown, medications below it in every group are not, and the full display is unaffected. | Functional | `test-displays-vitals.R` | Verified |
-| DSP-VWC-001 | All four displays group by planned treatment over the safety analysis set, carry no pooled Total column, and head their columns with the safety analysis set sizes -- which differ from the actual-treatment sizes, so the choice is consequential rather than cosmetic. | Regulatory | `test-displays-vitals.R` | Verified |
+| DSP-VWC-001 | All four displays group by planned treatment over the safety analysis set, carry no pooled Total column, and head their columns with the safety analysis set sizes. On the pharmaverse re-derivation the library first read, planned and actual differed for twelve subjects, so the choice was consequential; on the study's own package (the default since v0.4.0, #60) the two agree for every subject, and both facts are asserted so the choice stays visible. | Regulatory | `test-displays-vitals.R` | Verified |
 | DSP-VWC-002 | The committed three-route agreement record reports no disagreement, leaves no publishable statistic unchecked, and describes the iteration of each display that is committed now rather than an earlier one. | Quality evidence | `test-displays-vitals.R` | Verified |
 
 ## Efficacy — ADAS-Cog and NPI-X (EFT01–EFT09)

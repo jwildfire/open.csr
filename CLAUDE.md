@@ -30,12 +30,12 @@ node scripts/site.mjs           # everything -> site/_build/
 
 ## Data
 
-CDISCPILOT01 (xanomeline Alzheimer's study) from two packagings, chosen per dataset by `data_sources()` — see design D12 and contracts §4.
+CDISCPILOT01 (xanomeline Alzheimer's study). Since v0.4.0 every display reads the study's own ADaM package, vendored under `pipeline/inst/extdata/phuse-cdiscpilot01/` from `phuse-org/phuse-scripts` (MIT): `adsl`, `adae`, `advs`, `adqsadas`, `adqscibc`, `adqsnpix`, `adlbc`, `adlbh`, `adlbhy`, `adtte`, plus its SDTM `cm` (from which `adcm` is derived) and `dm` (the screened population). `data_sources()` resolves every one of them to that lane by default (design D12 as revised on D0032, contracts §4).
 
-- `{pharmaverseadam}`: `adsl`, `adae`, `adex`, `adlb`, `advs`. The only source of `adex`. Screen failures present and excluded in `prepare_data()`; no `ITTFL`/`EFFFL`; no efficacy domains.
-- The CDISC pilot's own ADaM package, vendored under `pipeline/inst/extdata/phuse-cdiscpilot01/` from `phuse-org/phuse-scripts` (MIT): `adqsadas`, `adqscibc`, `adqsnpix`, `adlbc`, `adlbh`, `adlbhy`, `adtte`, `adcm` (plus its own `adsl`/`adae`/`advs`, reachable with `sources = "phuse"`).
+- `{pharmaverseadam}` is the ALTERNATE: reachable with `sources = "pharmaverseadam"`, the only source of `adex` and `adlb` (which no display reads), and measured against the package by `Rscript qc/source-agreement.R`. Its actual-treatment column assigns twelve subjects to a different arm — that is why it is not the default, and why a display must never read it.
+- `library/study.yaml` is the study model: arms in print order, the columns that carry an arm label, the analysis sets with the subjects each holds per arm, the cut-off, the source. `trt_levels()` and `analysis_set_flag()` read it; every ARD records its population against it; the assembler's treatment-consistency gate fails the document when two displays disagree with it or with each other.
 
-Never assume a flag exists on the raw dataset — population flags are derived or asserted in the tested `prepare_data()` layer, and which lane you are on decides which. The default registry deliberately leaves every domain `{pharmaverseadam}` already served where it was, because the two packagings disagree on figures the displays publish; run `Rscript qc/source-agreement.R` to see exactly where.
+Never assume a flag exists on the raw dataset — population flags are derived or asserted in the tested `prepare_data()` layer.
 
 Efficacy data is available and five efficacy displays are specified against it (`t-cibic-week8`, `t-cibic-week16`, `t-cibic-week24`, `t-cibic-categorical`, `f-derm-time-to-event`). The study's own analysis results metadata in its `define.xml` is the reference for specifying another — do not invent an analysis. Where the reference is genuinely silent, engineer a defensible one and say so in the display's own footnotes and in `quality/requirements/displays.md`, so a reader can tell a transcribed definition from one open.csr chose.
 

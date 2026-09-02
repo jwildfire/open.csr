@@ -1,0 +1,46 @@
+id: t-disposition
+title: "Subject Disposition"
+regulatory_id: DST01
+type: table
+dataset: adsl
+analysis_set: itt
+denominator: adsl
+group:
+  - TRT01A
+total: true
+analyses:
+  - name: randomised
+    method: subject_count
+    label: "Subjects randomised"
+    variable: RANDFL
+    filter: null
+  - name: treated
+    method: subject_count
+    label: "Subjects treated"
+    variable: SAFFL
+    filter: "SAFFL == 'Y'"
+  - name: completed
+    method: subject_count
+    label: "Completed the study"
+    variable: COMPLFL
+    filter: "COMPLFL == 'Y'"
+  - name: discontinued
+    method: subject_count
+    label: "Discontinued the study"
+    variable: DISCFL
+    filter: "COMPLFL == 'N'"
+  - name: disc_death
+    method: subject_count
+    label: "Discontinued: death"
+    variable: DISCREAS
+    filter: "!is.na(DISCREAS) & DISCREAS == 'Death'"
+  - name: disc_other
+    method: subject_count
+    label: "Discontinued: other / not specified"
+    variable: DISCREAS
+    filter: "!is.na(DISCREAS) & DISCREAS == 'Other/Not specified'"
+  - name: died
+    method: subject_count
+    label: "Died"
+    variable: DTHFL
+    filter: "!is.na(DTHFL) & DTHFL == 'Y'"

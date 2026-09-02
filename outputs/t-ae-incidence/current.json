@@ -1,0 +1,9 @@
+{
+  "display": "t-ae-incidence",
+  "version": "v007",
+  "updated": "2026-09-02T16:11:28Z",
+  "path": "outputs/t-ae-incidence/v007",
+  "ard": "outputs/t-ae-incidence/v007/ard.json",
+  "table": "outputs/t-ae-incidence/v007/table.html",
+  "variants": ["post_text", "in_text"]
+}
