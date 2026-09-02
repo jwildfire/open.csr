@@ -76,6 +76,7 @@ import { loadAssembly, loadSections } from './template-lib.mjs';
 import { buildDataIndex, datasetStatus, loadDataPackage, renderDataPane, renderDatasetPage, renderLanesPage } from './data-lib.mjs';
 import { METADATA_PAGES, loadMetadata, metadataNavItems, renderMetadataPage, renderMetadataPane } from './metadata-lib.mjs';
 import { loadStudyModel } from './study-lib.mjs';
+import { loadPipeline, pipelineNavItems, renderFunctionPage, renderPipelinePane } from './pipeline-lib.mjs';
 import yaml from 'js-yaml';
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -373,7 +374,7 @@ page(path.join(buildDir, 'text', 'index.html'), {
   description:
     'ICH E3-aligned prose blocks in three tiers, with approval state and every number bound to an ' +
     'ARD address rather than typed.',
-  content: renderTextLibrary({ textBlocks, ards, traceIndex })
+  content: renderTextLibrary({ textBlocks, ards, traceIndex, documentsByBlock })
 });
 
 // The template model comes from template-lib, the same tested loaders the
@@ -521,7 +522,8 @@ const valuesContent = renderValuesPane({
   gate: valueGate,
   datasetsByDisplay,
   documentsByBlock,
-  root: '../'
+  root: '../',
+  config
 });
 
 // The Data pane and its standalone pages (#76): one page per dataset, one for
@@ -574,6 +576,25 @@ for (const entry of METADATA_PAGES) {
   });
 }
 
+// The Pipeline pane and its function pages (#82).
+const pipeline = loadPipeline(rootDir, { config, dataIndex, dataPackage, displays, valueStore, documents });
+warnings.push(...pipeline.warnings);
+const pipelineContent = renderPipelinePane({ pipeline, root: '../' });
+page(path.join(buildDir, 'pipeline', 'index.html'), {
+  title: `Pipeline · ${config.siteTitle}`,
+  root: '../',
+  description: 'What turns inputs into outputs: every pipeline function, what it reads, what it writes, where its code is, and every element it produced.',
+  content: pipelineContent
+});
+for (const fn of pipeline.functions) {
+  page(path.join(buildDir, 'pipeline', `${fn.id}.html`), {
+    title: `${fn.label} · pipeline · ${config.siteTitle}`,
+    root: '../',
+    description: fn.blurb || `The ${fn.label} function: what it reads, what it writes, and what it produced.`,
+    content: renderFunctionPage(fn.id, { pipeline, root: '../' })
+  });
+}
+
 const appPanes = [
   { id: 'documents', html: readerAppContent },
   {
@@ -592,6 +613,7 @@ const appPanes = [
   { id: 'values', html: valuesContent },
   { id: 'data', html: dataContent },
   { id: 'metadata', html: metadataContent },
+  { id: 'pipeline', html: pipelineContent },
   { id: 'templates', html: templatesContent }
 ];
 
@@ -603,6 +625,7 @@ const navTree = buildNavTree({
   values: valueStore?.values || [],
   datasets: navDatasets,
   metadata: metadataNavItems(metadata),
+  pipeline: pipelineNavItems(pipeline),
   documents,
   current: csr.id,
   rendered: documentEntries.map((entry) => entry.id),

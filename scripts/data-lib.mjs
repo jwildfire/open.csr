@@ -17,6 +17,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { chip, empty, escapeHtml } from './site-lib.mjs';
+import { renderFlow, shortHash as flowHash } from './flow-lib.mjs';
 
 const DOMAIN_LABEL = { adam: 'ADaM', sdtm: 'SDTM' };
 const SOURCE_LABEL = {
@@ -319,6 +320,41 @@ function notesList(dataset, root) {
   );
 }
 
+/** The flow a dataset travels (#83): the upstream file, vendoring and verification, the preparation layer, the prepared frame every display recorded. */
+export function datasetFlow(dataset, { index, data, root = '../' } = {}) {
+  const entry = index?.get?.(dataset.id);
+  const prov = dataset.provenance;
+  const upstream = repoLink(data?.package, prov?.upstream_path);
+  const inputs = dataset.source === 'derived'
+    ? [{ label: dataset.derivedFrom || 'source dataset', sub: 'prepared', href: dataset.derivedFrom ? datasetHref(dataset.derivedFrom, root) : null, kind: 'data' }]
+    : dataset.source === 'alternate'
+      ? [{ label: 'pharmaverseadam', sub: 'the alternate lane', href: `${root}data/lanes.html`, kind: 'data' }]
+      : prov
+        ? [{ label: prov.upstream_path || dataset.file, sub: `blob ${flowHash(prov.blob_sha1)} · ${prov.bytes ?? '?'} bytes`, href: upstream, kind: 'data' }]
+        : [{ label: `${dataset.file}.xpt`, sub: 'not vendored', href: null, kind: 'data' }];
+  const steps = dataset.source === 'derived'
+    ? [{ label: 'prepare_data()', sub: `derive_${dataset.id}()`, href: `${root}pipeline/prepare-data.html`, kind: 'fn' }]
+    : dataset.source === 'alternate'
+      ? [{ label: 'prepare_data()', sub: 'sources = "pharmaverseadam"', href: `${root}pipeline/prepare-data.html`, kind: 'fn' }]
+      : [
+          { label: 'vendor + verify', sub: data?.package?.verify || 'blob SHA-1 against the pinned commit', href: `${root}data/index.html#package`, kind: 'fn' },
+          { label: 'prepare_data()', sub: dataset.notes.length ? `${dataset.notes.length} derivation${dataset.notes.length === 1 ? '' : 's'}` : 'read as shipped', href: `${root}pipeline/prepare-data.html`, kind: 'fn' }
+        ];
+  const readBy = entry?.readBy?.length || 0;
+  const outputs = [
+    {
+      label: 'prepared frame',
+      sub: entry?.rows?.length ? `${entry.rows.join(' / ')} rows · ${entry.hashes.map(flowHash).join(' / ')}` : 'not read by any display',
+      href: null,
+      kind: 'out'
+    },
+    ...(readBy
+      ? [{ label: `${readBy} display${readBy === 1 ? '' : 's'}`, sub: 'computed from it', href: `${root}data/index.html#dataset-${dataset.id}`, kind: 'out' }]
+      : [])
+  ];
+  return renderFlow({ label: `How ${dataset.id} reaches a display`, inputs, steps, outputs, compact: true });
+}
+
 function datasetSection(dataset, { index, data, root, standalone = false }) {
   const status = datasetStatus(dataset, index);
   const flag =
@@ -342,6 +378,7 @@ function datasetSection(dataset, { index, data, root, standalone = false }) {
     heading +
     unregistered +
     datasetFacts(dataset, index, data, root) +
+    datasetFlow(dataset, { index, data, root }) +
     notesList(dataset, root) +
     readBySection(dataset, index, root) +
     `</section>`

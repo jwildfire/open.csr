@@ -12,7 +12,8 @@
 // That is why `resolveAppLink` is the centre of this file — cross-pane
 // behaviour is a link-rewriting rule, not a rewrite of every renderer.
 
-export const TAB_IDS = ['documents', 'displays', 'text', 'values', 'data', 'metadata', 'templates'];
+// In the pipeline's order (#82): inputs, the pipeline, outputs; Templates stays global.
+export const TAB_IDS = ['data', 'metadata', 'text', 'pipeline', 'displays', 'values', 'documents', 'templates'];
 
 export const DEFAULT_TAB = 'documents';
 
@@ -143,6 +144,14 @@ export function resolveAppLink(href) {
   const metadata = clean.match(/^metadata\/([a-z]+)\.html$/);
   if (metadata) {
     return { tab: 'metadata', focus: focus || `section-${metadata[1]}` };
+  }
+  // The Pipeline pane (#82): one section per function.
+  if (clean === 'pipeline/index.html' || clean === 'pipeline/') {
+    return { tab: 'pipeline', focus };
+  }
+  const fn = clean.match(/^pipeline\/([a-z0-9-]+)\.html$/);
+  if (fn) {
+    return { tab: 'pipeline', focus: focus || `function-${fn[1]}` };
   }
   return null;
 }
