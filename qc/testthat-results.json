@@ -1,14 +1,14 @@
 {
   "suite": "r-unit",
   "package": "opencsr",
-  "generated": "2026-09-02T15:47:27Z",
+  "generated": "2026-09-02T16:05:49Z",
   "environment": {
     "r": "4.3.3",
     "os": "Darwin 23.6.0"
   },
   "summary": {
-    "total": 150,
-    "passed": 150,
+    "total": 156,
+    "passed": 156,
     "failed": 0,
     "errored": 0,
     "skipped": 0
@@ -470,6 +470,31 @@
       "status": "pass"
     },
     {
+      "file": "test-displays.R",
+      "test": "DSP-AEI-001: the any-event row and every organ-class row count subjects, percentages and events as the reference does, recomputed directly from ADAE (#62)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays.R",
+      "test": "DSP-AEI-002: every p-value is Fisher's exact test of placebo against the arm on subject incidence, starred below 0.15, >0.99 when it rounds to one, and blank where neither arm has a subject with the event (#62)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays.R",
+      "test": "DSP-AEI-003: organ classes print alphabetically and preferred terms by high-dose subjects then name, the order the reference prints; the serious-events table orders terms by subjects summed across the arms (#62)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays.R",
+      "test": "DSP-AEI-004: the serious-events table counts the same way as the incidence table through one shared implementation (#62)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays.R",
+      "test": "DSP-REF-003: the incidence and serious-events displays publish every cell the pilot's own report printed for Tables 14-5.01 and 14-5.02 — 258 lines of three cells and two p-values (#62)",
+      "status": "pass"
+    },
+    {
       "file": "test-formatting.R",
       "test": "TFL-FMT-001: round_half_up rounds half away from zero, unlike base::round (#1)",
       "status": "pass"
@@ -602,6 +627,11 @@
     {
       "file": "test-render.R",
       "test": "TFL-RND-008: a level prints under its declared label, a sub-block's test comes from the sibling analysis `p_from` names and sits on its first level only, and the report's zero and sub-1% presentations are display options (#61)",
+      "status": "pass"
+    },
+    {
+      "file": "test-render.R",
+      "test": "TFL-RND-009: a hierarchical row plan can order its levels by name, by one arm's count, or by the subjects summed across arms, and a bare-zero option applies to any pattern that prints a count (#62)",
       "status": "pass"
     },
     {

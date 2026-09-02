@@ -231,7 +231,57 @@ route_a_exposure <- function(perturb = FALSE) {
   out
 }
 
+# The incidence tables: subjects with an event, the percentage of the arm, the
+# number of events, and Fisher's exact test of placebo against each active arm —
+# from the vendored ADAE and ADSL, in base R.
+adae_path <- file.path(root, "pipeline", "inst", "extdata", "phuse-cdiscpilot01", "adae.xpt.gz")
+adae <- haven::read_xpt(memDecompress(readBin(adae_path, "raw", file.size(adae_path)), type = "gzip"))
+
+fmt_fisher_ref <- function(p) {
+  if (is.na(p)) return("")
+  s <- if (p >= 0.995) ">0.99" else formatC(round_half_up(p, 3), format = "f", digits = 3)
+  if (s != "0.000" && grepl("0$", s)) s <- sub("0$", "", s)
+  if (p < 0.15) paste0(s, "*") else s
+}
+incidence_line <- function(ids_by_arm, events_by_arm) {
+  N <- col_n[seq_along(arms)]
+  n <- vapply(ids_by_arm, length, numeric(1))
+  cells <- vapply(seq_along(arms), function(i) {
+    if (n[i] == 0) "0" else sprintf("%d (%s%%) [%d]", n[i], fmt_num(100 * n[i] / N[i], 1), events_by_arm[i])
+  }, character(1))
+  ps <- vapply(2:3, function(i) {
+    if (n[1] == 0 && n[i] == 0) return("")
+    fmt_fisher_ref(stats::fisher.test(rbind(c(n[1], n[i]), c(N[1] - n[1], N[i] - n[i])))$p.value)
+  }, character(1))
+  c(cells, ps)
+}
+route_a_incidence <- function(serious = FALSE, perturb = FALSE) {
+  d <- as.data.frame(adae)
+  d <- d[blank_na(d$TRTEMFL) == "Y", , drop = FALSE]
+  if (serious) d <- d[blank_na(d$AESER) == "Y", , drop = FALSE]
+  d$ARM <- trt[match(d$USUBJID, adsl$USUBJID)]
+  d <- d[d$USUBJID %in% adsl$USUBJID[blank_na(adsl$SAFFL) == "Y"], , drop = FALSE]
+  if (perturb) d <- d[-1, , drop = FALSE]
+  line_for <- function(sub) {
+    incidence_line(
+      lapply(arms, function(a) unique(sub$USUBJID[sub$ARM == a])),
+      vapply(arms, function(a) sum(sub$ARM == a), numeric(1))
+    )
+  }
+  out <- list(any = line_for(d))
+  for (soc in sort(unique(blank_na(d$AEBODSYS)))) {
+    in_soc <- d[blank_na(d$AEBODSYS) == soc, , drop = FALSE]
+    out[[paste0("soc:", soc)]] <- line_for(in_soc)
+    for (pt in sort(unique(blank_na(in_soc$AEDECOD)))) {
+      out[[paste0("pt:", soc, "|", pt)]] <- line_for(in_soc[blank_na(in_soc$AEDECOD) == pt, , drop = FALSE])
+    }
+  }
+  out
+}
+
 route_a <- function(slug, perturb = FALSE) {
+  if (slug == "t-ae-incidence") return(route_a_incidence(FALSE, perturb))
+  if (slug == "t-sae-incidence") return(route_a_incidence(TRUE, perturb))
   if (slug == "t-demographics") return(route_a_demographics(perturb))
   if (slug == "t-exposure") return(route_a_exposure(perturb))
   defs <- definitions[[slug]]
@@ -325,10 +375,17 @@ route_c <- function(slug, perturb = FALSE) {
   lapply(spec$rows, function(r) {
     printed <- vapply(r$printed, function(x) norm_cell(x), character(1))
     if (perturb) printed[1] <- norm_cell("99 ( 99%)")
+    ps <- if (!is.null(r$p_values_printed)) {
+      vapply(r$p_values_printed, function(x) x %||% "", character(1))
+    } else if (is.null(r$p_value_printed)) {
+      ""
+    } else {
+      r$p_value_printed
+    }
     list(
       analysis = r$analysis,
       label = norm_label(r$label),
-      cells = c(unname(printed), if (is.null(r$p_value_printed)) "" else r$p_value_printed)
+      cells = c(unname(printed), unname(ps))
     )
   })
 }
@@ -380,11 +437,14 @@ locate_pdf <- function() {
 # so a line's cells are the LAST n_cells matches, a trailing four-decimal
 # p-value is read as the p-value column, and the text before the first cell is
 # the label. Header, footer and note lines are skipped by name.
-cell_pattern <- "(<\\.0001|<?[0-9]+(\\.[0-9]+)?([[:space:]]*\\([[:space:]]*<?[0-9]+%\\))?)"
+cell_pattern <- "(<\\.0001|<?[0-9]+(\\.[0-9]+)?([[:space:]]*\\([[:space:]]*<?[0-9]+(\\.[0-9])?%\\))?([[:space:]]*\\[[0-9]+\\])?)"
 pvalue_pattern <- "^(<\\.0001|[0-9]\\.[0-9]{4})$"
-skip_pattern <- "\\(N=|^[[:space:]]*(Protocol:|Population:|Table 14|Source:|NOTE:|\\[1\\]|Summary|Placebo|Xanomeline|square|definite)"
+fisher_pattern <- "(>0\\.99|0\\.[0-9]{2,3})\\*?"
+# the incidence tables print "n ( p.p%) [events]" or a bare 0 — never a bare decimal, which is a p-value
+incidence_cell_pattern <- "[0-9]+[[:space:]]*\\([[:space:]]*[0-9]+\\.[0-9]%\\)[[:space:]]*\\[[0-9]+\\]|(?<![[:alnum:].])0(?![[:alnum:].%])"
+skip_pattern <- "\\(N=|^[[:space:]]*(Protocol:|Population:|Table 14|Source:|NOTE:|Note:|\\[1\\]|Summary|Incidence|Placebo|Xanomeline|System Organ|Preferred Term|square|definite|group\\.?[[:space:]]*$)"
 
-parse_report_page <- function(pdf, page, n_cells = 4, allow_p = TRUE) {
+parse_report_page <- function(pdf, page, n_cells = 4, allow_p = TRUE, p_columns = 1) {
   out <- tempfile(fileext = ".txt")
   status <- suppressWarnings(system2(
     "pdftotext",
@@ -399,15 +459,41 @@ parse_report_page <- function(pdf, page, n_cells = 4, allow_p = TRUE) {
     )
   }
   lines <- readLines(out, warn = FALSE)
+  # Where the report prints two p-value columns, a lone p-value is assigned by
+  # where it sits on the line relative to the "High Dose" header.
+  high_at <- NA_integer_
+  for (l in lines) if (grepl("Low Dose", l) && grepl("High Dose", l)) high_at <- regexpr("High Dose", l)
   rows <- list()
   for (line in lines) {
     if (!nzchar(trimws(line)) || grepl(skip_pattern, line)) next
-    m <- gregexpr(cell_pattern, line)[[1]]
-    if (m[1] == -1 || length(m) < n_cells) next
+    m <- if (p_columns == 2) gregexpr(incidence_cell_pattern, line, perl = TRUE)[[1]] else gregexpr(cell_pattern, line)[[1]]
+    if (m[1] == -1 || length(m) < n_cells) {
+      # a label wrapped onto its own line continues the previous row's label
+      if (p_columns == 2 && length(rows) && !grepl("[0-9]", line) && nzchar(trimws(line))) {
+        rows[[length(rows)]]$label <- norm_label(paste(rows[[length(rows)]]$label, trimws(line)))
+      }
+      next
+    }
     starts <- as.integer(m)
     lens <- attr(m, "match.length")
     txt <- vapply(seq_along(starts), function(i) substr(line, starts[i], starts[i] + lens[i] - 1), character(1))
     p <- ""
+    if (p_columns == 2) {
+      idx <- seq.int(length(txt) - n_cells + 1, length(txt))
+      # the p-values follow the last cell; anything matching the Fisher form is one
+      tail_from <- starts[idx[n_cells]] + lens[idx[n_cells]]
+      tail_txt <- substr(line, tail_from, nchar(line))
+      pm <- gregexpr(fisher_pattern, tail_txt)[[1]]
+      ps <- if (pm[1] == -1) character(0) else regmatches(tail_txt, list(pm))[[1]]
+      pos <- if (pm[1] == -1) integer(0) else tail_from + as.integer(pm) - 1L
+      p <- c("", "")
+      if (length(ps) == 2) p <- ps
+      if (length(ps) == 1) p[if (!is.na(high_at) && pos[1] >= high_at - 2) 2 else 1] <- ps
+      cells <- vapply(txt[idx], norm_cell, character(1))
+      label <- norm_label(substr(line, 1, starts[idx[1]] - 1))
+      rows[[length(rows) + 1]] <- list(label = label, cells = unname(cells), p = p)
+      next
+    }
     if (allow_p && length(txt) >= n_cells + 1 && grepl(pvalue_pattern, trimws(txt[length(txt)]))) {
       p <- trimws(txt[length(txt)])
       keep <- seq_len(length(txt) - 1)
@@ -439,7 +525,7 @@ verify_transcription_run <- function(mutate = NULL) {
     n_cells <- spec$n_cells %||% 4
     parsed <- list(lines = character(0), rows = list())
     for (pg in page) {
-      one <- parse_report_page(pdf, pg, n_cells = n_cells, allow_p = n_cells == 4)
+      one <- parse_report_page(pdf, pg, n_cells = n_cells, allow_p = n_cells == 4, p_columns = spec$p_columns %||% 1)
       parsed$lines <- c(parsed$lines, one$lines)
       parsed$rows <- c(parsed$rows, one$rows)
     }
@@ -474,11 +560,11 @@ verify_transcription_run <- function(mutate = NULL) {
           paste(rec_cells, collapse = " | "), paste(p$cells, collapse = " | ")
         ))
       }
-      rec_p <- e$p_value_printed %||% ""
-      if (!identical(rec_p, p$p)) {
+      rec_p <- if (!is.null(e$p_values_printed)) vapply(e$p_values_printed, function(x) x %||% "", character(1)) else e$p_value_printed %||% ""
+      if (!identical(unname(rec_p), unname(p$p))) {
         bad <- c(bad, sprintf(
           "  %s / %s: record p-value '%s', report prints '%s'",
-          slug, e$analysis, rec_p, p$p
+          slug, e$analysis, paste(rec_p, collapse = " | "), paste(p$p, collapse = " | ")
         ))
       }
     }
@@ -541,6 +627,15 @@ if (verify_transcription) {
 
 # ---- comparison -------------------------------------------------------------
 
+# A difference the record declares, with the two strings it declares. Nothing
+# else is allowed to differ, and a declared one is required to still differ.
+known_difference <- function(slug, analysis, column) {
+  for (k in record$displays[[slug]]$known_differences %||% list()) {
+    if (identical(k$analysis, analysis) && identical(as.integer(k$column), as.integer(column))) return(k)
+  }
+  NULL
+}
+
 compare <- function(slug, perturb = NULL) {
   a <- route_a(slug, perturb = identical(perturb, "a"))
   b <- route_b(slug, perturb = identical(perturb, "b"))
@@ -570,6 +665,27 @@ compare <- function(slug, perturb = NULL) {
     pub_cells <- c(pub$cells, rep("", max(0, n_cols - length(pub$cells))))[seq_len(n_cols)]
     for (j in seq_len(n_cols)) {
       trio <- c(recomputed = rec[j], published = pub_cells[j], report = ref$cells[j])
+      known <- known_difference(slug, ref$analysis, j)
+      if (!is.null(known)) {
+        # A recorded difference must still be exactly the recorded difference:
+        # recomputation and publication agree with each other and with what the
+        # record says they print, and the report still prints what it printed.
+        # A known difference that has closed is reported too, so the list
+        # cannot go stale.
+        ok <- identical(unname(trio[["recomputed"]]), known$recomputed) &&
+          identical(unname(trio[["published"]]), known$recomputed) &&
+          identical(unname(trio[["report"]]), known$report)
+        if (!ok) {
+          bad <- c(bad, sprintf(
+            "  %s / %s / column %d: recorded as a known difference (%s vs report %s) but now\n    recomputed: %s\n    published:  %s\n    report:     %s",
+            slug, ref$analysis, j, known$recomputed, known$report,
+            trio[["recomputed"]], trio[["published"]], trio[["report"]]
+          ))
+        } else if (verbose) {
+          cat(sprintf("  ok  %-16s %-18s col %d  %s (known difference from %s)\n", slug, ref$analysis, j, trio[["recomputed"]], trio[["report"]]))
+        }
+        next
+      }
       if (length(unique(trio)) != 1) {
         bad <- c(bad, sprintf(
           "  %s / %s / column %d:\n    recomputed: %s\n    published:  %s\n    report:     %s",

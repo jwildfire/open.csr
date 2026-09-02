@@ -1,0 +1,63 @@
+{
+  "display": "t-ae-incidence",
+  "version": "v003",
+  "created": "2026-09-02T15:56:53Z",
+  "actor": "@obotclaw",
+  "change_request": "A p-value under 0.0005 prints as 0.000, as the reference report prints it.",
+  "regulatory_id": "AET03",
+  "git_commit": null,
+  "spec_hash": "sha256:a94b85b6e974ae8cc4f19deacfc41f440b4ec4b68c0c8edcc69ca4d6aea3a0ec",
+  "display_hash": "sha256:607f4ae84c927699cf417a66c958a3a177b371ed4c2be7ccd28172f0b500263c",
+  "ard_hash": "sha256:36521737dcf98516c3c989fb9d07e59b96ca7311421f7753549b93e7915e9080",
+  "ard_rows": 4064,
+  "ard_warnings": 0,
+  "ard_errors": 0,
+  "datasets": ["adsl", "adae"],
+  "data": [
+    {
+      "dataset": "adsl",
+      "hash": "sha256:3139478d86fda4c38e8bb2f41d348518f4a65f58bcdd7e9650fda8da7a9a6838",
+      "n_row": 254,
+      "n_col": 54,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    },
+    {
+      "dataset": "adae",
+      "hash": "sha256:4ffe4e4c90c8a531e95e4931b601c258ed0b83638d4b346e66635d79e78a7bf1",
+      "n_row": 1191,
+      "n_col": 57,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    }
+  ],
+  "environment": {
+    "r": "4.3.3",
+    "os": "Darwin 23.6.0",
+    "packages": {
+      "cards": "0.6.1",
+      "cardx": "0.2.5",
+      "gtsummary": "2.3.0",
+      "gt": "1.0.0",
+      "dplyr": "1.1.4",
+      "pharmaverseadam": "1.1.0",
+      "jsonlite": "2.0.0",
+      "yaml": "2.3.10",
+      "digest": "0.6.37"
+    }
+  },
+  "variants": {
+    "post_text": {
+      "file": "table.html",
+      "rtf": "table.rtf",
+      "rtf_hash": "sha256:89ed241524b3be377977131c45878c637c8fd92a6934b25a54ad62d424442533",
+      "n_rows": 254
+    },
+    "in_text": {
+      "file": "table-in-text.html",
+      "rtf": "table-in-text.rtf",
+      "rtf_hash": "sha256:d506eba3e554bd62f26f72b23efa71a7e469c45d4eab0301a1dcba36e5860dc9",
+      "n_rows": 29
+    }
+  }
+}

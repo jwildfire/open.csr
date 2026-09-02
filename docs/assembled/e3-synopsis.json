@@ -1,6 +1,6 @@
 {
   "schema": "opencsr/csr/v1",
-  "generated": "2026-09-02T15:46:57.466Z",
+  "generated": "2026-09-02T16:05:13.880Z",
   "study": {
     "id": "CDISCPILOT01",
     "title": "Safety and Efficacy of the Xanomeline Transdermal Therapeutic System (TTS) in Patients with Mild to Moderate Alzheimer's Disease",
@@ -3100,6 +3100,7 @@
       "TXT-E3-1300: in the Text Library but not assembled into e3-synopsis; not gated by this build",
       "l-ae-serious: population record has no per-arm counts (safety, grouped by nothing); not gated by arm",
       "f-derm-time-to-event: in the TFL Library but not carried by e3-synopsis; this document does not present it",
+      "t-ae-incidence: in the TFL Library but not carried by e3-synopsis; this document does not present it",
       "t-cibic-categorical: in the TFL Library but not carried by e3-synopsis; this document does not present it",
       "t-cibic-week16: in the TFL Library but not carried by e3-synopsis; this document does not present it",
       "t-cibic-week24: in the TFL Library but not carried by e3-synopsis; this document does not present it",
@@ -3116,6 +3117,7 @@
       "t-eff-npix-mean: in the TFL Library but not carried by e3-synopsis; this document does not present it",
       "t-end-of-study: in the TFL Library but not carried by e3-synopsis; this document does not present it",
       "t-populations: in the TFL Library but not carried by e3-synopsis; this document does not present it",
+      "t-sae-incidence: in the TFL Library but not carried by e3-synopsis; this document does not present it",
       "t-vitals: in the TFL Library but not carried by e3-synopsis; this document does not present it",
       "t-vitals-change: in the TFL Library but not carried by e3-synopsis; this document does not present it",
       "t-weight: in the TFL Library but not carried by e3-synopsis; this document does not present it"
@@ -3585,6 +3587,7 @@
         "f-derm-time-to-event",
         "l-ae-serious",
         "t-ae-common",
+        "t-ae-incidence",
         "t-ae-overview",
         "t-cibic-categorical",
         "t-cibic-week16",
@@ -3605,6 +3608,7 @@
         "t-end-of-study",
         "t-exposure",
         "t-populations",
+        "t-sae-incidence",
         "t-vitals",
         "t-vitals-change",
         "t-weight"
@@ -3619,6 +3623,7 @@
       ],
       "notCarried": [
         "f-derm-time-to-event",
+        "t-ae-incidence",
         "t-cibic-categorical",
         "t-cibic-week16",
         "t-cibic-week24",
@@ -3635,6 +3640,7 @@
         "t-eff-npix-mean",
         "t-end-of-study",
         "t-populations",
+        "t-sae-incidence",
         "t-vitals",
         "t-vitals-change",
         "t-weight"

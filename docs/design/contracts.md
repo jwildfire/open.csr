@@ -89,6 +89,8 @@ variants:
 
 **Row options added for the reference demographics table (#61).** On a `levels: all` row, `level_labels: { M: Male, F: Female }` prints a level under the report's word while the ARD keeps the data's level, so `{{ard:…;variable_level=F}}` still binds. `p_from: <analysis>` names a sibling analysis whose hypothesis-test rows (`group1 = "statistic"`, `group1_level = "p-value"`) fill the row's p-value column; a custom analysis places the test on one level by setting the test rows' `variable_level`, so a sub-block with no n row carries its p-value beside its first level only. `format.zero_count: "0"` prints a count of nobody as that string instead of `0 (0%)`; `format.sub_one_pct: true` prints a percentage shown to no decimals that is positive but rounds to zero as `<1`. Both are per display: the same 2006 report prints `1 ( 0%)` in its end-of-study table and `1 ( <1%)` in its demographics table.
 
+**Hierarchical sort and shared custom code (#62).** A `type: hierarchical` row accepts `sort: { outer: alpha | { by_group }, inner: alpha | { by_group: "<arm label>" } | { by: sum } }`; the default at both levels is the largest count in any one arm, descending, then name. An analysis spec may declare `custom_from: <slug>` to dispatch its `custom:` entries to another display's `custom.R`, so two tables that must count the same way share one implementation.
+
 ## 4. Prepared datasets (data-prep layer)
 
 `opencsr::prepare_data(datasets, source_pkg, sources)` returns a named list of tibbles for one study, CDISCPILOT01, drawn from two packagings of it and prepared with documented derivations (D12).

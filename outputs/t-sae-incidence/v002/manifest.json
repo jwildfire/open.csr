@@ -1,0 +1,63 @@
+{
+  "display": "t-sae-incidence",
+  "version": "v002",
+  "created": "2026-09-02T15:53:51Z",
+  "actor": "@obotclaw",
+  "change_request": "Event counts printed as integers; serious-events terms ordered as the reference serious-events program orders them (descending subjects across groups, then name).",
+  "regulatory_id": "AET04",
+  "git_commit": null,
+  "spec_hash": "sha256:065d87f5040a5927a3927158a61b168fcd2f60725b9afdc25057beaa22a83a4e",
+  "display_hash": "sha256:194d3e49db79039225e13f7fd1fe6338145bad61ec7862767160001c2c21b455",
+  "ard_hash": "sha256:f16e5339ab858f9b4c9830985d55751e587383a1b1440c1ad273c753e0ff60e2",
+  "ard_rows": 64,
+  "ard_warnings": 0,
+  "ard_errors": 0,
+  "datasets": ["adsl", "adae"],
+  "data": [
+    {
+      "dataset": "adsl",
+      "hash": "sha256:3139478d86fda4c38e8bb2f41d348518f4a65f58bcdd7e9650fda8da7a9a6838",
+      "n_row": 254,
+      "n_col": 54,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    },
+    {
+      "dataset": "adae",
+      "hash": "sha256:4ffe4e4c90c8a531e95e4931b601c258ed0b83638d4b346e66635d79e78a7bf1",
+      "n_row": 1191,
+      "n_col": 57,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    }
+  ],
+  "environment": {
+    "r": "4.3.3",
+    "os": "Darwin 23.6.0",
+    "packages": {
+      "cards": "0.6.1",
+      "cardx": "0.2.5",
+      "gtsummary": "2.3.0",
+      "gt": "1.0.0",
+      "dplyr": "1.1.4",
+      "pharmaverseadam": "1.1.0",
+      "jsonlite": "2.0.0",
+      "yaml": "2.3.10",
+      "digest": "0.6.37"
+    }
+  },
+  "variants": {
+    "post_text": {
+      "file": "table.html",
+      "rtf": "table.rtf",
+      "rtf_hash": "sha256:e474cf20bc3530537becca1474f4c6d1a8994fb9a1e766a8fafd90aa0642cff6",
+      "n_rows": 4
+    },
+    "in_text": {
+      "file": "table-in-text.html",
+      "rtf": "table-in-text.rtf",
+      "rtf_hash": "sha256:0c1294d9eb0e665c4c7ae88b1a3e58a21f9255b0af61fd0651811c4f25be87be",
+      "n_rows": 4
+    }
+  }
+}

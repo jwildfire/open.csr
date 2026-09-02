@@ -1,0 +1,63 @@
+{
+  "display": "t-sae-incidence",
+  "version": "v001",
+  "created": "2026-09-02T15:52:30Z",
+  "actor": "@obotclaw",
+  "change_request": "Table 14-5.02 of the reference report (D0032, #62): subjects, percentages and event counts per system organ class and preferred term, with Fisher exact tests of placebo against each active arm; organ classes alphabetical, terms by high-dose count then name.",
+  "regulatory_id": "AET04",
+  "git_commit": null,
+  "spec_hash": "sha256:065d87f5040a5927a3927158a61b168fcd2f60725b9afdc25057beaa22a83a4e",
+  "display_hash": "sha256:474d8249784cdd484d0ec8ca63614b37306bc6b2f629d6509ac852ed83f68e49",
+  "ard_hash": "sha256:8a8caccdf194af94620057747da515789282783bbab0f160c295713711df5e3b",
+  "ard_rows": 64,
+  "ard_warnings": 0,
+  "ard_errors": 0,
+  "datasets": ["adsl", "adae"],
+  "data": [
+    {
+      "dataset": "adsl",
+      "hash": "sha256:3139478d86fda4c38e8bb2f41d348518f4a65f58bcdd7e9650fda8da7a9a6838",
+      "n_row": 254,
+      "n_col": 54,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    },
+    {
+      "dataset": "adae",
+      "hash": "sha256:4ffe4e4c90c8a531e95e4931b601c258ed0b83638d4b346e66635d79e78a7bf1",
+      "n_row": 1191,
+      "n_col": 57,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    }
+  ],
+  "environment": {
+    "r": "4.3.3",
+    "os": "Darwin 23.6.0",
+    "packages": {
+      "cards": "0.6.1",
+      "cardx": "0.2.5",
+      "gtsummary": "2.3.0",
+      "gt": "1.0.0",
+      "dplyr": "1.1.4",
+      "pharmaverseadam": "1.1.0",
+      "jsonlite": "2.0.0",
+      "yaml": "2.3.10",
+      "digest": "0.6.37"
+    }
+  },
+  "variants": {
+    "post_text": {
+      "file": "table.html",
+      "rtf": "table.rtf",
+      "rtf_hash": "sha256:d15f20ed4a43ad98b3209772d30c7299192703c98588512d3f678ca092a342d4",
+      "n_rows": 4
+    },
+    "in_text": {
+      "file": "table-in-text.html",
+      "rtf": "table-in-text.rtf",
+      "rtf_hash": "sha256:ece6f91044d54461decef1c9e1ac50a12cdd93accdc60cf42365827a63380283",
+      "n_rows": 4
+    }
+  }
+}

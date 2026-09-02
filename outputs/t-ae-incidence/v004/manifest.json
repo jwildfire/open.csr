@@ -1,0 +1,63 @@
+{
+  "display": "t-ae-incidence",
+  "version": "v004",
+  "created": "2026-09-02T16:01:54Z",
+  "actor": "@obotclaw",
+  "change_request": "A trailing zero at the third decimal of a p-value is dropped, as the report prints it; the four p-values the reference rounded a thousandth higher are stated in the footnotes.",
+  "regulatory_id": "AET03",
+  "git_commit": null,
+  "spec_hash": "sha256:a94b85b6e974ae8cc4f19deacfc41f440b4ec4b68c0c8edcc69ca4d6aea3a0ec",
+  "display_hash": "sha256:eec75feb7bc7a2f440fb67df52fb0cae0357d898bbb966bd64ef73cc5e9fb1a3",
+  "ard_hash": "sha256:129545c3331e31ff88a7cb0b66e0348399964729a4cd3439329f82435f67f555",
+  "ard_rows": 4064,
+  "ard_warnings": 0,
+  "ard_errors": 0,
+  "datasets": ["adsl", "adae"],
+  "data": [
+    {
+      "dataset": "adsl",
+      "hash": "sha256:3139478d86fda4c38e8bb2f41d348518f4a65f58bcdd7e9650fda8da7a9a6838",
+      "n_row": 254,
+      "n_col": 54,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    },
+    {
+      "dataset": "adae",
+      "hash": "sha256:4ffe4e4c90c8a531e95e4931b601c258ed0b83638d4b346e66635d79e78a7bf1",
+      "n_row": 1191,
+      "n_col": 57,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    }
+  ],
+  "environment": {
+    "r": "4.3.3",
+    "os": "Darwin 23.6.0",
+    "packages": {
+      "cards": "0.6.1",
+      "cardx": "0.2.5",
+      "gtsummary": "2.3.0",
+      "gt": "1.0.0",
+      "dplyr": "1.1.4",
+      "pharmaverseadam": "1.1.0",
+      "jsonlite": "2.0.0",
+      "yaml": "2.3.10",
+      "digest": "0.6.37"
+    }
+  },
+  "variants": {
+    "post_text": {
+      "file": "table.html",
+      "rtf": "table.rtf",
+      "rtf_hash": "sha256:2b54031a5e4db0bc5f1cd447391c875e6fd6c1012aaad1b275a0c57c9ef2aa84",
+      "n_rows": 254
+    },
+    "in_text": {
+      "file": "table-in-text.html",
+      "rtf": "table-in-text.rtf",
+      "rtf_hash": "sha256:f1577395b28f565779e04aa3aa1e77f1869517224a5ef072738e506d7c9a156e",
+      "n_rows": 29
+    }
+  }
+}

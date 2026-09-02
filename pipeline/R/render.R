@@ -306,18 +306,45 @@ expand_hierarchical <- function(rows, r, min_pct) {
   }
   outer_rows <- cand[cand$variable == hier[1], , drop = FALSE]
   inner_rows <- cand[cand$variable == hier[2], , drop = FALSE]
+  # `sort:` on the row plan. The default is descending subject count then name
+  # at both levels. `outer: alpha` orders the outer level by name alone;
+  # `inner: { by_group: "<arm label>" }` orders the inner level by that arm's
+  # subject count, descending, then name — which is how the 2006 report orders
+  # preferred terms within an organ class (#62).
+  srt <- r$sort %||% list()
+  # `by_group` keys on one arm's count; `by: sum` on the subjects summed across
+  # the arms (the serious-events program's order); otherwise the largest count
+  # in any one arm, which is total_n()'s definition.
+  key_n <- function(df, opts = NULL) {
+    if (!is.null(opts$by_group)) {
+      df <- df[!is.na(df$group1_level) & df$group1_level == opts$by_group, , drop = FALSE]
+    }
+    if (identical(opts$by, "sum")) {
+      v <- unlist(df$stat[df$stat_name == "n" & df$group1 != "statistic"])
+      return(if (length(v)) sum(v, na.rm = TRUE) else 0)
+    }
+    total_n(df)
+  }
   outers <- unique(outer_rows$variable_level)
-  outers <- outers[order(-vapply(outers, function(o) {
-    total_n(outer_rows[outer_rows$variable_level == o, , drop = FALSE])
-  }, numeric(1)), outers)]
+  outers <- if (identical(srt$outer, "alpha")) {
+    sort(outers)
+  } else {
+    outers[order(-vapply(outers, function(o) {
+      key_n(outer_rows[outer_rows$variable_level == o, , drop = FALSE], srt$outer)
+    }, numeric(1)), outers)]
+  }
 
   out <- list()
   for (o in outers) {
     inner_o <- inner_rows[!is.na(inner_rows$group2_level) & inner_rows$group2_level == o, , drop = FALSE]
     inners <- unique(inner_o$variable_level)
-    inners <- inners[order(-vapply(inners, function(p) {
-      total_n(inner_o[inner_o$variable_level == p, , drop = FALSE])
-    }, numeric(1)), inners)]
+    inners <- if (identical(srt$inner, "alpha")) {
+      sort(inners)
+    } else {
+      inners[order(-vapply(inners, function(p) {
+        key_n(inner_o[inner_o$variable_level == p, , drop = FALSE], srt$inner)
+      }, numeric(1)), inners)]
+    }
     inners <- inners[vapply(inners, function(p) {
       passes_threshold(inner_o[inner_o$variable_level == p, , drop = FALSE], min_pct)
     }, logical(1))]
@@ -484,7 +511,8 @@ cell_value <- function(rows, plan_row, col_level, patterns, digits,
   digits <- utils::modifyList(as.list(digits), as.list(plan_row$digits[[1]] %||% list()))
   # `format: zero_count: "0"` prints a count of nobody as the bare figure the
   # report prints, rather than "0 (0%)": a percentage of nobody says nothing.
-  if (identical(pattern_name, "n_pct") && !is.null(patterns$zero_count)) {
+  zero_pattern <- patterns[[pattern_name]] %||% pattern_name
+  if (!is.null(patterns$zero_count) && grepl("{n}", zero_pattern, fixed = TRUE)) {
     n_hit <- sub$stat[sub$stat_name == "n"]
     if (length(n_hit) && isTRUE(unlist(n_hit[[1]]) == 0)) {
       return(as.character(patterns$zero_count))

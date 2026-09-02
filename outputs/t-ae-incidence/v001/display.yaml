@@ -1,0 +1,39 @@
+id: t-ae-incidence
+title: "Incidence of Treatment Emergent Adverse Events by Treatment Group"
+study: CDISCPILOT01
+population_label: "Safety Analysis Set"
+cutoff: "2014-07-01"
+source: "Source: adae, adsl (CDISCPILOT01 ADaM package, phuse-org/phuse-scripts). Data cut-off: 2014-07-01."
+footnotes:
+  - "Treatment-emergent events are those flagged TRTEMFL = 'Y' in the study's ADAE: events that start on or after the start of treatment, as the reference report (Table 14-5.01) defines them. Adverse events are coded using MedDRA."
+  - "Subjects are counted once per system organ class and once per preferred term; percentages are based on the number of subjects in the safety population within each treatment group. The bracketed figure is the total number of times an event was recorded."
+  - "P-values are Fisher's exact test comparing placebo with each active treatment group on the number of subjects with the event. An asterisk is appended to p-values below 0.15, as in the reference report; a p-value that rounds to 1 prints as >0.99; where neither arm has a subject with the event there is no test and the cell is blank."
+  - "System organ classes are in alphabetical order; preferred terms within a class are in descending order of high-dose subjects, then alphabetical — the order the reference report prints."
+columns:
+  order: [Placebo, "Xanomeline Low Dose", "Xanomeline High Dose", "Placebo vs. Low Dose", "Placebo vs. High Dose"]
+  patterns:
+    "Placebo vs. Low Dose": pvalue
+    "Placebo vs. High Dose": pvalue
+format:
+  n_pct_events: "{n} ({p}%) [{events}]"
+  pvalue: "{p_value_fmt}"
+  zero_count: "0"
+  digits:
+    p: 1
+rows:
+  - { analysis: any, label: "ANY BODY SYSTEM", pattern: n_pct_events, indent: 0 }
+  - analysis: by_soc_pt
+    type: hierarchical
+    levels: [AEBODSYS, AEDECOD]
+    pattern: n_pct_events
+    sort:
+      outer: alpha
+      inner: { by_group: "Xanomeline High Dose" }
+variants:
+  post_text: {}
+  in_text:
+    title: "Most Common Adverse Events (≥5% of Subjects in any Treatment Group)"
+    filter:
+      min_pct: 5
+    footnotes:
+      - "Reduced variant: only preferred terms reported by at least 5% of subjects in at least one treatment group are shown, as the reference report's Table 12-1. The full display is Section 14."
