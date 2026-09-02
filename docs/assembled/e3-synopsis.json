@@ -1,6 +1,6 @@
 {
   "schema": "opencsr/csr/v1",
-  "generated": "2026-09-02T17:20:35.015Z",
+  "generated": "2026-09-02T17:20:38.548Z",
   "study": {
     "id": "CDISCPILOT01",
     "title": "Safety and Efficacy of the Xanomeline Transdermal Therapeutic System (TTS) in Patients with Mild to Moderate Alzheimer's Disease",
@@ -1622,6 +1622,43 @@
             "source": "outputs",
             "ardPath": "outputs/l-ae-serious/v003/ard.json",
             "fixture": false
+          },
+          {
+            "slug": "t-populations",
+            "number": null,
+            "title": "Summary of Populations",
+            "created": "2026-09-02T15:23:26Z",
+            "specHash": "sha256:c8dbaff2d4a4cad9b25ac1dcad574d029394f9730e76116bd44b52f60af38414",
+            "displayHash": "sha256:9ac815d290f719b956f05fbc8d2353a3d49e676edd6ddb6daedc7481524cccd0",
+            "data": [
+              {
+                "dataset": "adsl",
+                "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+                "n_row": 254,
+                "n_col": 53,
+                "source_pkg": "phuse-org/phuse-scripts:data/adam",
+                "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+              }
+            ],
+            "environment": {
+              "r": "4.3.3",
+              "os": "Darwin 23.6.0",
+              "packages": {
+                "cards": "0.6.1",
+                "cardx": "0.2.5",
+                "gtsummary": "2.3.0",
+                "gt": "1.0.0",
+                "dplyr": "1.1.4",
+                "pharmaverseadam": "1.1.0",
+                "jsonlite": "2.0.0",
+                "yaml": "2.3.10",
+                "digest": "0.6.37"
+              }
+            },
+            "gitCommit": null,
+            "source": "outputs",
+            "ardPath": "outputs/t-populations/v003/ard.json",
+            "fixture": false
           }
         ]
       }
@@ -1982,6 +2019,60 @@
             "analysis_set": "safety",
             "group": null,
             "n": null,
+            "total": 254
+          }
+        }
+      }
+    },
+    {
+      "slug": "t-populations",
+      "type": "table",
+      "label": "Table",
+      "number": null,
+      "section": null,
+      "title": "Summary of Populations",
+      "variants": [],
+      "ardSource": "outputs",
+      "ardPath": "outputs/t-populations/v003/ard.json",
+      "ard": {
+        "created": "2026-09-02T15:23:26Z",
+        "provenance": {
+          "spec_hash": "sha256:c8dbaff2d4a4cad9b25ac1dcad574d029394f9730e76116bd44b52f60af38414",
+          "display_hash": "sha256:9ac815d290f719b956f05fbc8d2353a3d49e676edd6ddb6daedc7481524cccd0",
+          "data": [
+            {
+              "dataset": "adsl",
+              "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+              "n_row": 254,
+              "n_col": 53,
+              "source_pkg": "phuse-org/phuse-scripts:data/adam",
+              "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+            }
+          ],
+          "environment": {
+            "r": "4.3.3",
+            "os": "Darwin 23.6.0",
+            "packages": {
+              "cards": "0.6.1",
+              "cardx": "0.2.5",
+              "gtsummary": "2.3.0",
+              "gt": "1.0.0",
+              "dplyr": "1.1.4",
+              "pharmaverseadam": "1.1.0",
+              "jsonlite": "2.0.0",
+              "yaml": "2.3.10",
+              "digest": "0.6.37"
+            }
+          },
+          "git_commit": null,
+          "population": {
+            "analysis_set": "all",
+            "group": "TRT01P",
+            "n": {
+              "Placebo": 86,
+              "Xanomeline Low Dose": 84,
+              "Xanomeline High Dose": 84
+            },
             "total": 254
           }
         }
@@ -3036,6 +3127,43 @@
         "source": "outputs",
         "ardPath": "outputs/l-ae-serious/v003/ard.json",
         "fixture": false
+      },
+      {
+        "slug": "t-populations",
+        "number": null,
+        "title": "Summary of Populations",
+        "created": "2026-09-02T15:23:26Z",
+        "specHash": "sha256:c8dbaff2d4a4cad9b25ac1dcad574d029394f9730e76116bd44b52f60af38414",
+        "displayHash": "sha256:9ac815d290f719b956f05fbc8d2353a3d49e676edd6ddb6daedc7481524cccd0",
+        "data": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254,
+            "n_col": 53,
+            "source_pkg": "phuse-org/phuse-scripts:data/adam",
+            "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+          }
+        ],
+        "environment": {
+          "r": "4.3.3",
+          "os": "Darwin 23.6.0",
+          "packages": {
+            "cards": "0.6.1",
+            "cardx": "0.2.5",
+            "gtsummary": "2.3.0",
+            "gt": "1.0.0",
+            "dplyr": "1.1.4",
+            "pharmaverseadam": "1.1.0",
+            "jsonlite": "2.0.0",
+            "yaml": "2.3.10",
+            "digest": "0.6.37"
+          }
+        },
+        "gitCommit": null,
+        "source": "outputs",
+        "ardPath": "outputs/t-populations/v003/ard.json",
+        "fixture": false
       }
     ]
   },
@@ -3117,7 +3245,6 @@
       "t-eff-adas-wk8: in the TFL Library but not carried by e3-synopsis; this document does not present it",
       "t-eff-npix-mean: in the TFL Library but not carried by e3-synopsis; this document does not present it",
       "t-end-of-study: in the TFL Library but not carried by e3-synopsis; this document does not present it",
-      "t-populations: in the TFL Library but not carried by e3-synopsis; this document does not present it",
       "t-sae-incidence: in the TFL Library but not carried by e3-synopsis; this document does not present it",
       "t-subjects-by-site: in the TFL Library but not carried by e3-synopsis; this document does not present it",
       "t-vitals: in the TFL Library but not carried by e3-synopsis; this document does not present it",
@@ -3561,7 +3688,8 @@
         "t-exposure",
         "t-ae-overview",
         "t-demographics",
-        "t-ae-common"
+        "t-ae-common",
+        "t-populations"
       ],
       "lanes": {
         "t-disposition": [
@@ -3580,6 +3708,9 @@
           "phuse-org/phuse-scripts:data/adam"
         ],
         "l-ae-serious": [
+          "phuse-org/phuse-scripts:data/adam"
+        ],
+        "t-populations": [
           "phuse-org/phuse-scripts:data/adam"
         ]
       }
@@ -3623,7 +3754,8 @@
         "t-ae-overview",
         "t-demographics",
         "t-disposition",
-        "t-exposure"
+        "t-exposure",
+        "t-populations"
       ],
       "notCarried": [
         "f-derm-time-to-event",
@@ -3644,7 +3776,6 @@
         "t-eff-adas-wk8",
         "t-eff-npix-mean",
         "t-end-of-study",
-        "t-populations",
         "t-sae-incidence",
         "t-subjects-by-site",
         "t-vitals",
