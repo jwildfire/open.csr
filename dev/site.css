@@ -2942,3 +2942,8 @@ body.app-page .app-bar {
 .dataset-grid .card h3 { font-size: 1rem; margin: .25rem 0 .2rem; }
 .dataset h3 .chip { margin-left: .4rem; vertical-align: middle; }
 .dataset + .dataset { margin-top: 1.25rem; }
+
+/* The Metadata section (#77): section links under the header, one block per specification and environment. */
+.section-links { display: flex; flex-wrap: wrap; gap: .4rem .9rem; margin: .6rem 0 1rem; font-size: .9rem; }
+.spec + .spec, .environment + .environment { margin-top: 1.1rem; padding-top: .9rem; border-top: 1px solid var(--hairline, #e8edef); }
+.spec h4 .mono, .environment h4 { font-weight: 600; }
