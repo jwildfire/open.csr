@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Every display in the library: analysis spec, display spec, ARD, rendered output, and the iteration timeline of every regeneration." />
+    <title>TFL Gallery · open.csr</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23111a24'/%3E%3Crect x='3' y='3' width='7' height='1.4' fill='%23e7edf5'/%3E%3Crect x='3' y='6' width='10' height='1.4' fill='%235aa9e6'/%3E%3Crect x='3' y='9' width='6' height='1.4' fill='%23e7edf5'/%3E%3Crect x='3' y='12' width='9' height='1.4' fill='%235aa9e6'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="../site.css" />
+    <script>
+      // Theme is resolved before first paint so the page never flashes the
+      // wrong surface. No storage available (private mode) simply falls back to
+      // the OS preference.
+      (function () {
+        try {
+          var saved = localStorage.getItem('opencsr-theme');
+          if (saved) document.documentElement.setAttribute('data-theme', saved);
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body class="">
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <a class="site-name" href="../index.html">
+        <span class="mark" aria-hidden="true"></span>
+        <span>
+          <strong>open.csr</strong>
+          <em>Versioned numbers, versioned words, one traceable loop.</em>
+        </span>
+      </a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="../index.html">Home</a><a href="../demo/index.html">Demo</a><a href="../quality/index.html">Quality</a><a href="../docs/index.html">Design &amp; Research</a>
+        <button
+          type="button"
+          class="theme-toggle"
+          aria-label="Switch between light and dark"
+          title="Switch between light and dark"
+        >
+          <span aria-hidden="true">◐</span>
+        </button>
+        <a class="icon-link" href="https://github.com/jwildfire/open.csr" aria-label="Source on GitHub" title="Source on GitHub">
+          <svg viewBox="0 0 16 16" width="17" height="17" fill="currentColor" aria-hidden="true">
+            <path
+              d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
+            />
+          </svg>
+        </a>
+      </nav>
+    </header>
+    
+    <main class="site-main" id="main"><header class="page-head"><p class="eyebrow">TFL Builder + Library</p><h1>TFL Gallery</h1><p class="lede">One directory per display — an analysis spec, a display spec, and every saved iteration. Open a display to see the rendered table, the ARD behind it, the specs that produced it, and its change-request timeline.</p></header>
+<p class="sub">Demo study <span class="mono">CDISCPILOT01</span> · CDISCPILOT01 ADaM package (phuse-org/phuse-scripts) · data cut-off <span class="mono">2014-07-01</span></p>
+<div class="card-grid"><article class="card display-card"><div class="card-top"><span class="chip chip-good">evidenced</span></div><h3><a href="t-demographics.html">Demographic and Baseline Characteristics</a></h3><p class="card-meta"><span class="mono">DMT01</span> · Table · E3 §14.1</p><p>Age, sex, race and baseline characteristics by treatment arm over the safety analysis set.</p><p class="card-used-in">In Clinical Study Report, Study Synopsis, Post-Text Display Package, Abbreviated Clinical Study Report (ICH E3)</p><p class="card-facts mono">v005 · 524 ARD rows · 5 iterations</p></article><article class="card display-card"><div class="card-top"><span class="chip chip-good">evidenced</span></div><h3><a href="t-disposition.html">Subject Disposition</a></h3><p class="card-meta"><span class="mono">DST01</span> · Table · E3 §14.1</p><p>Screened, randomised, treated, completed and discontinued counts with reasons for discontinuation, over the ITT set.</p><p class="card-used-in">In Clinical Study Report, Study Synopsis, Post-Text Display Package, Abbreviated Clinical Study Report (ICH E3)</p><p class="card-facts mono">v003 · 84 ARD rows · 3 iterations</p></article><article class="card display-card"><div class="card-top"><span class="chip chip-good">evidenced</span></div><h3><a href="t-populations.html">Summary of Populations</a></h3><p class="card-meta"><span class="mono">DST02</span> · Table · E3 §14.1</p><p>How many subjects each analysis is run on — ITT, safety and efficacy — by planned treatment group, with percentages over the group&#39;s randomised N. The denominator every other display&#39;s N is checked against.</p><p class="card-used-in">In Clinical Study Report, Post-Text Display Package, Abbreviated Clinical Study Report (ICH E3)</p><p class="card-facts mono">v003 · 60 ARD rows · 3 iterations</p></article><article class="card display-card"><div class="card-top"><span class="chip chip-good">evidenced</span></div><h3><a href="t-end-of-study.html">Summary of End of Study Data</a></h3><p class="card-meta"><span class="mono">DST03</span> · Table · E3 §14.1</p><p>Who finished and who left, with the reason. Nine reasons for early termination plus a missing-reason row, partitioning the early terminations exactly, and a p-value on only the three rows the analysis plan names.</p><p class="card-used-in">In Clinical Study Report, Post-Text Display Package, Abbreviated Clinical Study Report (ICH E3)</p><p class="card-facts mono">v003 · 162 ARD rows · 3 iterations</p></article><article class="card display-card"><div class="card-top"><span class="chip chip-good">evidenced</span></div><h3><a href="f-derm-time-to-event.html">Time to Dermatologic Event by Treatment Group</a></h3><p class="card-meta"><span class="mono">AEF01</span> · Figure · E3 §14.2</p><p>The study&#39;s only figure: Kaplan-Meier curves for time to a first dermatologic event, by treatment group, with medians, confidence limits and a log-rank test. Xanomeline is delivered transdermally, so this is the tolerability question the delivery route raises.</p><p class="card-used-in">In Clinical Study Report, Post-Text Display Package, Abbreviated Clinical Study Report (ICH E3)</p><p class="card-facts mono">v002 · 51 ARD rows · 2 iterations</p></article><article class="card display-card"><div class="card-top"><span class="chip chip-good">evidenced</span></div><h3><a href="t-cibic-week24.html">Primary Endpoint Analysis: CIBIC+ — Summary at Week 24 — LOCF</a></h3><p class="card-meta"><span class="mono">EFF02</span> · Table · E3 §14.2</p><p>The study&#39;s other primary endpoint: the clinician&#39;s global impression of change at Week 24, with the same ANCOVA structure as the ADAS-Cog table beside it.</p><p class="card-used-in">In Clinical Study Report, Post-Text Display Package, Abbreviated Clinical Study Report (ICH E3)</p><p class="card-facts mono">v004 · 43 ARD rows · 4 iterations</p></article><article class="card display-card"><div class="card-top"><span class="chip chip-good">evidenced</span></div><h3><a href="t-cibic-week8.html">CIBIC+ — Summary at Week 8 — LOCF</a></h3><p class="card-meta"><span class="mono">EFF03</span> · Table · E3 §14.2</p><p>The CIBIC+ global impression read at Week 8, same model.</p><p class="card-used-in">In Clinical Study Report, Post-Text Display Package, Abbreviated Clinical Study Report (ICH E3)</p><p class="card-facts mono">v002 · 43 ARD rows · 2 iterations</p></article><article class="card display-card"><div class="card-top"><span class="chip chip-good">evidenced</span></div><h3><a href="t-cibic-week16.html">CIBIC+ — Summary at Week 16 — LOCF</a></h3><p class="card-meta"><span class="mono">EFF04</span> · Table · E3 §14.2</p><p>The CIBIC+ global impression read at Week 16, same model.</p><p class="card-used-in">In Clinical Study Report, Post-Text Display Package, Abbreviated Clinical Study Report (ICH E3)</p><p class="card-facts mono">v002 · 43 ARD rows · 2 iterations</p></article><article class="card display-card"><div class="card-top"><span class="chip chip-good">evidenced</span></div><h3><a href="t-cibic-categorical.html">CIBIC+ — Categorical Analysis — LOCF</a></h3><p class="card-meta"><span class="mono">EFF05</span> · Table · E3 §14.2</p><p>CIBIC+ as categories rather than a mean — how many subjects fell in each impression band at three visits, with a stratified Cochran-Mantel-Haenszel test across treatment groups.</p><p class="card-used-in">In Clinical Study Report, Post-Text Display Package, Abbreviated Clinical Study Report (ICH E3)</p><p class="card-facts mono">v002 · 147 ARD rows · 2 iterations</p></article><article class="card display-card"><div class="card-top"><span class="chip chip-good">evidenced</span></div><h3><a href="t-eff-adas-wk24.html">Primary Endpoint Analysis: ADAS-Cog (11) - Change from Baseline to Week 24 - LOCF</a></h3><p class="card-meta"><span class="mono">EFT01</span> · Table · E3 §14.2</p><p>The study&#39;s primary efficacy result: change in ADAS-Cog (11) from baseline to Week 24, with the ANCOVA dose response and both pairwise comparisons against placebo.</p><p class="card-used-in">In Clinical Study Report, Post-Text Display Package, Abbreviated Clinical Study Report (ICH E3)</p><p class="card-facts mono">v002 · 95 ARD rows · 2 iterations</p></article><article class="card display-card"><div class="card-top"><span class="chip chip-good">evidenced</span></div><h3><a href="t-eff-adas-wk8.html">ADAS-Cog (11) - Change from Baseline to Week 8 - LOCF</a></h3><p class="card-meta"><span class="mono">EFT02</span> · Table · E3 §14.2</p><p>The same primary analysis read at Week 8, with the same model and the same last-observation-carried-forward rule.</p><p class="card-used-in">In Clinical Study Report, Post-Text Display Package, Abbreviated Clinical Study Report (ICH E3)</p><p class="card-facts mono">v002 · 95 ARD rows · 2 iterations</p></article><article class="card display-card"><div class="card-top"><span class="chip chip-good">evidenced</span></div><h3><a href="t-eff-adas-wk16.html">ADAS-Cog (11) - Change from Baseline to Week 16 - LOCF</a></h3><p class="card-meta"><span class="mono">EFT03</span> · Table · E3 §14.2</p><p>The same primary analysis read at Week 16 — the middle of the three scheduled reads.</p><p class="card-used-in">In Clinical Study Report, Post-Text Display Package, Abbreviated Clinical Study Report (ICH E3)</p><p class="card-facts mono">v002 · 95 ARD rows · 2 iterations</p></article><article class="card display-card"><div class="card-top"><span class="chip chip-good">evidenced</span></div><h3><a href="t-eff-adas-wk24-completers.html">ADAS-Cog (11) - Change from Baseline to Week 24 - Completers at Week 24, Observed Cases, Windowed</a></h3><p class="card-meta"><span class="mono">EFT04</span> · Table · E3 §14.2</p><p>Week 24 restricted to subjects who completed it, observed cases only, with no value carried forward. The sensitivity analysis against the primary table&#39;s imputation.</p><p class="card-used-in">In Clinical Study Report, Post-Text Display Package, Abbreviated Clinical Study Report (ICH E3)</p><p class="card-facts mono">v002 · 95 ARD rows · 2 iterations</p></article><article class="card display-card"><div class="card-top"><span class="chip chip-good">evidenced</span></div><h3><a href="t-eff-adas-wk24-male.html">ADAS-Cog (11) - Change from Baseline to Week 24 in Male Subjects - LOCF</a></h3><p class="card-meta"><span class="mono">EFT05</span> · Table · E3 §14.2</p><p>The Week 24 primary analysis in male subjects alone. Subgroup, not a separate endpoint.</p><p class="card-used-in">In Clinical Study Report, Post-Text Display Package, Abbreviated Clinical Study Report (ICH E3)</p><p class="card-facts mono">v002 · 95 ARD rows · 2 iterations</p></article><article class="card display-card"><div class="card-top"><span class="chip chip-good">evidenced</span></div><h3><a href="t-eff-adas-wk24-female.html">ADAS-Cog (11) - Change from Baseline to Week 24 in Female Subjects - LOCF</a></h3><p class="card-meta"><span class="mono">EFT06</span> · Table · E3 §14.2</p><p>The Week 24 primary analysis in female subjects alone. Subgroup, not a separate endpoint.</p><p class="card-used-in">In Clinical Study Report, Post-Text Display Package, Abbreviated Clinical Study Report (ICH E3)</p><p class="card-facts mono">v002 · 95 ARD rows · 2 iterations</p></article><article class="card display-card"><div class="card-top"><span class="chip chip-good">evidenced</span></div><h3><a href="t-eff-adas-overtime.html">ADAS-Cog (11) - Mean and Mean Change from Baseline over Time</a></h3><p class="card-meta"><span class="mono">EFT07</span> · Table · E3 §14.2</p><p>ADAS-Cog scores and their change from baseline at every scheduled visit, so the shape of the trajectory is visible rather than just its endpoints. Presented with treatment across the columns.</p><p class="card-used-in">In Clinical Study Report, Post-Text Display Package, Abbreviated Clinical Study Report (ICH E3)</p><p class="card-facts mono">v002 · 459 ARD rows · 2 iterations</p></article><article class="card display-card"><div class="card-top"><span class="chip chip-good">evidenced</span></div><h3><a href="t-eff-adas-mmrm.html">ADAS-Cog (11) - Repeated Measures Analysis of Change from Baseline to Week 24</a></h3><p class="card-meta"><span class="mono">EFT08</span> · Table · E3 §14.2</p><p>The supportive repeated-measures analysis: a mixed model with an unstructured within-subject covariance, which handles a missed visit through the covariance rather than by carrying a value forward. Its fit reproduces the reference report&#39;s own PROC MIXED output to six significant figures.</p><p class="card-used-in">In Clinical Study Report, Post-Text Display Package, Abbreviated Clinical Study Report (ICH E3)</p><p class="card-facts mono">v003 · 34 ARD rows · 3 iterations</p></article><article class="card display-card"><div class="card-top"><span class="chip chip-good">evidenced</span></div><h3><a href="t-eff-npix-mean.html">Mean NPI-X Total Score from Week 4 through Week 24 - Windowed</a></h3><p class="card-meta"><span class="mono">EFT09</span> · Table · E3 §14.2</p><p>The secondary endpoint — mean NPI-X total score across the Weeks 4 to 24 window. The one display where the study&#39;s analysis metadata and its own published report disagree about which score to use, and the footnotes say which side was taken.</p><p class="card-used-in">In Clinical Study Report, Post-Text Display Package, Abbreviated Clinical Study Report (ICH E3)</p><p class="card-facts mono">v003 · 71 ARD rows · 3 iterations</p></article><article class="card display-card"><div class="card-top"><span class="chip chip-good">evidenced</span></div><h3><a href="t-ae-overview.html">Overview of Treatment-Emergent Adverse Events</a></h3><p class="card-meta"><span class="mono">AET01</span> · Table · E3 §14.3.1</p><p>Subject counts for any AE, related AEs, serious AEs, and AEs leading to discontinuation or death.</p><p class="card-used-in">In Clinical Study Report, Study Synopsis, Post-Text Display Package, Abbreviated Clinical Study Report (ICH E3)</p><p class="card-facts mono">v003 · 88 ARD rows · 3 iterations</p></article><article class="card display-card"><div class="card-top"><span class="chip chip-good">evidenced</span></div><h3><a href="t-ae-common.html">Treatment-Emergent Adverse Events by System Organ Class and Preferred Term</a></h3><p class="card-meta"><span class="mono">AET02</span> · Table · E3 §14.3.1</p><p>Hierarchical subject incidence of treatment-emergent adverse events, SOC rows expanded to preferred terms.</p><p class="card-used-in">In Clinical Study Report, Study Synopsis, Post-Text Display Package, Abbreviated Clinical Study Report (ICH E3)</p><p class="card-facts mono">v004 · 3048 ARD rows · 4 iterations</p></article><article class="card display-card"><div class="card-top"><span class="chip chip-good">evidenced</span></div><h3><a href="t-exposure.html">Extent of Exposure to Study Drug</a></h3><p class="card-meta"><span class="mono">EXT01</span> · Table · E3 §14.3.1</p><p>Duration and cumulative dose of study treatment by arm.</p><p class="card-used-in">In Clinical Study Report, Study Synopsis, Post-Text Display Package, Abbreviated Clinical Study Report (ICH E3)</p><p class="card-facts mono">v004 · 208 ARD rows · 4 iterations</p></article><article class="card display-card"><div class="card-top"><span class="chip chip-good">evidenced</span></div><h3><a href="l-ae-serious.html">Listing of Serious Adverse Events</a></h3><p class="card-meta"><span class="mono">AEL01</span> · Listing · E3 §14.3.2</p><p>Subject-level listing of serious adverse events with onset, severity, outcome and relationship.</p><p class="card-used-in">In Clinical Study Report, Study Synopsis, Post-Text Display Package, Abbreviated Clinical Study Report (ICH E3)</p><p class="card-facts mono">v003 · 33 ARD rows · 3 iterations</p></article><article class="card display-card"><div class="card-top"><span class="chip chip-good">evidenced</span></div><h3><a href="t-conmeds.html">Summary of Concomitant Medications</a></h3><p class="card-meta"><span class="mono">CMT01</span> · Table · E3 §14.3.5</p><p>Subjects taking at least one concomitant medication, and subject counts by therapeutic class and coded medication.</p><p class="card-used-in">In Clinical Study Report, Post-Text Display Package</p><p class="card-facts mono">v002 · 414 ARD rows · 2 iterations</p></article><article class="card display-card"><div class="card-top"><span class="chip chip-good">evidenced</span></div><h3><a href="t-vitals.html">Summary of Vital Signs at Baseline and End of Treatment</a></h3><p class="card-meta"><span class="mono">VST01</span> · Table · E3 §14.3.5</p><p>Blood pressure and pulse in three positions, at baseline, Week 24 and end of treatment, by planned treatment.</p><p class="card-used-in">In Clinical Study Report, Post-Text Display Package</p><p class="card-facts mono">v002 · 657 ARD rows · 2 iterations</p></article><article class="card display-card"><div class="card-top"><span class="chip chip-good">evidenced</span></div><h3><a href="t-vitals-change.html">Summary of Vital Signs Change from Baseline at End of Treatment</a></h3><p class="card-meta"><span class="mono">VST02</span> · Table · E3 §14.3.5</p><p>The same measurements as a change from each subject&#39;s own observed Week 0 value.</p><p class="card-used-in">In Clinical Study Report, Post-Text Display Package</p><p class="card-facts mono">v002 · 441 ARD rows · 2 iterations</p></article><article class="card display-card"><div class="card-top"><span class="chip chip-good">evidenced</span></div><h3><a href="t-weight.html">Summary of Weight and Weight Change from Baseline at End of Treatment</a></h3><p class="card-meta"><span class="mono">VST03</span> · Table · E3 §14.3.5</p><p>Weight and weight change from baseline at Week 24 and end of treatment.</p><p class="card-used-in">In Clinical Study Report, Post-Text Display Package</p><p class="card-facts mono">v002 · 129 ARD rows · 2 iterations</p></article></div></main>
+    <footer class="site-footer">
+      <p>
+        <strong>open.csr</strong> — an open-source Clinical Study Report builder. Numbers are
+        computed by versioned specs, serialized as ARDs, and bound into prose that never restates
+        them.
+      </p>
+      <p>
+        Demo data is CDISC Pilot 01 via
+        <a href="https://github.com/pharmaverse/pharmaverseadam">pharmaverseadam</a> · everything on
+        this site is precomputed and static ·
+        <a href="https://github.com/jwildfire/open.csr">source on GitHub</a> ·
+        <a href="https://jwildfire.github.io/obot.roadmap/">obot roadmap</a>.
+      </p>
+    </footer>
+    <script>
+      // Mark the nav link for this page; works at any mount depth.
+      (function () {
+        var here = location.pathname.replace(/\/$/, '/index.html');
+        var links = document.querySelectorAll('.site-nav a[href]');
+        for (var i = 0; i < links.length; i += 1) {
+          var href = links[i].getAttribute('href');
+          if (!href || href.indexOf('http') === 0) continue;
+          if (new URL(href, location.href).pathname === here) {
+            links[i].classList.add('current');
+            links[i].setAttribute('aria-current', 'page');
+          }
+        }
+      })();
+
+      // Theme toggle: OS preference by default, explicit choice remembered.
+      (function () {
+        var button = document.querySelector('.theme-toggle');
+        if (!button) return;
+        button.addEventListener('click', function () {
+          var root = document.documentElement;
+          var current =
+            root.getAttribute('data-theme') ||
+            (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+          var next = current === 'dark' ? 'light' : 'dark';
+          root.setAttribute('data-theme', next);
+          try {
+            localStorage.setItem('opencsr-theme', next);
+          } catch (e) {}
+        });
+      })();
+
+      // Tabs on the display detail pages.
+      (function () {
+        var groups = document.querySelectorAll('.tabs');
+        for (var g = 0; g < groups.length; g += 1) {
+          (function (group) {
+            var tabs = group.querySelectorAll('.tab');
+            var panels = group.querySelectorAll('.tab-panel');
+            group.addEventListener('click', function (event) {
+              var tab = event.target.closest('.tab');
+              if (!tab) return;
+              for (var i = 0; i < tabs.length; i += 1) {
+                var on = tabs[i] === tab;
+                tabs[i].classList.toggle('current', on);
+                tabs[i].setAttribute('aria-selected', on ? 'true' : 'false');
+                if (panels[i]) {
+                  panels[i].classList.toggle('current', on);
+                  panels[i].hidden = !on;
+                }
+              }
+            });
+          })(groups[g]);
+        }
+      })();
+
+      // ARD row filter.
+      (function () {
+        var inputs = document.querySelectorAll('.ard-filter');
+        for (var i = 0; i < inputs.length; i += 1) {
+          (function (input) {
+            input.addEventListener('input', function () {
+              var needle = input.value.toLowerCase();
+              var table = input.closest('.tab-panel, main').querySelector('.ard-table tbody');
+              if (!table) return;
+              var rows = table.rows;
+              for (var r = 0; r < rows.length; r += 1) {
+                rows[r].hidden = needle && rows[r].textContent.toLowerCase().indexOf(needle) === -1;
+              }
+            });
+          })(inputs[i]);
+        }
+      })();
+    </script>
+  </body>
+</html>
