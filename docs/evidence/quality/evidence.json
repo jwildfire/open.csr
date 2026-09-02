@@ -1,7 +1,19 @@
 {
   "module": "quality",
-  "generated": "2026-09-02T21:22:36.893Z",
+  "generated": "2026-09-02T23:20:56.918Z",
   "records": [
+    {
+      "requirementIds": [
+        "QC-FLOW-004"
+      ],
+      "title": "a dataset and a function QC-FLOW-004: a vendored dataset flows from its upstream file through vendoring and preparation to the prepared frame and the displays computed from it; a derived one from its source; a function from what it reads to what it writes (#83)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-flow.test.js",
+      "issueRefs": [
+        83
+      ]
+    },
     {
       "requirementIds": [
         "QC-SITE-013"
@@ -132,6 +144,18 @@
       "file": "tests/unit/display-requirements.test.js",
       "issueRefs": [
         1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-FLOW-002"
+      ],
+      "title": "a display QC-FLOW-002: the flow lists the datasets with rows and hash, the specs and the study model, the four functions, and the iteration's files (#83)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-flow.test.js",
+      "issueRefs": [
+        83
       ]
     },
     {
@@ -468,6 +492,18 @@
       "file": "tests/unit/site-links.test.js",
       "issueRefs": [
         78
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-FLOW-003"
+      ],
+      "title": "a value, a text block, a document QC-FLOW-003: a value flows from one ARD row or its inputs through regenerate_values() to its store entry; a block through the renderer into the documents that place it; a document through the assembler's gates into its JSON and HTML (#83)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-flow.test.js",
+      "issueRefs": [
+        83
       ]
     },
     {
@@ -2080,6 +2116,30 @@
     },
     {
       "requirementIds": [
+        "QC-PIPE-002"
+      ],
+      "title": "the explorer and the pane QC-PIPE-002: the explorer has three parts in the pipeline's order, each holding its groups, while the flat groups list still carries every group; the strip follows the same order (#82)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-pipeline.test.js",
+      "issueRefs": [
+        82
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-PIPE-003"
+      ],
+      "title": "the explorer and the pane QC-PIPE-003: the pane opens with the whole pipeline as one flow and carries every function by id; a function permalink is absorbed into the view with that function in focus (#82)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-pipeline.test.js",
+      "issueRefs": [
+        82
+      ]
+    },
+    {
+      "requirementIds": [
         "QC-DEMO-020"
       ],
       "title": "the explorer wiring QC-DEMO-020: the group-level collapse the tree still needs is untouched (#40)",
@@ -2328,6 +2388,42 @@
       "file": "tests/unit/site-metadata.test.js",
       "issueRefs": [
         77
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-PIPE-001"
+      ],
+      "title": "the registry and the function pages QC-PIPE-001: a call to an unregistered function is a warning, and no registry renders the empty state (#82)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-pipeline.test.js",
+      "issueRefs": [
+        82
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-PIPE-001"
+      ],
+      "title": "the registry and the function pages QC-PIPE-001: every declared function is read with its kind, code, reads, writes, calls and gates, and lists what it produced from the records (#82)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-pipeline.test.js",
+      "issueRefs": [
+        82
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-FLOW-001"
+      ],
+      "title": "the renderer QC-FLOW-001: three lanes, every box a link when it has one, sub-lines kept, empty lanes say so, nothing external (#83)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-flow.test.js",
+      "issueRefs": [
+        83
       ]
     },
     {

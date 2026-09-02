@@ -1093,5 +1093,270 @@
         "notes": []
       }
     ]
+  },
+  "pipeline": {
+    "functions": [
+      {
+        "id": "prepare-data",
+        "label": "prepare_data()",
+        "kind": "R",
+        "code": "pipeline/R/data-prep.R",
+        "produces": "datasets",
+        "blurb": "Reads each dataset the specs name from its source lane, applies the documented derivations, and hands the prepared frames to the ARD builder; every ARD records each frame's hash and row count.",
+        "reads": [
+          {
+            "label": "vendored transport files",
+            "sub": "the study's own package",
+            "href": "data/index.html"
+          },
+          {
+            "label": "the source registry",
+            "sub": "data_sources(): which lane each dataset resolves to",
+            "href": "data/lanes.html"
+          },
+          {
+            "label": "the study model",
+            "sub": "analysis-set flags, arm labels",
+            "href": "metadata/study.html"
+          }
+        ],
+        "writes": [
+          {
+            "label": "prepared datasets",
+            "sub": "in memory; hash and rows recorded in every ARD envelope"
+          }
+        ]
+      },
+      {
+        "id": "build-ard",
+        "label": "build_ard()",
+        "kind": "R",
+        "code": "pipeline/R/ard.R",
+        "produces": "displays",
+        "blurb": "Runs each analysis in analysis.yaml — built-in or the display's own custom.R — over the prepared datasets and stacks the results into the ARD, one row per statistic, with the population record.",
+        "reads": [
+          {
+            "label": "analysis.yaml",
+            "sub": "what to compute",
+            "href": "metadata/specs.html"
+          },
+          {
+            "label": "custom.R",
+            "sub": "where a built-in method does not fit",
+            "href": "metadata/specs.html"
+          },
+          {
+            "label": "prepared datasets",
+            "href": "pipeline/prepare-data.html"
+          },
+          {
+            "label": "the study model",
+            "sub": "arms in print order",
+            "href": "metadata/study.html"
+          }
+        ],
+        "writes": [
+          {
+            "label": "ARD rows",
+            "sub": "opencsr/ard/v1, plus the population record"
+          }
+        ]
+      },
+      {
+        "id": "render-display",
+        "label": "render_display()",
+        "kind": "R",
+        "code": "pipeline/R/render.R",
+        "produces": "displays",
+        "blurb": "Draws each variant of the display from the ARD and display.yaml: columns, rows, formats, footnotes, and the figure where the display is one.",
+        "reads": [
+          {
+            "label": "ARD rows",
+            "href": "pipeline/build-ard.html"
+          },
+          {
+            "label": "display.yaml",
+            "sub": "how to show it",
+            "href": "metadata/specs.html"
+          }
+        ],
+        "writes": [
+          {
+            "label": "table.html per variant",
+            "sub": "the rendered cells"
+          }
+        ]
+      },
+      {
+        "id": "render-rtf",
+        "label": "render_rtf()",
+        "kind": "R",
+        "code": "pipeline/R/rtf.R",
+        "produces": "displays",
+        "blurb": "Writes the same rendered cells as submission-format RTF, hash-recorded in the manifest so a hand-edited copy cannot pass as the pipeline's.",
+        "reads": [
+          {
+            "label": "the rendered cells",
+            "href": "pipeline/render-display.html"
+          }
+        ],
+        "writes": [
+          {
+            "label": "table.rtf per variant",
+            "sub": "sha256 in the manifest"
+          }
+        ]
+      },
+      {
+        "id": "regenerate",
+        "label": "regenerate()",
+        "kind": "R",
+        "code": "pipeline/R/regenerate.R",
+        "produces": "displays",
+        "calls": [
+          "prepare-data",
+          "build-ard",
+          "render-display",
+          "render-rtf"
+        ],
+        "blurb": "One display, one rebuild: prepares the data, builds the ARD, renders every variant, and writes a new iteration folder with its manifest — never editing an earlier one.",
+        "reads": [
+          {
+            "label": "analysis.yaml + display.yaml + custom.R",
+            "href": "metadata/specs.html"
+          },
+          {
+            "label": "prepared datasets",
+            "href": "pipeline/prepare-data.html"
+          },
+          {
+            "label": "the study model",
+            "href": "metadata/study.html"
+          }
+        ],
+        "writes": [
+          {
+            "label": "outputs/<slug>/vNNN/",
+            "sub": "spec snapshots, ard.json, table.html, table.rtf, manifest.json"
+          },
+          {
+            "label": "current.json",
+            "sub": "which iteration is current"
+          }
+        ]
+      },
+      {
+        "id": "regenerate-values",
+        "label": "regenerate_values()",
+        "kind": "R",
+        "code": "pipeline/R/values.R",
+        "produces": "values",
+        "blurb": "Resolves every named value's address against the committed ARDs, evaluates the declared arithmetic, and writes the store with each value's provenance.",
+        "reads": [
+          {
+            "label": "values.yaml",
+            "sub": "names, addresses, arithmetic",
+            "href": "metadata/specs.html#value-declarations"
+          },
+          {
+            "label": "committed ARDs",
+            "sub": "each display's current iteration",
+            "href": "gallery/index.html"
+          }
+        ],
+        "writes": [
+          {
+            "label": "outputs/values/values.json",
+            "sub": "value, formatted value, ARD row and hash",
+            "href": "values/index.html"
+          }
+        ]
+      },
+      {
+        "id": "assemble",
+        "label": "assemble.mjs",
+        "kind": "node",
+        "code": "scripts/assemble.mjs",
+        "produces": "documents",
+        "blurb": "Fills a template object with this study's text, displays and values, numbers the displays from assembly order, records what each block and the document were built from, and runs the seven gates.",
+        "reads": [
+          {
+            "label": "sections.yaml + assembly.yaml",
+            "sub": "the document model and what this study puts in it",
+            "href": "metadata/models.html"
+          },
+          {
+            "label": "text blocks",
+            "sub": "approved ones, for generated prose",
+            "href": "text/index.html"
+          },
+          {
+            "label": "current ARDs and rendered variants",
+            "href": "gallery/index.html"
+          },
+          {
+            "label": "values.json",
+            "href": "values/index.html"
+          },
+          {
+            "label": "the study model",
+            "sub": "the treatment-consistency gate",
+            "href": "metadata/study.html"
+          }
+        ],
+        "writes": [
+          {
+            "label": "docs/assembled/<document>.json",
+            "sub": "the document as data, with every gate's result and its inputs record"
+          },
+          {
+            "label": "docs/assembled/<document>.html",
+            "sub": "the rendered document",
+            "href": "reader/index.html"
+          }
+        ],
+        "gates": [
+          "structure",
+          "binding resolution",
+          "numeric fidelity",
+          "cross-references",
+          "values",
+          "treatment consistency",
+          "display coverage"
+        ]
+      },
+      {
+        "id": "site",
+        "label": "site.mjs",
+        "kind": "node",
+        "code": "scripts/site.mjs",
+        "produces": "site",
+        "blurb": "Builds every page of this site from the registry, the outputs, the assembled documents and the evidence — including the pages you are reading — and fails on any internal link that does not resolve or any external resource.",
+        "reads": [
+          {
+            "label": "site/config.json",
+            "sub": "the registry"
+          },
+          {
+            "label": "outputs/",
+            "sub": "every iteration"
+          },
+          {
+            "label": "docs/assembled/",
+            "href": "reader/index.html"
+          },
+          {
+            "label": "docs/evidence/ + docs/requirements/",
+            "href": "quality/index.html"
+          }
+        ],
+        "writes": [
+          {
+            "label": "site/_build/",
+            "sub": "every page, no external resource"
+          }
+        ]
+      }
+    ]
   }
 }

@@ -173,7 +173,7 @@ describe('the explorer and the deep links', () => {
   test('QC-DATA-005: Data is a view of the study, after Values, and a collection in the tree with one item per dataset (#76)', () => {
     expect(TAB_IDS).toContain('data');
     expect(isTab('data')).toBe(true);
-    expect(STUDY_TABS.map((tab) => tab.id)).toEqual(['documents', 'displays', 'text', 'values', 'data', 'metadata']);
+    expect(STUDY_TABS.map((tab) => tab.id)).toEqual(['data', 'metadata', 'text', 'pipeline', 'displays', 'values', 'documents']);
     expect(APP_TABS.find((tab) => tab.id === 'data').href).toBe('../data/index.html');
     const tree = buildNavTree({
       config,
@@ -185,7 +185,7 @@ describe('the explorer and the deep links', () => {
       ]
     });
     const group = tree.groups.find((entry) => entry.id === 'data');
-    expect(tree.groups.map((entry) => entry.id)).toEqual(['documents', 'displays', 'text', 'values', 'data', 'metadata']);
+    expect(tree.groups.map((entry) => entry.id)).toEqual(['documents', 'displays', 'text', 'values', 'data', 'metadata', 'pipeline']);
     expect(group.items.map((item) => [item.id, item.number, item.status])).toEqual([
       ['adae', 'adae', 'ok'],
       ['advs', 'advs', 'planned'],

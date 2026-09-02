@@ -48,7 +48,8 @@ describe('a display links what it was built against and what was built from it',
     expect(html).toContain('href="../text/index.html#TXT-E3-1202"');
     expect(html).toContain('href="../values/index.html#randomised-n"');
     const plain = renderDisplayPage({ config, display: demo, evidence: null, requirements: {} });
-    expect(plain).not.toContain('metadata/study.html');
+    // The header facts are absent without the links; the flow diagram below the header still draws.
+    expect(plain).not.toContain('<dt>Study model</dt>');
     expect(plain).not.toContain('Bound by');
     const bare = renderDisplayPage({ config, display: demo, evidence: null, requirements: {}, links: { studyId: 'S', iterations: 1, textBlocks: [], values: [] } });
     expect(bare).toContain('No text block binds it');

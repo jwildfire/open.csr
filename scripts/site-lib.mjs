@@ -24,6 +24,7 @@ import { isReaderEditable, readerDrawerId } from '../site/demo/reader-edit-core.
 import { summarizeEvidence } from './evidence-lib.mjs';
 import { resolveRequirementCoverage } from './requirements-lib.mjs';
 import { VALUE_RE } from './values-lib.mjs';
+import { renderFlow, repoBlob, shortHash as flowHash } from './flow-lib.mjs';
 
 // ---------------------------------------------------------------------------
 // 1. Text helpers
@@ -1374,6 +1375,59 @@ function displayLinkFacts(display, links) {
   ];
 }
 
+/**
+ * The flow a display was made by (#83): its datasets with the hashes its ARD
+ * recorded, its specifications and the study model, through the four pipeline
+ * functions regenerate() calls, into the files of its current iteration.
+ */
+export function displayFlow(display, { config = {}, links = null, datasets = null, root = '../' } = {}) {
+  const current = display.outputs?.current;
+  if (!current) return '';
+  const data = Array.isArray(current.ard?.provenance?.data) ? current.ard.provenance.data : [];
+  const inputs = [
+    ...data.map((entry) => ({
+      label: entry.dataset,
+      sub: `${entry.n_row ?? '?'} rows · ${flowHash(entry.hash)}`,
+      href: datasets ? `${root}data/${entry.dataset}.html` : null,
+      kind: 'data'
+    })),
+    ...['analysis', 'display', 'custom']
+      .filter((key) => display.outputs?.specs?.[key])
+      .map((key) => ({
+        label: key === 'custom' ? 'custom.R' : `${key}.yaml`,
+        sub: key === 'analysis' ? 'what to compute' : key === 'display' ? 'how to show it' : 'the display\'s own method',
+        href: `${root}metadata/specs.html#spec-${display.slug}`,
+        kind: 'spec'
+      })),
+    {
+      label: 'study model',
+      sub: links?.analysisSet ? `${links.analysisSet.label || links.analysisSet.name}` : 'arms and analysis sets',
+      href: `${root}metadata/study.html`,
+      kind: 'spec'
+    }
+  ];
+  const steps = [
+    { label: 'prepare_data()', sub: `regenerate('${display.slug}')`, href: `${root}pipeline/prepare-data.html`, kind: 'fn' },
+    { label: 'build_ard()', sub: 'one row per statistic', href: `${root}pipeline/build-ard.html`, kind: 'fn' },
+    { label: 'render_display()', sub: 'every variant', href: `${root}pipeline/render-display.html`, kind: 'fn' },
+    { label: 'render_rtf()', sub: 'the same cells', href: `${root}pipeline/render-rtf.html`, kind: 'fn' }
+  ];
+  const rows = Array.isArray(current.ard?.rows) ? current.ard.rows.length : null;
+  const artifacts = (current.artifacts || []).filter((artifact) => artifact.exists);
+  const outputs = [
+    { label: 'ard.json', sub: `${current.version}${rows != null ? ` · ${rows} rows` : ''} · ${flowHash(current.ardHash)}`, href: repoBlob(config, current.ardFile), kind: 'out' },
+    { label: 'table.html', sub: 'the rendered display', href: current.tableFile ? repoBlob(config, current.tableFile) : null, kind: 'out' },
+    ...artifacts.map((artifact) => ({
+      label: artifact.variant === 'post_text' ? 'table.rtf' : 'table-in-text.rtf',
+      sub: `sha256 ${flowHash(artifact.hash)}`,
+      href: `${root}artifacts/${artifactFileName(display.slug, artifact)}`,
+      kind: 'out'
+    })),
+    { label: 'manifest.json', sub: 'who, why, every hash', href: current.dir ? repoBlob(config, `${current.dir}/manifest.json`) : null, kind: 'out' }
+  ];
+  return renderFlow({ label: `How ${display.slug} was made`, inputs, steps, outputs });
+}
+
 export function renderDisplayPage({
   config,
   display,
@@ -1522,6 +1576,7 @@ export function renderDisplayPage({
       : `<p class="callout warn">This display exists on disk but is not registered in ` +
         `<span class="mono">site/config.json</span>, so it has no reviewed metadata.</p>`,
     `<dl class="facts wide">${facts}</dl>`,
+    displayFlow(display, { config, links, datasets }),
     tabs([
       { id: 'rendered', label: 'Rendered display', content: downloads + rendered },
       {
@@ -1832,7 +1887,7 @@ export function renderCsrReader({
     head,
     switcher,
     notice,
-    renderDocumentInputs(csr.json?.inputs, { root }),
+    renderDocumentInputs(csr.json?.inputs, { root, config, basename: doc.basename || (csr.json?.template?.id ? documentBasename(csr.json.template.id) : null) }),
     `<div class="reader">`,
     `<nav class="reader-toc" aria-label="Document sections"><h2>Contents</h2><ol>${toc}</ol></nav>`,
     `<article class="csr-doc">${body}</article>`,
@@ -1965,7 +2020,7 @@ function renderCsrDisplay(block, context) {
  * every value cited and every dataset reached — each a link into the view
  * that owns it. Built from the `inputs` record the assembler writes.
  */
-export function renderDocumentInputs(inputs, { root = '' } = {}) {
+export function renderDocumentInputs(inputs, { root = '', config = null, basename = null } = {}) {
   if (!inputs) return '';
   const href = (file) => `${escapeHtml(root)}${escapeHtml(file)}`;
   const short = (hash) => String(hash || '').replace(/^sha256:/, '').slice(0, 7);
@@ -2012,7 +2067,24 @@ export function renderDocumentInputs(inputs, { root = '' } = {}) {
     `<div><h4>Text blocks (${(inputs.textBlocks || []).length})</h4><ul class="plain compact">${blocks || '<li class="muted">none</li>'}</ul></div>` +
     `<div><h4>Datasets reached (${(inputs.datasets || []).length})</h4><ul class="plain compact">${datasets || '<li class="muted">none</li>'}</ul>` +
     `<p class="sub"><a href="${href('metadata/approvals.html')}">Approvals</a> · <a href="${href('metadata/environments.html')}">Environments</a> · <a href="${href('data/index.html')}">Data</a></p></div>` +
-    `</div></details>`
+    `</div>` +
+    renderFlow({
+      label: 'How this document was assembled',
+      inputs: [
+        { label: template.title || template.id || 'template', sub: 'sections.yaml + assembly.yaml', href: `${root}metadata/models.html`, kind: 'spec' },
+        { label: study.id || 'study model', sub: 'arms, analysis sets', href: `${root}metadata/study.html`, kind: 'spec' },
+        { label: `${(inputs.displays || []).length} displays`, sub: 'current iterations', href: `${root}gallery/index.html`, kind: 'data' },
+        { label: `${(inputs.textBlocks || []).length} text blocks`, sub: `${(inputs.textBlocks || []).filter((b) => b.included !== false).length} included`, href: `${root}text/index.html`, kind: 'data' },
+        { label: `${(inputs.values || []).length} values`, sub: 'cited by name', href: `${root}values/index.html`, kind: 'data' }
+      ],
+      steps: [{ label: 'assemble.mjs', sub: 'seven gates', href: `${root}pipeline/assemble.html`, kind: 'fn' }],
+      outputs: [
+        { label: `${basename || template.id || 'document'}.json`, sub: 'the document as data', href: basename ? repoBlob(config, `docs/assembled/${basename}.json`) : null, kind: 'out' },
+        { label: `${basename || template.id || 'document'}.html`, sub: 'the rendered document', href: basename ? repoBlob(config, `docs/assembled/${basename}.html`) : null, kind: 'out' },
+        { label: 'this reader', sub: 'rendered from library source', href: null, kind: 'out' }
+      ]
+    }) +
+    `</details>`
   );
 }
 
@@ -2206,7 +2278,7 @@ function traceScript(traceIndex) {
  * not declare, so the only drift left to show is a declared display the block
  * binds nothing from.
  */
-export function renderBlockInputs(block, { ards = {}, traceIndex = {}, root = '../' } = {}) {
+export function renderBlockInputs(block, { ards = {}, traceIndex = {}, root = '../', documentsByBlock = null } = {}) {
   const bound = new Map();
   for (const address of block.bindings || []) {
     const resolved = resolveBinding(address, ards);
@@ -2242,12 +2314,33 @@ export function renderBlockInputs(block, { ards = {}, traceIndex = {}, root = '.
   const drift = unbound.length
     ? `<p class="sub inputs-drift">Declares ${unbound.map((slug) => `<span class="mono">${escapeHtml(slug)}</span>`).join(', ')} but binds nothing from ${unbound.length === 1 ? 'it' : 'them'}.</p>`
     : '';
-  return `<h4>Inputs</h4><ul class="plain compact inputs">${items.join('')}</ul>${drift}`;
+  // The flow (#83): what the block binds, through the block renderer and the
+  // two text gates, into its rendered prose in each document that places it.
+  const flowInputs = [
+    ...[...bound].map(([slug, n]) => ({ label: slug, sub: `${n} binding${n === 1 ? '' : 's'} · ${traceIndex[slug]?.version || 'current'}`, href: `${root}gallery/${slug}.html`, kind: 'data' })),
+    ...values.map((id) => ({ label: id, sub: 'named value', href: `${root}values/index.html#${id}`, kind: 'data' })),
+    { label: `${block.id}.md`, sub: `${block.tier || 'boilerplate'} · ${block.approval?.state || 'draft'}`, href: null, kind: 'spec' }
+  ];
+  const placed = documentsByBlock?.get?.(block.id) || [];
+  const flowOutputs = placed.length
+    ? placed.map((doc) => ({ label: doc.title || doc.id, sub: 'rendered prose', href: doc.readerPath ? `${root}${doc.readerPath}` : null, kind: 'out' }))
+    : [{ label: 'rendered prose', sub: 'in the documents that place it', href: `${root}reader/index.html`, kind: 'out' }];
+  const flow = renderFlow({
+    label: `How ${block.id} is rendered`,
+    inputs: flowInputs,
+    steps: [
+      { label: 'renderBlock()', sub: 'bindings resolved, digits checked', href: `${root}pipeline/assemble.html`, kind: 'fn' },
+      { label: 'assemble.mjs', sub: 'placed by the template', href: `${root}pipeline/assemble.html`, kind: 'fn' }
+    ],
+    outputs: flowOutputs,
+    compact: true
+  });
+  return `<h4>Inputs</h4><ul class="plain compact inputs">${items.join('')}</ul>${drift}${flow}`;
 }
 
 const TIER_KIND = { boilerplate: 'muted', parameterized: 'info', generated: 'warn' };
 
-export function renderTextLibrary({ textBlocks, ards, traceIndex }) {
+export function renderTextLibrary({ textBlocks, ards, traceIndex, documentsByBlock = null }) {
   // Blocks are read outside the assembled document here, so section
   // cross-references have no page to link to — they degrade to readable text —
   // while display references stay live trace handles.
@@ -2332,7 +2425,7 @@ export function renderTextLibrary({ textBlocks, ards, traceIndex }) {
           : block.exists
             ? `<p class="sub">No bindings — this block states no results.</p>`
             : '') +
-        (block.exists ? renderBlockInputs(block, { ards, traceIndex }) : '') +
+        (block.exists ? renderBlockInputs(block, { ards, traceIndex, documentsByBlock }) : '') +
         (block.displays?.length
           ? `<p class="sub">Displays: ${block.displays
               .map(
