@@ -1,6 +1,6 @@
 {
   "module": "t-vitals-change",
-  "generated": "2026-09-02T15:27:43.698Z",
+  "generated": "2026-09-02T15:32:26.724Z",
   "records": [
     {
       "requirementIds": [
@@ -128,7 +128,7 @@
       ],
       "title": "DSP-VWC-001: all four displays group by planned treatment over the safety analysis set (#1)",
       "suite": "r-unit",
-      "passed": false,
+      "passed": true,
       "file": "test-displays-vitals.R",
       "issueRefs": [
         1
@@ -140,7 +140,7 @@
       ],
       "title": "DSP-VWC-002: the committed three-route agreement record is green and describes this iteration (#1)",
       "suite": "r-unit",
-      "passed": false,
+      "passed": true,
       "file": "test-displays-vitals.R",
       "issueRefs": [
         1
