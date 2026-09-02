@@ -341,10 +341,16 @@ if (app) {
       event.preventDefault();
       const group = item.getAttribute('data-nav-group');
       const id = item.getAttribute('data-nav-item');
-      const key = { documents: 'doc', displays: 'display', text: 'block', values: 'focus', data: 'focus', metadata: 'focus' }[group];
+      const key = { documents: 'doc', displays: 'display', text: 'block', values: 'focus', data: 'focus', metadata: 'focus', pipeline: 'focus' }[group];
       const focusId =
-        group === 'data' ? (id === 'lanes' ? 'lanes' : `dataset-${id}`) : group === 'metadata' ? `section-${id}` : id;
-      const byFocus = group === 'text' || group === 'values' || group === 'data' || group === 'metadata';
+        group === 'data'
+          ? (id === 'lanes' ? 'lanes' : `dataset-${id}`)
+          : group === 'metadata'
+            ? `section-${id}`
+            : group === 'pipeline'
+              ? `function-${id}`
+              : id;
+      const byFocus = ['text', 'values', 'data', 'metadata', 'pipeline'].includes(group);
       goto({ tab: group, [key]: focusId, focus: byFocus ? focusId : null });
     });
   }
