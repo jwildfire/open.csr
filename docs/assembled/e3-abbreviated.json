@@ -1,6 +1,6 @@
 {
   "schema": "opencsr/csr/v1",
-  "generated": "2026-09-02T16:31:55.540Z",
+  "generated": "2026-09-02T17:20:38.514Z",
   "study": {
     "id": "CDISCPILOT01",
     "title": "Safety and Efficacy of the Xanomeline Transdermal Therapeutic System (TTS) in Patients with Mild to Moderate Alzheimer's Disease",
@@ -1613,7 +1613,7 @@
           "id": "TXT-E3-1101",
           "title": "Data Sets Analysed",
           "tier": "parameterized",
-          "version": 1,
+          "version": 2,
           "file": "library/text/TXT-E3-1101.md",
           "requirements": [
             "TXT-POP-001"
@@ -1621,7 +1621,7 @@
           "approval": {
             "state": "approved",
             "by": "@jwildfire",
-            "at": "2026-07-25"
+            "at": "2026-09-02"
           },
           "provenance": {
             "model": null,
@@ -1633,8 +1633,8 @@
           },
           "included": true,
           "exclusionReason": null,
-          "text": "The safety analysis set comprised all patients who were randomised and received at\nleast one dose of study medication. It included\n254 patients:\n86 in the placebo group,\n84 in the xanomeline low dose\ngroup and 84 in the xanomeline\nhigh dose group. All safety analyses in this report, and every display referenced from\nSection 12, are based on this analysis set, and each display identifies its\nanalysis set in the header in accordance with ICH E3.\n\nPatients who were screened but not randomised are excluded from every analysis set.\nAnalysis-set membership is derived in a documented, version-controlled data preparation\nstep rather than assumed from the source data; that derivation, and the environment\nthat executed it, are recorded in Appendix 16.1.9.\n\nNo efficacy analysis set is defined for this report. The public ADaM package used as\nthe data source for this demonstration contains no efficacy analysis dataset for this\nstudy, so the efficacy sections and the corresponding post-text displays in\nSection 14.2 are intentionally not populated. Patients excluded from any\nanalysis population would be listed in Appendix 16.2.3.",
-          "html": "<p>The safety analysis set comprised all patients who were randomised and received at\nleast one dose of study medication. It included\n254 patients:\n86 in the placebo group,\n84 in the xanomeline low dose\ngroup and 84 in the xanomeline\nhigh dose group. All safety analyses in this report, and every display referenced from\nSection 12, are based on this analysis set, and each display identifies its\nanalysis set in the header in accordance with ICH E3.</p>\n<p>Patients who were screened but not randomised are excluded from every analysis set.\nAnalysis-set membership is derived in a documented, version-controlled data preparation\nstep rather than assumed from the source data; that derivation, and the environment\nthat executed it, are recorded in Appendix 16.1.9.</p>\n<p>No efficacy analysis set is defined for this report. The public ADaM package used as\nthe data source for this demonstration contains no efficacy analysis dataset for this\nstudy, so the efficacy sections and the corresponding post-text displays in\nSection 14.2 are intentionally not populated. Patients excluded from any\nanalysis population would be listed in Appendix 16.2.3.</p>\n",
+          "text": "The safety analysis set comprised all patients who were randomised and received at\nleast one dose of study medication. It included\n254 patients:\n86 in the placebo group,\n84 in the xanomeline low dose\ngroup and 84 in the xanomeline\nhigh dose group. All safety analyses in this report, and every display referenced from\nSection 12, are based on this analysis set, and each display identifies its\nanalysis set in the header in accordance with ICH E3.\n\nPatients who were screened but not randomised are excluded from every analysis set.\nAnalysis-set membership is derived in a documented, version-controlled data preparation\nstep rather than assumed from the source data; that derivation, and the environment\nthat executed it, are recorded in Appendix 16.1.9.\n\nThe efficacy analysis set comprised all randomised patients who took at least one dose\nof study medication and had at least one post-baseline assessment of both the\nADAS-Cog and the CIBIC+, as the study's own analysis data flag it (EFFFL). It included\n234 patients:\n79 in the placebo group,\n81 in the xanomeline low dose\ngroup and 74 in the xanomeline\nhigh dose group. The efficacy analyses and the post-text efficacy displays are based on\nthis analysis set. The intent-to-treat population, every randomised patient, is\n254 patients and is the population of the\ndisposition displays. Patients excluded from any analysis population would be listed\nin Appendix 16.2.3.",
+          "html": "<p>The safety analysis set comprised all patients who were randomised and received at\nleast one dose of study medication. It included\n254 patients:\n86 in the placebo group,\n84 in the xanomeline low dose\ngroup and 84 in the xanomeline\nhigh dose group. All safety analyses in this report, and every display referenced from\nSection 12, are based on this analysis set, and each display identifies its\nanalysis set in the header in accordance with ICH E3.</p>\n<p>Patients who were screened but not randomised are excluded from every analysis set.\nAnalysis-set membership is derived in a documented, version-controlled data preparation\nstep rather than assumed from the source data; that derivation, and the environment\nthat executed it, are recorded in Appendix 16.1.9.</p>\n<p>The efficacy analysis set comprised all randomised patients who took at least one dose\nof study medication and had at least one post-baseline assessment of both the\nADAS-Cog and the CIBIC+, as the study&#39;s own analysis data flag it (EFFFL). It included\n234 patients:\n79 in the placebo group,\n81 in the xanomeline low dose\ngroup and 74 in the xanomeline\nhigh dose group. The efficacy analyses and the post-text efficacy displays are based on\nthis analysis set. The intent-to-treat population, every randomised patient, is\n254 patients and is the population of the\ndisposition displays. Patients excluded from any analysis population would be listed\nin Appendix 16.2.3.</p>\n",
           "bindings": [
             {
               "address": "t-disposition:treated:n;group=Total",
@@ -1751,6 +1751,151 @@
                 "error": null
               },
               "error": null
+            },
+            {
+              "address": "t-populations:efficacy:n;group=Total",
+              "display": "t-populations",
+              "analysis": "efficacy",
+              "stat_name": "n",
+              "qualifiers": {
+                "group": "Total"
+              },
+              "resolved": true,
+              "value": 234,
+              "displayValue": 234,
+              "formatted": "234",
+              "row": {
+                "analysis": "efficacy",
+                "group1": "TRT01P",
+                "group1_level": "Total",
+                "group2": null,
+                "group2_level": null,
+                "variable": "EFFFL",
+                "variable_level": "Y",
+                "context": "subject_count",
+                "stat_name": "n",
+                "stat_label": "n",
+                "stat": 234,
+                "warning": null,
+                "error": null
+              },
+              "error": null
+            },
+            {
+              "address": "t-populations:efficacy:n;group=Placebo",
+              "display": "t-populations",
+              "analysis": "efficacy",
+              "stat_name": "n",
+              "qualifiers": {
+                "group": "Placebo"
+              },
+              "resolved": true,
+              "value": 79,
+              "displayValue": 79,
+              "formatted": "79",
+              "row": {
+                "analysis": "efficacy",
+                "group1": "TRT01P",
+                "group1_level": "Placebo",
+                "group2": null,
+                "group2_level": null,
+                "variable": "EFFFL",
+                "variable_level": "Y",
+                "context": "subject_count",
+                "stat_name": "n",
+                "stat_label": "n",
+                "stat": 79,
+                "warning": null,
+                "error": null
+              },
+              "error": null
+            },
+            {
+              "address": "t-populations:efficacy:n;group=Xanomeline Low Dose",
+              "display": "t-populations",
+              "analysis": "efficacy",
+              "stat_name": "n",
+              "qualifiers": {
+                "group": "Xanomeline Low Dose"
+              },
+              "resolved": true,
+              "value": 81,
+              "displayValue": 81,
+              "formatted": "81",
+              "row": {
+                "analysis": "efficacy",
+                "group1": "TRT01P",
+                "group1_level": "Xanomeline Low Dose",
+                "group2": null,
+                "group2_level": null,
+                "variable": "EFFFL",
+                "variable_level": "Y",
+                "context": "subject_count",
+                "stat_name": "n",
+                "stat_label": "n",
+                "stat": 81,
+                "warning": null,
+                "error": null
+              },
+              "error": null
+            },
+            {
+              "address": "t-populations:efficacy:n;group=Xanomeline High Dose",
+              "display": "t-populations",
+              "analysis": "efficacy",
+              "stat_name": "n",
+              "qualifiers": {
+                "group": "Xanomeline High Dose"
+              },
+              "resolved": true,
+              "value": 74,
+              "displayValue": 74,
+              "formatted": "74",
+              "row": {
+                "analysis": "efficacy",
+                "group1": "TRT01P",
+                "group1_level": "Xanomeline High Dose",
+                "group2": null,
+                "group2_level": null,
+                "variable": "EFFFL",
+                "variable_level": "Y",
+                "context": "subject_count",
+                "stat_name": "n",
+                "stat_label": "n",
+                "stat": 74,
+                "warning": null,
+                "error": null
+              },
+              "error": null
+            },
+            {
+              "address": "t-populations:itt:n;group=Total",
+              "display": "t-populations",
+              "analysis": "itt",
+              "stat_name": "n",
+              "qualifiers": {
+                "group": "Total"
+              },
+              "resolved": true,
+              "value": 254,
+              "displayValue": 254,
+              "formatted": "254",
+              "row": {
+                "analysis": "itt",
+                "group1": "TRT01P",
+                "group1_level": "Total",
+                "group2": null,
+                "group2_level": null,
+                "variable": "ITTFL",
+                "variable_level": "Y",
+                "context": "subject_count",
+                "stat_name": "n",
+                "stat_label": "n",
+                "stat": 254,
+                "warning": null,
+                "error": null
+              },
+              "error": null
             }
           ],
           "crossReferences": [
@@ -1765,12 +1910,6 @@
               "target": "16.1.9",
               "resolved": true,
               "text": "Appendix 16.1.9"
-            },
-            {
-              "type": "section",
-              "target": "14.2",
-              "resolved": true,
-              "text": "Section 14.2"
             },
             {
               "type": "section",
@@ -11152,15 +11291,16 @@
       "id": "TXT-E3-1101",
       "title": "Data Sets Analysed",
       "tier": "parameterized",
-      "version": 1,
+      "version": 2,
       "e3_section": "11.1",
       "displays": [
-        "t-disposition"
+        "t-disposition",
+        "t-populations"
       ],
       "approval": {
         "state": "approved",
         "by": "@jwildfire",
-        "at": "2026-07-25"
+        "at": "2026-09-02"
       },
       "provenance": {
         "model": null,
@@ -13083,13 +13223,13 @@
         "approval": {
           "state": "approved",
           "by": "@jwildfire",
-          "at": "2026-07-25"
+          "at": "2026-09-02"
         },
         "included": true,
         "exclusionReason": null,
-        "bindings": 4,
+        "bindings": 9,
         "unresolvedBindings": 0,
-        "crossReferences": 4,
+        "crossReferences": 3,
         "unresolvedCrossReferences": 0,
         "valueBindings": 0,
         "unresolvedValueBindings": 0,
