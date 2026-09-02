@@ -1,0 +1,39 @@
+# ------------------------------------------------------------------------------
+# t-subjects-by-site — Summary of Number of Subjects By Site
+# ------------------------------------------------------------------------------
+# Target: Table 14-1.03 of the CDISCPILOT01 clinical study report (27 June 2006),
+# page 45. All subjects. One row per site — the seven small sites pooled under
+# id 900 for analyses that adjust for site, each still listed on its own line —
+# and, per arm and for the total, the subjects in the intent-to-treat, efficacy
+# and Week 24 completer populations. Twelve columns, then a TOTAL line.
+#
+# Three analyses, one per population, each a categorical count of SITEID over
+# the subjects carrying that population's flag; the display's twelve columns are
+# arm × analysis, which is what column objects are for (#63).
+# ------------------------------------------------------------------------------
+id: t-subjects-by-site
+title: "Summary of Number of Subjects By Site"
+regulatory_id: DST04
+type: table
+dataset: adsl
+analysis_set: all
+denominator: adsl
+group:
+  - TRT01P
+total: true
+analyses:
+  - name: itt
+    method: categorical
+    label: "Intent-to-treat subjects by site"
+    variables: [SITEID]
+    filter: "ITTFL == 'Y'"
+  - name: eff
+    method: categorical
+    label: "Efficacy subjects by site"
+    variables: [SITEID]
+    filter: "EFFFL == 'Y'"
+  - name: com
+    method: categorical
+    label: "Week 24 completers by site"
+    variables: [SITEID]
+    filter: "COMP24FL == 'Y'"

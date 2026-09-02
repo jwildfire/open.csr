@@ -1,6 +1,6 @@
 {
   "module": "t-weight",
-  "generated": "2026-09-02T16:07:18.703Z",
+  "generated": "2026-09-02T16:20:30.837Z",
   "records": [
     {
       "requirementIds": [
@@ -112,6 +112,42 @@
     },
     {
       "requirementIds": [
+        "DSP-INTXT-001"
+      ],
+      "title": "DSP-INTXT-001: the in-text demographics redraw is the report's Table 11-1 — mean and range, percentages, race as White/Caucasian or other — from the same ARD as the full table (#63)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        63
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-INTXT-002"
+      ],
+      "title": "DSP-INTXT-002: the in-text incidence redraw is the report's Table 12-1 — terms at 5% or more in any arm, flat, in title case, an asterisk where the placebo comparison has p < 0.15 (#63)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        63
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-INTXT-003"
+      ],
+      "title": "DSP-INTXT-003: the in-text weight redraw is the report's Table 12-4 — n and mean per arm for baseline and the changes at Week 24 and end of treatment — from the weight table's own ARD (#63)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        63
+      ]
+    },
+    {
+      "requirementIds": [
         "DSP-VWC-001"
       ],
       "title": "DSP-VWC-001: all four displays group by planned treatment over the safety analysis set (#1)",
@@ -213,14 +249,14 @@
       "advs"
     ],
     "adamHashes": {
-      "adsl": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+      "adsl": "sha256:b022f78fdd0ade028f6c4e9e7cc5187284a5249f30c16646931a1856d5fff2f6",
       "advs": "sha256:ccc9f70e768c4c6529f31714c501e606c2edb69e8096da6cf4157785d428fcb0"
     },
-    "ardFile": "outputs/t-weight/v002/ard.json",
-    "ardHash": "sha256:1611911e688ff53702b9526ed75ee34effb800bba0d7b0216b0285f43ac43a47",
+    "ardFile": "outputs/t-weight/v004/ard.json",
+    "ardHash": "sha256:39d684c1187758435aa1a2f084385ba5b1b49fda32b0dd11084b0e53ee82cf0e",
     "displayFile": "library/tfl/t-weight/display.yaml",
     "specHash": "sha256:14be68b3bc1d72d8c3e7ff6c067edb41004ad68be9286479c3c2e9a9891dfff3",
-    "iteration": "v002",
+    "iteration": "v004",
     "sourceCommit": null
   },
   "environment": {

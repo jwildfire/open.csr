@@ -1,0 +1,303 @@
+{
+  "module": "t-subjects-by-site",
+  "generated": "2026-09-02T16:20:30.837Z",
+  "records": [
+    {
+      "requirementIds": [
+        "STD-GATE-001"
+      ],
+      "title": "Gate: treatment consistency STD-GATE-001: a display whose arm counts differ from the study model fails the gate, and the error names the display, the arm and both numbers (#59)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/study-model.test.js",
+      "issueRefs": [
+        59
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-GATE-002"
+      ],
+      "title": "Gate: treatment consistency STD-GATE-002: two displays reporting the same analysis set with different counts in one document is an error naming both, even when one of them matches the model (#59)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/study-model.test.js",
+      "issueRefs": [
+        59
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-GATE-003"
+      ],
+      "title": "Gate: treatment consistency STD-GATE-003: a display with no population record is a named warning, never a silent pass; one with no arm grouping is warned and not counted as checked (#59)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/study-model.test.js",
+      "issueRefs": [
+        59
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-GATE-004"
+      ],
+      "title": "Gate: treatment consistency STD-GATE-004: an analysis set the model does not declare is an error, not a skipped check (#59)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/study-model.test.js",
+      "issueRefs": [
+        59
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-GATE-005"
+      ],
+      "title": "Gate: treatment consistency STD-GATE-005: the committed report assembles green on the gate, every placed display is gated by arm, and none of them read the alternate lane (#60)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/study-model.test.js",
+      "issueRefs": [
+        60
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-MODEL-001"
+      ],
+      "title": "Study model STD-MODEL-001: library/study.yaml loads with three arms in print order and every analysis set counted per arm (#59)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/study-model.test.js",
+      "issueRefs": [
+        59
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-MODEL-002"
+      ],
+      "title": "Study model STD-MODEL-002: every assembly that declares treatment groups declares the model's arms, in the model's order (#59)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/study-model.test.js",
+      "issueRefs": [
+        59
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-ALL-001"
+      ],
+      "title": "DSP-ALL-001: every display renders a table that actually contains numbers (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-ALL-002"
+      ],
+      "title": "DSP-ALL-002: every display declares a regulatory identifier and a source line (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-INTXT-001"
+      ],
+      "title": "DSP-INTXT-001: the in-text demographics redraw is the report's Table 11-1 — mean and range, percentages, race as White/Caucasian or other — from the same ARD as the full table (#63)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        63
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-INTXT-002"
+      ],
+      "title": "DSP-INTXT-002: the in-text incidence redraw is the report's Table 12-1 — terms at 5% or more in any arm, flat, in title case, an asterisk where the placebo comparison has p < 0.15 (#63)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        63
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-INTXT-003"
+      ],
+      "title": "DSP-INTXT-003: the in-text weight redraw is the report's Table 12-4 — n and mean per arm for baseline and the changes at Week 24 and end of treatment — from the weight table's own ARD (#63)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        63
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-REF-001"
+      ],
+      "title": "DSP-REF-001: both displays publish the figures the pilot's own report printed (#1)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-REF-002"
+      ],
+      "title": "DSP-REF-002: the demographics and exposure displays publish every cell the pilot's own report printed for Tables 14-2.01 and 14-4.01 (#61)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        61
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-REF-003"
+      ],
+      "title": "DSP-REF-003: the incidence and serious-events displays publish every cell the pilot's own report printed for Tables 14-5.01 and 14-5.02 — 258 lines of three cells and two p-values (#62)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        62
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-REF-004"
+      ],
+      "title": "DSP-REF-004: the subjects-by-site display publishes every cell the pilot's own report printed for Table 14-1.03 (#63)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        63
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-SITE-001"
+      ],
+      "title": "DSP-SITE-001: every site row counts the intent-to-treat, efficacy and Week 24 completer subjects per arm and overall, equal to a direct count of ADSL (#63)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        63
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-SITE-002"
+      ],
+      "title": "DSP-SITE-002: the seven small sites are listed under pooled id 900, each on its own line, after the ten that stand alone (#63)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        63
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-MODEL-003"
+      ],
+      "title": "STD-MODEL-003: the treatment vocabulary and the analysis-set registry resolve from the study model, not from code (#59)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-study-model.R",
+      "issueRefs": [
+        59
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-MODEL-004"
+      ],
+      "title": "STD-MODEL-004: every count the model declares is what the default lane's ADSL holds, per arm and per set (#59)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-study-model.R",
+      "issueRefs": [
+        59
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-MODEL-005"
+      ],
+      "title": "STD-MODEL-005: every committed ARD carries a population record that agrees with the study model for its analysis set (#59)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-study-model.R",
+      "issueRefs": [
+        59
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-SRC-001"
+      ],
+      "title": "STD-SRC-001: the default registry serves every pilot dataset from the study's own package, and only the two datasets it lacks come from the alternate (#60)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-study-model.R",
+      "issueRefs": [
+        60
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-SRC-002"
+      ],
+      "title": "STD-SRC-002: the pilot's ADVS prepares without derived-record or timepoint columns the alternate carries, and its series keys match (#60)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-study-model.R",
+      "issueRefs": [
+        60
+      ]
+    }
+  ],
+  "traceability": {
+    "adamDatasets": [
+      "adsl"
+    ],
+    "adamHashes": {
+      "adsl": "sha256:1f6fa03914a74aa185bd5ee8453806779abe240f7b88f483d932b8eec9680da6"
+    },
+    "ardFile": "outputs/t-subjects-by-site/v002/ard.json",
+    "ardHash": "sha256:6887f57cfc4987e81823c8de7a4d6a2e452ea55848294db90f1997ccdf0d9747",
+    "displayFile": "library/tfl/t-subjects-by-site/display.yaml",
+    "specHash": "sha256:9b145f6fe1f753e6a3729e757993d5ec669b342acacc0113077a63e9c112b56f",
+    "iteration": "v002",
+    "sourceCommit": null
+  },
+  "environment": {
+    "os": "Darwin 23.6.0",
+    "node": "v24.14.0",
+    "vitest": null,
+    "r": "4.3.3"
+  },
+  "run": null
+}

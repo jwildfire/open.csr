@@ -1,0 +1,39 @@
+# ------------------------------------------------------------------------------
+# t-ae-incidence — Incidence of Treatment Emergent Adverse Events by Treatment Group
+# ------------------------------------------------------------------------------
+# Target: Table 14-5.01 of the CDISCPILOT01 clinical study report (27 June 2006),
+# sixteen pages. Safety population. For every system organ class and every
+# preferred term within it: subjects with at least one event, the percentage of
+# the arm, the number of events in brackets, and Fisher's exact test of placebo
+# against each active arm. The first row is every event in one line.
+#
+# This is the report's shape, not the FDA-standard one: t-ae-overview (AET01)
+# and t-ae-common (AET02) keep their identifiers and their layouts and are what
+# the ICH E3 templates carried before v0.4.0; this display is what the CDISC
+# pilot profile places (D0032, #62).
+# ------------------------------------------------------------------------------
+id: t-ae-incidence
+title: "Incidence of Treatment Emergent Adverse Events by Treatment Group"
+regulatory_id: AET03
+type: table
+dataset: adae
+analysis_set: safety
+denominator: adsl
+group:
+  - TRT01A
+total: false
+analyses:
+  - name: any
+    method: subject_count
+    custom: ard_incidence_any
+    reference_arm: Placebo
+    label: "Any body system"
+    variable: AEDECOD
+    filter: "TRTEMFL == 'Y'"
+  - name: by_soc_pt
+    method: hierarchical_count
+    custom: ard_incidence_hierarchy
+    reference_arm: Placebo
+    label: "Adverse events by system organ class and preferred term"
+    hierarchy: [AEBODSYS, AEDECOD]
+    filter: "TRTEMFL == 'Y'"

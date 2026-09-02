@@ -1,0 +1,55 @@
+{
+  "display": "t-demographics",
+  "version": "v006",
+  "created": "2026-09-02T16:10:27Z",
+  "actor": "@obotclaw",
+  "change_request": "In-text variant redrawn as the reference report prints it (Tables 11-1, 12-1, 12-4; D0032, #63).",
+  "regulatory_id": "DMT01",
+  "git_commit": null,
+  "spec_hash": "sha256:1db216cf8f6d81a73469c0afb0c7ffaa6ae987f22f7e9ce0d047af310da061b2",
+  "display_hash": "sha256:ce6678b15ca47b2e0515c5e641b4b8eb28da7159f2365403c0890efde5cdb306",
+  "ard_hash": "sha256:7e45dc8db8a0e477efb13091b020841d2c61ca495fcd2b37859532d4d1091bcb",
+  "ard_rows": 524,
+  "ard_warnings": 0,
+  "ard_errors": 0,
+  "datasets": "adsl",
+  "data": [
+    {
+      "dataset": "adsl",
+      "hash": "sha256:b022f78fdd0ade028f6c4e9e7cc5187284a5249f30c16646931a1856d5fff2f6",
+      "n_row": 254,
+      "n_col": 55,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    }
+  ],
+  "environment": {
+    "r": "4.3.3",
+    "os": "Darwin 23.6.0",
+    "packages": {
+      "cards": "0.6.1",
+      "cardx": "0.2.5",
+      "gtsummary": "2.3.0",
+      "gt": "1.0.0",
+      "dplyr": "1.1.4",
+      "pharmaverseadam": "1.1.0",
+      "jsonlite": "2.0.0",
+      "yaml": "2.3.10",
+      "digest": "0.6.37"
+    }
+  },
+  "variants": {
+    "post_text": {
+      "file": "table.html",
+      "rtf": "table.rtf",
+      "rtf_hash": "sha256:7177d7826b314e6daf05c45a46ae091a3bc058654e1b831a3557dc6e2af6a13e",
+      "n_rows": 67
+    },
+    "in_text": {
+      "file": "table-in-text.html",
+      "rtf": "table-in-text.rtf",
+      "rtf_hash": "sha256:34490ec6a5fd3e35167a8135373d7eb33cb61b77f430f55ee77d648b0fea9307",
+      "n_rows": 67
+    }
+  }
+}

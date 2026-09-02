@@ -1,7 +1,7 @@
 {
   "schema": "opencsr/values/v1",
   "study": "CDISCPILOT01",
-  "created": "2026-09-02T15:44:12Z",
+  "created": "2026-09-02T16:14:21Z",
   "provenance": {
     "source_file": "library/values/values.yaml",
     "source_hash": "sha256:36d11e4f5ca874ce784c46f13996aa0108bb88fbb4ae1c54d8ba024cd8309374",
@@ -137,9 +137,9 @@
         "address": "t-demographics:age:median;group=Total",
         "display": "t-demographics",
         "analysis": "age",
-        "iteration": "v005",
-        "ard_file": "outputs/t-demographics/v005/ard.json",
-        "ard_hash": "sha256:3516f690df3588f12fb1b589645820308174a25130219b0bc6c0cf67e51d112e"
+        "iteration": "v007",
+        "ard_file": "outputs/t-demographics/v007/ard.json",
+        "ard_hash": "sha256:87af02747ecd7e74df308ac7fc521b68e22f7fad3fb86607e5e93d9d28cb82a5"
       },
       "notes": null
     },
@@ -157,9 +157,9 @@
         "address": "t-demographics:sex:n;group=Total;variable_level=F",
         "display": "t-demographics",
         "analysis": "sex",
-        "iteration": "v005",
-        "ard_file": "outputs/t-demographics/v005/ard.json",
-        "ard_hash": "sha256:3516f690df3588f12fb1b589645820308174a25130219b0bc6c0cf67e51d112e"
+        "iteration": "v007",
+        "ard_file": "outputs/t-demographics/v007/ard.json",
+        "ard_hash": "sha256:87af02747ecd7e74df308ac7fc521b68e22f7fad3fb86607e5e93d9d28cb82a5"
       },
       "notes": null
     },
