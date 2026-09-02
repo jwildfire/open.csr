@@ -173,6 +173,8 @@ export function buildNavTree({
       // switch instead of a navigation.
       inApp: built && inApp.has(String(doc.id)),
       draftProse: !!doc.prose?.draft,
+      // The build's verdict on this document (#78): null until assembled.
+      gateOk: own && typeof own.ok === 'boolean' ? own.ok : null,
       detail:
         built && own?.sections
           ? `${own.sections.filter((section) => section.populated).length} of ${own.sections.length} sections`
@@ -306,10 +308,12 @@ function treeItem(groupId, item, kind) {
       ? `<span class="nav-flag" title="Not built yet">planned</span>`
       : item.status === 'draft'
         ? `<span class="nav-flag warn" title="Draft: held out of the report">draft</span>`
-        : item.draftProse
-          ? `<span class="nav-flag warn" title="Every prose block in this document is an ` +
-            `unapproved draft">draft prose</span>`
-          : '';
+        : item.gateOk === false
+          ? `<span class="nav-flag warn" title="A build gate failed on this document">gates fail</span>`
+          : item.draftProse
+            ? `<span class="nav-flag warn" title="Every prose block in this document is an ` +
+              `unapproved draft">draft prose</span>`
+            : '';
   const number = item.number ? `<span class="nav-num">${escapeHtml(item.number)}</span>` : '';
   const disabled = item.status === 'planned';
   // Three kinds of node, and the difference is where the thing IS.
@@ -651,7 +655,16 @@ export function renderTablesPane({ entries = [], selected = null, picker = true 
  *   the generated `outputs/values/values.json`
  * @param {Map<string, string[]>} options.usage value id -> text block ids
  */
-export function renderValuesPane({ store = null, usage = new Map(), gate = null } = {}) {
+export function renderValuesPane({
+  store = null,
+  usage = new Map(),
+  gate = null,
+  // The links both ways (#78): the datasets behind a value's display, and the
+  // documents that place the blocks citing it. Absent, the pane prints as before.
+  datasetsByDisplay = null,
+  documentsByBlock = null,
+  root = '../'
+} = {}) {
   if (!store?.values?.length) {
     return empty(
       'No values are declared yet. `library/values/values.yaml` names the numbers this report ' +
@@ -703,7 +716,11 @@ export function renderValuesPane({ store = null, usage = new Map(), gate = null 
             (value.source?.iteration
               ? `<br><span class="sub mono">${escapeHtml(value.source.ard_file || '')} · ` +
                 `${escapeHtml(String(value.source.ard_hash || '').replace(/^sha256:/, '').slice(0, 7))}</span>`
-              : '');
+              : '') +
+            valueLinks(value, { datasetsByDisplay, root });
+      const citedIn = documentsByBlock
+        ? [...new Map(cites.flatMap((id) => documentsByBlock.get(id) || []).map((doc) => [doc.id, doc])).values()]
+        : [];
       return (
         `<tr id="${escapeHtml(value.id)}" data-app-value="${escapeHtml(value.id)}">` +
         `<td class="mono">${escapeHtml(value.id)}</td>` +
@@ -720,6 +737,16 @@ export function renderValuesPane({ store = null, usage = new Map(), gate = null 
                 )
                 .join(' ')
             : `<span class="muted">—</span>`
+        }${
+          citedIn.length
+            ? `<br><span class="sub">in ${citedIn
+                .map((doc) =>
+                  doc.readerPath
+                    ? `<a href="${escapeHtml(root)}${escapeHtml(doc.readerPath)}">${escapeHtml(doc.title || doc.id)}</a>`
+                    : escapeHtml(doc.title || doc.id)
+                )
+                .join(', ')}</span>`
+            : ''
         }</td>` +
         `</tr>`
       );
@@ -741,6 +768,25 @@ export function renderValuesPane({ store = null, usage = new Map(), gate = null 
 // ---------------------------------------------------------------------------
 // Templates pane — the ICH E3 model, rendered for the first time
 // ---------------------------------------------------------------------------
+
+/** The arm a value's address names, and the datasets behind its display (#78). */
+function valueLinks(value, { datasetsByDisplay = null, root = '../' } = {}) {
+  const address = String(value.source?.address || '');
+  const group = address.match(/;group=([^;]+)/);
+  const parts = [];
+  if (group) {
+    parts.push(`arm <a href="${escapeHtml(root)}metadata/study.html">${escapeHtml(group[1])}</a>`);
+  }
+  const datasets = datasetsByDisplay?.get?.(value.source?.display) || [];
+  if (datasets.length) {
+    parts.push(
+      `data ${datasets
+        .map((id) => `<a class="mono" href="${escapeHtml(root)}data/${escapeHtml(id)}.html">${escapeHtml(id)}</a>`)
+        .join(', ')}`
+    );
+  }
+  return parts.length ? `<br><span class="sub">${parts.join(' · ')}</span>` : '';
+}
 
 function sectionFill(section, slotsBySection, postBySection) {
   const slot = slotsBySection.get(section.number);

@@ -28,6 +28,28 @@ describe('Assembled CSR document model', () => {
     }
   });
 
+  it('QC-LINK-002: the document records what it was built from — template, study, every placed display with its iteration and datasets, every block with its state and derived inputs, every value cited — and every block records the displays its bindings resolved against (#78)', () => {
+    expect(doc.inputs.template.id).toBe('ich-e3');
+    expect(doc.inputs.study).toMatchObject({ id: 'CDISCPILOT01', file: 'library/study.yaml' });
+    const placed = doc.displayIndex.filter((d) => d.variants.length).map((d) => d.slug).sort();
+    expect(doc.inputs.displays.map((d) => d.slug).sort()).toEqual(placed);
+    for (const display of doc.inputs.displays) {
+      if (display.source === 'outputs') expect(display.iteration).toMatch(/^v\d{3}$/);
+      expect(Array.isArray(display.datasets)).toBe(true);
+    }
+    expect(doc.inputs.datasets.length).toBeGreaterThan(0);
+    for (const dataset of doc.inputs.datasets) expect(dataset.readBy.length).toBeGreaterThan(0);
+    const blocks = doc.sections.flatMap((s) => s.blocks);
+    expect(doc.inputs.textBlocks.map((b) => b.id)).toEqual(blocks.map((b) => b.id));
+    for (const block of blocks) {
+      expect(Array.isArray(block.inputs.displays)).toBe(true);
+      for (const d of block.inputs.displays) expect(block.bindings.some((b) => b.display === d.slug)).toBe(true);
+    }
+    const s1101 = blocks.find((b) => b.id === 'TXT-E3-1101');
+    expect(s1101.inputs.displays.map((d) => d.slug).sort()).toEqual(['t-disposition', 't-populations']);
+    expect(doc.inputs.values.every((id) => doc.values.values.some((v) => v.id === id))).toBe(true);
+  });
+
   it('RPT-OUT-002: the section list is flat, in document order, and every child names a parent that is present (#1)', () => {
     const numbers = doc.sections.map((s) => s.number);
     expect(numbers.slice(0, 3)).toEqual(['1', '2', '3']);

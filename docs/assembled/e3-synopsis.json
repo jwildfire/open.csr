@@ -1,6 +1,6 @@
 {
   "schema": "opencsr/csr/v1",
-  "generated": "2026-09-02T21:03:08.667Z",
+  "generated": "2026-09-02T21:12:57.414Z",
   "study": {
     "id": "CDISCPILOT01",
     "title": "Safety and Efficacy of the Xanomeline Transdermal Therapeutic System (TTS) in Patients with Mild to Moderate Alzheimer's Disease",
@@ -19,6 +19,363 @@
     "primary_analysis_set": "Safety Analysis Set",
     "data_source": "CDISCPILOT01 ADaM — the CDISC pilot's own package (phuse-org/phuse-scripts, data/adam/cdiscpilot01), every display",
     "scope_note": "Safety-focused synopsis assembled from the same library as the full ICH E3 clinical study report for this study. Efficacy fields are intentionally unpopulated (design decision D12)."
+  },
+  "inputs": {
+    "template": {
+      "id": "e3-synopsis",
+      "title": "ICH E3 Annex I Study Synopsis",
+      "version": "1.0.0"
+    },
+    "study": {
+      "id": "CDISCPILOT01",
+      "file": "library/study.yaml",
+      "cutoff": "2014-07-01"
+    },
+    "displays": [
+      {
+        "slug": "t-disposition",
+        "number": "13.1",
+        "title": "Subject Disposition",
+        "variants": [
+          "in_text",
+          "post_text"
+        ],
+        "iteration": "v003",
+        "ardHash": "sha256:5a073a0a558678bc67b89573bc98619270f854d3af5d5cbdc18cd0ce8ed4f530",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254
+          }
+        ]
+      },
+      {
+        "slug": "t-exposure",
+        "number": "13.3",
+        "title": "Summary of Planned Exposure to Study Drug, as of End of Study",
+        "variants": [
+          "in_text",
+          "post_text"
+        ],
+        "iteration": "v004",
+        "ardHash": "sha256:de9e7ac7bedab71bc5e127e92efa72f80a1e39215132b55ff52f46e4402675d6",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254
+          }
+        ]
+      },
+      {
+        "slug": "t-ae-overview",
+        "number": "13.4",
+        "title": "Overview of Treatment-Emergent Adverse Events",
+        "variants": [
+          "in_text",
+          "post_text"
+        ],
+        "iteration": "v003",
+        "ardHash": "sha256:c428956bd34e0625304d2feeb54999dda3a3a9455412ad41606f19562a208cd7",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254
+          },
+          {
+            "dataset": "adae",
+            "hash": "sha256:4ffe4e4c90c8a531e95e4931b601c258ed0b83638d4b346e66635d79e78a7bf1",
+            "n_row": 1191
+          }
+        ]
+      },
+      {
+        "slug": "t-demographics",
+        "number": "13.2",
+        "title": "Summary of Demographic and Baseline Characteristics",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v007",
+        "ardHash": "sha256:87af02747ecd7e74df308ac7fc521b68e22f7fad3fb86607e5e93d9d28cb82a5",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:b022f78fdd0ade028f6c4e9e7cc5187284a5249f30c16646931a1856d5fff2f6",
+            "n_row": 254
+          }
+        ]
+      },
+      {
+        "slug": "t-ae-common",
+        "number": "13.5",
+        "title": "Treatment-Emergent Adverse Events by System Organ Class and Preferred Term",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v004",
+        "ardHash": "sha256:adf6d639a882e4b3bdfda9e157055eed71c84ac7402285b8763445df32705dc1",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254
+          },
+          {
+            "dataset": "adae",
+            "hash": "sha256:4ffe4e4c90c8a531e95e4931b601c258ed0b83638d4b346e66635d79e78a7bf1",
+            "n_row": 1191
+          }
+        ]
+      },
+      {
+        "slug": "l-ae-serious",
+        "number": "13.6",
+        "title": "Listing of Serious Adverse Events",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v003",
+        "ardHash": "sha256:cde82561c80104b90b6cd633c27d62bdfbfd1e835fa8b6b761af9cc1d9142276",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254
+          },
+          {
+            "dataset": "adae",
+            "hash": "sha256:4ffe4e4c90c8a531e95e4931b601c258ed0b83638d4b346e66635d79e78a7bf1",
+            "n_row": 1191
+          }
+        ]
+      }
+    ],
+    "datasets": [
+      {
+        "dataset": "adsl",
+        "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+        "n_row": 254,
+        "readBy": [
+          "t-disposition",
+          "t-exposure",
+          "t-ae-overview",
+          "t-demographics",
+          "t-ae-common",
+          "l-ae-serious"
+        ]
+      },
+      {
+        "dataset": "adae",
+        "hash": "sha256:4ffe4e4c90c8a531e95e4931b601c258ed0b83638d4b346e66635d79e78a7bf1",
+        "n_row": 1191,
+        "readBy": [
+          "t-ae-overview",
+          "t-ae-common",
+          "l-ae-serious"
+        ]
+      }
+    ],
+    "textBlocks": [
+      {
+        "id": "TXT-SYN-0101",
+        "section": "1.1",
+        "tier": "boilerplate",
+        "state": "draft",
+        "included": true,
+        "displays": [],
+        "values": []
+      },
+      {
+        "id": "TXT-SYN-0102",
+        "section": "1.2",
+        "tier": "boilerplate",
+        "state": "draft",
+        "included": true,
+        "displays": [],
+        "values": []
+      },
+      {
+        "id": "TXT-SYN-0103",
+        "section": "1.3",
+        "tier": "boilerplate",
+        "state": "draft",
+        "included": true,
+        "displays": [],
+        "values": []
+      },
+      {
+        "id": "TXT-SYN-0104",
+        "section": "1.4",
+        "tier": "boilerplate",
+        "state": "draft",
+        "included": true,
+        "displays": [],
+        "values": []
+      },
+      {
+        "id": "TXT-SYN-0105",
+        "section": "1.5",
+        "tier": "boilerplate",
+        "state": "draft",
+        "included": true,
+        "displays": [],
+        "values": []
+      },
+      {
+        "id": "TXT-SYN-0106",
+        "section": "1.6",
+        "tier": "boilerplate",
+        "state": "draft",
+        "included": true,
+        "displays": [],
+        "values": []
+      },
+      {
+        "id": "TXT-SYN-0200",
+        "section": "2",
+        "tier": "boilerplate",
+        "state": "draft",
+        "included": true,
+        "displays": [],
+        "values": []
+      },
+      {
+        "id": "TXT-SYN-0300",
+        "section": "3",
+        "tier": "boilerplate",
+        "state": "draft",
+        "included": true,
+        "displays": [],
+        "values": []
+      },
+      {
+        "id": "TXT-SYN-0400",
+        "section": "4",
+        "tier": "parameterized",
+        "state": "draft",
+        "included": true,
+        "displays": [],
+        "values": [
+          "completed-n",
+          "completed-pct",
+          "discontinued-n",
+          "randomised-n",
+          "treated-n"
+        ]
+      },
+      {
+        "id": "TXT-SYN-0500",
+        "section": "5",
+        "tier": "boilerplate",
+        "state": "draft",
+        "included": true,
+        "displays": [],
+        "values": []
+      },
+      {
+        "id": "TXT-SYN-0600",
+        "section": "6",
+        "tier": "boilerplate",
+        "state": "draft",
+        "included": true,
+        "displays": [],
+        "values": []
+      },
+      {
+        "id": "TXT-SYN-0700",
+        "section": "7",
+        "tier": "parameterized",
+        "state": "draft",
+        "included": true,
+        "displays": [
+          "t-exposure"
+        ],
+        "values": []
+      },
+      {
+        "id": "TXT-SYN-0800",
+        "section": "8",
+        "tier": "boilerplate",
+        "state": "draft",
+        "included": true,
+        "displays": [],
+        "values": []
+      },
+      {
+        "id": "TXT-SYN-0902",
+        "section": "9.2",
+        "tier": "boilerplate",
+        "state": "draft",
+        "included": true,
+        "displays": [],
+        "values": []
+      },
+      {
+        "id": "TXT-SYN-1000",
+        "section": "10",
+        "tier": "boilerplate",
+        "state": "draft",
+        "included": true,
+        "displays": [],
+        "values": []
+      },
+      {
+        "id": "TXT-SYN-1102",
+        "section": "11.2",
+        "tier": "parameterized",
+        "state": "draft",
+        "included": true,
+        "displays": [],
+        "values": [
+          "ae-any-n-placebo",
+          "ae-any-n-total",
+          "ae-any-n-xanomeline",
+          "ae-any-pct-high",
+          "ae-excess-high-vs-placebo",
+          "safety-n-high"
+        ]
+      },
+      {
+        "id": "TXT-SYN-1103",
+        "section": "11.3",
+        "tier": "boilerplate",
+        "state": "draft",
+        "included": true,
+        "displays": [],
+        "values": []
+      },
+      {
+        "id": "TXT-SYN-1200",
+        "section": "12",
+        "tier": "boilerplate",
+        "state": "draft",
+        "included": true,
+        "displays": [],
+        "values": []
+      }
+    ],
+    "values": [
+      "ae-any-n-placebo",
+      "ae-any-n-total",
+      "ae-any-n-xanomeline",
+      "ae-any-pct-high",
+      "ae-excess-high-vs-placebo",
+      "completed-n",
+      "completed-pct",
+      "discontinued-n",
+      "randomised-n",
+      "safety-n-high",
+      "treated-n"
+    ]
   },
   "template": {
     "id": "e3-synopsis",
@@ -84,6 +441,10 @@
           "html": "<p>This synopsis is an open.csr demonstration report. It carries no sponsor: the\nunderlying data are the CDISC pilot study ADaM datasets published in the\n<code>pharmaverseadam</code> package under the Apache License, and the report around them was\nassembled by the open.csr framework to exercise its own machinery end to end.</p>\n<p>The finished product studied is the Xanomeline Transdermal Therapeutic System\n(TTS). The active ingredient is xanomeline.</p>\n",
           "bindings": [],
           "crossReferences": [],
+          "inputs": {
+            "displays": [],
+            "values": []
+          },
           "numericFidelity": {
             "ok": true,
             "violations": [],
@@ -135,6 +496,10 @@
           "html": "<p>Safety and Efficacy of the Xanomeline Transdermal Therapeutic System (TTS) in\nPatients with Mild to Moderate Alzheimer&#39;s Disease.</p>\n<p>The protocol identifier is <code>CDISCPILOT01</code>.</p>\n",
           "bindings": [],
           "crossReferences": [],
+          "inputs": {
+            "displays": [],
+            "values": []
+          },
           "numericFidelity": {
             "ok": true,
             "violations": [],
@@ -186,6 +551,10 @@
           "html": "<p>The study was conducted at multiple centres. Individual investigator and centre\nidentities are not carried in the ADaM extract this demonstration is built from,\nso no coordinating investigator is named here.</p>\n<p>In a real report this field cross-references the list of investigators in the\nappendices, and the by-site enrolment summary that accompanies it.</p>\n",
           "bindings": [],
           "crossReferences": [],
+          "inputs": {
+            "displays": [],
+            "values": []
+          },
           "numericFidelity": {
             "ok": true,
             "violations": [],
@@ -237,6 +606,10 @@
           "html": "<p>None. The CDISC pilot study is a teaching dataset distributed for standards work\nand is not a published clinical trial.</p>\n",
           "bindings": [],
           "crossReferences": [],
+          "inputs": {
+            "displays": [],
+            "values": []
+          },
           "numericFidelity": {
             "ok": true,
             "violations": [],
@@ -288,6 +661,10 @@
           "html": "<p>Dates of first enrolment and last completed visit are not carried in the ADaM\nextract this demonstration is built from and are therefore not reported.</p>\n<p>All analyses in this synopsis and in the accompanying clinical study report were\nproduced against a single data cutoff of 2014-07-01, and every number in both\ndocuments resolves to the same committed analysis results datasets taken at that\ncutoff.</p>\n",
           "bindings": [],
           "crossReferences": [],
+          "inputs": {
+            "displays": [],
+            "values": []
+          },
           "numericFidelity": {
             "ok": true,
             "violations": [],
@@ -341,6 +718,10 @@
           "html": "<p>Phase 2.</p>\n",
           "bindings": [],
           "crossReferences": [],
+          "inputs": {
+            "displays": [],
+            "values": []
+          },
           "numericFidelity": {
             "ok": true,
             "violations": [],
@@ -394,6 +775,10 @@
           "html": "<p>The stated objectives of the CDISC pilot study were to evaluate the efficacy and\nsafety of transdermal xanomeline in patients with mild to moderate Alzheimer&#39;s\ndisease.</p>\n<p>The objective of <em>this</em> report is narrower and should not be mistaken for the\nstudy&#39;s: it is to demonstrate that a clinical study report and its synopsis can be\nassembled mechanically from analysis results datasets, a library of text blocks\nand a library of named values, such that every number in the prose is traceable to\nthe row of the analysis dataset it came from. Efficacy is therefore out of scope\nhere (see the efficacy sections, which are deliberately left unpopulated), and the\ndemonstration is confined to safety.</p>\n",
           "bindings": [],
           "crossReferences": [],
+          "inputs": {
+            "displays": [],
+            "values": []
+          },
           "numericFidelity": {
             "ok": true,
             "violations": [],
@@ -445,6 +830,10 @@
           "html": "<p>Randomised, double-blind, placebo-controlled, parallel-group.</p>\n<p>Patients were assigned to one of three arms: placebo, xanomeline low dose, or\nxanomeline high dose.</p>\n",
           "bindings": [],
           "crossReferences": [],
+          "inputs": {
+            "displays": [],
+            "values": []
+          },
           "numericFidelity": {
             "ok": true,
             "violations": [],
@@ -504,6 +893,16 @@
               "text": "Table 13.1"
             }
           ],
+          "inputs": {
+            "displays": [],
+            "values": [
+              "completed-n",
+              "completed-pct",
+              "discontinued-n",
+              "randomised-n",
+              "treated-n"
+            ]
+          },
           "numericFidelity": {
             "ok": true,
             "violations": [],
@@ -577,6 +976,10 @@
           "html": "<p>Patients with mild to moderate Alzheimer&#39;s disease.</p>\n<p>The full inclusion and exclusion criteria are a property of the protocol and are\nnot derivable from the analysis datasets; in a real report this field is authored\nprose reviewed against the protocol, and open.csr classifies it as a boilerplate\nblock for exactly that reason — it carries no bindings, so no gate can vouch for\nit, and it must be approved by a person.</p>\n",
           "bindings": [],
           "crossReferences": [],
+          "inputs": {
+            "displays": [],
+            "values": []
+          },
           "numericFidelity": {
             "ok": true,
             "violations": [],
@@ -628,6 +1031,10 @@
           "html": "<p>Xanomeline, administered transdermally as a Transdermal Therapeutic System (TTS)\npatch, at a low dose and a high dose.</p>\n<p>Dose strengths and batch numbers are properties of the protocol and the\ninvestigational product record and are not carried in the analysis datasets, so\nthey are not reported here.</p>\n",
           "bindings": [],
           "crossReferences": [],
+          "inputs": {
+            "displays": [],
+            "values": []
+          },
           "numericFidelity": {
             "ok": true,
             "violations": [],
@@ -778,6 +1185,18 @@
               "text": "Table 13.3"
             }
           ],
+          "inputs": {
+            "displays": [
+              {
+                "slug": "t-exposure",
+                "iteration": "v004",
+                "ardHash": "sha256:de9e7ac7bedab71bc5e127e92efa72f80a1e39215132b55ff52f46e4402675d6",
+                "source": "outputs",
+                "bindings": 3
+              }
+            ],
+            "values": []
+          },
           "numericFidelity": {
             "ok": true,
             "violations": [],
@@ -853,6 +1272,10 @@
           "html": "<p>Matching placebo patch. Batch numbers are not carried in the analysis datasets.</p>\n",
           "bindings": [],
           "crossReferences": [],
+          "inputs": {
+            "displays": [],
+            "values": []
+          },
           "numericFidelity": {
             "ok": true,
             "violations": [],
@@ -934,6 +1357,10 @@
           "html": "<p>Safety was evaluated from treatment-emergent adverse events, coded to system organ\nclass and preferred term, and summarised by treatment group; from serious adverse\nevents, deaths and adverse events leading to withdrawal; and from the extent of\nexposure to study drug.</p>\n<p>Laboratory values, vital signs and concomitant medications are collected in the\nsource study and are analysed in the reference clinical study report for this\ndataset, but no analysis results datasets for them exist in this framework yet, so\nthey are not evaluated here.</p>\n",
           "bindings": [],
           "crossReferences": [],
+          "inputs": {
+            "displays": [],
+            "values": []
+          },
           "numericFidelity": {
             "ok": true,
             "violations": [],
@@ -985,6 +1412,10 @@
           "html": "<p>Descriptive statistics only. Continuous measures are summarised as number of\npatients, mean, standard deviation, median, quartiles, minimum and maximum;\ncategorical measures as counts and percentages of the analysis population. No\nhypothesis test is performed and no confidence interval is presented, so nothing\nin this synopsis should be read as a statistical comparison between groups.</p>\n<p>Each summary is produced once, as an analysis results dataset, and every rendering\nof it — the in-text table, the post-text table, and each number quoted in this\nprose — is read back from that one dataset. The generated provenance appendix\nrecords, for each display, which dataset the numbers came from.</p>\n",
           "bindings": [],
           "crossReferences": [],
+          "inputs": {
+            "displays": [],
+            "values": []
+          },
           "numericFidelity": {
             "ok": true,
             "violations": [],
@@ -1080,6 +1511,17 @@
               "text": "Section 13"
             }
           ],
+          "inputs": {
+            "displays": [],
+            "values": [
+              "ae-any-n-placebo",
+              "ae-any-n-total",
+              "ae-any-n-xanomeline",
+              "ae-any-pct-high",
+              "ae-excess-high-vs-placebo",
+              "safety-n-high"
+            ]
+          },
           "numericFidelity": {
             "ok": true,
             "violations": [],
@@ -1153,6 +1595,10 @@
           "html": "<p>No clinical conclusion is drawn. This is a demonstration report built on a\nteaching dataset, and the only claim it makes is about its own construction: that\nthe numbers in its prose, the numbers in its tables and the numbers in the full\nclinical study report assembled from the same library are the same numbers, and\nthat this is enforced by the build rather than asserted by a reviewer.</p>\n",
           "bindings": [],
           "crossReferences": [],
+          "inputs": {
+            "displays": [],
+            "values": []
+          },
           "numericFidelity": {
             "ok": true,
             "violations": [],
@@ -1204,6 +1650,10 @@
           "html": "<p>This synopsis carries no fixed report date. It is regenerated from the library on\nevery build, and the build stamp recorded in the provenance appendix is its date.</p>\n",
           "bindings": [],
           "crossReferences": [],
+          "inputs": {
+            "displays": [],
+            "values": []
+          },
           "numericFidelity": {
             "ok": true,
             "violations": [],

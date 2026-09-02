@@ -75,6 +75,8 @@ import {
 import { loadAssembly, loadSections } from './template-lib.mjs';
 import { buildDataIndex, datasetStatus, loadDataPackage, renderDataPane, renderDatasetPage, renderLanesPage } from './data-lib.mjs';
 import { METADATA_PAGES, loadMetadata, metadataNavItems, renderMetadataPage, renderMetadataPane } from './metadata-lib.mjs';
+import { loadStudyModel } from './study-lib.mjs';
+import yaml from 'js-yaml';
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const buildDir = path.join(rootDir, 'site', '_build');
@@ -150,6 +152,66 @@ const ards = Object.fromEntries(
 const dataPackage = loadDataPackage(rootDir, config);
 warnings.push(...dataPackage.warnings);
 const dataIndex = buildDataIndex({ datasets: dataPackage.datasets, displays });
+// The links both ways (#78): what each display was built against (the study
+// model's analysis set, its iterations, its environment) and what was built
+// from it (the text blocks that bind it, the values sourced from it); the
+// datasets behind each display; the documents that place each text block.
+let studyModel = null;
+try {
+  studyModel = loadStudyModel(rootDir);
+} catch (error) {
+  warnings.push(`library/study.yaml: ${error.message}`);
+}
+const boundBy = new Map();
+for (const block of textBlocks) {
+  if (block.exists === false) continue;
+  for (const address of block.bindings || []) {
+    const slug = String(address).split(':')[0];
+    if (!slug) continue;
+    if (!boundBy.has(slug)) boundBy.set(slug, []);
+    if (!boundBy.get(slug).includes(block.id)) boundBy.get(slug).push(block.id);
+  }
+}
+const valuesByDisplay = new Map();
+for (const value of valueStore?.values || []) {
+  const slug = value.source?.display;
+  if (!slug) continue;
+  if (!valuesByDisplay.has(slug)) valuesByDisplay.set(slug, []);
+  valuesByDisplay.get(slug).push(value.id);
+}
+const datasetsByDisplay = new Map(
+  displays.map((display) => [
+    display.slug,
+    (display.outputs?.current?.ard?.provenance?.data || []).map((entry) => entry.dataset).filter(Boolean)
+  ])
+);
+const documentsByBlock = new Map();
+for (const doc of documents) {
+  for (const block of doc.json?.textBlocks || []) {
+    if (!documentsByBlock.has(block.id)) documentsByBlock.set(block.id, []);
+    documentsByBlock.get(block.id).push({ id: doc.id, title: doc.title, readerPath: doc.readerPath || null });
+  }
+}
+const displayLinks = (display) => {
+  let spec = null;
+  try {
+    spec = display.outputs?.specs?.analysis?.text ? yaml.load(display.outputs.specs.analysis.text) : null;
+  } catch {
+    spec = null;
+  }
+  const setName = spec?.analysis_set ?? null;
+  const set = setName && studyModel?.analysis_sets ? studyModel.analysis_sets[setName] : null;
+  return {
+    studyId: studyModel?.id ?? null,
+    analysisSet: setName ? { name: setName, label: set?.label ?? null, flag: set?.flag ?? null } : null,
+    group: Array.isArray(spec?.group) ? spec.group.join(', ') : spec?.group ?? null,
+    iterations: display.outputs?.versions?.length ?? 0,
+    environment: display.outputs?.current?.ard?.provenance?.environment ?? null,
+    textBlocks: boundBy.get(display.slug) || [],
+    values: valuesByDisplay.get(display.slug) || []
+  };
+};
+
 const navDatasets = [
   ...dataPackage.datasets.map((dataset) => ({
     id: dataset.id,
@@ -233,7 +295,8 @@ const displayFragments = displays.map((display) => {
       evidence,
       requirements,
       usedIn: usage.get(display.slug),
-      datasets: dataIndex
+      datasets: dataIndex,
+      links: displayLinks(display)
     })
   };
 });
@@ -455,7 +518,10 @@ const templatesContent = renderTemplatesPane({
 const valuesContent = renderValuesPane({
   store: valueStore,
   usage: valueUsageIndex,
-  gate: valueGate
+  gate: valueGate,
+  datasetsByDisplay,
+  documentsByBlock,
+  root: '../'
 });
 
 // The Data pane and its standalone pages (#76): one page per dataset, one for
