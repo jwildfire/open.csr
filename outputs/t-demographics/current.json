@@ -1,9 +1,9 @@
 {
   "display": "t-demographics",
-  "version": "v005",
-  "updated": "2026-09-02T15:44:12Z",
-  "path": "outputs/t-demographics/v005",
-  "ard": "outputs/t-demographics/v005/ard.json",
-  "table": "outputs/t-demographics/v005/table.html",
+  "version": "v007",
+  "updated": "2026-09-02T16:11:27Z",
+  "path": "outputs/t-demographics/v007",
+  "ard": "outputs/t-demographics/v007/ard.json",
+  "table": "outputs/t-demographics/v007/table.html",
   "variants": ["post_text", "in_text"]
 }

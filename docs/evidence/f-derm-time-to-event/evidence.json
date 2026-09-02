@@ -1,6 +1,6 @@
 {
   "module": "f-derm-time-to-event",
-  "generated": "2026-09-02T16:07:18.703Z",
+  "generated": "2026-09-02T16:20:30.837Z",
   "records": [
     {
       "requirementIds": [
@@ -108,6 +108,42 @@
       "file": "test-displays.R",
       "issueRefs": [
         1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-INTXT-001"
+      ],
+      "title": "DSP-INTXT-001: the in-text demographics redraw is the report's Table 11-1 — mean and range, percentages, race as White/Caucasian or other — from the same ARD as the full table (#63)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        63
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-INTXT-002"
+      ],
+      "title": "DSP-INTXT-002: the in-text incidence redraw is the report's Table 12-1 — terms at 5% or more in any arm, flat, in title case, an asterisk where the placebo comparison has p < 0.15 (#63)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        63
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-INTXT-003"
+      ],
+      "title": "DSP-INTXT-003: the in-text weight redraw is the report's Table 12-4 — n and mean per arm for baseline and the changes at Week 24 and end of treatment — from the weight table's own ARD (#63)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        63
       ]
     },
     {

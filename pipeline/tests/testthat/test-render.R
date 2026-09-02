@@ -132,3 +132,22 @@ test_that("TFL-RND-009: a hierarchical row plan can order its levels by name, by
   long <- render_display(ard, spec)
   expect_identical(cell(long, "CARDIAC DISORDER", "Placebo"), "0 (0.0%) [0]")
 })
+
+test_that("TFL-RND-010: a column may name its group, its analysis and its pattern, and a variant may redraw the display with its own rows, columns and format over the same ARD (#63)", {
+  site <- fixture_display("t-subjects-by-site")
+  expect_length(site$columns$levels, 12)
+  expect_identical(site$columns$groups[1:3], rep("Placebo", 3))
+  expect_identical(site$columns$analyses[1:3], c("itt", "eff", "com"))
+  wt <- fixture_display("t-weight", "in_text")
+  expect_identical(wt$columns$patterns[1:2], c("{N}", "{mean}"))
+  # the redraw and the full rendering share one ARD and disagree about nothing
+  full <- fixture_display("t-weight")
+  bl_full <- full$table$col1[which(plain(full$table$label) == "Mean (SD)")[1]]
+  expect_identical(sub(" .*$", "", bl_full), wt$table$col2[which(plain(wt$table$label) == "Baseline")])
+  # a variant without a redraw still renders the display's own rows
+  spec <- read_display_spec("t-weight")
+  spec$variants$in_text$rows <- NULL
+  spec$variants$in_text$columns <- NULL
+  plain_variant <- render_display(fixture_ard("t-weight"), spec, "in_text")
+  expect_identical(plain_variant$columns$levels, full$columns$levels)
+})

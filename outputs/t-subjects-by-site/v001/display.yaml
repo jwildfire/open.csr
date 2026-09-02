@@ -1,0 +1,36 @@
+id: t-subjects-by-site
+title: "Summary of Number of Subjects By Site"
+study: CDISCPILOT01
+population_label: "All Subjects"
+cutoff: "2014-07-01"
+source: "Source: adsl (CDISCPILOT01 ADaM package, phuse-org/phuse-scripts). Data cut-off: 2014-07-01."
+footnotes:
+  - "ITT is the intent-to-treat population (ITTFL), Eff the efficacy population (EFFFL) and Com the subjects who completed Week 24 (COMP24FL), as the study's ADaM carries them and the reference report (Table 14-1.03) prints them."
+  - "Each row is one site, labelled with its pooled site id and its own id. Seven sites met the pre-specified criterion for small sample sizes and are pooled under id 900 for analyses that include site as a covariate; every site is listed on its own line, as in the reference."
+  - "Treatment groups are planned treatment, TRT01P, which agrees with actual treatment for every subject in this study. The Total column pools the three groups."
+columns:
+  order:
+    - { label: "Placebo ITT", group: Placebo, analysis: itt }
+    - { label: "Placebo Eff", group: Placebo, analysis: eff }
+    - { label: "Placebo Com", group: Placebo, analysis: com }
+    - { label: "Low Dose ITT", group: "Xanomeline Low Dose", analysis: itt }
+    - { label: "Low Dose Eff", group: "Xanomeline Low Dose", analysis: eff }
+    - { label: "Low Dose Com", group: "Xanomeline Low Dose", analysis: com }
+    - { label: "High Dose ITT", group: "Xanomeline High Dose", analysis: itt }
+    - { label: "High Dose Eff", group: "Xanomeline High Dose", analysis: eff }
+    - { label: "High Dose Com", group: "Xanomeline High Dose", analysis: com }
+    - { label: "Total ITT", group: Total, analysis: itt }
+    - { label: "Total Eff", group: Total, analysis: eff }
+    - { label: "Total Com", group: Total, analysis: com }
+format:
+  count: "{n}"
+  zero_count: "0"
+rows:
+  - { analysis: itt, variable: SITEID, levels: all, pattern: count, indent: 0,
+      level_order: ["701", "703", "704", "705", "708", "709", "710", "713", "716", "718", "702", "706", "707", "711", "714", "715", "717"],
+      level_labels: { "701": "701 / 701", "703": "703 / 703", "704": "704 / 704", "705": "705 / 705", "708": "708 / 708", "709": "709 / 709", "710": "710 / 710", "713": "713 / 713", "716": "716 / 716", "718": "718 / 718", "702": "900 / 702", "706": "900 / 706", "707": "900 / 707", "711": "900 / 711", "714": "900 / 714", "715": "900 / 715", "717": "900 / 717" } }
+  - { analysis: itt, variable: SITEID, pattern: "{N}", label: "TOTAL", indent: 0 }
+variants:
+  post_text: {}
+  in_text:
+    title: "Subjects by Site (Summary)"

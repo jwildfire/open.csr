@@ -84,8 +84,14 @@ slots:
     text: [TXT-E3-1222]
     displays: [t-ae-common]
 
+  - section: "12.2.3"
+    displays: [t-ae-incidence]
+
   - section: "12.2.4"
     text: [TXT-E3-1224]
+
+  - section: "12.5"
+    displays: [t-weight]
 
   - section: "12.3.1"
     text: [TXT-E3-1231]
@@ -113,7 +119,7 @@ post_text:
   # Whoever owns Section 14 as a whole should make that call once, not a worker
   # landing two tables.
   - section: "14.1"
-    displays: [t-disposition, t-demographics, t-populations, t-end-of-study]
+    displays: [t-disposition, t-demographics, t-populations, t-end-of-study, t-subjects-by-site, f-disposition]
 
   # Efficacy. Ordered as the CDISCPILOT01 reference report orders its own
   # Section 14.3 efficacy displays — the two Week-24 primaries first, then the

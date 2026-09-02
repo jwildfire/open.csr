@@ -1,0 +1,57 @@
+{
+  "display": "t-weight",
+  "version": "v003",
+  "created": "2026-09-02T16:10:30Z",
+  "actor": "@obotclaw",
+  "change_request": "In-text variant redrawn as the reference report prints it (Tables 11-1, 12-1, 12-4; D0032, #63).",
+  "regulatory_id": "VST03",
+  "git_commit": null,
+  "spec_hash": "sha256:14be68b3bc1d72d8c3e7ff6c067edb41004ad68be9286479c3c2e9a9891dfff3",
+  "display_hash": "sha256:d8f04f87b6671643d0646093e845d6c10c7fa27bd8c32f73aab3cb66f60b5446",
+  "ard_hash": "sha256:1b3da963f1eb27e1d8afc2c54a1c81dbb3832364dbb901f4bcd2a690ceadc519",
+  "ard_rows": 129,
+  "ard_warnings": 0,
+  "ard_errors": 0,
+  "datasets": ["adsl", "advs"],
+  "data": [
+    {
+      "dataset": "adsl",
+      "hash": "sha256:b022f78fdd0ade028f6c4e9e7cc5187284a5249f30c16646931a1856d5fff2f6",
+      "n_row": 254,
+      "n_col": 55,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    },
+    {
+      "dataset": "advs",
+      "hash": "sha256:ccc9f70e768c4c6529f31714c501e606c2edb69e8096da6cf4157785d428fcb0",
+      "n_row": 32139,
+      "n_col": 40,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    }
+  ],
+  "environment": {
+    "r": "4.3.3",
+    "os": "Darwin 23.6.0",
+    "packages": {
+      "cards": "0.6.1",
+      "cardx": "0.2.5",
+      "gtsummary": "2.3.0",
+      "gt": "1.0.0",
+      "dplyr": "1.1.4",
+      "pharmaverseadam": "1.1.0",
+      "jsonlite": "2.0.0",
+      "yaml": "2.3.10",
+      "digest": "0.6.37"
+    }
+  },
+  "variants": {
+    "post_text": {
+      "file": "table.html",
+      "rtf": "table.rtf",
+      "rtf_hash": "sha256:550876b7b2951dc18e9d04d11cfeaa0a02dccd46b49dcb0466253794cb183d4a",
+      "n_rows": 27
+    }
+  }
+}
