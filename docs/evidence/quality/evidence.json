@@ -1,6 +1,6 @@
 {
   "module": "quality",
-  "generated": "2026-09-02T21:05:09.974Z",
+  "generated": "2026-09-02T21:15:10.597Z",
   "records": [
     {
       "requirementIds": [
@@ -60,6 +60,18 @@
       "file": "tests/unit/site-render.test.js",
       "issueRefs": [
         42
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-LINK-001"
+      ],
+      "title": "a display links what it was built against and what was built from it QC-LINK-001: given the links, the header names the analysis set from the study model, the specification history, the environment, the blocks that bind it and the values sourced from it, each a link; without them the header prints as before (#78)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-links.test.js",
+      "issueRefs": [
+        78
       ]
     },
     {
@@ -268,6 +280,30 @@
     },
     {
       "requirementIds": [
+        "QC-LINK-002"
+      ],
+      "title": "a document links what it was built from QC-LINK-002: the inputs panel links the document model, the study model, every placed display with its iteration, every block with its state, every value cited and every dataset reached (#78)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-links.test.js",
+      "issueRefs": [
+        78
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-LINK-002"
+      ],
+      "title": "a document links what it was built from QC-LINK-002: the Reader carries the panel above the text and renders the provenance appendix as links to the display, each dataset and the environment (#78)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-links.test.js",
+      "issueRefs": [
+        78
+      ]
+    },
+    {
+      "requirementIds": [
         "QC-SITE-012"
       ],
       "title": "a document's contents follow the selection and nothing else QC-SITE-012: no rule survives that could hide the open document's contents (#40)",
@@ -408,6 +444,30 @@
       "file": "tests/unit/site-demo.test.js",
       "issueRefs": [
         36
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-LINK-003"
+      ],
+      "title": "a text block lists its inputs, derived from its bindings QC-LINK-003: a value cited is listed, and a declared display the block binds nothing from is named as drift rather than hidden (#78)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-links.test.js",
+      "issueRefs": [
+        78
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-LINK-003"
+      ],
+      "title": "a text block lists its inputs, derived from its bindings QC-LINK-003: the card lists each display the block binds with the iteration and ARD hash resolved against, the values it cites, its section and its approval, each a link (#78)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-links.test.js",
+      "issueRefs": [
+        78
       ]
     },
     {
@@ -2748,6 +2808,30 @@
       "file": "tests/unit/requirements-matrix.test.js",
       "issueRefs": [
         1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-LINK-004"
+      ],
+      "title": "values and the explorer QC-LINK-004: the values pane links the arm a source address names to the study model, the data behind its display, and the documents that place the blocks citing it (#78)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-links.test.js",
+      "issueRefs": [
+        78
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-LINK-005"
+      ],
+      "title": "values and the explorer QC-LINK-005: a document whose build failed a gate is flagged in the explorer, and one that passed is not (#78)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-links.test.js",
+      "issueRefs": [
+        78
       ]
     },
     {
