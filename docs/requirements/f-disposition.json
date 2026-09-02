@@ -1,5 +1,5 @@
 {
-  "component": "t-vitals-change",
+  "component": "f-disposition",
   "matrix": "displays.md",
   "requirements": {
     "DSP-DEMO-001": "The age summary (n, mean, SD, median, min, max) by treatment arm equals the value computed directly from the vendored pilot ADSL on the intent-to-treat population; the display carries the report's Placebo, low dose, high dose, Total and p-value columns.",

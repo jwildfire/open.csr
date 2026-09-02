@@ -687,6 +687,8 @@ test_that("DSP-FLOW-001: the disposition figure counts screened, screen-failure,
   # the screened count is DM's, not ADSL's: this is the one display reading the screened population
   prov <- fixture_ard("f-disposition")$provenance$data
   expect_setequal(vapply(prov, function(x) x$dataset, character(1)), c("adsl", "dm"))
+})
+
 # The subjects-by-site table (Table 14-1.03) and the report's in-text redraws
 # of Section 14 tables (Tables 11-1, 12-1, 12-4) — Issue E of D0032 (#63).
 
