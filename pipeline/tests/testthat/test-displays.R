@@ -1,39 +1,98 @@
-test_that("DSP-DEMO-001: the age summary matches ADSL computed directly (#1)", {
+# The demographics display is the reference report's Table 14-2.01 (#61):
+# intent-to-treat, a Total and a p-value column. Expected values are computed
+# from the vendored pilot ADSL read with {haven}, never through the pipeline.
+
+demo_ref <- function() {
+  d <- ref_phuse_adsl()
+  d <- d[blank_na(d$ITTFL) == "Y", , drop = FALSE]
+  d$RACEOR <- ifelse(blank_na(d$ETHNIC) == "HISPANIC OR LATINO", "Hispanic",
+    ifelse(d$RACE == "WHITE", "Caucasian", ifelse(d$RACE == "BLACK OR AFRICAN AMERICAN", "African Descent", "Other")))
+  d
+}
+demo_row <- function(disp, block, stat) {
+  # the k-th row labelled `stat` after the section heading `block`
+  lab <- plain(disp$table$label)
+  start <- which(lab == block)
+  testthat::expect_length(start, 1)
+  idx <- which(lab == stat & seq_along(lab) > start)[1]
+  testthat::expect_false(is.na(idx))
+  idx
+}
+
+test_that("DSP-DEMO-001: the age summary matches the pilot's ADSL computed directly, and the display is the intent-to-treat population with a Total column (#61)", {
   disp <- fixture_display("t-demographics")
-  ref <- ref_adsl()
-  age <- ref$AGE[ref$TRT01A == "Placebo"]
-  idx <- which(plain(disp$table$label) == "Mean (SD)")[1]
-  expect_identical(
-    disp$table$col1[idx],
-    paste0(format_stat(mean(age), "mean"), " (", format_stat(stats::sd(age), "sd"), ")")
-  )
-  expect_identical(disp$table$col1[idx], "75.2 (8.59)")
-  n_idx <- which(plain(disp$table$label) == "n")[1]
-  expect_identical(disp$table$col1[n_idx], as.character(length(age)))
-  rng <- which(plain(disp$table$label) == "Min, Max")[1]
-  expect_identical(disp$table$col1[rng], paste0(min(age), ", ", max(age)))
+  ref <- demo_ref()
+  expect_identical(disp$columns$levels, c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose", "Total", "p-value"))
+  for (arm in c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose")) {
+    j <- which(disp$columns$levels == arm)
+    age <- ref$AGE[ref$TRT01P == arm]
+    expect_identical(disp$table[[paste0("col", j)]][demo_row(disp, "Age (y)", "n")], as.character(length(age)))
+    expect_identical(disp$table[[paste0("col", j)]][demo_row(disp, "Age (y)", "Mean")], format_stat(mean(age), "mean", list(mean = 1)))
+    expect_identical(disp$table[[paste0("col", j)]][demo_row(disp, "Age (y)", "SD")], format_stat(stats::sd(age), "sd", list(sd = 2)))
+    expect_identical(disp$table[[paste0("col", j)]][demo_row(disp, "Age (y)", "Median")], format_stat(stats::median(age), "median", list(median = 1)))
+    expect_identical(disp$table[[paste0("col", j)]][demo_row(disp, "Age (y)", "Max")], format_stat(max(age), "max", list(max = 1)))
+  }
+  expect_identical(disp$table$col1[demo_row(disp, "Age (y)", "Mean")], "75.2")
+  expect_identical(disp$table$col4[demo_row(disp, "Age (y)", "n")], "254")
 })
 
-test_that("DSP-DEMO-002: sex, race and age-group counts match ADSL (#1)", {
+test_that("DSP-DEMO-002: sex, Race (Origin) and age-group counts and percentages match ADSL, printed the way the report prints them (#61)", {
   disp <- fixture_display("t-demographics")
-  ref <- ref_adsl()
-  for (arm in c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose")) {
-    sub <- ref[ref$TRT01A == arm, ]
-    n_f <- sum(sub$SEX == "F")
-    expect_identical(
-      cell(disp, "F", arm),
-      paste0(n_f, " (", format_stat(n_f / nrow(sub), "p"), "%)")
-    )
-    n_white <- sum(sub$RACE == "WHITE")
-    expect_identical(
-      cell(disp, "WHITE", arm),
-      paste0(n_white, " (", format_stat(n_white / nrow(sub), "p"), "%)")
-    )
+  ref <- demo_ref()
+  pct <- function(n, N) {
+    p <- 100 * n / N
+    shown <- if (p > 0 && round(p) == 0) "<1" else as.character(as.integer(round_half_up(p, 0)))
+    if (n == 0) "0" else paste0(n, " (", shown, "%)")
   }
-  # the pilot's own age grouping, three levels, as the reference report prints it
-  n80 <- sum(ref$AGEGR1 == ">80")
-  expect_identical(n80, 77L)
-  expect_identical(cell(disp, ">80", "Total"), paste0(n80, " (", format_stat(n80 / nrow(ref), "p"), "%)"))
+  for (arm in c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose")) {
+    sub <- ref[ref$TRT01P == arm, ]
+    expect_identical(cell(disp, "Female", arm), pct(sum(sub$SEX == "F"), nrow(sub)))
+    expect_identical(cell(disp, "Caucasian", arm), pct(sum(sub$RACEOR == "Caucasian"), nrow(sub)))
+    expect_identical(cell(disp, "Other", arm), pct(sum(sub$RACEOR == "Other"), nrow(sub)))
+    expect_identical(cell(disp, ">80 yrs", arm), pct(sum(sub$AGEGR1 == ">80"), nrow(sub)))
+  }
+  expect_identical(cell(disp, ">80 yrs", "Total"), "77 (30%)")
+  # a count of nobody prints bare, and a share under half a percent prints "<1%"
+  expect_identical(cell(disp, "Other", "Placebo"), "0")
+  expect_identical(cell(disp, "Other", "Total"), "1 (<1%)")
+})
+
+test_that("DSP-DEMO-003: every p-value on the display is the one-way ANOVA or Pearson chi-square the report's footnote names, recomputed independently (#61)", {
+  disp <- fixture_display("t-demographics")
+  ref <- demo_ref()
+  g <- factor(ref$TRT01P)
+  fmt <- function(p) if (p < 0.0001) "<.0001" else formatC(p, format = "f", digits = 4)
+  anova_p <- function(x) summary(stats::aov(x[!is.na(x)] ~ g[!is.na(x)]))[[1]][["Pr(>F)"]][[1]]
+  chisq_p <- function(x) suppressWarnings(stats::chisq.test(table(g, x), correct = FALSE))$p.value
+  cont <- list("Age (y)" = ref$AGE, "MMSE" = ref$MMSETOT, "Duration of disease" = ref$DURDIS,
+    "Years of education" = ref$EDUCLVL, "Baseline weight(kg)" = ref$WEIGHTBL,
+    "Baseline height(cm)" = ref$HEIGHTBL, "Baseline BMI" = ref$BMIBL)
+  for (block in names(cont)) {
+    expect_identical(disp$table$col5[demo_row(disp, block, "n")], fmt(anova_p(cont[[block]])), info = block)
+    expect_identical(disp$table$col5[demo_row(disp, block, "Mean")], "", info = paste(block, "mean row carries no test"))
+  }
+  expect_identical(cell(disp, "<65 yrs", "p-value"), fmt(chisq_p(ref$AGEGR1)))
+  expect_identical(cell(disp, "65-80 yrs", "p-value"), "")
+  expect_identical(disp$table$col5[demo_row(disp, "Sex", "n")], fmt(chisq_p(ref$SEX)))
+  expect_identical(disp$table$col5[demo_row(disp, "Race (Origin)", "n")], fmt(chisq_p(ref$RACEOR)))
+  expect_identical(cell(disp, "<12 months", "p-value"), fmt(chisq_p(ref$DURDSGR1)))
+  expect_identical(cell(disp, "<25", "p-value"), fmt(chisq_p(ref$BMIBLGR1)))
+  # the figures the report prints
+  expect_identical(disp$table$col5[demo_row(disp, "Age (y)", "n")], "0.5934")
+  expect_identical(cell(disp, "<25", "p-value"), "0.2326")
+})
+
+test_that("DSP-DEMO-004: Race (Origin) is a stated recode of race and ethnicity, not a data conflict — 218 + 12 = 230 (#61)", {
+  raw <- ref_phuse_adsl()
+  expect_true(all(blank_na(raw$RACE[blank_na(raw$ETHNIC) == "HISPANIC OR LATINO"]) == "WHITE"))
+  prepared <- fixture_data()$adsl
+  expect_identical(levels(prepared$RACEOR), c("Caucasian", "African Descent", "Hispanic", "Other"))
+  expect_identical(unname(as.integer(table(prepared$RACEOR))), c(218L, 23L, 12L, 1L))
+  expect_equal(sum(prepared$RACE == "WHITE"), 218 + 12)
+  # the CDISC-coded race stays in the ARD for the narrative, unrendered
+  ard <- fixture_ard("t-demographics")$rows
+  expect_true(any(ard$analysis == "race" & ard$variable_level == "WHITE"))
+  expect_false("WHITE" %in% plain(fixture_display("t-demographics")$table$label))
 })
 
 test_that("DSP-DISP-001: disposition counts reproduce EOSSTT (#1)", {
@@ -418,9 +477,9 @@ test_that("DSP-REF-001: both displays publish the figures the pilot's own report
     simplifyVector = FALSE
   )
   norm <- function(x) trimws(gsub("[[:space:]]+", " ", gsub("\\(\\s+", "(", x)))
-  expect_setequal(names(record$displays), c("t-populations", "t-end-of-study"))
+  expect_setequal(names(record$displays), c("t-populations", "t-end-of-study", "t-demographics", "t-exposure"))
   n_checked <- 0L
-  for (slug in names(record$displays)) {
+  for (slug in c("t-populations", "t-end-of-study")) {
     disp <- fixture_display(slug)
     spec <- record$displays[[slug]]
     for (row in spec$rows) {
@@ -440,4 +499,46 @@ test_that("DSP-REF-001: both displays publish the figures the pilot's own report
     }
   }
   expect_identical(n_checked, 75L)
+})
+
+test_that("DSP-REF-002: the demographics and exposure displays publish every cell the pilot's own report printed for Tables 14-2.01 and 14-4.01 (#61)", {
+  record <- jsonlite::fromJSON(
+    file.path(csr_root(), "quality", "data", "reference-report-agreement.json"),
+    simplifyVector = FALSE
+  )
+  norm <- function(x) trimws(gsub("[[:space:]]+", " ", gsub("\\(\\s+", "(", x)))
+  data_rows <- function(disp) {
+    tb <- disp$table
+    keep <- vapply(seq_len(nrow(tb)), function(i) any(nzchar(unlist(tb[i, -1]))), logical(1))
+    tb <- tb[keep, , drop = FALSE]
+    tb$label <- plain(tb$label)
+    tb
+  }
+  n_checked <- 0L
+  # demographics: the report's 58 lines, in order, four cells and a p-value each
+  disp <- fixture_display("t-demographics")
+  tb <- data_rows(disp)
+  rows <- record$displays[["t-demographics"]]$rows
+  expect_identical(nrow(tb), length(rows))
+  for (i in seq_along(rows)) {
+    expect_identical(tb$label[i], norm(rows[[i]]$label), info = rows[[i]]$analysis)
+    for (k in 1:4) {
+      expect_identical(norm(tb[[paste0("col", k)]][i]), norm(rows[[i]]$printed[[k]]), info = paste(rows[[i]]$analysis, k))
+      n_checked <- n_checked + 1L
+    }
+    expect_identical(tb$col5[i], rows[[i]]$p_value_printed %||% "", info = rows[[i]]$analysis)
+    n_checked <- n_checked + 1L
+  }
+  # exposure: six report cells per line, gathered from the rendered blocks the record names
+  disp <- fixture_display("t-exposure")
+  tb <- data_rows(disp)
+  for (row in record$displays[["t-exposure"]]$rows) {
+    got <- unlist(lapply(row$published_from, function(pf) {
+      hits <- which(tb$label == pf$label)
+      unlist(tb[hits[[pf$occurrence]], paste0("col", unlist(pf$columns))])
+    }))
+    expect_identical(norm(unname(got)), vapply(row$printed, norm, character(1)), info = row$analysis)
+    n_checked <- n_checked + length(got)
+  }
+  expect_identical(n_checked, 58L * 5L + 12L * 6L)
 })

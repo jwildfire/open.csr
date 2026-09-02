@@ -45,10 +45,11 @@ test_that("TFL-RND-003: columns follow the declared order and carry group counts
   disp <- fixture_display("t-demographics")
   expect_identical(
     disp$columns$levels,
-    c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose", "Total")
+    c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose", "Total", "p-value")
   )
-  # the pilot's own package: planned and actual agree, 86 / 84 / 84 (#60)
-  expect_equal(unname(disp$columns$n), c(86, 84, 84, 254))
+  # the pilot's own package: planned and actual agree, 86 / 84 / 84 (#60); the
+  # p-value column heads no subjects
+  expect_equal(unname(disp$columns$n), c(86, 84, 84, 254, NA))
   expect_match(disp$html, "\\(N=86\\)")
   # a column declared but absent from the ARD is simply not rendered
   spec <- read_display_spec("t-demographics")
@@ -93,4 +94,21 @@ test_that("TFL-RND-007: a listing renders one column per listed variable with it
   expect_true("System organ class" %in% disp$columns$levels)
   expect_equal(nrow(disp$table), sum(ref_adae()$AESER %in% "Y"))
   expect_match(disp$html, "SYNCOPE")
+})
+
+test_that("TFL-RND-008: a level prints under its declared label, a sub-block's test comes from the sibling analysis `p_from` names and sits on its first level only, and the report's zero and sub-1% presentations are display options (#61)", {
+  disp <- fixture_display("t-demographics")
+  lab <- plain(disp$table$label)
+  expect_true(all(c("Male", "Female", "<65 yrs") %in% lab))
+  expect_false(any(c("M", "F", "<65") %in% lab))
+  expect_match(cell(disp, "<65 yrs", "p-value"), "^0\\.[0-9]{4}$")
+  expect_identical(cell(disp, "65-80 yrs", "p-value"), "")
+  expect_identical(cell(disp, ">80 yrs", "p-value"), "")
+  expect_identical(cell(disp, "Other", "Placebo"), "0")
+  expect_identical(cell(disp, "Other", "Total"), "1 (<1%)")
+  # the sub-1% presentation is opt-in: the same report prints "1 ( 0%)" elsewhere
+  expect_identical(format_stat(1 / 254, "p", list(p = 0), sub_one = TRUE), "<1")
+  expect_identical(format_stat(1 / 254, "p", list(p = 0)), "0")
+  expect_identical(format_stat(1 / 254, "p", list(p = 1), sub_one = TRUE), "0.4")
+  expect_identical(format_stat(0, "p", list(p = 0), sub_one = TRUE), "0")
 })

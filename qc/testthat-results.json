@@ -1,14 +1,14 @@
 {
   "suite": "r-unit",
   "package": "opencsr",
-  "generated": "2026-09-02T15:28:12Z",
+  "generated": "2026-09-02T15:47:27Z",
   "environment": {
     "r": "4.3.3",
     "os": "Darwin 23.6.0"
   },
   "summary": {
-    "total": 145,
-    "passed": 145,
+    "total": 150,
+    "passed": 150,
     "failed": 0,
     "errored": 0,
     "skipped": 0
@@ -175,6 +175,11 @@
       "status": "pass"
     },
     {
+      "file": "test-data-prep.R",
+      "test": "TFL-PREP-017: Race (Origin) is derived on both lanes — ethnicity first, then race, with the report's labels (#61)",
+      "status": "pass"
+    },
+    {
       "file": "test-displays-cibic.R",
       "test": "DSP-CIBIC-001: the CIBIC+ summary tables reproduce the published tables cell for cell (#1)",
       "status": "pass"
@@ -336,12 +341,22 @@
     },
     {
       "file": "test-displays.R",
-      "test": "DSP-DEMO-001: the age summary matches ADSL computed directly (#1)",
+      "test": "DSP-DEMO-001: the age summary matches the pilot's ADSL computed directly, and the display is the intent-to-treat population with a Total column (#61)",
       "status": "pass"
     },
     {
       "file": "test-displays.R",
-      "test": "DSP-DEMO-002: sex, race and age-group counts match ADSL (#1)",
+      "test": "DSP-DEMO-002: sex, Race (Origin) and age-group counts and percentages match ADSL, printed the way the report prints them (#61)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays.R",
+      "test": "DSP-DEMO-003: every p-value on the display is the one-way ANOVA or Pearson chi-square the report's footnote names, recomputed independently (#61)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays.R",
+      "test": "DSP-DEMO-004: Race (Origin) is a stated recode of race and ethnicity, not a data conflict — 218 + 12 = 230 (#61)",
       "status": "pass"
     },
     {
@@ -447,6 +462,11 @@
     {
       "file": "test-displays.R",
       "test": "DSP-REF-001: both displays publish the figures the pilot's own report printed (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-displays.R",
+      "test": "DSP-REF-002: the demographics and exposure displays publish every cell the pilot's own report printed for Tables 14-2.01 and 14-4.01 (#61)",
       "status": "pass"
     },
     {
@@ -577,6 +597,11 @@
     {
       "file": "test-render.R",
       "test": "TFL-RND-007: a listing renders one column per listed variable with its label (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-render.R",
+      "test": "TFL-RND-008: a level prints under its declared label, a sub-block's test comes from the sibling analysis `p_from` names and sits on its first level only, and the report's zero and sub-1% presentations are display options (#61)",
       "status": "pass"
     },
     {

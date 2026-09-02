@@ -1,6 +1,6 @@
 {
   "module": "t-demographics",
-  "generated": "2026-09-02T15:32:26.724Z",
+  "generated": "2026-09-02T15:48:06.260Z",
   "records": [
     {
       "requirementIds": [
@@ -114,24 +114,48 @@
       "requirementIds": [
         "DSP-DEMO-001"
       ],
-      "title": "DSP-DEMO-001: the age summary matches ADSL computed directly (#1)",
+      "title": "DSP-DEMO-001: the age summary matches the pilot's ADSL computed directly, and the display is the intent-to-treat population with a Total column (#61)",
       "suite": "r-unit",
       "passed": true,
       "file": "test-displays.R",
       "issueRefs": [
-        1
+        61
       ]
     },
     {
       "requirementIds": [
         "DSP-DEMO-002"
       ],
-      "title": "DSP-DEMO-002: sex, race and age-group counts match ADSL (#1)",
+      "title": "DSP-DEMO-002: sex, Race (Origin) and age-group counts and percentages match ADSL, printed the way the report prints them (#61)",
       "suite": "r-unit",
       "passed": true,
       "file": "test-displays.R",
       "issueRefs": [
-        1
+        61
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-DEMO-003"
+      ],
+      "title": "DSP-DEMO-003: every p-value on the display is the one-way ANOVA or Pearson chi-square the report's footnote names, recomputed independently (#61)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        61
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-DEMO-004"
+      ],
+      "title": "DSP-DEMO-004: Race (Origin) is a stated recode of race and ethnicity, not a data conflict — 218 + 12 = 230 (#61)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        61
       ]
     },
     {
@@ -200,13 +224,13 @@
       "adsl"
     ],
     "adamHashes": {
-      "adsl": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35"
+      "adsl": "sha256:3139478d86fda4c38e8bb2f41d348518f4a65f58bcdd7e9650fda8da7a9a6838"
     },
-    "ardFile": "outputs/t-demographics/v003/ard.json",
-    "ardHash": "sha256:f2f974ad782c763956477535f2bf8649cf311d2e2c8e45dbee80c8ae5aa8408c",
+    "ardFile": "outputs/t-demographics/v005/ard.json",
+    "ardHash": "sha256:3516f690df3588f12fb1b589645820308174a25130219b0bc6c0cf67e51d112e",
     "displayFile": "library/tfl/t-demographics/display.yaml",
-    "specHash": "sha256:0f1e9b9029b61b70bfa00f93c9f0c52050859ff26cacb67ee2fed50c39392854",
-    "iteration": "v003",
+    "specHash": "sha256:1db216cf8f6d81a73469c0afb0c7ffaa6ae987f22f7e9ce0d047af310da061b2",
+    "iteration": "v005",
     "sourceCommit": null
   },
   "environment": {

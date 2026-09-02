@@ -85,3 +85,14 @@ test_that("TFL-PREP-007: treatment arms are ordered by dose, not alphabetically 
   )
   expect_identical(levels(fixture_data_pv()$adae$TRT01A), levels(adsl$TRT01A))
 })
+
+test_that("TFL-PREP-017: Race (Origin) is derived on both lanes — ethnicity first, then race, with the report's labels (#61)", {
+  for (adsl in list(fixture_data()$adsl, fixture_data_pv()$adsl)) {
+    expect_true(is.factor(adsl$RACEOR))
+    expect_identical(levels(adsl$RACEOR), c("Caucasian", "African Descent", "Hispanic", "Other"))
+    hisp <- as.character(adsl$ETHNIC) == "HISPANIC OR LATINO"
+    expect_true(all(adsl$RACEOR[hisp] == "Hispanic"))
+    expect_true(all(adsl$RACEOR[!hisp & adsl$RACE == "WHITE"] == "Caucasian"))
+    expect_equal(sum(adsl$RACEOR == "Caucasian") + sum(adsl$RACEOR == "Hispanic"), sum(adsl$RACE == "WHITE"))
+  }
+})

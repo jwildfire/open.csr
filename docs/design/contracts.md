@@ -87,6 +87,8 @@ variants:
     filter: { min_pct: 5 }                # thresholded rendering of the same ARD
 ```
 
+**Row options added for the reference demographics table (#61).** On a `levels: all` row, `level_labels: { M: Male, F: Female }` prints a level under the report's word while the ARD keeps the data's level, so `{{ard:…;variable_level=F}}` still binds. `p_from: <analysis>` names a sibling analysis whose hypothesis-test rows (`group1 = "statistic"`, `group1_level = "p-value"`) fill the row's p-value column; a custom analysis places the test on one level by setting the test rows' `variable_level`, so a sub-block with no n row carries its p-value beside its first level only. `format.zero_count: "0"` prints a count of nobody as that string instead of `0 (0%)`; `format.sub_one_pct: true` prints a percentage shown to no decimals that is positive but rounds to zero as `<1`. Both are per display: the same 2006 report prints `1 ( 0%)` in its end-of-study table and `1 ( <1%)` in its demographics table.
+
 ## 4. Prepared datasets (data-prep layer)
 
 `opencsr::prepare_data(datasets, source_pkg, sources)` returns a named list of tibbles for one study, CDISCPILOT01, drawn from two packagings of it and prepared with documented derivations (D12).
@@ -239,6 +241,8 @@ Gate scope: gates judge the document being assembled, over the blocks its assemb
 **Requirement ID regex (unchanged from safety.viz):** `^[A-Z]{2,4}-[A-Z]+-\d+[A-D]?$`. Prefixes: `TFL-` engine, `DSP-` displays, `TXT-` text, `RPT-` templates/assembly, `TRC-` traceability, `QC-` framework.
 
 **Test naming (both suites):** `"<REQ-ID>[, <REQ-ID>]: <description> (#<issue>)"`. Guard tests in each suite enforce it.
+
+**Reference-report agreement record (`quality/data/reference-report-agreement.json`).** One entry per display held to the 2006 report. `rows[].analysis` is the row's key for the recomputation route; `label` is what the rendered display prints; `report_label` (optional) is what the report prints before the cells on that line — a block name shares the line with its first row — and is what `--verify-transcription` compares; `printed` are the report's cells; `p_value_printed` its p-value. `n_cells` (default 4) is the report's cell count per line. `published_from` (optional) maps a report line onto rendered rows by label and occurrence when the two layouts differ, as Table 14-4.01's column groups become row blocks. `reference.source_document.pages[slug]` is one page or a vector.
 
 ## 9. Site build
 

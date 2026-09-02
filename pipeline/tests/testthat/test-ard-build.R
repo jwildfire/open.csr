@@ -1,6 +1,6 @@
 test_that("TFL-ARD-001: build_ard returns one row per computed statistic, tagged with its analysis (#1)", {
   spec <- read_analysis_spec("t-demographics")
-  rows <- build_ard(spec, fixture_data())
+  rows <- build_ard(spec, fixture_data(), display_dir("t-demographics"))
   expect_true(all(ard_row_cols() %in% names(rows)))
   expect_setequal(unique(rows$analysis), names(spec$analyses))
   # every row is one statistic
@@ -15,7 +15,7 @@ test_that("TFL-ARD-001: build_ard returns one row per computed statistic, tagged
 })
 
 test_that("TFL-ARD-001: continuous statistics equal a direct dplyr computation (#1)", {
-  rows <- build_ard(read_analysis_spec("t-demographics"), fixture_data())
+  rows <- build_ard(read_analysis_spec("t-demographics"), fixture_data(), display_dir("t-demographics"))
   ref <- ref_adsl()
   for (arm in c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose")) {
     age <- ref$AGE[ref$TRT01A == arm]
@@ -141,7 +141,7 @@ test_that("TFL-ARD-008: cards' per-statistic warning and error columns survive i
 })
 
 test_that("TFL-ARD-009: a binding address must resolve to exactly one ARD row (#1)", {
-  rows <- build_ard(read_analysis_spec("t-demographics"), fixture_data())
+  rows <- build_ard(read_analysis_spec("t-demographics"), fixture_data(), display_dir("t-demographics"))
   expect_equal(ard_binding(rows, "sex:n;group=Placebo;variable_level=F"), sum(ref_adsl()$SEX == "F" & ref_adsl()$TRT01A == "Placebo"))
   expect_error(ard_binding(rows, "sex:n;group=Placebo"), "resolved 2 ARD rows")
   expect_error(ard_binding(rows, "nope:n;group=Placebo"), "resolved 0 ARD rows")

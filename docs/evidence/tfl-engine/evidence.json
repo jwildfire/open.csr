@@ -1,6 +1,6 @@
 {
   "module": "tfl-engine",
-  "generated": "2026-09-02T15:32:26.724Z",
+  "generated": "2026-09-02T15:48:06.260Z",
   "records": [
     {
       "requirementIds": [
@@ -748,6 +748,18 @@
     },
     {
       "requirementIds": [
+        "TFL-PREP-017"
+      ],
+      "title": "TFL-PREP-017: Race (Origin) is derived on both lanes — ethnicity first, then race, with the report's labels (#61)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-data-prep.R",
+      "issueRefs": [
+        61
+      ]
+    },
+    {
+      "requirementIds": [
         "TFL-QNT-001"
       ],
       "title": "TFL-QNT-001: quartiles follow the SAS-compatible type-2 definition (#1)",
@@ -852,6 +864,18 @@
       "file": "test-render.R",
       "issueRefs": [
         1
+      ]
+    },
+    {
+      "requirementIds": [
+        "TFL-RND-008"
+      ],
+      "title": "TFL-RND-008: a level prints under its declared label, a sub-block's test comes from the sibling analysis `p_from` names and sits on its first level only, and the report's zero and sub-1% presentations are display options (#61)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-render.R",
+      "issueRefs": [
+        61
       ]
     },
     {

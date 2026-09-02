@@ -1,6 +1,6 @@
 {
   "module": "t-populations",
-  "generated": "2026-09-02T15:32:26.724Z",
+  "generated": "2026-09-02T15:48:06.260Z",
   "records": [
     {
       "requirementIds": [
@@ -168,6 +168,18 @@
       "file": "test-displays.R",
       "issueRefs": [
         1
+      ]
+    },
+    {
+      "requirementIds": [
+        "DSP-REF-002"
+      ],
+      "title": "DSP-REF-002: the demographics and exposure displays publish every cell the pilot's own report printed for Tables 14-2.01 and 14-4.01 (#61)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-displays.R",
+      "issueRefs": [
+        61
       ]
     },
     {

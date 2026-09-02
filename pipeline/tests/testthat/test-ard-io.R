@@ -27,7 +27,7 @@ test_that("TFL-IO-002: the provenance envelope is complete and machine-checkable
   expect_setequal(names(p), c("spec_hash", "display_hash", "data", "environment", "git_commit", "population"))
   # who the ARD is about, for the treatment-consistency gate (#59)
   expect_setequal(names(p$population), c("analysis_set", "group", "n", "total"))
-  expect_identical(p$population$analysis_set, "safety")
+  expect_identical(p$population$analysis_set, "itt")
   expect_setequal(names(p$population$n), trt_levels())
   expect_match(p$spec_hash, "^sha256:[0-9a-f]{64}$")
   expect_match(p$display_hash, "^sha256:[0-9a-f]{64}$")
