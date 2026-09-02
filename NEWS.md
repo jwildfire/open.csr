@@ -5,7 +5,19 @@ work accumulates under a vX.Y.Z (Upcoming) heading that loses the suffix when
 the release is cut; the GitHub release publishes from the section verbatim.
 -->
 
-# open.csr v0.3.0 (Upcoming)
+# open.csr v0.3.0
+
+The release that fills the report. v0.2.0 carried six safety displays over a single
+study; this one carries **twenty-six**, and the twenty new ones are the parts of a
+clinical study report that were previously declared and empty — both primary efficacy
+endpoints, the study's one figure, the disposition tables every CSR opens with, and
+vital signs, weight and concomitant medications.
+
+The claim that matters is not the count. Every one of the twenty is measured against
+the clinical study report the CDISC pilot published in 2006, from SAS programs sharing
+no code with this repository, and the comparison is a build failure rather than a note.
+Where a figure differs, the display says so on its own face and names which of the two
+is ours. Where the study contradicts itself, the display records which side it took.
 
 - **The report's disposition section is now two tables the CDISC pilot itself published, and they agree with it cell for cell.** `t-populations` (DST02) and `t-end-of-study` (DST03) rebuild Tables 14-1.01 and 14-1.02 of the clinical study report the pilot released in 2006: the analysis populations by treatment group, and completion status with every reason for early termination. Both read the study's own ADaM packaging, which is the only one that carries the population flags and collected discontinuation reasons they report.
 - **The 2006 report is used as a second measurement, not as decoration.** `qc/reference-report-agreement.R` requires three routes to land on the same string for all ninety published cells: a from-scratch recomputation that reads the vendored `adsl.xpt.gz` and never loads `{opencsr}`, the cell text parsed back out of the committed rendered HTML, and the printed report transcribed cell by cell. Any two disagreeing is a non-zero exit, and `--self-test` perturbs each route in turn to prove the comparison can still fail. Both run in CI.
