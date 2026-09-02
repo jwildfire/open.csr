@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Interface Contracts — rendered from docs/design/contracts.md." />
+    <title>Interface Contracts · open.csr</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23111a24'/%3E%3Crect x='3' y='3' width='7' height='1.4' fill='%23e7edf5'/%3E%3Crect x='3' y='6' width='10' height='1.4' fill='%235aa9e6'/%3E%3Crect x='3' y='9' width='6' height='1.4' fill='%23e7edf5'/%3E%3Crect x='3' y='12' width='9' height='1.4' fill='%235aa9e6'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="../site.css" />
+    <script>
+      // Theme is resolved before first paint so the page never flashes the
+      // wrong surface. No storage available (private mode) simply falls back to
+      // the OS preference.
+      (function () {
+        try {
+          var saved = localStorage.getItem('opencsr-theme');
+          if (saved) document.documentElement.setAttribute('data-theme', saved);
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body class="">
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <a class="site-name" href="../index.html">
+        <span class="mark" aria-hidden="true"></span>
+        <span>
+          <strong>open.csr</strong>
+          <em>Versioned numbers, versioned words, one traceable loop.</em>
+        </span>
+      </a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="../index.html">Home</a><a href="../demo/index.html">Demo</a><a href="../quality/index.html">Quality</a><a href="../docs/index.html">Design &amp; Research</a>
+        <button
+          type="button"
+          class="theme-toggle"
+          aria-label="Switch between light and dark"
+          title="Switch between light and dark"
+        >
+          <span aria-hidden="true">◐</span>
+        </button>
+        <a class="icon-link" href="https://github.com/jwildfire/open.csr" aria-label="Source on GitHub" title="Source on GitHub">
+          <svg viewBox="0 0 16 16" width="17" height="17" fill="currentColor" aria-hidden="true">
+            <path
+              d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
+            />
+          </svg>
+        </a>
+      </nav>
+    </header>
+    
+    <main class="site-main" id="main"><p class="crumb"><a href="index.html">Design &amp; Research</a> / <span class="mono">docs/design/contracts.md</span></p>
+<div class="doc-layout"><nav class="doc-toc" aria-label="On this page"><h2>On this page</h2><ol><li><a href="#1-repository-layout">1. Repository layout</a></li><li><a href="#2-analysis-yaml-what-to-compute">2. analysis.yaml — what to compute</a></li><li><a href="#3-display-yaml-how-to-show-it">3. display.yaml — how to show it</a></li><li><a href="#4-prepared-datasets-data-prep-layer">4. Prepared datasets (data-prep layer)</a></li><li><a href="#5-ard-json-the-ard-serialization-owned-schema-d5">5. ard.json — the ARD serialization (owned schema, D5)</a></li><li><a href="#6-text-blocks-library-text-lt-id-gt-md">6. Text blocks — library/text/&amp;lt;ID&amp;gt;.md</a></li><li><a href="#7-template-model-library-templates-lt-id-gt">7. Template model — library/templates/&amp;lt;id&amp;gt;/</a></li><li><a href="#8-evidence-contract">8. Evidence contract</a></li><li><a href="#9-site-build">9. Site build</a></li><li><a href="#10-submission-artifacts-rtf">10. Submission artifacts (RTF)</a></li><li><a href="#11-the-values-store">11. The values store</a></li><li><a href="#12-conventions-the-v0-build-established">12. Conventions the v0 build established</a></li></ol></nav><article class="prose doc"><h1>open.csr — Interface Contracts (v0)</h1>
+<p>Normative file formats and function signatures. Every component builds against this document; changing a contract is a design change, not an implementation detail.</p>
+<p><em>Reconciled with the shipped v0 implementation on 2026-07-25 — where the build learned something the first draft got wrong, this document follows the code.</em></p>
+<hr>
+<h2 id="1-repository-layout">1. Repository layout</h2>
+<pre><code>pipeline/                 R package `opencsr` (DESCRIPTION, NAMESPACE, R/, tests/testthat/)
+library/tfl/&lt;slug&gt;/       analysis.yaml, display.yaml, [custom.R], iterations.yaml
+library/text/&lt;ID&gt;.md      text blocks (YAML frontmatter + prose)
+library/values/values.yaml named-value declarations (§11)
+library/templates/&lt;id&gt;/   sections.yaml, assembly.yaml (one directory per template object)
+outputs/&lt;slug&gt;/vNNN/      spec snapshots, ard.json, table.html + table.rtf (per variant), manifest.json
+outputs/&lt;slug&gt;/current.json
+outputs/values/values.json generated values store (§11)
+quality/requirements/     requirement matrices (*.md)
+qc/run-tests.R            testthat -&gt; qc/testthat-results.json
+scripts/*.mjs             requirements, evidence, assemble, site builders
+site/                     shell.html, site.css, config.json, assets/
+tests/unit/*.test.js      vitest suites
+docs/                     design/, requirements/ (generated), evidence/ (generated)
+</code></pre>
+<h2 id="2-analysis-yaml-what-to-compute">2. <code>analysis.yaml</code> — what to compute</h2>
+<p>ARS-aligned profile (D2). Interpreted by <code>opencsr::build_ard()</code>.</p>
+<pre><code class="language-yaml">id: t-ae-overview              # display slug, matches directory name
+title: &quot;Overview of Adverse Events&quot;
+regulatory_id: AET01           # optional: chevron / FDA ST&amp;F identifier
+type: table                    # table | listing | figure
+dataset: adae                  # prepared dataset name (see §4)
+analysis_set: safety           # key into data-prep population flags
+group:                         # column(s) defining table columns; [] for ungrouped
+  - TRT01A
+total: true                    # add an &quot;All Subjects&quot;-style total column
+analyses:                      # ordered; each yields ARD rows
+  - name: any_ae
+    method: subject_count      # see method vocabulary below
+    label: &quot;Subjects with any adverse event&quot;
+    filter: null               # optional R expression string, evaluated on dataset
+  - name: by_soc_pt
+    method: hierarchical_count
+    label: &quot;Adverse events by SOC and preferred term&quot;
+    hierarchy: [AEBODSYS, AEDECOD]
+denominator: adsl              # dataset supplying subject denominators
+</code></pre>
+<p><strong>Method vocabulary (v0):</strong> <code>continuous</code> (N, mean, sd, median, min, max, q1, q3), <code>categorical</code> (n, p by level), <code>subject_count</code> (unique subjects, with denominator + pct), <code>hierarchical_count</code> (subject counts nested by <code>hierarchy</code>), <code>listing</code> (row passthrough of <code>variables</code>), <code>figure</code> (delegates to <code>custom.R</code>).</p>
+<p>Any analysis may set <code>custom: &lt;function_name&gt;</code> to dispatch to <code>custom.R</code> instead of a built-in method; the function receives <code>(data, spec, denominator)</code> and must return a <code>{cards}</code> ARD. <code>figure</code> is dispatch-only: a figure analysis without <code>custom:</code> is a validation error.</p>
+<p><strong>YAML gotcha, enforced:</strong> a bare <code>pattern: n</code> parses as boolean <code>false</code> under YAML 1.1. Quote string values for row keys (<code>pattern: &quot;n&quot;</code>); spec validation rejects non-character values with an explicit message.</p>
+<h2 id="3-display-yaml-how-to-show-it">3. <code>display.yaml</code> — how to show it</h2>
+<pre><code class="language-yaml">id: t-ae-overview
+title: &quot;Overview of Adverse Events&quot;      # 14.x number assigned at assembly, see §7
+study: CDISCPILOT01                      # required
+population_label: &quot;Safety Analysis Set&quot;  # required
+cutoff: &quot;2014-07-01&quot;                     # required
+footnotes:
+  - &quot;Percentages are based on the number of subjects in the safety analysis set.&quot;
+source: &quot;Source: adae, adsl. Data cut-off: 2014-07-01.&quot;
+columns:
+  order: [Placebo, &quot;Xanomeline Low Dose&quot;, &quot;Xanomeline High Dose&quot;, Total]
+  labels: { AEDECOD: &quot;Preferred Term&quot; }   # optional: column headers, mainly for listings
+rows:                                    # optional relabeling / ordering of analysis output
+  - analysis: any_ae
+    label: &quot;Subjects with ≥1 AE&quot;
+    # optional row keys: variable, level, levels (or `all`), level_order, indent,
+    # section: true, pattern, digits (row-level override), and
+    # type: hierarchical + levels: [outer, inner] for SOC/PT-style nesting
+format:
+  n_pct: &quot;{n} ({p}%)&quot;                    # count-with-percent pattern
+  continuous: &quot;{mean} ({sd})&quot;
+  digits: { p: 1, mean: 1, sd: 2 }       # collected-precision +1 / +2 convention
+variants:
+  post_text: {}                           # full display (Section 14)
+  in_text:                                # reduced variant for the narrative section
+    filter: { min_pct: 5 }                # thresholded rendering of the same ARD
+</code></pre>
+<p><strong>Row options added for the reference demographics table (#61).</strong> On a <code>levels: all</code> row, <code>level_labels: { M: Male, F: Female }</code> prints a level under the report&#39;s word while the ARD keeps the data&#39;s level, so <code>{{ard:…;variable_level=F}}</code> still binds. <code>p_from: &lt;analysis&gt;</code> names a sibling analysis whose hypothesis-test rows (<code>group1 = &quot;statistic&quot;</code>, <code>group1_level = &quot;p-value&quot;</code>) fill the row&#39;s p-value column; a custom analysis places the test on one level by setting the test rows&#39; <code>variable_level</code>, so a sub-block with no n row carries its p-value beside its first level only. <code>format.zero_count: &quot;0&quot;</code> prints a count of nobody as that string instead of <code>0 (0%)</code>; <code>format.sub_one_pct: true</code> prints a percentage shown to no decimals that is positive but rounds to zero as <code>&lt;1</code>. Both are per display: the same 2006 report prints <code>1 ( 0%)</code> in its end-of-study table and <code>1 ( &lt;1%)</code> in its demographics table.</p>
+<p><strong>Hierarchical sort and shared custom code (#62).</strong> A <code>type: hierarchical</code> row accepts <code>sort: { outer: alpha | { by_group }, inner: alpha | { by_group: &quot;&lt;arm label&gt;&quot; } | { by: sum } }</code>; the default at both levels is the largest count in any one arm, descending, then name. An analysis spec may declare <code>custom_from: &lt;slug&gt;</code> to dispatch its <code>custom:</code> entries to another display&#39;s <code>custom.R</code>, so two tables that must count the same way share one implementation.</p>
+<p><strong>Flow figures (#63).</strong> A <code>figure:</code> block with <code>kind: flow</code> draws boxes of counts rather than curves: <code>analysis</code> names the ARD analysis, and <code>boxes</code> lists <code>{level, label, from?, side?}</code> — each box prints its label and the <code>n</code> the ARD holds at <code>variable_level = level</code>; <code>from</code> draws the arrow that feeds it and <code>side: right</code> hangs it off its source as a branch. No axes; the axis checks do not apply.
+<strong>Column objects and variant redraws (#63).</strong> An entry of <code>columns.order</code> may be an object <code>{label, group, analysis, pattern}</code>: the column prints <code>label</code>, reads the ARD at group level <code>group</code>, and — when set — reads <code>analysis</code> rather than the row&#39;s and prints <code>pattern</code> rather than the row&#39;s. Twelve columns of arm × population on the subjects-by-site table, and n / mean pairs per arm on the in-text weight table, are that. A variant may declare <code>rows</code>, <code>columns</code> and <code>format</code> of its own; they replace the display&#39;s for that rendering, over the same ARD, which is how the report&#39;s in-text Tables 11-1, 12-1 and 12-4 are drawn from the Section 14 displays&#39; results. A hierarchical row accepts <code>inner_only: true</code> (no outer headings, the inner level flat) and <code>label_case: title</code>.</p>
+<h2 id="4-prepared-datasets-data-prep-layer">4. Prepared datasets (data-prep layer)</h2>
+<p><code>opencsr::prepare_data(datasets, source_pkg, sources)</code> returns a named list of tibbles for one study, CDISCPILOT01, drawn from two packagings of it and prepared with documented derivations (D12).</p>
+<p><strong>Sources.</strong> <code>data_sources()</code> maps each dataset name to <code>&quot;phuse&quot;</code> or <code>&quot;pharmaverseadam&quot;</code>. Since v0.4.0 (D0032 R2, #60) the default registry resolves every dataset the CDISC pilot publishes — <code>adsl</code>, <code>adae</code>, <code>advs</code>, <code>adqsadas</code>, <code>adqscibc</code>, <code>adqsnpix</code>, <code>adlbc</code>, <code>adlbh</code>, <code>adlbhy</code>, <code>adtte</code>, <code>adcm</code> — to <code>&quot;phuse&quot;</code>, the study&#39;s own package; only <code>adex</code> and <code>adlb</code>, which that package does not contain, resolve to <code>&quot;pharmaverseadam&quot;</code>, and no display reads them. <code>sources = &quot;pharmaverseadam&quot;</code> selects the alternate lane wholesale; a named vector overrides per dataset; <code>regenerate(sources = …)</code> builds one iteration on a stated lane and records it. The study model <code>library/study.yaml</code> (§4a) names the default.</p>
+<p><strong>Vendored data.</strong> <code>pipeline/inst/extdata/phuse-cdiscpilot01/</code> holds eleven gzipped <code>.xpt</code> files from <code>phuse-org/phuse-scripts</code> (MIT), with <code>PROVENANCE.json</code> recording the upstream repository, the pinned commit, and each file&#39;s upstream path, git blob SHA-1, SHA-256 and byte count, plus the upstream licence text. <code>qc/vendor-phuse-data.R</code> writes it and <code>--check</code> verifies it; nothing else may edit it.</p>
+<p><strong>Derived medications and the screened population (#65, #63).</strong> <code>adcm</code> on the default lane is <code>derive_adcm(read_phuse(&quot;cm&quot;))</code>: the study&#39;s SDTM CM domain, every column as published, <code>ASTDT</code>/<code>AENDT</code> only where the source states a full date, <code>CMFL = &quot;Y&quot;</code>; <code>SAFFL</code> and the treatment columns join from ADSL by subject in <code>attach_trt()</code>. The relabelled PHUSE <code>adcm</code> stays vendored and readable as <code>read_phuse(&quot;adcm&quot;)</code> for the test that holds the derivation to it. <code>dm</code> is the study&#39;s SDTM demographics domain and the one dataset <code>prepare_data()</code> does not restrict to ADSL&#39;s subjects — its 52 screen failures are its point.</p>
+<p><strong>Study model (<code>library/study.yaml</code>).</strong> One file declares what the study IS: <code>id</code>, <code>title</code>, <code>cutoff</code>; <code>arms</code> as a list of <code>{id, label}</code> in print order (the <code>label</code> is the only spelling of an arm anywhere in the repository); <code>group_variables</code>, a map from each column that carries an arm label to <code>planned</code> or <code>actual</code>; <code>assignment_columns</code>, the ADSL column for each; <code>source.default</code> and <code>source.alternates</code>; and <code>analysis_sets</code>, each with <code>label</code>, <code>flag</code> (<code>null</code> for no filter) and <code>subjects</code>, the distinct subjects per arm on the default lane — spelled <code>subjects</code>, not <code>n</code>, because YAML 1.1 parsers read a bare <code>n</code> as false. <code>trt_levels()</code>, <code>analysis_set_flag()</code> and <code>study_arm_labels()</code> read it; <code>test-study-model.R</code> re-measures every count against the data; the assembler&#39;s treatment-consistency gate (<code>gates.treatmentConsistency</code> in every <code>docs/assembled/*.json</code>) holds every placed display to it.</p>
+<p><strong>Population record.</strong> Every <code>ard.json</code> provenance envelope carries <code>population = {analysis_set, group, n, total}</code>: the spec&#39;s analysis set, its first grouping column, the distinct subjects per arm in the denominator after the analysis set is applied (counted on the ADSL column of the same assignment, so <code>TRTP</code> counts on <code>TRT01P</code>), and the distinct subjects overall. <code>n</code> is <code>null</code> when the grouping column is not a treatment column the model knows (a listing).</p>
+<p><strong>Derivations, <code>{pharmaverseadam}</code> lane:</strong></p>
+<ul>
+<li>Screen failures (<code>ARM == &quot;Screen Failure&quot;</code>) excluded from all analysis datasets.</li>
+<li><code>SAFFL</code> used as shipped; <code>ITTFL</code> derived (randomized, non-screen-failure); <code>EFFFL</code> <strong>not derived and not guessed</strong> — this packaging states no efficacy analysis set, so <code>analysis_set: efficacy</code> fails here, naming the missing flag.</li>
+<li><strong><code>DISCREAS</code></strong> is a <em>derived</em> discontinuation reason, deliberately not named <code>DCSREAS</code>: pharmaverseadam&#39;s ADSL ships neither <code>DCSREAS</code> nor <code>DCDECOD</code>, so the derivation collapses to Death (from <code>DTHFL</code>) versus Other/Not specified, and must not borrow the CDISC variable&#39;s semantics. Surfaced as a display footnote, asserted by a test.</li>
+<li><code>BLWT</code>/<code>BLHT</code>/<code>BLBMI</code> merged from the ADVS baseline records.</li>
+</ul>
+<p><strong>Derivations, PHUSE lane:</strong> the study states its own <code>SAFFL</code>/<code>ITTFL</code>/<code>EFFFL</code> (blank recoded to <code>&quot;N&quot;</code>), its own baseline weight/height/BMI on ADSL, and its own three age groups (<code>&lt;65</code>, <code>65-80</code>, <code>&gt;80</code>); none of these is re-derived. <code>COMPLFL</code> is the complement of the study&#39;s <code>DISCONFL</code>. <code>DISCREAS</code> is derived to the <em>same two levels</em> as the other lane so a display specified against one source renders against the other; <code>DCDECOD</code> and <code>DCREASCD</code> are carried through untouched for a display that wants the collected reason. Screen-failure absence is asserted, not assumed. ADCM&#39;s relabelling of even-numbered sites into a synthetic <code>CDISCPILOT02</code> is reversed, and every remapped subject must match ADSL on age, sex and actual arm or the preparation fails.</p>
+<p><strong>Both lanes:</strong> <code>TRT01A</code> on every non-ADSL dataset is taken from the prepared ADSL by <code>USUBJID</code>, never from the dataset&#39;s own <code>TRTA</code>/<code>TRTP</code>.</p>
+<p><strong>Analysis sets:</strong> <code>safety</code> → <code>SAFFL</code>, <code>itt</code> → <code>ITTFL</code>, <code>efficacy</code> → <code>EFFFL</code>, <code>completers</code> → <code>COMPLFL</code>, <code>all</code> → no filter.</p>
+<p><strong>Manifest:</strong> <code>list(dataset, n_row, n_col, hash, source_pkg, source_version)</code> per dataset, where <code>hash = digest::digest(df, algo = &quot;sha256&quot;)</code>. For a <code>{pharmaverseadam}</code> dataset the last pair is the package and its version; for a PHUSE dataset it is <code>&quot;phuse-org/phuse-scripts:data/adam&quot;</code> and the pinned upstream commit.</p>
+<p><strong>Source agreement:</strong> the two packagings overlap on ADSL, ADAE and ADVS and do not agree on all of it. Every divergence is recorded in <code>quality/data/source-agreement.json</code> and reproduced by <code>qc/source-agreement.R</code>, which exits non-zero when any measured fact stops matching the record. The record&#39;s <code>environment</code> block — the R version, OS and <code>{pharmaverseadam}</code> version that measured — is recorded and printed but never compared: a version bump that moves no measured fact is news, not a failure, and one that moves a fact still fails on the fact it moved.</p>
+<h2 id="5-ard-json-the-ard-serialization-owned-schema-d5">5. <code>ard.json</code> — the ARD serialization (owned schema, D5)</h2>
+<pre><code class="language-json">{
+  &quot;schema&quot;: &quot;opencsr/ard/v1&quot;,
+  &quot;display&quot;: &quot;t-ae-overview&quot;,
+  &quot;created&quot;: &quot;2026-07-25T04:00:00Z&quot;,
+  &quot;provenance&quot;: {
+    &quot;spec_hash&quot;: &quot;sha256:…&quot;,         // analysis.yaml
+    &quot;display_hash&quot;: &quot;sha256:…&quot;,      // display.yaml
+    &quot;data&quot;: [{ &quot;dataset&quot;: &quot;adae&quot;, &quot;hash&quot;: &quot;sha256:…&quot;, &quot;n_row&quot;: 1191,
+               &quot;source_pkg&quot;: &quot;pharmaverseadam&quot;, &quot;source_version&quot;: &quot;1.1.0&quot; }],
+    &quot;environment&quot;: { &quot;r&quot;: &quot;4.3.3&quot;, &quot;os&quot;: &quot;…&quot;,
+                     &quot;packages&quot;: { &quot;cards&quot;: &quot;0.8.1&quot;, &quot;gtsummary&quot;: &quot;2.5.1&quot; } },
+    &quot;git_commit&quot;: &quot;…&quot;                 // null when the tree is dirty
+  },
+  &quot;rows&quot;: [
+    { &quot;analysis&quot;: &quot;any_ae&quot;, &quot;group1&quot;: &quot;TRT01A&quot;, &quot;group1_level&quot;: &quot;Placebo&quot;,
+      &quot;group2&quot;: null, &quot;group2_level&quot;: null,
+      &quot;variable&quot;: &quot;AEFL&quot;, &quot;variable_level&quot;: &quot;Y&quot;, &quot;context&quot;: &quot;subject_count&quot;,
+      &quot;stat_name&quot;: &quot;n&quot;, &quot;stat_label&quot;: &quot;n&quot;, &quot;stat&quot;: 69,
+      &quot;warning&quot;: null, &quot;error&quot;: null }
+  ]
+}
+</code></pre>
+<p><code>rows</code> is the <code>{cards}</code> ARD flattened one row per computed statistic, plus an <code>analysis</code> column naming the <code>analyses[].name</code> that produced it. Every row carries the same fixed 13 keys — <code>group2</code>/<code>group2_level</code> are <code>null</code> unless the analysis is hierarchical — so the JS side can rely on the shape. <code>stat</code> is a scalar (numbers stay numeric); list-valued statistics serialize as arrays. <code>warning</code>/<code>error</code> carry <code>{cards}</code>&#39; per-statistic condition strings — they are quality evidence, never dropped.</p>
+<p><strong>Percentages are stored as proportions</strong> in <code>[0, 1]</code> (<code>p</code> = 0.433, not 43.3). Scaling is a presentation concern, handled by <code>display.yaml</code> <code>format</code> on the display side and the <code>scale</code> qualifier on the binding side.</p>
+<p><strong>Quantiles use the type-2 (SAS) definition</strong>, not R&#39;s default type 7 — any recomputation must match.</p>
+<p><strong>Binding address</strong> (used by text blocks, §6):</p>
+<pre><code>&lt;display&gt;:&lt;analysis&gt;:&lt;stat_name&gt;[;&lt;qualifier&gt;=&lt;value&gt;]…
+</code></pre>
+<p>Selection qualifiers narrow which ARD row is addressed — <code>group</code>, <code>group2</code>, <code>variable</code>, <code>variable_level</code>. Presentation qualifiers affect only rendering and never the stored value — <code>scale</code> (multiplier, e.g. <code>scale=100</code> for a percentage) and <code>digits</code> (rounding). Exactly one row must match, or the binding is an error.</p>
+<h2 id="6-text-blocks-library-text-lt-id-gt-md">6. Text blocks — <code>library/text/&lt;ID&gt;.md</code></h2>
+<pre><code class="language-markdown">---
+id: TXT-E3-1202
+e3_section: &quot;12.2.1&quot;
+title: &quot;Brief Summary of Adverse Events&quot;
+tier: parameterized            # boilerplate | parameterized | generated
+displays: [t-ae-overview]
+approval: { state: approved, by: &quot;@jwildfire&quot;, at: &quot;2026-07-25&quot; }
+provenance: { model: null, prompt: null }
+requirements: [TXT-AE-001]
+---
+
+Overall, {{ard:t-ae-overview:any_ae:n;group=Xanomeline High Dose}} subjects
+({{ard:t-ae-overview:any_ae:p;group=Xanomeline High Dose}}%) in the high-dose group
+reported at least one adverse event.
+</code></pre>
+<p>Binding syntax: <code>{{ard:&lt;binding address&gt;}}</code> (§5). Rendering resolves against <code>outputs/&lt;display&gt;/current</code> ARD.</p>
+<p><strong>Named values</strong> (§11): <code>{{value:&lt;id&gt;}}</code> resolves against the generated values store. It is an ARD binding that has been named once, centrally, rather than re-addressed per sentence; its substitution is span-tracked exactly like an <code>{{ard:…}}</code> one, so its digits are exempt from the fidelity gate — and the store itself is re-derived from the committed ARDs at assembly, so naming a number never loosens the check on it.</p>
+<p><strong>Cross-reference tokens</strong> keep prose from typing numbers the assembler owns (D6): <code>{{xref:display:&lt;slug&gt;}}</code> resolves to the display&#39;s assigned 14.x number and title, <code>{{xref:section:&lt;number&gt;}}</code> to a section link. Both fail the build when unresolvable, and their output is span-tracked so the digits they emit are exempt from the fidelity gate.</p>
+<p><strong>CI gates (D7):</strong> (a) every binding resolves to exactly one ARD row; (b) every digit run in <em>rendered</em> prose traces to a resolved binding — except inside inline code, markdown links, and an explicit <code>allow_digits</code> frontmatter list (E3 section numbers, citations, protocol IDs); (c) <code>generated</code>-tier blocks with <code>approval.state != approved</code> are excluded from assembly and reported.</p>
+<h2 id="7-template-model-library-templates-lt-id-gt">7. Template model — <code>library/templates/&lt;id&gt;/</code></h2>
+<p>One directory per <strong>template object</strong>. A directory containing a <code>sections.yaml</code> is a template object; the assembler discovers them from disk and <code>--template &lt;id&gt;</code> selects one (<code>--all</code> builds every one). <code>ich-e3</code> is the default and writes <code>docs/assembled/csr.{json,html}</code>; any other id writes under its own name.</p>
+<p><code>sections.yaml</code>: the document model — what this kind of document IS. <code>library/templates/ich-e3/sections.yaml</code> is the full ICH E3 skeleton; <code>library/templates/e3-synopsis/sections.yaml</code> is the ICH E3 Annex I synopsis; <code>library/templates/display-package/sections.yaml</code> is the post-text displays on their own; <code>library/templates/e3-abbreviated/sections.yaml</code> is the reduced report E3&#39;s Introduction contemplates.</p>
+<p>A document model may be a <strong>restriction</strong> of another: the display package and the abbreviated report declare only sections that exist in <code>ich-e3</code>, each carrying the number, title, slug and content declaration it has there, unchanged. Nothing in the loader enforces that — it is a property of those two files, checked by <code>tests/unit/assemble-template-subsets.test.js</code> — but it is what lets a restricted model reuse the full report&#39;s prose without a single edit: the cross-references in that prose resolve because the referenced sections are retained.</p>
+<pre><code class="language-yaml">sections:
+  - number: &quot;12.2.1&quot;
+    title: &quot;Brief Summary of Adverse Events&quot;
+    slug: ae-brief-summary
+    content: [text, in_text_display]      # text | in_text_display | post_text_index | generated_provenance
+</code></pre>
+<p><code>assembly.yaml</code>: study configuration.</p>
+<pre><code class="language-yaml">study: { id: CDISCPILOT01, title: &quot;…&quot;, cutoff: &quot;2014-07-01&quot; }
+slots:
+  - section: &quot;12.2.1&quot;
+    text: [TXT-E3-1202]
+    displays: [t-ae-overview]            # rendered as in_text variant here
+post_text:
+  - { section: &quot;14.3.1&quot;, displays: [t-ae-overview, t-ae-common] }
+</code></pre>
+<p>Numbering (D6): the assembler assigns post-text positions from <code>post_text</code> order and rewrites display titles at render time. Slugs are identity; numbers are derived — the same display is <code>Table 14.1.1</code> in the clinical study report and <code>Table 13.1</code> in the synopsis from one unchanged specification.</p>
+<p><strong>Inputs record (#78).</strong> The assembled document carries <code>inputs</code> — what it was built from, derived at build and never declared: <code>template {id, title, version}</code>, <code>study {id, file, cutoff}</code>, <code>displays[] {slug, number, title, variants, iteration, ardHash, source, datasets[] {dataset, hash, n_row}}</code>, <code>datasets[] {dataset, hash, n_row, readBy[]}</code>, <code>textBlocks[] {id, section, tier, state, included, displays[], values[]}</code> and <code>values[]</code> (the ids cited). Each block in a section carries its own <code>inputs {displays[] {slug, iteration, ardHash, source, bindings}, values[]}</code>, the displays being those its bindings resolved against. The Reader renders the document record as a panel of links above the text and the block records beside each block; the frontmatter&#39;s <code>displays:</code> list remains the author&#39;s declaration, and the gate that fails a block binding an undeclared display is unchanged.</p>
+<p>Gate scope: gates judge the document being assembled, over the blocks its assembly claims. A block written for the full E3 report may cross-reference Section 16.2.1 and must not be failed against a synopsis model that has no Section 16. A block the Text Library holds but this build did not assemble is reported in <code>gates.warnings</code>, so &quot;not gated&quot; cannot pass for &quot;gated and clean&quot;.</p>
+<h2 id="8-evidence-contract">8. Evidence contract</h2>
+<p><code>qc/run-tests.R</code> writes <code>qc/testthat-results.json</code>:</p>
+<pre><code class="language-json">{ &quot;records&quot;: [ { &quot;file&quot;: &quot;test-tfl-demographics.R&quot;,
+                 &quot;test&quot;: &quot;DSP-DEMO-001: age summary matches ADSL (#1)&quot;,
+                 &quot;status&quot;: &quot;pass&quot; } ] }
+</code></pre>
+<p><code>scripts/evidence.mjs</code> normalizes testthat + vitest into <code>docs/evidence/&lt;module&gt;/evidence.json</code>:</p>
+<pre><code class="language-json">{ &quot;module&quot;: &quot;t-ae-overview&quot;, &quot;generated&quot;: &quot;…&quot;,
+  &quot;records&quot;: [ { &quot;requirementIds&quot;: [&quot;DSP-AE-001&quot;], &quot;title&quot;: &quot;…&quot;, &quot;suite&quot;: &quot;r-unit&quot;,
+                 &quot;passed&quot;: true, &quot;file&quot;: &quot;…&quot; } ],
+  &quot;traceability&quot;: { &quot;adamDatasets&quot;: [&quot;adae&quot;], &quot;ardFile&quot;: &quot;outputs/…/ard.json&quot;,
+                    &quot;ardHash&quot;: &quot;sha256:…&quot;, &quot;displayFile&quot;: &quot;…&quot;, &quot;sourceCommit&quot;: &quot;…&quot; },
+  &quot;environment&quot;: { &quot;r&quot;: &quot;4.3.3&quot;, &quot;packages&quot;: { … } } }
+</code></pre>
+<p><strong>Requirement ID regex (unchanged from safety.viz):</strong> <code>^[A-Z]{2,4}-[A-Z]+-\d+[A-D]?$</code>. Prefixes: <code>TFL-</code> engine, <code>DSP-</code> displays, <code>TXT-</code> text, <code>RPT-</code> templates/assembly, <code>TRC-</code> traceability, <code>QC-</code> framework.</p>
+<p><strong>Test naming (both suites):</strong> <code>&quot;&lt;REQ-ID&gt;[, &lt;REQ-ID&gt;]: &lt;description&gt; (#&lt;issue&gt;)&quot;</code>. Guard tests in each suite enforce it.</p>
+<p><strong>Reference-report agreement record (<code>quality/data/reference-report-agreement.json</code>).</strong> One entry per display held to the 2006 report. <code>rows[].analysis</code> is the row&#39;s key for the recomputation route; <code>label</code> is what the rendered display prints; <code>report_label</code> (optional) is what the report prints before the cells on that line — a block name shares the line with its first row — and is what <code>--verify-transcription</code> compares; <code>printed</code> are the report&#39;s cells; <code>p_value_printed</code> its p-value. <code>n_cells</code> (default 4) is the report&#39;s cell count per line. <code>published_from</code> (optional) maps a report line onto rendered rows by label and occurrence when the two layouts differ, as Table 14-4.01&#39;s column groups become row blocks. <code>reference.source_document.pages[slug]</code> is one page or a vector.</p>
+<h2 id="9-site-build">9. Site build</h2>
+<p><code>site/config.json</code> is the registry — every display, text block, and template with <code>status</code> (<code>planned</code> | <code>built</code> | <code>evidenced</code>). <code>scripts/site.mjs</code> renders static HTML into <code>site/_build/</code> from the registry plus generated <code>docs/requirements/</code> and <code>docs/evidence/</code>. No network calls, no server, no external CDN.</p>
+<p><strong>The Data section (#76).</strong> <code>site/config.json</code> → <code>data</code> names the study&#39;s data package (its directory, <code>PROVENANCE.json</code> and the verify command), the lanes record (<code>quality/data/source-agreement.json</code>) and one entry per dataset: <code>id</code>, <code>domain</code> (<code>adam</code> | <code>sdtm</code>), <code>title</code>, <code>blurb</code>, <code>source</code> (<code>pipeline</code> for a vendored file the preparation layer reads, <code>derived</code> for an analysis dataset the pipeline builds from another, named by <code>derivedFrom</code>, <code>alternate</code> for one only the alternate lane serves), optional <code>file</code> when the vendored file&#39;s name differs from the id, optional <code>lane</code>, and <code>notes</code> (the derivations applied, in words; §4 is the authority). Everything else on the pages is read, never typed: the package&#39;s provenance record, and the <code>provenance.data</code> envelope of every current ARD, from which <code>scripts/data-lib.mjs</code> builds the reverse index — dataset → every display that read it, with the iteration, row count and hash that display recorded. A display header links its datasets to those pages with the same hash and row count; <code>data/&lt;id&gt;.html</code> is a dataset&#39;s permalink and the app absorbs it as the Data view with that dataset in focus. The <code>source</code> field is what the ARDs-received page of design decision D13 will extend.</p>
+<p><strong>The Pipeline section and the flows (#82, #83).</strong> <code>site/config.json</code> → <code>pipeline.functions</code> declares the pipeline&#39;s functions by the code&#39;s own names — <code>id</code>, <code>label</code>, <code>kind</code> (<code>R</code> | <code>node</code>), <code>code</code>, <code>blurb</code>, <code>reads[]</code> and <code>writes[]</code> (each a label with an optional <code>sub</code> and site-relative <code>href</code>), <code>calls[]</code>, <code>gates[]</code>, and <code>produces</code> naming the collection the function writes into (<code>datasets</code> | <code>displays</code> | <code>values</code> | <code>documents</code> | <code>site</code>), from which <code>scripts/pipeline-lib.mjs</code> lists what each produced. The explorer arranges its groups in three parts in the pipeline&#39;s order (Inputs: Data, Metadata, Text; Pipeline; Outputs: Displays, Values, Documents), and the application strip&#39;s study views follow it. <code>scripts/flow-lib.mjs</code> → <code>renderFlow({inputs, steps, outputs})</code> draws every element&#39;s flow in three lanes from the records above; the call sites pass what the ARD envelope, the manifest, the assembled document&#39;s <code>inputs</code> and the registry already say.</p>
+<p><strong>Links both ways (#78).</strong> A display&#39;s header links the analysis set and grouping column as the study model defines them, its specification history, its environment, the text blocks that bind it and the values sourced from it; a text block&#39;s card lists its inputs derived from its bindings; the values pane links the arm an address names, the datasets behind the value and the documents citing it; the provenance appendix is rendered as links; the explorer flags a document whose build failed a gate. Every one of these is computed by <code>scripts/site.mjs</code> from records the pipeline and the assembler already write.</p>
+<p><strong>The Metadata section (#77).</strong> Six pages under <code>metadata/</code>, each read from the file that declares the thing and none of them typed: <code>study</code> renders <code>library/study.yaml</code> through the same validated loader the assembler&#39;s gate uses; <code>models</code> indexes the template objects on disk with the documents assembled from each (the Templates view remains the walk through one model&#39;s sections); <code>specs</code> lists every display&#39;s <code>analysis.yaml</code> and <code>display.yaml</code> with the iteration history the manifests recorded (actor, change request, spec, display and ARD hashes) and the custom code shared through <code>custom_from</code>, plus the value declarations in <code>library/values/values.yaml</code>; <code>approvals</code> lists every text block&#39;s tier, version, approval and drafting model from its frontmatter; <code>environments</code> deduplicates the R, OS and package-version records across every iteration; <code>requirements</code> lists the matrices. <code>scripts/metadata-lib.mjs</code> builds them; the app absorbs <code>metadata/&lt;page&gt;.html</code> as the Metadata view with that section in focus.</p>
+<p><strong>What &quot;no network calls&quot; forbids, precisely.</strong> No external host, no API, no CDN, no analytics, no font — enforced by <code>validateNoExternalResources</code>, which fails the build on any absolute or protocol-relative resource URL. A page may <code>fetch</code> a <strong>build artifact from its own origin</strong> when loading it eagerly would be wasteful: the text-block editor pulls <code>demo/ard/&lt;slug&gt;.json</code> (published by the same build, from the same committed ARD) the first time a block that binds it is opened, rather than inlining 832 KB of ARD into every visit of the Demo page. The site still serves from any static host with nothing behind it, which is the property the rule protects.</p>
+<h2 id="10-submission-artifacts-rtf">10. Submission artifacts (RTF)</h2>
+<p>Every rendered variant of a display is written twice: <code>table.html</code> (or <code>table-&lt;variant&gt;.html</code>) and <code>table.rtf</code> (or <code>table-&lt;variant&gt;.rtf</code>), both from the same rendered cell table, in the same <code>regenerate()</code> loop. RTF is produced with <code>{r2rtf}</code> via <code>opencsr::render_rtf()</code>.</p>
+<p>The iteration manifest records each variant&#39;s artifacts:</p>
+<pre><code class="language-json">&quot;variants&quot;: { &quot;post_text&quot;: { &quot;file&quot;: &quot;table.html&quot;, &quot;rtf&quot;: &quot;table.rtf&quot;,
+                             &quot;rtf_hash&quot;: &quot;sha256:…&quot;, &quot;n_rows&quot;: 22 } }
+</code></pre>
+<p><code>rtf_hash</code> is the sha256 of the file as written, which is what allows a committed RTF to be proved to be the pipeline&#39;s output rather than a hand-edited copy — a testthat guard (<code>TFL-RTF-006</code>) re-hashes every committed RTF against its manifest. The site build republishes each current-iteration RTF flat as <code>artifacts/&lt;slug&gt;[-&lt;variant&gt;].rtf</code> and offers it for download beside the rendered display.</p>
+<p>RTF is a 7-bit format: <code>\</code>, <code>{</code> and <code>}</code> are escaped and non-ASCII code points travel as <code>\uc1\uNNNN?</code>. <code>_</code> is subscript markup in <code>{r2rtf}</code> and never reaches a document as a literal.</p>
+<h2 id="11-the-values-store">11. The values store</h2>
+<p>A <strong>value</strong> is a named scalar with provenance — the unit a writer reuses (&quot;randomized N&quot;, &quot;median age&quot;) as opposed to the address a binding uses.</p>
+<p><code>library/values/values.yaml</code> is source (D9):</p>
+<pre><code class="language-yaml">study: CDISCPILOT01
+values:
+  - id: randomised-n                       # kebab-case, unique, the citation key
+    label: &quot;Subjects randomised&quot;           # required: a name has to read
+    source: t-disposition:randomised:n;group=Total   # §5 binding address, display included
+    format: { scale: 1, digits: 0 }        # presentation only
+    notes: &quot;…&quot;                             # optional
+  - id: ae-any-n-xanomeline
+    label: &quot;…&quot;
+    derived: { op: sum, inputs: [ae-any-n-low, ae-any-n-high] }
+</code></pre>
+<p>Exactly one of <code>source:</code> or <code>derived:</code> per value. Derivation operators are a <strong>closed vocabulary</strong> — <code>sum</code> (≥2 inputs), <code>difference</code>, <code>ratio</code>, <code>percent</code> (exactly 2, in order) — precisely so the R builder and the JavaScript gate can each evaluate them and agree. Inputs must be declared before use.</p>
+<p><code>opencsr::regenerate_values()</code> writes <code>outputs/values/values.json</code>:</p>
+<pre><code class="language-json">{ &quot;schema&quot;: &quot;opencsr/values/v1&quot;, &quot;study&quot;: &quot;CDISCPILOT01&quot;, &quot;created&quot;: &quot;…&quot;,
+  &quot;provenance&quot;: { &quot;source_file&quot;: &quot;library/values/values.yaml&quot;, &quot;source_hash&quot;: &quot;sha256:…&quot;,
+                  &quot;git_commit&quot;: &quot;…&quot;, &quot;environment&quot;: { … } },
+  &quot;values&quot;: [ { &quot;id&quot;: &quot;randomised-n&quot;, &quot;label&quot;: &quot;…&quot;, &quot;kind&quot;: &quot;ard&quot;,
+                &quot;value&quot;: 254, &quot;formatted&quot;: &quot;254&quot;,
+                &quot;format&quot;: { &quot;scale&quot;: 1, &quot;digits&quot;: 0 },
+                &quot;source&quot;: { &quot;address&quot;: &quot;…&quot;, &quot;display&quot;: &quot;t-disposition&quot;, &quot;analysis&quot;: &quot;randomised&quot;,
+                            &quot;iteration&quot;: &quot;v002&quot;, &quot;ard_file&quot;: &quot;outputs/…/ard.json&quot;,
+                            &quot;ard_hash&quot;: &quot;sha256:…&quot; } } ] }
+</code></pre>
+<p><code>value</code> is the ARD&#39;s number unscaled — proportions stay in [0, 1] as in §5 — and <code>formatted</code> carries scaling and half-up rounding, so the store stays directly comparable to the ARD.</p>
+<p><strong>Gate (d), the values gate.</strong> At assembly every value is re-derived from the same committed ARDs the report is built from. A value fails when its address resolves to zero or several rows, when the ARD row no longer equals the stored value, when the cited ARD hash is not the committed one, when <code>formatted</code> does not match the declared format, or when a derived value no longer equals its own arithmetic. Any of these fails the build exactly as a typed number in prose does.</p>
+<hr>
+<h2 id="12-conventions-the-v0-build-established">12. Conventions the v0 build established</h2>
+<p>Learned during implementation; normative from here.</p>
+<ul>
+<li><strong>Evidence routing is data, not code.</strong> <code>site/config.json</code> carries <code>testPrefixes</code> (test filename → component), <code>prefixes</code> (requirement-ID prefix → module), and <code>suites</code> (whole suite → component). Registering a new display is a registry edit; no script changes. R test files are organized by engine topic rather than by display, so display attribution comes from the requirement-ID prefix (<code>DSP-&lt;AREA&gt;-*</code>).</li>
+<li><strong>Requirement IDs cannot contain digits in the middle segment.</strong> The regex <code>^[A-Z]{2,4}-[A-Z]+-\d+[A-D]?$</code> rejects <code>RPT-E3-001</code>; use <code>RPT-MODEL-001</code>. (Text-block <em>file</em> IDs like <code>TXT-E3-1202</code> are identities, not requirement IDs — the requirements a block satisfies live in its <code>requirements:</code> frontmatter.)</li>
+<li><strong>Draft is a lifecycle state, not a failure.</strong> A <code>generated</code>-tier block awaiting approval reports as pending review — a warning chip on the evidence page, not a failed test, and not a non-zero exit code.</li>
+<li><strong>The evidence record extends §8</strong> with <code>issueRefs</code> on every record, and <code>reviewedBy</code>/<code>reviewedAt</code> on human-review records; evidence sets carry a <code>run</code> key (GitHub Actions run id/url, <code>null</code> locally).</li>
+<li><strong>The Reader renders from library source</strong>, resolving bindings against the committed ARDs, rather than from pre-flattened assembler prose — so display formatting stays a rendering-time concern.</li>
+<li><strong>Ordering is load-bearing:</strong> the R pipeline must run before <code>assemble.mjs</code>, which must run before <code>site.mjs</code>. CI re-assembles on every run rather than trusting committed output.</li>
+<li><strong><code>git_commit</code> is <code>null</code> when the tree is dirty</strong>, by design — an artifact that cannot name its commit says so instead of guessing.</li>
+</ul>
+</article></div></main>
+    <footer class="site-footer">
+      <p>
+        <strong>open.csr</strong> — an open-source Clinical Study Report builder. Numbers are
+        computed by versioned specs, serialized as ARDs, and bound into prose that never restates
+        them.
+      </p>
+      <p>
+        Demo data is CDISC Pilot 01 via
+        <a href="https://github.com/pharmaverse/pharmaverseadam">pharmaverseadam</a> · everything on
+        this site is precomputed and static ·
+        <a href="https://github.com/jwildfire/open.csr">source on GitHub</a> ·
+        <a href="https://jwildfire.github.io/obot.roadmap/">obot roadmap</a>.
+      </p>
+    </footer>
+    <script>
+      // Mark the nav link for this page; works at any mount depth.
+      (function () {
+        var here = location.pathname.replace(/\/$/, '/index.html');
+        var links = document.querySelectorAll('.site-nav a[href]');
+        for (var i = 0; i < links.length; i += 1) {
+          var href = links[i].getAttribute('href');
+          if (!href || href.indexOf('http') === 0) continue;
+          if (new URL(href, location.href).pathname === here) {
+            links[i].classList.add('current');
+            links[i].setAttribute('aria-current', 'page');
+          }
+        }
+      })();
+
+      // Theme toggle: OS preference by default, explicit choice remembered.
+      (function () {
+        var button = document.querySelector('.theme-toggle');
+        if (!button) return;
+        button.addEventListener('click', function () {
+          var root = document.documentElement;
+          var current =
+            root.getAttribute('data-theme') ||
+            (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+          var next = current === 'dark' ? 'light' : 'dark';
+          root.setAttribute('data-theme', next);
+          try {
+            localStorage.setItem('opencsr-theme', next);
+          } catch (e) {}
+        });
+      })();
+
+      // Tabs on the display detail pages.
+      (function () {
+        var groups = document.querySelectorAll('.tabs');
+        for (var g = 0; g < groups.length; g += 1) {
+          (function (group) {
+            var tabs = group.querySelectorAll('.tab');
+            var panels = group.querySelectorAll('.tab-panel');
+            group.addEventListener('click', function (event) {
+              var tab = event.target.closest('.tab');
+              if (!tab) return;
+              for (var i = 0; i < tabs.length; i += 1) {
+                var on = tabs[i] === tab;
+                tabs[i].classList.toggle('current', on);
+                tabs[i].setAttribute('aria-selected', on ? 'true' : 'false');
+                if (panels[i]) {
+                  panels[i].classList.toggle('current', on);
+                  panels[i].hidden = !on;
+                }
+              }
+            });
+          })(groups[g]);
+        }
+      })();
+
+      // ARD row filter.
+      (function () {
+        var inputs = document.querySelectorAll('.ard-filter');
+        for (var i = 0; i < inputs.length; i += 1) {
+          (function (input) {
+            input.addEventListener('input', function () {
+              var needle = input.value.toLowerCase();
+              var table = input.closest('.tab-panel, main').querySelector('.ard-table tbody');
+              if (!table) return;
+              var rows = table.rows;
+              for (var r = 0; r < rows.length; r += 1) {
+                rows[r].hidden = needle && rows[r].textContent.toLowerCase().indexOf(needle) === -1;
+              }
+            });
+          })(inputs[i]);
+        }
+      })();
+    </script>
+  </body>
+</html>
