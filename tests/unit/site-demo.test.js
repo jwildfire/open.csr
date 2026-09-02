@@ -67,8 +67,10 @@ describe('the shared selection', () => {
   });
 
   test('QC-DEMO-002: the tabs the requirements name are the tabs the app knows (#1)', () => {
-    // Four in #113 A; Values joined them with the values store (#129 B).
-    expect(TAB_IDS).toEqual(['documents', 'displays', 'text', 'values', 'templates']);
+    // Four in #113 A; Values joined them with the values store (#129 B); Data
+    // with the sidebar refactor (#76).
+    // with the sidebar refactor (#76, #77).
+    expect(TAB_IDS).toEqual(['documents', 'displays', 'text', 'values', 'data', 'metadata', 'templates']);
     expect(APP_TABS.map((tab) => tab.id)).toEqual(TAB_IDS);
     expect(TAB_IDS.every(isTab)).toBe(true);
     expect(isTab('gallery')).toBe(false);
@@ -233,7 +235,7 @@ describe('the application strip', () => {
       expect(html).not.toContain(`data-app-tab="${id}"`);
     }
     expect(GLOBAL_TABS.map((tab) => tab.id)).toEqual(['templates']);
-    expect(STUDY_TABS.map((tab) => tab.id)).toEqual(['documents', 'displays', 'text', 'values']);
+    expect(STUDY_TABS.map((tab) => tab.id)).toEqual(['documents', 'displays', 'text', 'values', 'data', 'metadata']);
   });
 
   test('QC-DEMO-016: a view in the bar is a real link, marked as navigation not as a control (#1)', () => {
@@ -457,12 +459,7 @@ describe('the navigation tree', () => {
   test('QC-DEMO-018: the study is the root, and documents, displays, text and values hang off it (#1)', () => {
     const tree = buildNavTree({ config, csr, displays, textBlocks });
     expect(tree.study).toMatchObject({ id: 'CDISCPILOT01', cutoff: '2014-07-01' });
-    expect(tree.groups.map((group) => group.id)).toEqual([
-      'documents',
-      'displays',
-      'text',
-      'values'
-    ]);
+    expect(tree.groups.map((group) => group.id)).toEqual(['documents', 'displays', 'text', 'values', 'data', 'metadata']);
   });
 
   test('QC-DEMO-018: more than one document is listed, and an unbuilt one says so (#1)', () => {

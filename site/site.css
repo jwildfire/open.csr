@@ -2934,3 +2934,26 @@ body.app-page .app-bar {
   background: var(--bad-soft, rgba(185, 28, 28, 0.12));
   border-bottom: 2px solid var(--bad, #b91c1c);
 }
+
+/* The Data section (#76): dataset links in a display header, and the dataset grid. */
+.dataset-link { text-decoration-color: color-mix(in srgb, currentColor 35%, transparent); }
+.dataset-hash { margin-left: .25rem; }
+.dataset-grid .card { text-decoration: none; color: inherit; display: block; }
+.dataset-grid .card h3 { font-size: 1rem; margin: .25rem 0 .2rem; }
+.dataset h3 .chip { margin-left: .4rem; vertical-align: middle; }
+.dataset + .dataset { margin-top: 1.25rem; }
+
+/* The Metadata section (#77): section links under the header, one block per specification and environment. */
+.section-links { display: flex; flex-wrap: wrap; gap: .4rem .9rem; margin: .6rem 0 1rem; font-size: .9rem; }
+.spec + .spec, .environment + .environment { margin-top: 1.1rem; padding-top: .9rem; border-top: 1px solid var(--hairline, #e8edef); }
+.spec h4 .mono, .environment h4 { font-weight: 600; }
+
+/* Links both ways (#78): the document inputs panel and the compact input lists. */
+.doc-inputs { border: 1px solid var(--border, #dde4e7); border-radius: 12px; padding: .6rem 1rem; margin: 1rem 0 1.4rem; }
+.doc-inputs summary { cursor: pointer; font-weight: 600; }
+.doc-inputs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: .6rem 1.4rem; margin-top: .6rem; }
+.doc-inputs h4 { font: 600 .72rem/1.4 ui-monospace, Menlo, monospace; letter-spacing: .05em; text-transform: uppercase; margin: .5rem 0 .2rem; }
+ul.compact { padding-left: 1rem; margin: 0; font-size: .92rem; }
+ul.compact li + li { margin-top: .15rem; }
+ul.inputs .chip { margin-right: .3rem; }
+.inputs-drift { color: var(--warn, #b4520f); }

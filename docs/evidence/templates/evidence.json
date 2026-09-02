@@ -1,6 +1,6 @@
 {
   "module": "templates",
-  "generated": "2026-09-02T17:38:37.585Z",
+  "generated": "2026-09-02T21:15:10.597Z",
   "records": [
     {
       "requirementIds": [
@@ -72,6 +72,18 @@
       "file": "tests/unit/assemble-template-subsets.test.js",
       "issueRefs": [
         45
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-LINK-002"
+      ],
+      "title": "Assembled CSR document model QC-LINK-002: the document records what it was built from — template, study, every placed display with its iteration and datasets, every block with its state and derived inputs, every value cited — and every block records the displays its bindings resolved against (#78)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/assemble-document.test.js",
+      "issueRefs": [
+        78
       ]
     },
     {

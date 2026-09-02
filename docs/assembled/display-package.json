@@ -1,6 +1,6 @@
 {
   "schema": "opencsr/csr/v1",
-  "generated": "2026-09-02T17:37:11.452Z",
+  "generated": "2026-09-02T21:12:57.314Z",
   "study": {
     "id": "CDISCPILOT01",
     "title": "Safety and Efficacy of the Xanomeline Transdermal Therapeutic System (TTS) in Patients with Mild to Moderate Alzheimer's Disease",
@@ -19,6 +19,801 @@
     "primary_analysis_set": "Safety Analysis Set",
     "data_source": "CDISCPILOT01 ADaM — the CDISC pilot's own package (phuse-org/phuse-scripts, data/adam/cdiscpilot01), every display",
     "scope_note": "The post-text displays of the clinical study report for this study, delivered on their own for review before the report is written. No narrative: every number here is the rendering of a committed analysis results dataset, and the appendix records which one. Section 14.2 carries the whole efficacy set — the ADAS-Cog programme, the CIBIC+ analyses, the NPI-X secondary endpoint and the study's one figure — from the study's own ADaM package; abnormal laboratory values (Section 14.3.4) are declared and still empty."
+  },
+  "inputs": {
+    "template": {
+      "id": "display-package",
+      "title": "Post-Text Display Package",
+      "version": "1.0.0"
+    },
+    "study": {
+      "id": "CDISCPILOT01",
+      "file": "library/study.yaml",
+      "cutoff": "2014-07-01"
+    },
+    "displays": [
+      {
+        "slug": "t-disposition",
+        "number": "14.1.1",
+        "title": "Subject Disposition",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v003",
+        "ardHash": "sha256:5a073a0a558678bc67b89573bc98619270f854d3af5d5cbdc18cd0ce8ed4f530",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254
+          }
+        ]
+      },
+      {
+        "slug": "t-demographics",
+        "number": "14.1.2",
+        "title": "Summary of Demographic and Baseline Characteristics",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v007",
+        "ardHash": "sha256:87af02747ecd7e74df308ac7fc521b68e22f7fad3fb86607e5e93d9d28cb82a5",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:b022f78fdd0ade028f6c4e9e7cc5187284a5249f30c16646931a1856d5fff2f6",
+            "n_row": 254
+          }
+        ]
+      },
+      {
+        "slug": "t-populations",
+        "number": "14.1.3",
+        "title": "Summary of Populations",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v003",
+        "ardHash": "sha256:a78a73c17c1a5ae078f0fdf5a098aac06805bf9387675d823a8b849dce24fb2c",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254
+          }
+        ]
+      },
+      {
+        "slug": "t-end-of-study",
+        "number": "14.1.4",
+        "title": "Summary of End of Study Data",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v003",
+        "ardHash": "sha256:496967825bc2f294bcc350f02e94f1b667bf4a77b4c68a30e2d4cae038732ea0",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254
+          }
+        ]
+      },
+      {
+        "slug": "t-subjects-by-site",
+        "number": "14.1.5",
+        "title": "Summary of Number of Subjects By Site",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v002",
+        "ardHash": "sha256:6887f57cfc4987e81823c8de7a4d6a2e452ea55848294db90f1997ccdf0d9747",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:1f6fa03914a74aa185bd5ee8453806779abe240f7b88f483d932b8eec9680da6",
+            "n_row": 254
+          }
+        ]
+      },
+      {
+        "slug": "f-disposition",
+        "number": "14.1.6",
+        "title": "Subject Disposition",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v001",
+        "ardHash": "sha256:700d5e705c1072eabb911963e071b51354ace9f8ff7059664622cb099d93c20f",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:3139478d86fda4c38e8bb2f41d348518f4a65f58bcdd7e9650fda8da7a9a6838",
+            "n_row": 254
+          },
+          {
+            "dataset": "dm",
+            "hash": "sha256:6f25948c36c7852a5188de66440be4689fc7ff727356f404d4b508c790497012",
+            "n_row": 306
+          }
+        ]
+      },
+      {
+        "slug": "t-eff-adas-wk24",
+        "number": "14.2.1",
+        "title": "Primary Endpoint Analysis: ADAS-Cog (11) - Change from Baseline to Week 24 - LOCF",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v002",
+        "ardHash": "sha256:6e4dd4049dbbb9929fbf55448bc75db5ca48fe28314f3ce67f3a0ee13158fa9b",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254
+          },
+          {
+            "dataset": "adqsadas",
+            "hash": "sha256:d6ee9a321a2a9d338285cc702d750624eefd6da11b0da0ae260a4133a492215f",
+            "n_row": 12463
+          }
+        ]
+      },
+      {
+        "slug": "t-cibic-week24",
+        "number": "14.2.2",
+        "title": "Primary Endpoint Analysis: CIBIC+ — Summary at Week 24 — LOCF",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v004",
+        "ardHash": "sha256:a8f78f3440c225ac975343e85610fe98e285c15c75d32619ea447fdda4cfbeb1",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254
+          },
+          {
+            "dataset": "adqscibc",
+            "hash": "sha256:f6461f436ff8d39a434fe5ecb7e1bcaf1b6da2913c4cbf2bf2c09d4c71d77873",
+            "n_row": 730
+          }
+        ]
+      },
+      {
+        "slug": "t-eff-adas-wk8",
+        "number": "14.2.3",
+        "title": "ADAS-Cog (11) - Change from Baseline to Week 8 - LOCF",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v002",
+        "ardHash": "sha256:ec13102c2c4e89aab2bcbf1a7f291a98236e5ccbe422774f1e71ea547f1d865d",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254
+          },
+          {
+            "dataset": "adqsadas",
+            "hash": "sha256:d6ee9a321a2a9d338285cc702d750624eefd6da11b0da0ae260a4133a492215f",
+            "n_row": 12463
+          }
+        ]
+      },
+      {
+        "slug": "t-cibic-week8",
+        "number": "14.2.4",
+        "title": "CIBIC+ — Summary at Week 8 — LOCF",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v002",
+        "ardHash": "sha256:3073ee549214ccb86aaa171002f80b9ccab912f1165af907f47e2da831409e0f",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254
+          },
+          {
+            "dataset": "adqscibc",
+            "hash": "sha256:f6461f436ff8d39a434fe5ecb7e1bcaf1b6da2913c4cbf2bf2c09d4c71d77873",
+            "n_row": 730
+          }
+        ]
+      },
+      {
+        "slug": "t-eff-adas-wk16",
+        "number": "14.2.5",
+        "title": "ADAS-Cog (11) - Change from Baseline to Week 16 - LOCF",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v002",
+        "ardHash": "sha256:dd7d1cd49f32843776209689cc9e83ed7388b258afcbb74eb0c969bdc66b1fbc",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254
+          },
+          {
+            "dataset": "adqsadas",
+            "hash": "sha256:d6ee9a321a2a9d338285cc702d750624eefd6da11b0da0ae260a4133a492215f",
+            "n_row": 12463
+          }
+        ]
+      },
+      {
+        "slug": "t-cibic-week16",
+        "number": "14.2.6",
+        "title": "CIBIC+ — Summary at Week 16 — LOCF",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v002",
+        "ardHash": "sha256:4f25a6b7098e33d9e700e41eb9cd20c6f254ff28d75dc1b3b86321b09d71b323",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254
+          },
+          {
+            "dataset": "adqscibc",
+            "hash": "sha256:f6461f436ff8d39a434fe5ecb7e1bcaf1b6da2913c4cbf2bf2c09d4c71d77873",
+            "n_row": 730
+          }
+        ]
+      },
+      {
+        "slug": "t-eff-adas-wk24-completers",
+        "number": "14.2.7",
+        "title": "ADAS-Cog (11) - Change from Baseline to Week 24 - Completers at Week 24, Observed Cases, Windowed",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v002",
+        "ardHash": "sha256:9c9aef70416902d5e01cb7492d4c9969b7c0b9e8c0638f96226494c85d75a85b",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254
+          },
+          {
+            "dataset": "adqsadas",
+            "hash": "sha256:d6ee9a321a2a9d338285cc702d750624eefd6da11b0da0ae260a4133a492215f",
+            "n_row": 12463
+          }
+        ]
+      },
+      {
+        "slug": "t-eff-adas-wk24-male",
+        "number": "14.2.8",
+        "title": "ADAS-Cog (11) - Change from Baseline to Week 24 in Male Subjects - LOCF",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v002",
+        "ardHash": "sha256:bf57631641d50368888c71ed09e1ae9db65181cbd1bf9c586ea2ddf6e1e440a8",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254
+          },
+          {
+            "dataset": "adqsadas",
+            "hash": "sha256:d6ee9a321a2a9d338285cc702d750624eefd6da11b0da0ae260a4133a492215f",
+            "n_row": 12463
+          }
+        ]
+      },
+      {
+        "slug": "t-eff-adas-wk24-female",
+        "number": "14.2.9",
+        "title": "ADAS-Cog (11) - Change from Baseline to Week 24 in Female Subjects - LOCF",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v002",
+        "ardHash": "sha256:92e388573064e3a214d2428b2b1dab4f52820aa15a32916abfbf395b9c8749e9",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254
+          },
+          {
+            "dataset": "adqsadas",
+            "hash": "sha256:d6ee9a321a2a9d338285cc702d750624eefd6da11b0da0ae260a4133a492215f",
+            "n_row": 12463
+          }
+        ]
+      },
+      {
+        "slug": "t-eff-adas-overtime",
+        "number": "14.2.10",
+        "title": "ADAS-Cog (11) - Mean and Mean Change from Baseline over Time",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v002",
+        "ardHash": "sha256:ae89465726a08192b7f1e4c039a58e503e53789a3e64fe322c2253183269586a",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254
+          },
+          {
+            "dataset": "adqsadas",
+            "hash": "sha256:d6ee9a321a2a9d338285cc702d750624eefd6da11b0da0ae260a4133a492215f",
+            "n_row": 12463
+          }
+        ]
+      },
+      {
+        "slug": "t-eff-adas-mmrm",
+        "number": "14.2.11",
+        "title": "ADAS-Cog (11) - Repeated Measures Analysis of Change from Baseline to Week 24",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v004",
+        "ardHash": "sha256:8953a87538065b43903e4c30de05fc1b94ce3019a5073fb119b5dfe694f0127f",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:1f6fa03914a74aa185bd5ee8453806779abe240f7b88f483d932b8eec9680da6",
+            "n_row": 254
+          },
+          {
+            "dataset": "adqsadas",
+            "hash": "sha256:d6ee9a321a2a9d338285cc702d750624eefd6da11b0da0ae260a4133a492215f",
+            "n_row": 12463
+          }
+        ]
+      },
+      {
+        "slug": "t-eff-npix-mean",
+        "number": "14.2.12",
+        "title": "Mean NPI-X Total Score from Week 4 through Week 24 - Windowed",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v003",
+        "ardHash": "sha256:670210cf013360c0acf6a92ee1315b14c3bb0085b5afd2774e45f299bdb00d5c",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254
+          },
+          {
+            "dataset": "adqsnpix",
+            "hash": "sha256:a8db42f422294f16537326a268fbc7d21e54e50677f628ad868849f4d7376971",
+            "n_row": 31140
+          }
+        ]
+      },
+      {
+        "slug": "t-cibic-categorical",
+        "number": "14.2.13",
+        "title": "CIBIC+ — Categorical Analysis — LOCF",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v002",
+        "ardHash": "sha256:4847131cf5f3a20db3ebb89fe76d1f674b9f21f57cf0bae1e6c04f907a52cb2c",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254
+          },
+          {
+            "dataset": "adqscibc",
+            "hash": "sha256:f6461f436ff8d39a434fe5ecb7e1bcaf1b6da2913c4cbf2bf2c09d4c71d77873",
+            "n_row": 730
+          }
+        ]
+      },
+      {
+        "slug": "f-derm-time-to-event",
+        "number": "14.2.14",
+        "title": "Time to Dermatologic Event by Treatment Group",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v002",
+        "ardHash": "sha256:dae95acbcabfedd187568e36989787120773f69897bcb9b67b4e17b32febc2a2",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254
+          },
+          {
+            "dataset": "adtte",
+            "hash": "sha256:82a036bcf2e2e0a50abd055347a9a41fc6ff9f3895d17c38b13db5512fa8b0ab",
+            "n_row": 254
+          }
+        ]
+      },
+      {
+        "slug": "t-exposure",
+        "number": "14.3.1.1",
+        "title": "Summary of Planned Exposure to Study Drug, as of End of Study",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v004",
+        "ardHash": "sha256:de9e7ac7bedab71bc5e127e92efa72f80a1e39215132b55ff52f46e4402675d6",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254
+          }
+        ]
+      },
+      {
+        "slug": "t-ae-overview",
+        "number": "14.3.1.2",
+        "title": "Overview of Treatment-Emergent Adverse Events",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v003",
+        "ardHash": "sha256:c428956bd34e0625304d2feeb54999dda3a3a9455412ad41606f19562a208cd7",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254
+          },
+          {
+            "dataset": "adae",
+            "hash": "sha256:4ffe4e4c90c8a531e95e4931b601c258ed0b83638d4b346e66635d79e78a7bf1",
+            "n_row": 1191
+          }
+        ]
+      },
+      {
+        "slug": "t-ae-common",
+        "number": "14.3.1.3",
+        "title": "Treatment-Emergent Adverse Events by System Organ Class and Preferred Term",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v004",
+        "ardHash": "sha256:adf6d639a882e4b3bdfda9e157055eed71c84ac7402285b8763445df32705dc1",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254
+          },
+          {
+            "dataset": "adae",
+            "hash": "sha256:4ffe4e4c90c8a531e95e4931b601c258ed0b83638d4b346e66635d79e78a7bf1",
+            "n_row": 1191
+          }
+        ]
+      },
+      {
+        "slug": "t-ae-incidence",
+        "number": "14.3.1.4",
+        "title": "Incidence of Treatment Emergent Adverse Events by Treatment Group",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v007",
+        "ardHash": "sha256:091de5139418fc160d23400a54f2b6895a2981c8e71fbca4b478665e4a0d4293",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:b022f78fdd0ade028f6c4e9e7cc5187284a5249f30c16646931a1856d5fff2f6",
+            "n_row": 254
+          },
+          {
+            "dataset": "adae",
+            "hash": "sha256:4ffe4e4c90c8a531e95e4931b601c258ed0b83638d4b346e66635d79e78a7bf1",
+            "n_row": 1191
+          }
+        ]
+      },
+      {
+        "slug": "l-ae-serious",
+        "number": "14.3.2.1",
+        "title": "Listing of Serious Adverse Events",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v003",
+        "ardHash": "sha256:cde82561c80104b90b6cd633c27d62bdfbfd1e835fa8b6b761af9cc1d9142276",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254
+          },
+          {
+            "dataset": "adae",
+            "hash": "sha256:4ffe4e4c90c8a531e95e4931b601c258ed0b83638d4b346e66635d79e78a7bf1",
+            "n_row": 1191
+          }
+        ]
+      },
+      {
+        "slug": "t-sae-incidence",
+        "number": "14.3.2.2",
+        "title": "Incidence of Treatment Emergent Serious Adverse Events by Treatment Group",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v006",
+        "ardHash": "sha256:94a983c62001c7f8ecdb7e411c6fbb7a9cdff8a5fab2f0597a4c38f3f8a3c0ca",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:3139478d86fda4c38e8bb2f41d348518f4a65f58bcdd7e9650fda8da7a9a6838",
+            "n_row": 254
+          },
+          {
+            "dataset": "adae",
+            "hash": "sha256:4ffe4e4c90c8a531e95e4931b601c258ed0b83638d4b346e66635d79e78a7bf1",
+            "n_row": 1191
+          }
+        ]
+      },
+      {
+        "slug": "t-vitals",
+        "number": "14.3.5.1",
+        "title": "Summary of Vital Signs at Baseline and End of Treatment",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v002",
+        "ardHash": "sha256:80334ead0eac4ab854a374391ffbe91362e2390fd16ce7a4c6ca15a445c0445f",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254
+          },
+          {
+            "dataset": "advs",
+            "hash": "sha256:ccc9f70e768c4c6529f31714c501e606c2edb69e8096da6cf4157785d428fcb0",
+            "n_row": 32139
+          }
+        ]
+      },
+      {
+        "slug": "t-vitals-change",
+        "number": "14.3.5.2",
+        "title": "Summary of Vital Signs Change from Baseline at End of Treatment",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v002",
+        "ardHash": "sha256:4a0f857568b5e33975c88570e4525d0215eefa7c318e011fbb57561d966d2c75",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254
+          },
+          {
+            "dataset": "advs",
+            "hash": "sha256:ccc9f70e768c4c6529f31714c501e606c2edb69e8096da6cf4157785d428fcb0",
+            "n_row": 32139
+          }
+        ]
+      },
+      {
+        "slug": "t-weight",
+        "number": "14.3.5.3",
+        "title": "Summary of Weight and Weight Change from Baseline at End of Treatment",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v004",
+        "ardHash": "sha256:39d684c1187758435aa1a2f084385ba5b1b49fda32b0dd11084b0e53ee82cf0e",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:b022f78fdd0ade028f6c4e9e7cc5187284a5249f30c16646931a1856d5fff2f6",
+            "n_row": 254
+          },
+          {
+            "dataset": "advs",
+            "hash": "sha256:ccc9f70e768c4c6529f31714c501e606c2edb69e8096da6cf4157785d428fcb0",
+            "n_row": 32139
+          }
+        ]
+      },
+      {
+        "slug": "t-conmeds",
+        "number": "14.3.5.4",
+        "title": "Summary of Concomitant Medications (Number of Subjects)",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v003",
+        "ardHash": "sha256:95799f768cea8ad4a42678bfed452e799de35b67b257f647c9260b4292b20a07",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:3139478d86fda4c38e8bb2f41d348518f4a65f58bcdd7e9650fda8da7a9a6838",
+            "n_row": 254
+          },
+          {
+            "dataset": "adcm",
+            "hash": "sha256:78178a0cbb946b71631f2084ec81fb87734ad0307c3f7d8e5e9497bd95e51253",
+            "n_row": 7510
+          }
+        ]
+      }
+    ],
+    "datasets": [
+      {
+        "dataset": "adsl",
+        "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+        "n_row": 254,
+        "readBy": [
+          "t-disposition",
+          "t-demographics",
+          "t-populations",
+          "t-end-of-study",
+          "t-subjects-by-site",
+          "f-disposition",
+          "t-eff-adas-wk24",
+          "t-cibic-week24",
+          "t-eff-adas-wk8",
+          "t-cibic-week8",
+          "t-eff-adas-wk16",
+          "t-cibic-week16",
+          "t-eff-adas-wk24-completers",
+          "t-eff-adas-wk24-male",
+          "t-eff-adas-wk24-female",
+          "t-eff-adas-overtime",
+          "t-eff-adas-mmrm",
+          "t-eff-npix-mean",
+          "t-cibic-categorical",
+          "f-derm-time-to-event",
+          "t-exposure",
+          "t-ae-overview",
+          "t-ae-common",
+          "t-ae-incidence",
+          "l-ae-serious",
+          "t-sae-incidence",
+          "t-vitals",
+          "t-vitals-change",
+          "t-weight",
+          "t-conmeds"
+        ]
+      },
+      {
+        "dataset": "dm",
+        "hash": "sha256:6f25948c36c7852a5188de66440be4689fc7ff727356f404d4b508c790497012",
+        "n_row": 306,
+        "readBy": [
+          "f-disposition"
+        ]
+      },
+      {
+        "dataset": "adqsadas",
+        "hash": "sha256:d6ee9a321a2a9d338285cc702d750624eefd6da11b0da0ae260a4133a492215f",
+        "n_row": 12463,
+        "readBy": [
+          "t-eff-adas-wk24",
+          "t-eff-adas-wk8",
+          "t-eff-adas-wk16",
+          "t-eff-adas-wk24-completers",
+          "t-eff-adas-wk24-male",
+          "t-eff-adas-wk24-female",
+          "t-eff-adas-overtime",
+          "t-eff-adas-mmrm"
+        ]
+      },
+      {
+        "dataset": "adqscibc",
+        "hash": "sha256:f6461f436ff8d39a434fe5ecb7e1bcaf1b6da2913c4cbf2bf2c09d4c71d77873",
+        "n_row": 730,
+        "readBy": [
+          "t-cibic-week24",
+          "t-cibic-week8",
+          "t-cibic-week16",
+          "t-cibic-categorical"
+        ]
+      },
+      {
+        "dataset": "adqsnpix",
+        "hash": "sha256:a8db42f422294f16537326a268fbc7d21e54e50677f628ad868849f4d7376971",
+        "n_row": 31140,
+        "readBy": [
+          "t-eff-npix-mean"
+        ]
+      },
+      {
+        "dataset": "adtte",
+        "hash": "sha256:82a036bcf2e2e0a50abd055347a9a41fc6ff9f3895d17c38b13db5512fa8b0ab",
+        "n_row": 254,
+        "readBy": [
+          "f-derm-time-to-event"
+        ]
+      },
+      {
+        "dataset": "adae",
+        "hash": "sha256:4ffe4e4c90c8a531e95e4931b601c258ed0b83638d4b346e66635d79e78a7bf1",
+        "n_row": 1191,
+        "readBy": [
+          "t-ae-overview",
+          "t-ae-common",
+          "t-ae-incidence",
+          "l-ae-serious",
+          "t-sae-incidence"
+        ]
+      },
+      {
+        "dataset": "advs",
+        "hash": "sha256:ccc9f70e768c4c6529f31714c501e606c2edb69e8096da6cf4157785d428fcb0",
+        "n_row": 32139,
+        "readBy": [
+          "t-vitals",
+          "t-vitals-change",
+          "t-weight"
+        ]
+      },
+      {
+        "dataset": "adcm",
+        "hash": "sha256:78178a0cbb946b71631f2084ec81fb87734ad0307c3f7d8e5e9497bd95e51253",
+        "n_row": 7510,
+        "readBy": [
+          "t-conmeds"
+        ]
+      }
+    ],
+    "textBlocks": [],
+    "values": []
   },
   "template": {
     "id": "display-package",

@@ -1,0 +1,9 @@
+study: CDISCPILOT01
+values:
+  - id: randomised-n
+    label: "Subjects randomised"
+    source: t-demo:any_ae:n;group=Total
+    format: { digits: 0 }
+  - id: ae-any-n-xanomeline
+    label: "Subjects with an AE on xanomeline"
+    derived: { op: sum, inputs: [randomised-n, randomised-n] }

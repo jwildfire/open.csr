@@ -1,6 +1,6 @@
 {
   "module": "quality",
-  "generated": "2026-09-02T17:38:37.585Z",
+  "generated": "2026-09-02T21:15:10.597Z",
   "records": [
     {
       "requirementIds": [
@@ -60,6 +60,18 @@
       "file": "tests/unit/site-render.test.js",
       "issueRefs": [
         42
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-LINK-001"
+      ],
+      "title": "a display links what it was built against and what was built from it QC-LINK-001: given the links, the header names the analysis set from the study model, the specification history, the environment, the blocks that bind it and the values sourced from it, each a link; without them the header prints as before (#78)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-links.test.js",
+      "issueRefs": [
+        78
       ]
     },
     {
@@ -268,6 +280,30 @@
     },
     {
       "requirementIds": [
+        "QC-LINK-002"
+      ],
+      "title": "a document links what it was built from QC-LINK-002: the inputs panel links the document model, the study model, every placed display with its iteration, every block with its state, every value cited and every dataset reached (#78)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-links.test.js",
+      "issueRefs": [
+        78
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-LINK-002"
+      ],
+      "title": "a document links what it was built from QC-LINK-002: the Reader carries the panel above the text and renders the provenance appendix as links to the display, each dataset and the environment (#78)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-links.test.js",
+      "issueRefs": [
+        78
+      ]
+    },
+    {
+      "requirementIds": [
         "QC-SITE-012"
       ],
       "title": "a document's contents follow the selection and nothing else QC-SITE-012: no rule survives that could hide the open document's contents (#40)",
@@ -408,6 +444,78 @@
       "file": "tests/unit/site-demo.test.js",
       "issueRefs": [
         36
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-LINK-003"
+      ],
+      "title": "a text block lists its inputs, derived from its bindings QC-LINK-003: a value cited is listed, and a declared display the block binds nothing from is named as drift rather than hidden (#78)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-links.test.js",
+      "issueRefs": [
+        78
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-LINK-003"
+      ],
+      "title": "a text block lists its inputs, derived from its bindings QC-LINK-003: the card lists each display the block binds with the iteration and ARD hash resolved against, the values it cites, its section and its approval, each a link (#78)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-links.test.js",
+      "issueRefs": [
+        78
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-META-003"
+      ],
+      "title": "approvals, environments, models and requirements QC-META-003: every text block is listed with its tier, version, approval state, approver, date and drafting model (#77)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-metadata.test.js",
+      "issueRefs": [
+        77
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-META-004"
+      ],
+      "title": "approvals, environments, models and requirements QC-META-004: document models are the template objects on disk, with the documents assembled from each, and an empty library says so (#77)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-metadata.test.js",
+      "issueRefs": [
+        77
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-META-004"
+      ],
+      "title": "approvals, environments, models and requirements QC-META-004: environments are deduplicated across every iteration, each listing the iterations built in it (#77)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-metadata.test.js",
+      "issueRefs": [
+        77
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-META-004"
+      ],
+      "title": "approvals, environments, models and requirements QC-META-004: the requirements page lists every matrix with its row count and a route to its evidence (#77)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-metadata.test.js",
+      "issueRefs": [
+        77
       ]
     },
     {
@@ -1372,6 +1480,42 @@
     },
     {
       "requirementIds": [
+        "QC-META-002"
+      ],
+      "title": "specifications and their history QC-META-002: every display is listed with its two specification files and every iteration with the actor, request and hashes its manifest recorded (#77)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-metadata.test.js",
+      "issueRefs": [
+        77
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-META-002"
+      ],
+      "title": "specifications and their history QC-META-002: shared custom code is stated from the borrowing side and the owning side (#77)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-metadata.test.js",
+      "issueRefs": [
+        77
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-META-002"
+      ],
+      "title": "specifications and their history QC-META-002: value declarations are read from the source file and link to the store (#77)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-metadata.test.js",
+      "issueRefs": [
+        77
+      ]
+    },
+    {
+      "requirementIds": [
         "STD-MODEL-001"
       ],
       "title": "Study model STD-MODEL-001: library/study.yaml loads with three arms in print order and every analysis set counted per arm (#59)",
@@ -1696,6 +1840,42 @@
     },
     {
       "requirementIds": [
+        "QC-DATA-001"
+      ],
+      "title": "the data registry and the package record QC-DATA-001: a registered dataset with no vendored file is planned, a derived or alternate one is not a missing file, and a vendored file nobody registered is published with a warning (#76)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-data.test.js",
+      "issueRefs": [
+        76
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DATA-001"
+      ],
+      "title": "the data registry and the package record QC-DATA-001: a repository with no data registry renders the empty state rather than throwing (#76)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-data.test.js",
+      "issueRefs": [
+        76
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DATA-001"
+      ],
+      "title": "the data registry and the package record QC-DATA-001: every registered dataset is read with its provenance, and the package carries its pinned commit (#76)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-data.test.js",
+      "issueRefs": [
+        76
+      ]
+    },
+    {
+      "requirementIds": [
         "QC-SITE-005"
       ],
       "title": "the display registry QC-SITE-005: status is derived from the filesystem, not from the declared value (#1)",
@@ -1876,6 +2056,30 @@
     },
     {
       "requirementIds": [
+        "QC-DATA-005"
+      ],
+      "title": "the explorer and the deep links QC-DATA-005: a dataset permalink is absorbed into the Data view with that dataset in focus, and the lanes and index likewise (#76)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-data.test.js",
+      "issueRefs": [
+        76
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DATA-005"
+      ],
+      "title": "the explorer and the deep links QC-DATA-005: Data is a view of the study, after Values, and a collection in the tree with one item per dataset (#76)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-data.test.js",
+      "issueRefs": [
+        76
+      ]
+    },
+    {
+      "requirementIds": [
         "QC-DEMO-020"
       ],
       "title": "the explorer wiring QC-DEMO-020: the group-level collapse the tree still needs is untouched (#40)",
@@ -1908,6 +2112,30 @@
       "file": "tests/unit/site-demo.test.js",
       "issueRefs": [
         40
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DATA-004"
+      ],
+      "title": "the links from a display to its data QC-DATA-004: a dataset the header names but this iteration’s ARD does not is still linked, and says so (#76)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-data.test.js",
+      "issueRefs": [
+        76
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DATA-004"
+      ],
+      "title": "the links from a display to its data QC-DATA-004: given the index, the display header links each dataset to its page with the hash and rows this iteration recorded; without it, the labels print as before (#76)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-data.test.js",
+      "issueRefs": [
+        76
       ]
     },
     {
@@ -2044,6 +2272,66 @@
     },
     {
       "requirementIds": [
+        "QC-DATA-003"
+      ],
+      "title": "the pages QC-DATA-003: a dataset has a standalone page with the same facts and the read-by table (#76)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-data.test.js",
+      "issueRefs": [
+        76
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DATA-003"
+      ],
+      "title": "the pages QC-DATA-003: the Data pane carries the package, one section per dataset with its facts, and the lanes, each addressable by id (#76)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-data.test.js",
+      "issueRefs": [
+        76
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DATA-003"
+      ],
+      "title": "the pages QC-DATA-003: the lanes section names both packagings and lists only the variables that differ, from the agreement record (#76)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-data.test.js",
+      "issueRefs": [
+        76
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-META-005"
+      ],
+      "title": "the pane, the explorer and the deep links QC-META-005: a metadata page permalink is absorbed into the Metadata view with that section in focus (#77)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-metadata.test.js",
+      "issueRefs": [
+        77
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-META-005"
+      ],
+      "title": "the pane, the explorer and the deep links QC-META-005: the pane carries every section by id, and Metadata is a view of the study after Data with one explorer item per page (#77)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-metadata.test.js",
+      "issueRefs": [
+        77
+      ]
+    },
+    {
+      "requirementIds": [
         "QC-SITE-009"
       ],
       "title": "the repository this site is built from QC-SITE-009: this repo's own library is plural and every object is assembled (#32)",
@@ -2064,6 +2352,30 @@
       "file": "tests/unit/site-documents.test.js",
       "issueRefs": [
         32
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DATA-002"
+      ],
+      "title": "the reverse index: from a dataset to every display that read it QC-DATA-002: a dataset no current ARD names has an empty index entry, and a dataset an ARD names that the registry does not know still gets one (#76)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-data.test.js",
+      "issueRefs": [
+        76
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DATA-002"
+      ],
+      "title": "the reverse index: from a dataset to every display that read it QC-DATA-002: a display whose current ARD names a dataset appears under it with the iteration, rows and hash that ARD recorded (#76)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-data.test.js",
+      "issueRefs": [
+        76
       ]
     },
     {
@@ -2136,6 +2448,30 @@
       "file": "tests/unit/site-render.test.js",
       "issueRefs": [
         1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-META-001"
+      ],
+      "title": "the study model QC-META-001: a repository without a study model renders the empty state and says so in the warnings (#77)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-metadata.test.js",
+      "issueRefs": [
+        77
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-META-001"
+      ],
+      "title": "the study model QC-META-001: the study page states the arms in print order, the columns that carry an arm label, and every analysis set with its flag and subjects per arm (#77)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-metadata.test.js",
+      "issueRefs": [
+        77
       ]
     },
     {
@@ -2472,6 +2808,30 @@
       "file": "tests/unit/requirements-matrix.test.js",
       "issueRefs": [
         1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-LINK-004"
+      ],
+      "title": "values and the explorer QC-LINK-004: the values pane links the arm a source address names to the study model, the data behind its display, and the documents that place the blocks citing it (#78)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-links.test.js",
+      "issueRefs": [
+        78
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-LINK-005"
+      ],
+      "title": "values and the explorer QC-LINK-005: a document whose build failed a gate is flagged in the explorer, and one that passed is not (#78)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-links.test.js",
+      "issueRefs": [
+        78
       ]
     },
     {

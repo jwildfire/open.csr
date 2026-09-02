@@ -23,6 +23,7 @@ import { marked } from 'marked';
 import { isReaderEditable, readerDrawerId } from '../site/demo/reader-edit-core.js';
 import { summarizeEvidence } from './evidence-lib.mjs';
 import { resolveRequirementCoverage } from './requirements-lib.mjs';
+import { VALUE_RE } from './values-lib.mjs';
 
 // ---------------------------------------------------------------------------
 // 1. Text helpers
@@ -819,6 +820,7 @@ export function buildTraceIndex(displays) {
       displayFile: display.outputs?.displayFile || null,
       ardFile: current?.ardFile || null,
       ardHash: current?.ardHash || null,
+      version: current?.version || null,
       specHash: provenance.spec_hash || null,
       commit: provenance.git_commit || current?.manifest?.commit || null,
       iteration: current?.version || null,
@@ -1317,6 +1319,61 @@ export function artifactFileName(slug, artifact) {
   return `${slug}${suffix}.${artifact.format}`;
 }
 
+/**
+ * The dataset links a display header prints in place of its dataset labels
+ * (#76): each carries the hash and row count the display's own ARD recorded,
+ * so the reader lands on the exact input, not on the dataset in general.
+ */
+export function datasetLinks(ids = [], { ard = null, root = '../' } = {}) {
+  const recorded = new Map(
+    (Array.isArray(ard?.provenance?.data) ? ard.provenance.data : []).map((entry) => [entry.dataset, entry])
+  );
+  return ids
+    .map((id) => {
+      const entry = recorded.get(id);
+      const title = entry
+        ? `${entry.n_row ?? '?'} rows · ${entry.hash || 'no hash'}`
+        : 'not named in this iteration’s ARD';
+      const short = entry?.hash ? String(entry.hash).replace(/^sha256:/, '').slice(0, 7) : '';
+      return (
+        `<a class="mono dataset-link" href="${escapeHtml(root)}data/${escapeHtml(id)}.html" ` +
+        `title="${escapeHtml(title)}">${escapeHtml(id)}</a>` +
+        (short ? ` <span class="sub mono dataset-hash">${escapeHtml(short)}</span>` : '')
+      );
+    })
+    .join(', ');
+}
+
+/** The header facts that link a display to the metadata it was built against and the artifacts built from it (#78). */
+function displayLinkFacts(display, links) {
+  const set = links.analysisSet;
+  const study = set
+    ? `<a href="../metadata/study.html">${escapeHtml(set.label || set.name)}</a>` +
+      (set.flag ? ` <span class="sub mono">${escapeHtml(set.flag)}</span>` : '') +
+      (links.group ? ` · grouped by <span class="mono">${escapeHtml(links.group)}</span>` : '')
+    : `<a href="../metadata/study.html">${escapeHtml(links.studyId || 'study model')}</a>`;
+  const n = links.iterations ?? 0;
+  const spec =
+    `<a href="../metadata/specs.html#spec-${escapeHtml(display.slug)}">${escapeHtml(String(n))} iteration${n === 1 ? '' : 's'}</a>`;
+  const env = links.environment
+    ? `<a href="../metadata/environments.html">R ${escapeHtml(links.environment.r || '?')}</a>` +
+      (links.environment.os ? ` <span class="sub">${escapeHtml(links.environment.os)}</span>` : '')
+    : `<span class="muted">—</span>`;
+  const blocks = (links.textBlocks || []).length
+    ? links.textBlocks.map((id) => `<a class="mono" href="../text/index.html#${escapeHtml(id)}">${escapeHtml(id)}</a>`).join(' ')
+    : `<span class="muted">No text block binds it</span>`;
+  const values = (links.values || []).length
+    ? links.values.map((id) => `<a class="mono" href="../values/index.html#${escapeHtml(id)}">${escapeHtml(id)}</a>`).join(' ')
+    : `<span class="muted">No value is sourced from it</span>`;
+  return [
+    ['Study model', study],
+    ['Specification', spec],
+    ['Environment', env],
+    ['Bound by', blocks],
+    ['Values', values]
+  ];
+}
+
 export function renderDisplayPage({
   config,
   display,
@@ -1325,7 +1382,15 @@ export function renderDisplayPage({
   // Every document that places this display, from displayUsage(). Absent on a
   // caller that has no library to hand — the page then simply does not make the
   // claim, rather than making an empty one (#42).
-  usedIn = null
+  usedIn = null,
+  // The Data section's index (#76). When given, the Datasets fact links each
+  // dataset to its page, carrying the hash and row count THIS iteration's ARD
+  // recorded for it; when absent, the labels print as before.
+  datasets = null,
+  // What this display was built against and what was built from it (#78):
+  // { studyId, analysisSet: {name, label, flag}, group, iterations, environment,
+  //   textBlocks: [ids], values: [ids] }. Absent, the header prints as before.
+  links = null
 } = {}) {
   const outputs = display.outputs || {};
   const current = outputs.current;
@@ -1395,7 +1460,9 @@ export function renderDisplayPage({
     ['Current iteration', current ? `<span class="mono">${escapeHtml(current.version)}</span>` : '—'],
     [
       'Datasets',
-      (display.datasets || []).map((d) => `<span class="mono">${escapeHtml(d)}</span>`).join(', ') || '—'
+      datasets
+        ? datasetLinks(display.datasets || [], { ard: current?.ard }) || '—'
+        : (display.datasets || []).map((d) => `<span class="mono">${escapeHtml(d)}</span>`).join(', ') || '—'
     ],
     [
       'Evidence',
@@ -1435,7 +1502,8 @@ export function renderDisplayPage({
             .join('') +
           `</ul>`
         : `<span class="muted">No document places it yet</span>`
-    ]
+    ],
+    ...(links ? displayLinkFacts(display, links) : [])
   ]
     .map(([label, value]) => `<div><dt>${escapeHtml(label)}</dt><dd>${value}</dd></div>`)
     .join('');
@@ -1748,6 +1816,7 @@ export function renderCsrReader({
     ards,
     depth: 2,
     xrefs: { sections: sectionIndex, displays: displayIndex },
+    root,
     // Text blocks are rendered from their LIBRARY SOURCE where one exists, so
     // the bindings stay live and clickable on this page (contracts §6, TRC-DOC-002)
     // rather than arriving as already-flattened prose.
@@ -1763,6 +1832,7 @@ export function renderCsrReader({
     head,
     switcher,
     notice,
+    renderDocumentInputs(csr.json?.inputs, { root }),
     `<div class="reader">`,
     `<nav class="reader-toc" aria-label="Document sections"><h2>Contents</h2><ol>${toc}</ol></nav>`,
     `<article class="csr-doc">${body}</article>`,
@@ -1804,7 +1874,7 @@ function renderCsrSection(section, context) {
         `</p>`
       : '';
 
-  const provenance = section.provenance ? renderProvenanceAppendix(section.provenance) : '';
+  const provenance = section.provenance ? renderProvenanceAppendix(section.provenance, context) : '';
 
   const children = section.sections
     .map((child) => renderCsrSection(child, { ...context, depth: context.depth + 1 }))
@@ -1889,8 +1959,96 @@ function renderCsrDisplay(block, context) {
 
 // Section 16.1.9: E3 reserved the slot in 1995 and open.csr fills it
 // mechanically — package versions, ARD hashes, data manifests, session info.
-function renderProvenanceAppendix(provenance) {
+/**
+ * What a document was built from, above its text (#78): the template object,
+ * the study model, every placed display, every text block with its state,
+ * every value cited and every dataset reached — each a link into the view
+ * that owns it. Built from the `inputs` record the assembler writes.
+ */
+export function renderDocumentInputs(inputs, { root = '' } = {}) {
+  if (!inputs) return '';
+  const href = (file) => `${escapeHtml(root)}${escapeHtml(file)}`;
+  const short = (hash) => String(hash || '').replace(/^sha256:/, '').slice(0, 7);
+  const displays = (inputs.displays || [])
+    .map(
+      (d) =>
+        `<li><a href="${href(`gallery/${d.slug}.html`)}">${escapeHtml(d.title || d.slug)}</a>` +
+        (d.number ? ` <span class="sub mono">${escapeHtml(String(d.number))}</span>` : '') +
+        (d.iteration ? ` <span class="sub mono">${escapeHtml(d.iteration)}</span>` : '') +
+        `</li>`
+    )
+    .join('');
+  const blocks = (inputs.textBlocks || [])
+    .map(
+      (b) =>
+        `<li><a class="mono" href="${href('text/index.html')}#${escapeHtml(b.id)}">${escapeHtml(b.id)}</a> ` +
+        chip(b.state || 'draft', b.state === 'approved' ? 'good' : 'warn') +
+        (b.included === false ? ` <span class="sub">excluded</span>` : '') +
+        `</li>`
+    )
+    .join('');
+  const values = (inputs.values || [])
+    .map((id) => `<a class="mono" href="${href('values/index.html')}#${escapeHtml(id)}">${escapeHtml(id)}</a>`)
+    .join(', ');
+  const datasets = (inputs.datasets || [])
+    .map(
+      (x) =>
+        `<li><a class="mono" href="${href(`data/${x.dataset}.html`)}">${escapeHtml(x.dataset)}</a> ` +
+        `<span class="sub mono">${escapeHtml(String(x.n_row ?? '—'))} rows · ${escapeHtml(short(x.hash))}</span> ` +
+        `<span class="sub">read by ${(x.readBy || []).length} display${(x.readBy || []).length === 1 ? '' : 's'}</span></li>`
+    )
+    .join('');
+  const template = inputs.template || {};
+  const study = inputs.study || {};
+  return (
+    `<details class="doc-inputs" open><summary>What this document was built from</summary>` +
+    `<div class="doc-inputs-grid">` +
+    `<div><h4>Document model</h4><p><a href="${href('metadata/models.html')}">${escapeHtml(template.title || template.id || 'template')}</a>` +
+    (template.version ? ` <span class="sub mono">v${escapeHtml(String(template.version))}</span>` : '') +
+    `</p><h4>Study model</h4><p><a href="${href('metadata/study.html')}">${escapeHtml(study.id || 'study')}</a>` +
+    (study.cutoff ? ` <span class="sub mono">cut-off ${escapeHtml(study.cutoff)}</span>` : '') +
+    `</p><h4>Values cited</h4><p>${values || '<span class="muted">none</span>'}</p></div>` +
+    `<div><h4>Displays placed (${(inputs.displays || []).length})</h4><ul class="plain compact">${displays || '<li class="muted">none</li>'}</ul></div>` +
+    `<div><h4>Text blocks (${(inputs.textBlocks || []).length})</h4><ul class="plain compact">${blocks || '<li class="muted">none</li>'}</ul></div>` +
+    `<div><h4>Datasets reached (${(inputs.datasets || []).length})</h4><ul class="plain compact">${datasets || '<li class="muted">none</li>'}</ul>` +
+    `<p class="sub"><a href="${href('metadata/approvals.html')}">Approvals</a> · <a href="${href('metadata/environments.html')}">Environments</a> · <a href="${href('data/index.html')}">Data</a></p></div>` +
+    `</div></details>`
+  );
+}
+
+function renderProvenanceAppendix(provenance, context = {}) {
   if (typeof provenance === 'string') return `<pre class="ascii">${escapeHtml(provenance)}</pre>`;
+  // The assembler's appendix (#78): one row per display, every cell a link —
+  // the display, each input dataset with its hash, the environment.
+  if (Array.isArray(provenance?.displays)) {
+    const root = context.root || '';
+    const short = (hash) => String(hash || '').replace(/^sha256:/, '').slice(0, 7);
+    const rows = provenance.displays
+      .map(
+        (p) =>
+          `<tr><td><a class="mono" href="${escapeHtml(root)}gallery/${escapeHtml(p.slug)}.html">${escapeHtml(p.slug)}</a>` +
+          (p.number ? `<br><span class="sub mono">${escapeHtml(String(p.number))}</span>` : '') +
+          `</td><td>${escapeHtml(p.title || '')}</td>` +
+          `<td class="mono" title="${escapeHtml(p.specHash || '')}">${escapeHtml(short(p.specHash) || '—')}<br>${escapeHtml(short(p.displayHash) || '—')}</td>` +
+          `<td>${(p.data || [])
+            .map(
+              (d) =>
+                `<a class="mono" href="${escapeHtml(root)}data/${escapeHtml(d.dataset)}.html">${escapeHtml(d.dataset)}</a> ` +
+                `<span class="sub mono">${escapeHtml(String(d.n_row ?? '—'))} rows · ${escapeHtml(short(d.hash))}</span>`
+            )
+            .join('<br>') || '—'}</td>` +
+          `<td>${p.environment ? `<a href="${escapeHtml(root)}metadata/environments.html">R ${escapeHtml(p.environment.r || '?')}</a>` : '—'}</td>` +
+          `<td class="mono">${escapeHtml(p.gitCommit ? String(p.gitCommit).slice(0, 7) : 'uncommitted')}` +
+          (p.created ? `<br><span class="sub">${escapeHtml(String(p.created).slice(0, 10))}</span>` : '') +
+          `</td></tr>`
+      )
+      .join('');
+    return (
+      `<div class="scroll"><table class="data provenance"><thead><tr><th>Display</th><th>Title</th>` +
+      `<th>Spec / display</th><th>Input data</th><th>Environment</th><th>Commit</th></tr></thead>` +
+      `<tbody>${rows}</tbody></table></div>`
+    );
+  }
   const flat = [];
   const walk = (value, prefix) => {
     if (value === null || value === undefined) return;
@@ -2039,6 +2197,54 @@ function traceScript(traceIndex) {
 // 8. Text Library
 // ---------------------------------------------------------------------------
 
+/**
+ * A text block's inputs, derived at build rather than declared (#78): the
+ * displays its bindings resolve against — each with the iteration and ARD hash
+ * the site resolved against — the values it cites, the section it belongs to
+ * and its approval. The frontmatter's `displays:` list stays the author's
+ * declaration; the build already fails a block that binds a display it does
+ * not declare, so the only drift left to show is a declared display the block
+ * binds nothing from.
+ */
+export function renderBlockInputs(block, { ards = {}, traceIndex = {}, root = '../' } = {}) {
+  const bound = new Map();
+  for (const address of block.bindings || []) {
+    const resolved = resolveBinding(address, ards);
+    const slug = resolved.display || String(address).split(':')[0];
+    if (!slug) continue;
+    bound.set(slug, (bound.get(slug) || 0) + 1);
+  }
+  const values = [...new Set([...String(block.body || '').matchAll(VALUE_RE)].map((m) => m[1]))];
+  const declared = block.displays || [];
+  const unbound = declared.filter((slug) => !bound.has(slug));
+  const items = [];
+  for (const [slug, n] of bound) {
+    const entry = traceIndex[slug] || {};
+    items.push(
+      `<li>${chip('display', 'info')} <a class="mono" href="${escapeHtml(root)}gallery/${escapeHtml(slug)}.html">${escapeHtml(slug)}</a>` +
+        (entry.version ? ` <span class="sub mono">${escapeHtml(entry.version)}</span>` : '') +
+        (entry.ardHash ? ` <span class="sub mono" title="${escapeHtml(entry.ardHash)}">${escapeHtml(String(entry.ardHash).replace(/^sha256:/, '').slice(0, 7))}</span>` : '') +
+        ` <span class="sub">${n} binding${n === 1 ? '' : 's'}</span></li>`
+    );
+  }
+  for (const id of values) {
+    items.push(`<li>${chip('value', 'good')} <a class="mono" href="${escapeHtml(root)}values/index.html#${escapeHtml(id)}">${escapeHtml(id)}</a></li>`);
+  }
+  if (block.e3Section) {
+    items.push(`<li>${chip('section', 'muted')} <a href="${escapeHtml(root)}metadata/models.html">§${escapeHtml(block.e3Section)}</a></li>`);
+  }
+  items.push(
+    `<li>${chip('approval', block.approval?.state === 'approved' ? 'good' : 'warn')} ` +
+      `<a href="${escapeHtml(root)}metadata/approvals.html">${escapeHtml(block.approval?.state || 'draft')}</a>` +
+      (block.approval?.by ? ` <span class="sub">${escapeHtml(block.approval.by)}${block.approval.at ? ` · ${escapeHtml(block.approval.at)}` : ''}</span>` : '') +
+      `</li>`
+  );
+  const drift = unbound.length
+    ? `<p class="sub inputs-drift">Declares ${unbound.map((slug) => `<span class="mono">${escapeHtml(slug)}</span>`).join(', ')} but binds nothing from ${unbound.length === 1 ? 'it' : 'them'}.</p>`
+    : '';
+  return `<h4>Inputs</h4><ul class="plain compact inputs">${items.join('')}</ul>${drift}`;
+}
+
 const TIER_KIND = { boilerplate: 'muted', parameterized: 'info', generated: 'warn' };
 
 export function renderTextLibrary({ textBlocks, ards, traceIndex }) {
@@ -2126,6 +2332,7 @@ export function renderTextLibrary({ textBlocks, ards, traceIndex }) {
           : block.exists
             ? `<p class="sub">No bindings — this block states no results.</p>`
             : '') +
+        (block.exists ? renderBlockInputs(block, { ards, traceIndex }) : '') +
         (block.displays?.length
           ? `<p class="sub">Displays: ${block.displays
               .map(

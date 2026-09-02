@@ -1,0 +1,7 @@
+{
+  "study": "CDISCPILOT01",
+  "sources": { "phuse": "fixture: the pilot package", "pharmaverseadam": "fixture: the re-derivation" },
+  "comparison_rule": "Fixture comparison rule.",
+  "adsl": { "n_subjects": { "phuse": 254, "pharmaverseadam": 254 }, "subjects_identical": true, "variables": { "AGE": { "n_diff": 0 }, "AGEGR1": { "n_diff": 254, "pairs": { "<65 > 18-64": 33 } } } },
+  "adae": { "n_records": { "phuse": 1191, "pharmaverseadam": 1191 }, "keys_identical": true, "variables": { "AETERM": { "n_diff": 0 } } }
+}

@@ -1,6 +1,6 @@
 {
   "schema": "opencsr/csr/v1",
-  "generated": "2026-09-02T17:37:11.522Z",
+  "generated": "2026-09-02T21:12:57.384Z",
   "study": {
     "id": "CDISCPILOT01",
     "title": "Safety and Efficacy of the Xanomeline Transdermal Therapeutic System (TTS) in Patients with Mild to Moderate Alzheimer's Disease",
@@ -19,6 +19,875 @@
     "primary_analysis_set": "Safety Analysis Set",
     "data_source": "CDISCPILOT01 ADaM — the CDISC pilot's own package (phuse-org/phuse-scripts, data/adam/cdiscpilot01), every display",
     "scope_note": "The abbreviated form of the clinical study report for this study: the same prose and the same displays, in a document model with the efficacy-analysis apparatus and the uncited appendices removed. Section 14.2 carries the fourteen efficacy displays the full report carries — the ADAS-Cog programme, the CIBIC+ analyses, the NPI-X secondary endpoint and the study's one figure. It was declared and empty only for as long as no efficacy analysis dataset existed for this study in the demonstration data (design decision D12), which stopped being true when the CDISC pilot's own ADaM package was vendored."
+  },
+  "inputs": {
+    "template": {
+      "id": "e3-abbreviated",
+      "title": "Abbreviated Clinical Study Report (ICH E3)",
+      "version": "1.0.0"
+    },
+    "study": {
+      "id": "CDISCPILOT01",
+      "file": "library/study.yaml",
+      "cutoff": "2014-07-01"
+    },
+    "displays": [
+      {
+        "slug": "t-disposition",
+        "number": "14.1.1",
+        "title": "Subject Disposition",
+        "variants": [
+          "in_text",
+          "post_text"
+        ],
+        "iteration": "v003",
+        "ardHash": "sha256:5a073a0a558678bc67b89573bc98619270f854d3af5d5cbdc18cd0ce8ed4f530",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254
+          }
+        ]
+      },
+      {
+        "slug": "f-disposition",
+        "number": "14.1.6",
+        "title": "Subject Disposition",
+        "variants": [
+          "in_text",
+          "post_text"
+        ],
+        "iteration": "v001",
+        "ardHash": "sha256:700d5e705c1072eabb911963e071b51354ace9f8ff7059664622cb099d93c20f",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:3139478d86fda4c38e8bb2f41d348518f4a65f58bcdd7e9650fda8da7a9a6838",
+            "n_row": 254
+          },
+          {
+            "dataset": "dm",
+            "hash": "sha256:6f25948c36c7852a5188de66440be4689fc7ff727356f404d4b508c790497012",
+            "n_row": 306
+          }
+        ]
+      },
+      {
+        "slug": "t-demographics",
+        "number": "14.1.2",
+        "title": "Summary of Demographic and Baseline Characteristics",
+        "variants": [
+          "in_text",
+          "post_text"
+        ],
+        "iteration": "v007",
+        "ardHash": "sha256:87af02747ecd7e74df308ac7fc521b68e22f7fad3fb86607e5e93d9d28cb82a5",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:b022f78fdd0ade028f6c4e9e7cc5187284a5249f30c16646931a1856d5fff2f6",
+            "n_row": 254
+          }
+        ]
+      },
+      {
+        "slug": "t-exposure",
+        "number": "14.3.1.1",
+        "title": "Summary of Planned Exposure to Study Drug, as of End of Study",
+        "variants": [
+          "in_text",
+          "post_text"
+        ],
+        "iteration": "v004",
+        "ardHash": "sha256:de9e7ac7bedab71bc5e127e92efa72f80a1e39215132b55ff52f46e4402675d6",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254
+          }
+        ]
+      },
+      {
+        "slug": "t-ae-overview",
+        "number": "14.3.1.2",
+        "title": "Overview of Treatment-Emergent Adverse Events",
+        "variants": [
+          "in_text",
+          "post_text"
+        ],
+        "iteration": "v003",
+        "ardHash": "sha256:c428956bd34e0625304d2feeb54999dda3a3a9455412ad41606f19562a208cd7",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254
+          },
+          {
+            "dataset": "adae",
+            "hash": "sha256:4ffe4e4c90c8a531e95e4931b601c258ed0b83638d4b346e66635d79e78a7bf1",
+            "n_row": 1191
+          }
+        ]
+      },
+      {
+        "slug": "t-ae-common",
+        "number": "14.3.1.3",
+        "title": "Treatment-Emergent Adverse Events by System Organ Class and Preferred Term",
+        "variants": [
+          "in_text",
+          "post_text"
+        ],
+        "iteration": "v004",
+        "ardHash": "sha256:adf6d639a882e4b3bdfda9e157055eed71c84ac7402285b8763445df32705dc1",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254
+          },
+          {
+            "dataset": "adae",
+            "hash": "sha256:4ffe4e4c90c8a531e95e4931b601c258ed0b83638d4b346e66635d79e78a7bf1",
+            "n_row": 1191
+          }
+        ]
+      },
+      {
+        "slug": "t-ae-incidence",
+        "number": "14.3.1.4",
+        "title": "Incidence of Treatment Emergent Adverse Events by Treatment Group",
+        "variants": [
+          "in_text",
+          "post_text"
+        ],
+        "iteration": "v007",
+        "ardHash": "sha256:091de5139418fc160d23400a54f2b6895a2981c8e71fbca4b478665e4a0d4293",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:b022f78fdd0ade028f6c4e9e7cc5187284a5249f30c16646931a1856d5fff2f6",
+            "n_row": 254
+          },
+          {
+            "dataset": "adae",
+            "hash": "sha256:4ffe4e4c90c8a531e95e4931b601c258ed0b83638d4b346e66635d79e78a7bf1",
+            "n_row": 1191
+          }
+        ]
+      },
+      {
+        "slug": "l-ae-serious",
+        "number": "14.3.2.1",
+        "title": "Listing of Serious Adverse Events",
+        "variants": [
+          "in_text",
+          "post_text"
+        ],
+        "iteration": "v003",
+        "ardHash": "sha256:cde82561c80104b90b6cd633c27d62bdfbfd1e835fa8b6b761af9cc1d9142276",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254
+          },
+          {
+            "dataset": "adae",
+            "hash": "sha256:4ffe4e4c90c8a531e95e4931b601c258ed0b83638d4b346e66635d79e78a7bf1",
+            "n_row": 1191
+          }
+        ]
+      },
+      {
+        "slug": "t-populations",
+        "number": "14.1.3",
+        "title": "Summary of Populations",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v003",
+        "ardHash": "sha256:a78a73c17c1a5ae078f0fdf5a098aac06805bf9387675d823a8b849dce24fb2c",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254
+          }
+        ]
+      },
+      {
+        "slug": "t-end-of-study",
+        "number": "14.1.4",
+        "title": "Summary of End of Study Data",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v003",
+        "ardHash": "sha256:496967825bc2f294bcc350f02e94f1b667bf4a77b4c68a30e2d4cae038732ea0",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254
+          }
+        ]
+      },
+      {
+        "slug": "t-subjects-by-site",
+        "number": "14.1.5",
+        "title": "Summary of Number of Subjects By Site",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v002",
+        "ardHash": "sha256:6887f57cfc4987e81823c8de7a4d6a2e452ea55848294db90f1997ccdf0d9747",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:1f6fa03914a74aa185bd5ee8453806779abe240f7b88f483d932b8eec9680da6",
+            "n_row": 254
+          }
+        ]
+      },
+      {
+        "slug": "t-eff-adas-wk24",
+        "number": "14.2.1",
+        "title": "Primary Endpoint Analysis: ADAS-Cog (11) - Change from Baseline to Week 24 - LOCF",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v002",
+        "ardHash": "sha256:6e4dd4049dbbb9929fbf55448bc75db5ca48fe28314f3ce67f3a0ee13158fa9b",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254
+          },
+          {
+            "dataset": "adqsadas",
+            "hash": "sha256:d6ee9a321a2a9d338285cc702d750624eefd6da11b0da0ae260a4133a492215f",
+            "n_row": 12463
+          }
+        ]
+      },
+      {
+        "slug": "t-cibic-week24",
+        "number": "14.2.2",
+        "title": "Primary Endpoint Analysis: CIBIC+ — Summary at Week 24 — LOCF",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v004",
+        "ardHash": "sha256:a8f78f3440c225ac975343e85610fe98e285c15c75d32619ea447fdda4cfbeb1",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254
+          },
+          {
+            "dataset": "adqscibc",
+            "hash": "sha256:f6461f436ff8d39a434fe5ecb7e1bcaf1b6da2913c4cbf2bf2c09d4c71d77873",
+            "n_row": 730
+          }
+        ]
+      },
+      {
+        "slug": "t-eff-adas-wk8",
+        "number": "14.2.3",
+        "title": "ADAS-Cog (11) - Change from Baseline to Week 8 - LOCF",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v002",
+        "ardHash": "sha256:ec13102c2c4e89aab2bcbf1a7f291a98236e5ccbe422774f1e71ea547f1d865d",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254
+          },
+          {
+            "dataset": "adqsadas",
+            "hash": "sha256:d6ee9a321a2a9d338285cc702d750624eefd6da11b0da0ae260a4133a492215f",
+            "n_row": 12463
+          }
+        ]
+      },
+      {
+        "slug": "t-cibic-week8",
+        "number": "14.2.4",
+        "title": "CIBIC+ — Summary at Week 8 — LOCF",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v002",
+        "ardHash": "sha256:3073ee549214ccb86aaa171002f80b9ccab912f1165af907f47e2da831409e0f",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254
+          },
+          {
+            "dataset": "adqscibc",
+            "hash": "sha256:f6461f436ff8d39a434fe5ecb7e1bcaf1b6da2913c4cbf2bf2c09d4c71d77873",
+            "n_row": 730
+          }
+        ]
+      },
+      {
+        "slug": "t-eff-adas-wk16",
+        "number": "14.2.5",
+        "title": "ADAS-Cog (11) - Change from Baseline to Week 16 - LOCF",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v002",
+        "ardHash": "sha256:dd7d1cd49f32843776209689cc9e83ed7388b258afcbb74eb0c969bdc66b1fbc",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254
+          },
+          {
+            "dataset": "adqsadas",
+            "hash": "sha256:d6ee9a321a2a9d338285cc702d750624eefd6da11b0da0ae260a4133a492215f",
+            "n_row": 12463
+          }
+        ]
+      },
+      {
+        "slug": "t-cibic-week16",
+        "number": "14.2.6",
+        "title": "CIBIC+ — Summary at Week 16 — LOCF",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v002",
+        "ardHash": "sha256:4f25a6b7098e33d9e700e41eb9cd20c6f254ff28d75dc1b3b86321b09d71b323",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254
+          },
+          {
+            "dataset": "adqscibc",
+            "hash": "sha256:f6461f436ff8d39a434fe5ecb7e1bcaf1b6da2913c4cbf2bf2c09d4c71d77873",
+            "n_row": 730
+          }
+        ]
+      },
+      {
+        "slug": "t-eff-adas-wk24-completers",
+        "number": "14.2.7",
+        "title": "ADAS-Cog (11) - Change from Baseline to Week 24 - Completers at Week 24, Observed Cases, Windowed",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v002",
+        "ardHash": "sha256:9c9aef70416902d5e01cb7492d4c9969b7c0b9e8c0638f96226494c85d75a85b",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254
+          },
+          {
+            "dataset": "adqsadas",
+            "hash": "sha256:d6ee9a321a2a9d338285cc702d750624eefd6da11b0da0ae260a4133a492215f",
+            "n_row": 12463
+          }
+        ]
+      },
+      {
+        "slug": "t-eff-adas-wk24-male",
+        "number": "14.2.8",
+        "title": "ADAS-Cog (11) - Change from Baseline to Week 24 in Male Subjects - LOCF",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v002",
+        "ardHash": "sha256:bf57631641d50368888c71ed09e1ae9db65181cbd1bf9c586ea2ddf6e1e440a8",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254
+          },
+          {
+            "dataset": "adqsadas",
+            "hash": "sha256:d6ee9a321a2a9d338285cc702d750624eefd6da11b0da0ae260a4133a492215f",
+            "n_row": 12463
+          }
+        ]
+      },
+      {
+        "slug": "t-eff-adas-wk24-female",
+        "number": "14.2.9",
+        "title": "ADAS-Cog (11) - Change from Baseline to Week 24 in Female Subjects - LOCF",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v002",
+        "ardHash": "sha256:92e388573064e3a214d2428b2b1dab4f52820aa15a32916abfbf395b9c8749e9",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254
+          },
+          {
+            "dataset": "adqsadas",
+            "hash": "sha256:d6ee9a321a2a9d338285cc702d750624eefd6da11b0da0ae260a4133a492215f",
+            "n_row": 12463
+          }
+        ]
+      },
+      {
+        "slug": "t-eff-adas-overtime",
+        "number": "14.2.10",
+        "title": "ADAS-Cog (11) - Mean and Mean Change from Baseline over Time",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v002",
+        "ardHash": "sha256:ae89465726a08192b7f1e4c039a58e503e53789a3e64fe322c2253183269586a",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254
+          },
+          {
+            "dataset": "adqsadas",
+            "hash": "sha256:d6ee9a321a2a9d338285cc702d750624eefd6da11b0da0ae260a4133a492215f",
+            "n_row": 12463
+          }
+        ]
+      },
+      {
+        "slug": "t-eff-adas-mmrm",
+        "number": "14.2.11",
+        "title": "ADAS-Cog (11) - Repeated Measures Analysis of Change from Baseline to Week 24",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v004",
+        "ardHash": "sha256:8953a87538065b43903e4c30de05fc1b94ce3019a5073fb119b5dfe694f0127f",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:1f6fa03914a74aa185bd5ee8453806779abe240f7b88f483d932b8eec9680da6",
+            "n_row": 254
+          },
+          {
+            "dataset": "adqsadas",
+            "hash": "sha256:d6ee9a321a2a9d338285cc702d750624eefd6da11b0da0ae260a4133a492215f",
+            "n_row": 12463
+          }
+        ]
+      },
+      {
+        "slug": "t-eff-npix-mean",
+        "number": "14.2.12",
+        "title": "Mean NPI-X Total Score from Week 4 through Week 24 - Windowed",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v003",
+        "ardHash": "sha256:670210cf013360c0acf6a92ee1315b14c3bb0085b5afd2774e45f299bdb00d5c",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254
+          },
+          {
+            "dataset": "adqsnpix",
+            "hash": "sha256:a8db42f422294f16537326a268fbc7d21e54e50677f628ad868849f4d7376971",
+            "n_row": 31140
+          }
+        ]
+      },
+      {
+        "slug": "t-cibic-categorical",
+        "number": "14.2.13",
+        "title": "CIBIC+ — Categorical Analysis — LOCF",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v002",
+        "ardHash": "sha256:4847131cf5f3a20db3ebb89fe76d1f674b9f21f57cf0bae1e6c04f907a52cb2c",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254
+          },
+          {
+            "dataset": "adqscibc",
+            "hash": "sha256:f6461f436ff8d39a434fe5ecb7e1bcaf1b6da2913c4cbf2bf2c09d4c71d77873",
+            "n_row": 730
+          }
+        ]
+      },
+      {
+        "slug": "f-derm-time-to-event",
+        "number": "14.2.14",
+        "title": "Time to Dermatologic Event by Treatment Group",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v002",
+        "ardHash": "sha256:dae95acbcabfedd187568e36989787120773f69897bcb9b67b4e17b32febc2a2",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+            "n_row": 254
+          },
+          {
+            "dataset": "adtte",
+            "hash": "sha256:82a036bcf2e2e0a50abd055347a9a41fc6ff9f3895d17c38b13db5512fa8b0ab",
+            "n_row": 254
+          }
+        ]
+      },
+      {
+        "slug": "t-sae-incidence",
+        "number": "14.3.2.2",
+        "title": "Incidence of Treatment Emergent Serious Adverse Events by Treatment Group",
+        "variants": [
+          "post_text"
+        ],
+        "iteration": "v006",
+        "ardHash": "sha256:94a983c62001c7f8ecdb7e411c6fbb7a9cdff8a5fab2f0597a4c38f3f8a3c0ca",
+        "source": "outputs",
+        "datasets": [
+          {
+            "dataset": "adsl",
+            "hash": "sha256:3139478d86fda4c38e8bb2f41d348518f4a65f58bcdd7e9650fda8da7a9a6838",
+            "n_row": 254
+          },
+          {
+            "dataset": "adae",
+            "hash": "sha256:4ffe4e4c90c8a531e95e4931b601c258ed0b83638d4b346e66635d79e78a7bf1",
+            "n_row": 1191
+          }
+        ]
+      }
+    ],
+    "datasets": [
+      {
+        "dataset": "adsl",
+        "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+        "n_row": 254,
+        "readBy": [
+          "t-disposition",
+          "f-disposition",
+          "t-demographics",
+          "t-exposure",
+          "t-ae-overview",
+          "t-ae-common",
+          "t-ae-incidence",
+          "l-ae-serious",
+          "t-populations",
+          "t-end-of-study",
+          "t-subjects-by-site",
+          "t-eff-adas-wk24",
+          "t-cibic-week24",
+          "t-eff-adas-wk8",
+          "t-cibic-week8",
+          "t-eff-adas-wk16",
+          "t-cibic-week16",
+          "t-eff-adas-wk24-completers",
+          "t-eff-adas-wk24-male",
+          "t-eff-adas-wk24-female",
+          "t-eff-adas-overtime",
+          "t-eff-adas-mmrm",
+          "t-eff-npix-mean",
+          "t-cibic-categorical",
+          "f-derm-time-to-event",
+          "t-sae-incidence"
+        ]
+      },
+      {
+        "dataset": "dm",
+        "hash": "sha256:6f25948c36c7852a5188de66440be4689fc7ff727356f404d4b508c790497012",
+        "n_row": 306,
+        "readBy": [
+          "f-disposition"
+        ]
+      },
+      {
+        "dataset": "adae",
+        "hash": "sha256:4ffe4e4c90c8a531e95e4931b601c258ed0b83638d4b346e66635d79e78a7bf1",
+        "n_row": 1191,
+        "readBy": [
+          "t-ae-overview",
+          "t-ae-common",
+          "t-ae-incidence",
+          "l-ae-serious",
+          "t-sae-incidence"
+        ]
+      },
+      {
+        "dataset": "adqsadas",
+        "hash": "sha256:d6ee9a321a2a9d338285cc702d750624eefd6da11b0da0ae260a4133a492215f",
+        "n_row": 12463,
+        "readBy": [
+          "t-eff-adas-wk24",
+          "t-eff-adas-wk8",
+          "t-eff-adas-wk16",
+          "t-eff-adas-wk24-completers",
+          "t-eff-adas-wk24-male",
+          "t-eff-adas-wk24-female",
+          "t-eff-adas-overtime",
+          "t-eff-adas-mmrm"
+        ]
+      },
+      {
+        "dataset": "adqscibc",
+        "hash": "sha256:f6461f436ff8d39a434fe5ecb7e1bcaf1b6da2913c4cbf2bf2c09d4c71d77873",
+        "n_row": 730,
+        "readBy": [
+          "t-cibic-week24",
+          "t-cibic-week8",
+          "t-cibic-week16",
+          "t-cibic-categorical"
+        ]
+      },
+      {
+        "dataset": "adqsnpix",
+        "hash": "sha256:a8db42f422294f16537326a268fbc7d21e54e50677f628ad868849f4d7376971",
+        "n_row": 31140,
+        "readBy": [
+          "t-eff-npix-mean"
+        ]
+      },
+      {
+        "dataset": "adtte",
+        "hash": "sha256:82a036bcf2e2e0a50abd055347a9a41fc6ff9f3895d17c38b13db5512fa8b0ab",
+        "n_row": 254,
+        "readBy": [
+          "f-derm-time-to-event"
+        ]
+      }
+    ],
+    "textBlocks": [
+      {
+        "id": "TXT-E3-0502",
+        "section": "5.2",
+        "tier": "boilerplate",
+        "state": "approved",
+        "included": true,
+        "displays": [],
+        "values": []
+      },
+      {
+        "id": "TXT-E3-0503",
+        "section": "5.3",
+        "tier": "boilerplate",
+        "state": "approved",
+        "included": true,
+        "displays": [],
+        "values": []
+      },
+      {
+        "id": "TXT-E3-0901",
+        "section": "9.1",
+        "tier": "parameterized",
+        "state": "approved",
+        "included": true,
+        "displays": [
+          "t-disposition"
+        ],
+        "values": []
+      },
+      {
+        "id": "TXT-E3-0908",
+        "section": "9.8",
+        "tier": "boilerplate",
+        "state": "approved",
+        "included": true,
+        "displays": [],
+        "values": []
+      },
+      {
+        "id": "TXT-E3-1001",
+        "section": "10.1",
+        "tier": "parameterized",
+        "state": "approved",
+        "included": true,
+        "displays": [
+          "t-disposition"
+        ],
+        "values": []
+      },
+      {
+        "id": "TXT-E3-1002",
+        "section": "10.1",
+        "tier": "generated",
+        "state": "draft",
+        "included": false,
+        "displays": [],
+        "values": [
+          "ae-any-n-total",
+          "ae-excess-high-vs-placebo",
+          "completed-n",
+          "completed-pct",
+          "discontinued-n",
+          "randomised-n",
+          "treated-n"
+        ]
+      },
+      {
+        "id": "TXT-E3-1101",
+        "section": "11.1",
+        "tier": "parameterized",
+        "state": "approved",
+        "included": true,
+        "displays": [
+          "t-disposition",
+          "t-populations"
+        ],
+        "values": []
+      },
+      {
+        "id": "TXT-E3-1102",
+        "section": "11.2",
+        "tier": "parameterized",
+        "state": "approved",
+        "included": true,
+        "displays": [
+          "t-demographics"
+        ],
+        "values": []
+      },
+      {
+        "id": "TXT-E3-1201",
+        "section": "12.1",
+        "tier": "parameterized",
+        "state": "approved",
+        "included": true,
+        "displays": [
+          "t-exposure"
+        ],
+        "values": []
+      },
+      {
+        "id": "TXT-E3-1221",
+        "section": "12.2.1",
+        "tier": "parameterized",
+        "state": "approved",
+        "included": true,
+        "displays": [
+          "t-ae-overview"
+        ],
+        "values": []
+      },
+      {
+        "id": "TXT-E3-1222",
+        "section": "12.2.2",
+        "tier": "generated",
+        "state": "draft",
+        "included": false,
+        "displays": [
+          "t-ae-common"
+        ],
+        "values": []
+      },
+      {
+        "id": "TXT-E3-1224",
+        "section": "12.2.4",
+        "tier": "boilerplate",
+        "state": "approved",
+        "included": true,
+        "displays": [],
+        "values": []
+      },
+      {
+        "id": "TXT-E3-1231",
+        "section": "12.3.1",
+        "tier": "generated",
+        "state": "draft",
+        "included": false,
+        "displays": [
+          "t-ae-overview"
+        ],
+        "values": []
+      },
+      {
+        "id": "TXT-E3-1206",
+        "section": "12.6",
+        "tier": "generated",
+        "state": "draft",
+        "included": false,
+        "displays": [
+          "t-ae-overview",
+          "t-ae-common",
+          "t-disposition",
+          "t-exposure"
+        ],
+        "values": []
+      },
+      {
+        "id": "TXT-E3-1300",
+        "section": "13",
+        "tier": "generated",
+        "state": "draft",
+        "included": false,
+        "displays": [
+          "t-disposition",
+          "t-demographics",
+          "t-exposure",
+          "t-ae-common",
+          "t-ae-overview"
+        ],
+        "values": []
+      }
+    ],
+    "values": [
+      "ae-any-n-total",
+      "ae-excess-high-vs-placebo",
+      "completed-n",
+      "completed-pct",
+      "discontinued-n",
+      "randomised-n",
+      "treated-n"
+    ]
   },
   "template": {
     "id": "e3-abbreviated",
@@ -162,6 +1031,10 @@
           "html": "<p>This study was conducted in accordance with the ethical principles that have their\norigin in the Declaration of Helsinki, and that are consistent with the\nInternational Council for Harmonisation Guideline for Good Clinical Practice\n(ICH E6) and the applicable regulatory requirements of the jurisdictions in which\nthe study was conducted.</p>\n<p>The protocol, the protocol amendments, the patient information sheet and the\ninformed consent form were reviewed and approved by the responsible independent\nethics committee or institutional review board at each participating centre before\nany patient was screened. Substantial amendments were submitted for review and\napproved before implementation, except where an immediate change was necessary to\neliminate a hazard to patients.</p>\n",
           "bindings": [],
           "crossReferences": [],
+          "inputs": {
+            "displays": [],
+            "values": []
+          },
           "numericFidelity": {
             "ok": true,
             "violations": [],
@@ -222,6 +1095,10 @@
               "text": "Appendix 16.1.3"
             }
           ],
+          "inputs": {
+            "displays": [],
+            "values": []
+          },
           "numericFidelity": {
             "ok": true,
             "violations": [],
@@ -466,6 +1343,18 @@
               "text": "Appendix 16.1.7"
             }
           ],
+          "inputs": {
+            "displays": [
+              {
+                "slug": "t-disposition",
+                "iteration": "v003",
+                "ardHash": "sha256:5a073a0a558678bc67b89573bc98619270f854d3af5d5cbdc18cd0ce8ed4f530",
+                "source": "outputs",
+                "bindings": 4
+              }
+            ],
+            "values": []
+          },
           "numericFidelity": {
             "ok": true,
             "violations": [],
@@ -829,6 +1718,10 @@
               "text": "Appendix 16.1.9"
             }
           ],
+          "inputs": {
+            "displays": [],
+            "values": []
+          },
           "numericFidelity": {
             "ok": true,
             "violations": [],
@@ -1476,6 +2369,18 @@
               "text": "Appendix 16.2.1"
             }
           ],
+          "inputs": {
+            "displays": [
+              {
+                "slug": "t-disposition",
+                "iteration": "v003",
+                "ardHash": "sha256:5a073a0a558678bc67b89573bc98619270f854d3af5d5cbdc18cd0ce8ed4f530",
+                "source": "outputs",
+                "bindings": 19
+              }
+            ],
+            "values": []
+          },
           "numericFidelity": {
             "ok": true,
             "violations": [],
@@ -1512,6 +2417,18 @@
           "html": "<p>In summary, 254 patients were randomised and\n254 were treated. 110 patients\n(43.3%) completed the study and 144\ndiscontinued prematurely. Of those treated, 218 reported at\nleast one adverse event, 11 more in the high dose\ngroup than in the placebo group.</p>\n<p>Every number in this paragraph is a <em>named</em> value: it is declared once in\n<code>library/values/values.yaml</code>, resolved by the pipeline against the committed\nAnalysis Results Data, and cited here by name. The name is the unit of reuse — the\nsame value can be quoted in the disposition narrative, the safety conclusions and a\nsummary slide without any of them re-addressing the underlying ARD row, and the\nbuild fails if any of them drifts from it.</p>\n",
           "bindings": [],
           "crossReferences": [],
+          "inputs": {
+            "displays": [],
+            "values": [
+              "ae-any-n-total",
+              "ae-excess-high-vs-placebo",
+              "completed-n",
+              "completed-pct",
+              "discontinued-n",
+              "randomised-n",
+              "treated-n"
+            ]
+          },
           "numericFidelity": {
             "ok": true,
             "violations": [],
@@ -1918,6 +2835,25 @@
               "text": "Appendix 16.2.3"
             }
           ],
+          "inputs": {
+            "displays": [
+              {
+                "slug": "t-disposition",
+                "iteration": "v003",
+                "ardHash": "sha256:5a073a0a558678bc67b89573bc98619270f854d3af5d5cbdc18cd0ce8ed4f530",
+                "source": "outputs",
+                "bindings": 4
+              },
+              {
+                "slug": "t-populations",
+                "iteration": "v003",
+                "ardHash": "sha256:a78a73c17c1a5ae078f0fdf5a098aac06805bf9387675d823a8b849dce24fb2c",
+                "source": "outputs",
+                "bindings": 5
+              }
+            ],
+            "values": []
+          },
           "numericFidelity": {
             "ok": true,
             "violations": [],
@@ -2471,6 +3407,18 @@
               "text": "Appendix 16.2.4"
             }
           ],
+          "inputs": {
+            "displays": [
+              {
+                "slug": "t-demographics",
+                "iteration": "v007",
+                "ardHash": "sha256:87af02747ecd7e74df308ac7fc521b68e22f7fad3fb86607e5e93d9d28cb82a5",
+                "source": "outputs",
+                "bindings": 16
+              }
+            ],
+            "values": []
+          },
           "numericFidelity": {
             "ok": true,
             "violations": [],
@@ -3279,6 +4227,18 @@
               "text": "Table 14.3.1.1"
             }
           ],
+          "inputs": {
+            "displays": [
+              {
+                "slug": "t-exposure",
+                "iteration": "v004",
+                "ardHash": "sha256:de9e7ac7bedab71bc5e127e92efa72f80a1e39215132b55ff52f46e4402675d6",
+                "source": "outputs",
+                "bindings": 23
+              }
+            ],
+            "values": []
+          },
           "numericFidelity": {
             "ok": true,
             "violations": [],
@@ -4228,6 +5188,18 @@
               "text": "Section 12.1"
             }
           ],
+          "inputs": {
+            "displays": [
+              {
+                "slug": "t-ae-overview",
+                "iteration": "v003",
+                "ardHash": "sha256:c428956bd34e0625304d2feeb54999dda3a3a9455412ad41606f19562a208cd7",
+                "source": "outputs",
+                "bindings": 28
+              }
+            ],
+            "values": []
+          },
           "numericFidelity": {
             "ok": true,
             "violations": [],
@@ -5067,6 +6039,18 @@
               "text": "Table 14.3.1.3"
             }
           ],
+          "inputs": {
+            "displays": [
+              {
+                "slug": "t-ae-common",
+                "iteration": "v004",
+                "ardHash": "sha256:adf6d639a882e4b3bdfda9e157055eed71c84ac7402285b8763445df32705dc1",
+                "source": "outputs",
+                "bindings": 23
+              }
+            ],
+            "values": []
+          },
           "numericFidelity": {
             "ok": true,
             "violations": [],
@@ -5195,6 +6179,10 @@
               "text": "Listing 14.3.2.1"
             }
           ],
+          "inputs": {
+            "displays": [],
+            "values": []
+          },
           "numericFidelity": {
             "ok": true,
             "violations": [],
@@ -5849,6 +6837,18 @@
               "text": "Section 12.3.2"
             }
           ],
+          "inputs": {
+            "displays": [
+              {
+                "slug": "t-ae-overview",
+                "iteration": "v003",
+                "ardHash": "sha256:c428956bd34e0625304d2feeb54999dda3a3a9455412ad41606f19562a208cd7",
+                "source": "outputs",
+                "bindings": 19
+              }
+            ],
+            "values": []
+          },
           "numericFidelity": {
             "ok": true,
             "violations": [],
@@ -6622,6 +7622,39 @@
             }
           ],
           "crossReferences": [],
+          "inputs": {
+            "displays": [
+              {
+                "slug": "t-ae-overview",
+                "iteration": "v003",
+                "ardHash": "sha256:c428956bd34e0625304d2feeb54999dda3a3a9455412ad41606f19562a208cd7",
+                "source": "outputs",
+                "bindings": 10
+              },
+              {
+                "slug": "t-ae-common",
+                "iteration": "v004",
+                "ardHash": "sha256:adf6d639a882e4b3bdfda9e157055eed71c84ac7402285b8763445df32705dc1",
+                "source": "outputs",
+                "bindings": 4
+              },
+              {
+                "slug": "t-disposition",
+                "iteration": "v003",
+                "ardHash": "sha256:5a073a0a558678bc67b89573bc98619270f854d3af5d5cbdc18cd0ce8ed4f530",
+                "source": "outputs",
+                "bindings": 3
+              },
+              {
+                "slug": "t-exposure",
+                "iteration": "v004",
+                "ardHash": "sha256:de9e7ac7bedab71bc5e127e92efa72f80a1e39215132b55ff52f46e4402675d6",
+                "source": "outputs",
+                "bindings": 3
+              }
+            ],
+            "values": []
+          },
           "numericFidelity": {
             "ok": true,
             "violations": [],
@@ -7455,6 +8488,46 @@
               "text": "Appendix 16.2.1"
             }
           ],
+          "inputs": {
+            "displays": [
+              {
+                "slug": "t-disposition",
+                "iteration": "v003",
+                "ardHash": "sha256:5a073a0a558678bc67b89573bc98619270f854d3af5d5cbdc18cd0ce8ed4f530",
+                "source": "outputs",
+                "bindings": 7
+              },
+              {
+                "slug": "t-demographics",
+                "iteration": "v007",
+                "ardHash": "sha256:87af02747ecd7e74df308ac7fc521b68e22f7fad3fb86607e5e93d9d28cb82a5",
+                "source": "outputs",
+                "bindings": 4
+              },
+              {
+                "slug": "t-exposure",
+                "iteration": "v004",
+                "ardHash": "sha256:de9e7ac7bedab71bc5e127e92efa72f80a1e39215132b55ff52f46e4402675d6",
+                "source": "outputs",
+                "bindings": 5
+              },
+              {
+                "slug": "t-ae-common",
+                "iteration": "v004",
+                "ardHash": "sha256:adf6d639a882e4b3bdfda9e157055eed71c84ac7402285b8763445df32705dc1",
+                "source": "outputs",
+                "bindings": 6
+              },
+              {
+                "slug": "t-ae-overview",
+                "iteration": "v003",
+                "ardHash": "sha256:c428956bd34e0625304d2feeb54999dda3a3a9455412ad41606f19562a208cd7",
+                "source": "outputs",
+                "bindings": 3
+              }
+            ],
+            "values": []
+          },
           "numericFidelity": {
             "ok": true,
             "violations": [],

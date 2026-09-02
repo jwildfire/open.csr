@@ -1,0 +1,21 @@
+id: CDISCPILOT01
+title: "Fixture study"
+phase: "Phase 2"
+cutoff: "2014-07-01"
+source: "fixture package"
+arms:
+  - { id: placebo, label: "Placebo" }
+  - { id: low, label: "Xanomeline Low Dose" }
+  - { id: high, label: "Xanomeline High Dose" }
+group_variables:
+  TRT01P: planned
+  TRT01A: actual
+analysis_sets:
+  safety:
+    label: "Safety Analysis Set"
+    flag: SAFFL
+    subjects: { "Placebo": 86, "Xanomeline Low Dose": 84, "Xanomeline High Dose": 84 }
+  efficacy:
+    label: "Efficacy Analysis Set"
+    flag: EFFFL
+    subjects: { "Placebo": 79, "Xanomeline Low Dose": 81, "Xanomeline High Dose": 74 }
