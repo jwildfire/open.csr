@@ -1,0 +1,51 @@
+{
+  "source_repo": "https://github.com/example/fixture-scripts",
+  "commit": "0123456789abcdef0123456789abcdef01234567",
+  "commit_date": "2025-01-01T00:00:00Z",
+  "retrieved": "2026-01-01",
+  "licence": "MIT",
+  "licence_url": "https://github.com/example/fixture-scripts/blob/0123456789abcdef0123456789abcdef01234567/LICENSE.md",
+  "verification": "Fixture: blob SHA-1 recomputed from the bytes.",
+  "files": [
+    {
+      "dataset": "adae",
+      "upstream_path": "data/adam/fixture/adae.xpt",
+      "blob_sha1": "aaaa",
+      "sha256": "cccc3333",
+      "bytes": 100,
+      "vendored": "adae.xpt.gz",
+      "gz_sha256": "cccc3333gz",
+      "gz_bytes": 10
+    },
+    {
+      "dataset": "adsl",
+      "upstream_path": "data/adam/fixture/adsl.xpt",
+      "blob_sha1": "bbbb",
+      "sha256": "dddd4444",
+      "bytes": 200,
+      "vendored": "adsl.xpt.gz",
+      "gz_sha256": "dddd4444gz",
+      "gz_bytes": 20
+    },
+    {
+      "dataset": "dm",
+      "upstream_path": "data/sdtm/fixture/dm.xpt",
+      "blob_sha1": "eeee",
+      "sha256": "eeee5555",
+      "bytes": 300,
+      "vendored": "dm.xpt.gz",
+      "gz_sha256": "eeee5555gz",
+      "gz_bytes": 30
+    },
+    {
+      "dataset": "adcm",
+      "upstream_path": "data/adam/misc/adcm.xpt",
+      "blob_sha1": "ffff",
+      "sha256": "ffff6666",
+      "bytes": 400,
+      "vendored": "adcm.xpt.gz",
+      "gz_sha256": "ffff6666gz",
+      "gz_bytes": 40
+    }
+  ]
+}

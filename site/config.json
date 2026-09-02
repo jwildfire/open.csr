@@ -914,5 +914,184 @@
       "title": "05 · The safety.viz evidence framework",
       "group": "Research"
     }
-  ]
+  ],
+  "data": {
+    "package": {
+      "dir": "pipeline/inst/extdata/phuse-cdiscpilot01",
+      "provenance": "PROVENANCE.json",
+      "readme": "README.md",
+      "title": "The study's own data package",
+      "blurb": "CDISCPILOT01's ADaM datasets and two SDTM domains, vendored from phuse-org/phuse-scripts at a pinned commit under its MIT licence; every file's git blob SHA-1 was recomputed from the downloaded bytes and matched against the commit's tree.",
+      "verify": "Rscript qc/vendor-phuse-data.R --check"
+    },
+    "lanes": {
+      "file": "quality/data/source-agreement.json",
+      "default": "phuse",
+      "alternate": "pharmaverseadam"
+    },
+    "datasets": [
+      {
+        "id": "adsl",
+        "domain": "adam",
+        "title": "Subject-level analysis dataset",
+        "blurb": "One record per subject: demographics, the study's own population flags, baseline measures, treatment and disposition. The denominator for every display.",
+        "source": "pipeline",
+        "notes": [
+          "SAFFL, ITTFL and EFFFL as the study states them, blank recoded to N; no population flag is guessed.",
+          "Baseline weight, height and BMI and the study's own age groups (<65, 65-80, >80) as shipped.",
+          "RACEOR, the race-with-origin recode the reference report prints (ethnicity first, then race), added for the demographics table; the CDISC-coded RACE stays.",
+          "SITEID kept as a factor in the site order the reference report uses."
+        ]
+      },
+      {
+        "id": "adae",
+        "domain": "adam",
+        "title": "Adverse events",
+        "blurb": "One record per reported event; treatment-emergent, serious and relationship flags as shipped.",
+        "source": "pipeline",
+        "notes": [
+          "TRT01A is taken from the prepared ADSL by USUBJID, never from the dataset's own treatment columns.",
+          "The treatment-emergent flag is the study's own; nothing is re-derived."
+        ]
+      },
+      {
+        "id": "advs",
+        "domain": "adam",
+        "title": "Vital signs",
+        "blurb": "Six parameters over every visit; the input to the vital-sign and weight displays.",
+        "source": "pipeline",
+        "notes": [
+          "TRT01A from the prepared ADSL by USUBJID.",
+          "A DTYPE column is added as all-missing when the package ships none, so filters on derived records apply the same way on both lanes; blank AVISIT and ATPT are treated as unset."
+        ]
+      },
+      {
+        "id": "adlbc",
+        "domain": "adam",
+        "title": "Laboratory: chemistry",
+        "blurb": "Vendored for the laboratory families; read by no display until v0.4.1.",
+        "source": "pipeline",
+        "notes": []
+      },
+      {
+        "id": "adlbh",
+        "domain": "adam",
+        "title": "Laboratory: haematology",
+        "blurb": "Vendored for the laboratory families; read by no display until v0.4.1.",
+        "source": "pipeline",
+        "notes": []
+      },
+      {
+        "id": "adlbhy",
+        "domain": "adam",
+        "title": "Laboratory: Hy's-law parameters",
+        "blurb": "Derived by the study from its chemistry data; vendored for the laboratory families; read by no display until v0.4.1.",
+        "source": "pipeline",
+        "notes": []
+      },
+      {
+        "id": "adqsadas",
+        "domain": "adam",
+        "title": "ADAS-Cog (11)",
+        "blurb": "The study's first primary efficacy endpoint at Week 24; the input to the ADAS-Cog displays.",
+        "source": "pipeline",
+        "notes": [
+          "TRT01A from the prepared ADSL by USUBJID.",
+          "Visits are selected by AVISITN in every specification."
+        ]
+      },
+      {
+        "id": "adqscibc",
+        "domain": "adam",
+        "title": "CIBIC+",
+        "blurb": "The study's second primary efficacy endpoint at Week 24; the input to the CIBIC+ displays.",
+        "source": "pipeline",
+        "notes": [
+          "TRT01A from the prepared ADSL by USUBJID."
+        ]
+      },
+      {
+        "id": "adqsnpix",
+        "domain": "adam",
+        "title": "NPI-X",
+        "blurb": "The secondary efficacy endpoint; the input to the NPI-X mean display.",
+        "source": "pipeline",
+        "notes": [
+          "TRT01A from the prepared ADSL by USUBJID.",
+          "AVISIT ships right-aligned in a sixteen-character field, so the specification selects visits by AVISITN."
+        ]
+      },
+      {
+        "id": "adtte",
+        "domain": "adam",
+        "title": "Time to first dermatologic event",
+        "blurb": "A safety analysis: dermatologic events are the study's adverse events of special interest; the input to the one time-to-event figure.",
+        "source": "pipeline",
+        "notes": [
+          "TRT01A from the prepared ADSL by USUBJID."
+        ]
+      },
+      {
+        "id": "adcm",
+        "domain": "adam",
+        "title": "Concomitant medications (analysis dataset)",
+        "blurb": "Derived by the pipeline from the study's SDTM CM domain; the input to the medication table.",
+        "source": "derived",
+        "derivedFrom": "cm",
+        "lane": "phuse",
+        "notes": [
+          "derive_adcm(): every CM column as published; ASTDT and AENDT only where the source states a full date; CMFL = Y on every record.",
+          "SAFFL and TRT01A from the prepared ADSL by USUBJID.",
+          "Reproduces every one of the 414 statistics the medication table published from the relabelled copy (TFL-PREP-018)."
+        ]
+      },
+      {
+        "id": "cm",
+        "domain": "sdtm",
+        "title": "Concomitant medications (SDTM domain)",
+        "blurb": "The study's SDTM CM domain, 7,510 records for 229 subjects; the input to adcm.",
+        "source": "pipeline",
+        "notes": [
+          "Read whole; the derivation to adcm is the only preparation."
+        ]
+      },
+      {
+        "id": "dm",
+        "domain": "sdtm",
+        "title": "Demographics (SDTM domain)",
+        "blurb": "All 306 screened subjects, including the 52 screen failures the ADaM package does not carry; the input to the disposition flow.",
+        "source": "pipeline",
+        "notes": [
+          "The one dataset prepare_data() keeps whole: screen failures are not removed, because the screened population is what this domain is for."
+        ]
+      },
+      {
+        "id": "adcm-copy",
+        "file": "adcm",
+        "domain": "adam",
+        "title": "Concomitant medications: PHUSE's relabelled copy",
+        "blurb": "Not part of the CDISC pilot package: a copy from a folder the upstream README calls out of place, with half its subjects relabelled into a second study. Read by no display since v0.4.0.",
+        "source": "pipeline",
+        "notes": [
+          "Kept for the check that the derived adcm reproduces its 414 statistics (TFL-PREP-018); whether to remove it is a question for the v0.4.0 review."
+        ]
+      },
+      {
+        "id": "adex",
+        "domain": "adam",
+        "title": "Exposure (pharmaverseadam only)",
+        "blurb": "Served only by the alternate lane; the exposure display reads ADSL's own dose columns instead. Read by no display.",
+        "source": "alternate",
+        "notes": []
+      },
+      {
+        "id": "adlb",
+        "domain": "adam",
+        "title": "Laboratory (pharmaverseadam only)",
+        "blurb": "Served only by the alternate lane; the study's own package carries adlbc, adlbh and adlbhy instead. Read by no display.",
+        "source": "alternate",
+        "notes": []
+      }
+    ]
+  }
 }

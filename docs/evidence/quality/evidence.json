@@ -1,6 +1,6 @@
 {
   "module": "quality",
-  "generated": "2026-09-02T17:25:29.572Z",
+  "generated": "2026-09-02T20:56:54.640Z",
   "records": [
     {
       "requirementIds": [
@@ -1696,6 +1696,42 @@
     },
     {
       "requirementIds": [
+        "QC-DATA-001"
+      ],
+      "title": "the data registry and the package record QC-DATA-001: a registered dataset with no vendored file is planned, a derived or alternate one is not a missing file, and a vendored file nobody registered is published with a warning (#76)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-data.test.js",
+      "issueRefs": [
+        76
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DATA-001"
+      ],
+      "title": "the data registry and the package record QC-DATA-001: a repository with no data registry renders the empty state rather than throwing (#76)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-data.test.js",
+      "issueRefs": [
+        76
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DATA-001"
+      ],
+      "title": "the data registry and the package record QC-DATA-001: every registered dataset is read with its provenance, and the package carries its pinned commit (#76)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-data.test.js",
+      "issueRefs": [
+        76
+      ]
+    },
+    {
+      "requirementIds": [
         "QC-SITE-005"
       ],
       "title": "the display registry QC-SITE-005: status is derived from the filesystem, not from the declared value (#1)",
@@ -1876,6 +1912,30 @@
     },
     {
       "requirementIds": [
+        "QC-DATA-005"
+      ],
+      "title": "the explorer and the deep links QC-DATA-005: a dataset permalink is absorbed into the Data view with that dataset in focus, and the lanes and index likewise (#76)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-data.test.js",
+      "issueRefs": [
+        76
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DATA-005"
+      ],
+      "title": "the explorer and the deep links QC-DATA-005: Data is a view of the study, after Values, and a collection in the tree with one item per dataset (#76)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-data.test.js",
+      "issueRefs": [
+        76
+      ]
+    },
+    {
+      "requirementIds": [
         "QC-DEMO-020"
       ],
       "title": "the explorer wiring QC-DEMO-020: the group-level collapse the tree still needs is untouched (#40)",
@@ -1908,6 +1968,30 @@
       "file": "tests/unit/site-demo.test.js",
       "issueRefs": [
         40
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DATA-004"
+      ],
+      "title": "the links from a display to its data QC-DATA-004: a dataset the header names but this iteration’s ARD does not is still linked, and says so (#76)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-data.test.js",
+      "issueRefs": [
+        76
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DATA-004"
+      ],
+      "title": "the links from a display to its data QC-DATA-004: given the index, the display header links each dataset to its page with the hash and rows this iteration recorded; without it, the labels print as before (#76)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-data.test.js",
+      "issueRefs": [
+        76
       ]
     },
     {
@@ -2044,6 +2128,42 @@
     },
     {
       "requirementIds": [
+        "QC-DATA-003"
+      ],
+      "title": "the pages QC-DATA-003: a dataset has a standalone page with the same facts and the read-by table (#76)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-data.test.js",
+      "issueRefs": [
+        76
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DATA-003"
+      ],
+      "title": "the pages QC-DATA-003: the Data pane carries the package, one section per dataset with its facts, and the lanes, each addressable by id (#76)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-data.test.js",
+      "issueRefs": [
+        76
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DATA-003"
+      ],
+      "title": "the pages QC-DATA-003: the lanes section names both packagings and lists only the variables that differ, from the agreement record (#76)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-data.test.js",
+      "issueRefs": [
+        76
+      ]
+    },
+    {
+      "requirementIds": [
         "QC-SITE-009"
       ],
       "title": "the repository this site is built from QC-SITE-009: this repo's own library is plural and every object is assembled (#32)",
@@ -2064,6 +2184,30 @@
       "file": "tests/unit/site-documents.test.js",
       "issueRefs": [
         32
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DATA-002"
+      ],
+      "title": "the reverse index: from a dataset to every display that read it QC-DATA-002: a dataset no current ARD names has an empty index entry, and a dataset an ARD names that the registry does not know still gets one (#76)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-data.test.js",
+      "issueRefs": [
+        76
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-DATA-002"
+      ],
+      "title": "the reverse index: from a dataset to every display that read it QC-DATA-002: a display whose current ARD names a dataset appears under it with the iteration, rows and hash that ARD recorded (#76)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-data.test.js",
+      "issueRefs": [
+        76
       ]
     },
     {

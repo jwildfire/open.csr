@@ -77,7 +77,12 @@
     "QC-SITE-011": "Two documents assembled from the shared libraries quote the same artifacts: every display both documents place resolves to the same ARD source and the same ARD payload, and both carry the same value store with no value differing in raw value or formatted string. Only the per-document display number differs.",
     "QC-SITE-008": "`site/site.css` parses as a whole: every block is closed, no block is closed that was never opened, and no declaration sits outside a rule — so no rule in the file can be silently dead in the browser.",
     "QC-SITE-009": "The site publishes one reader page and one template page for every assembled template object in `library/templates/`, discovered from the library rather than declared: an object absent from `site/config.json` still publishes, titled from its own model, and every document reaches every other from the switcher, the navigation tree and the home page.",
-    "QC-SITE-010": "Every document states whether its own prose has been reviewed, derived from the `approval.state` the assembler recorded on each block it placed: a document holding unapproved blocks carries a notice above its first section and a flag in the switcher, the navigation tree and its home-page card; a document whose blocks are all approved says that instead."
+    "QC-SITE-010": "Every document states whether its own prose has been reviewed, derived from the `approval.state` the assembler recorded on each block it placed: a document holding unapproved blocks carries a notice above its first section and a flag in the switcher, the navigation tree and its home-page card; a document whose blocks are all approved says that instead.",
+    "QC-DATA-001": "The site reads a data registry (`site/config.json` → `data`) together with the vendored package's `PROVENANCE.json`: every registered dataset carries its upstream path, blob SHA-1, SHA-256 and byte counts and the package its pinned commit and licence; a registered dataset with no vendored file is planned, a derived or alternate-lane dataset is not reported as a missing file, and a vendored file nobody registered is published with a warning, the way an unregistered display is. A repository with no registry renders the empty state.",
+    "QC-DATA-002": "The reverse index is built from the ARDs alone: a display whose current ARD names a dataset in its provenance envelope appears under that dataset with the iteration, row count, prepared hash and ARD hash the envelope recorded; a dataset no ARD names has an empty entry; a dataset an ARD names that the registry does not know still gets one.",
+    "QC-DATA-003": "The Data pane is one page with the package record, one section per dataset (facts, derivation notes, the read-by table linking each display in the form the app absorbs, the upstream path linking the source repository at the pinned commit, a derived dataset linking what it was derived from) and the lanes section naming both packagings and listing only the variables the agreement record says differ; each dataset also has a standalone page with the same facts.",
+    "QC-DATA-004": "Given the data index, a display's header links each dataset it declares to that dataset's page, carrying as its title the row count and hash THIS iteration's ARD recorded and a short hash beside the link; a dataset the header names but the ARD does not is still linked and says so; without the index the labels print as before.",
+    "QC-DATA-005": "Data is a view of the study after Values and a collection in the explorer with one item per dataset (its id as the number, planned when not vendored) plus the lanes; a dataset permalink (`data/<id>.html`) is absorbed into the Data view with that dataset in focus, the lanes and the index likewise, at any authored depth."
   },
   "rows": [
     {
@@ -762,6 +767,51 @@
       "source": "open.csr#32",
       "evidence": "js-unit",
       "link": "site-documents.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-DATA-001",
+      "area": "Data",
+      "text": "The site reads a data registry (`site/config.json` → `data`) together with the vendored package's `PROVENANCE.json`: every registered dataset carries its upstream path, blob SHA-1, SHA-256 and byte counts and the package its pinned commit and licence; a registered dataset with no vendored file is planned, a derived or alternate-lane dataset is not reported as a missing file, and a vendored file nobody registered is published with a warning, the way an unregistered display is. A repository with no registry renders the empty state.",
+      "source": "open.csr#76",
+      "evidence": "js-unit",
+      "link": "site-data.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-DATA-002",
+      "area": "Data",
+      "text": "The reverse index is built from the ARDs alone: a display whose current ARD names a dataset in its provenance envelope appears under that dataset with the iteration, row count, prepared hash and ARD hash the envelope recorded; a dataset no ARD names has an empty entry; a dataset an ARD names that the registry does not know still gets one.",
+      "source": "open.csr#76",
+      "evidence": "js-unit",
+      "link": "site-data.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-DATA-003",
+      "area": "Data",
+      "text": "The Data pane is one page with the package record, one section per dataset (facts, derivation notes, the read-by table linking each display in the form the app absorbs, the upstream path linking the source repository at the pinned commit, a derived dataset linking what it was derived from) and the lanes section naming both packagings and listing only the variables the agreement record says differ; each dataset also has a standalone page with the same facts.",
+      "source": "open.csr#76",
+      "evidence": "js-unit",
+      "link": "site-data.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-DATA-004",
+      "area": "Data",
+      "text": "Given the data index, a display's header links each dataset it declares to that dataset's page, carrying as its title the row count and hash THIS iteration's ARD recorded and a short hash beside the link; a dataset the header names but the ARD does not is still linked and says so; without the index the labels print as before.",
+      "source": "open.csr#76",
+      "evidence": "js-unit",
+      "link": "site-data.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-DATA-005",
+      "area": "Data",
+      "text": "Data is a view of the study after Values and a collection in the explorer with one item per dataset (its id as the number, planned when not vendored) plus the lanes; a dataset permalink (`data/<id>.html`) is absorbed into the Data view with that dataset in focus, the lanes and the index likewise, at any authored depth.",
+      "source": "open.csr#76",
+      "evidence": "js-unit",
+      "link": "site-data.test.js, site-demo.test.js",
       "status": "draft"
     }
   ]

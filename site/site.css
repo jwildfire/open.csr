@@ -2934,3 +2934,11 @@ body.app-page .app-bar {
   background: var(--bad-soft, rgba(185, 28, 28, 0.12));
   border-bottom: 2px solid var(--bad, #b91c1c);
 }
+
+/* The Data section (#76): dataset links in a display header, and the dataset grid. */
+.dataset-link { text-decoration-color: color-mix(in srgb, currentColor 35%, transparent); }
+.dataset-hash { margin-left: .25rem; }
+.dataset-grid .card { text-decoration: none; color: inherit; display: block; }
+.dataset-grid .card h3 { font-size: 1rem; margin: .25rem 0 .2rem; }
+.dataset h3 .chip { margin-left: .4rem; vertical-align: middle; }
+.dataset + .dataset { margin-top: 1.25rem; }
