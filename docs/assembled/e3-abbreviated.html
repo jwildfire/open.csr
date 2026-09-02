@@ -88,7 +88,7 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9em;}
     <div><dt>Analysis set</dt><dd>Safety Analysis Set</dd></div>
     <div><dt>Data source</dt><dd>CDISCPILOT01 ADaM — the CDISC pilot's own package (phuse-org/phuse-scripts, data/adam/cdiscpilot01), every display</dd></div>
   </dl>
-  <p class="assembled">Assembled 2026-09-02T16:31:55.540Z from
+  <p class="assembled">Assembled 2026-09-02T17:20:38.514Z from
   <code>e3-abbreviated</code> v1.0.0
   (75 sections) by <code>scripts/assemble.mjs</code>.</p>
   <p class="scope">The abbreviated form of the clinical study report for this study: the same prose and the same displays, in a document model with the efficacy-analysis apparatus and the uncited appendices removed. Section 14.2 carries the fourteen efficacy displays the full report carries — the ADAS-Cog programme, the CIBIC+ analyses, the NPI-X secondary endpoint and the study's one figure. It was declared and empty only for as long as no efficacy analysis dataset existed for this study in the demonstration data (design decision D12), which stopped being true when the CDISC pilot's own ADaM package was vendored.</p>
@@ -615,7 +615,7 @@ build fails if any of them drifts from it.</p>
 </section>
 <section class="section lvl-2" id="s-data-sets-analysed">
 <h3><span class="num">11.1</span> Data Sets Analysed</h3>
-<div class="block"><p class="block-meta"><code>TXT-E3-1101</code> <span class="tier tier-parameterized">parameterized</span> <span class="approval approval-approved">approved</span> · 4 bound values</p><p>The safety analysis set comprised all patients who were randomised and received at
+<div class="block"><p class="block-meta"><code>TXT-E3-1101</code> <span class="tier tier-parameterized">parameterized</span> <span class="approval approval-approved">approved</span> · 9 bound values</p><p>The safety analysis set comprised all patients who were randomised and received at
 least one dose of study medication. It included
 254 patients:
 86 in the placebo group,
@@ -628,11 +628,18 @@ analysis set in the header in accordance with ICH E3.</p>
 Analysis-set membership is derived in a documented, version-controlled data preparation
 step rather than assumed from the source data; that derivation, and the environment
 that executed it, are recorded in Appendix 16.1.9.</p>
-<p>No efficacy analysis set is defined for this report. The public ADaM package used as
-the data source for this demonstration contains no efficacy analysis dataset for this
-study, so the efficacy sections and the corresponding post-text displays in
-Section 14.2 are intentionally not populated. Patients excluded from any
-analysis population would be listed in Appendix 16.2.3.</p>
+<p>The efficacy analysis set comprised all randomised patients who took at least one dose
+of study medication and had at least one post-baseline assessment of both the
+ADAS-Cog and the CIBIC+, as the study&#39;s own analysis data flag it (EFFFL). It included
+234 patients:
+79 in the placebo group,
+81 in the xanomeline low dose
+group and 74 in the xanomeline
+high dose group. The efficacy analyses and the post-text efficacy displays are based on
+this analysis set. The intent-to-treat population, every randomised patient, is
+254 patients and is the population of the
+disposition displays. Patients excluded from any analysis population would be listed
+in Appendix 16.2.3.</p>
 </div>
 </section>
 <section class="section lvl-2" id="s-demographics">
@@ -9166,7 +9173,7 @@ number in the document.</p>
 <tr><td><code>TXT-E3-0908</code></td><td>9.8</td><td>boilerplate</td><td>approved</td><td>0</td><td><span class="ok">pass</span></td><td><span class="ok">pass</span></td><td><span class="ok">included</span></td></tr>
 <tr><td><code>TXT-E3-1001</code></td><td>10.1</td><td>parameterized</td><td>approved</td><td>19</td><td><span class="ok">pass</span></td><td><span class="ok">pass</span></td><td><span class="ok">included</span></td></tr>
 <tr><td><code>TXT-E3-1002</code></td><td>10.1</td><td>generated</td><td>draft</td><td>0</td><td><span class="ok">pass</span></td><td><span class="ok">pass</span></td><td><span class="warn">excluded</span></td></tr>
-<tr><td><code>TXT-E3-1101</code></td><td>11.1</td><td>parameterized</td><td>approved</td><td>4</td><td><span class="ok">pass</span></td><td><span class="ok">pass</span></td><td><span class="ok">included</span></td></tr>
+<tr><td><code>TXT-E3-1101</code></td><td>11.1</td><td>parameterized</td><td>approved</td><td>9</td><td><span class="ok">pass</span></td><td><span class="ok">pass</span></td><td><span class="ok">included</span></td></tr>
 <tr><td><code>TXT-E3-1102</code></td><td>11.2</td><td>parameterized</td><td>approved</td><td>16</td><td><span class="ok">pass</span></td><td><span class="ok">pass</span></td><td><span class="ok">included</span></td></tr>
 <tr><td><code>TXT-E3-1201</code></td><td>12.1</td><td>parameterized</td><td>approved</td><td>23</td><td><span class="ok">pass</span></td><td><span class="ok">pass</span></td><td><span class="ok">included</span></td></tr>
 <tr><td><code>TXT-E3-1206</code></td><td>12.6</td><td>generated</td><td>draft</td><td>20</td><td><span class="ok">pass</span></td><td><span class="ok">pass</span></td><td><span class="warn">excluded</span></td></tr>
