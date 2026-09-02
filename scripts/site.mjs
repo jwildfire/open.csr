@@ -74,6 +74,7 @@ import {
 } from './app-lib.mjs';
 import { loadAssembly, loadSections } from './template-lib.mjs';
 import { buildDataIndex, datasetStatus, loadDataPackage, renderDataPane, renderDatasetPage, renderLanesPage } from './data-lib.mjs';
+import { METADATA_PAGES, loadMetadata, metadataNavItems, renderMetadataPage, renderMetadataPane } from './metadata-lib.mjs';
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const buildDir = path.join(rootDir, 'site', '_build');
@@ -485,6 +486,28 @@ if (dataPackage.configured) {
   });
 }
 
+// The Metadata pane and its standalone pages (#77): six sections, one page
+// each, and the index that is also the pane.
+const metadata = loadMetadata(rootDir, { config, displays, textBlocks, documents });
+warnings.push(...metadata.warnings);
+const metadataContent = renderMetadataPane({ meta: metadata, config, root: '../' });
+page(path.join(buildDir, 'metadata', 'index.html'), {
+  title: `Metadata · ${config.siteTitle}`,
+  root: '../',
+  description:
+    'What was declared: the study model, the document models, every specification with its history, ' +
+    'every text block\'s approval, the environments the iterations were built in, and the requirements.',
+  content: metadataContent
+});
+for (const entry of METADATA_PAGES) {
+  page(path.join(buildDir, 'metadata', `${entry.id}.html`), {
+    title: `${entry.label} · metadata · ${config.siteTitle}`,
+    root: '../',
+    description: entry.blurb,
+    content: renderMetadataPage(entry.id, { meta: metadata, config, root: '../' })
+  });
+}
+
 const appPanes = [
   { id: 'documents', html: readerAppContent },
   {
@@ -502,6 +525,7 @@ const appPanes = [
   { id: 'text', html: textStatusContent },
   { id: 'values', html: valuesContent },
   { id: 'data', html: dataContent },
+  { id: 'metadata', html: metadataContent },
   { id: 'templates', html: templatesContent }
 ];
 
@@ -512,6 +536,7 @@ const navTree = buildNavTree({
   textBlocks,
   values: valueStore?.values || [],
   datasets: navDatasets,
+  metadata: metadataNavItems(metadata),
   documents,
   current: csr.id,
   rendered: documentEntries.map((entry) => entry.id),

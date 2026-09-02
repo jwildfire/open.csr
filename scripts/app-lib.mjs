@@ -40,6 +40,8 @@ export const APP_TABS = [
   // study because a dataset belongs to one study the way a display does, and
   // after Values because the sidebar reads outputs first and inputs last.
   { id: 'data', label: 'Data', href: '../data/index.html', scope: 'study' },
+  // Metadata is what was declared about the study and its documents (#77).
+  { id: 'metadata', label: 'Metadata', href: '../metadata/index.html', scope: 'study' },
   // Templates describe what a report of this kind IS, so they belong to no one
   // study and stay in the header rather than under the study in the tree.
   { id: 'templates', label: 'Templates', href: '../templates/index.html', scope: 'global' }
@@ -84,6 +86,7 @@ export function buildNavTree({
   textBlocks = [],
   values = [],
   datasets = [],
+  metadata = [],
   // Every document in the library, and which one this app instance is showing.
   // A document the page does not render is a real link to its own reader page
   // rather than a dead selection (#32); a document the page DOES render is an
@@ -241,6 +244,18 @@ export function buildNavTree({
           number: dataset.id,
           status: dataset.status || 'ok'
         }))
+      },
+      // What was declared (#77): one item per metadata page.
+      {
+        id: 'metadata',
+        label: 'Metadata',
+        note: 'What was declared',
+        items: metadata.map((page) => ({
+          id: page.id,
+          label: page.title || page.id,
+          number: page.number || null,
+          status: page.status || 'ok'
+        }))
       }
     ]
   };
@@ -344,7 +359,7 @@ function treeItem(groupId, item, kind) {
   );
 }
 
-const ITEM_KEY = { documents: 'doc', displays: 'display', text: 'block', values: 'focus', data: 'focus' };
+const ITEM_KEY = { documents: 'doc', displays: 'display', text: 'block', values: 'focus', data: 'focus', metadata: 'focus' };
 
 /**
  * The persistent explorer. Study at the top, then the three collections that
