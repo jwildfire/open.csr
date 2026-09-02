@@ -152,13 +152,13 @@ describe('the pane, the explorer and the deep links', () => {
     for (const page of METADATA_PAGES) expect(pane).toContain(`id="section-${page.id}"`);
     expect(TAB_IDS).toContain('metadata');
     expect(isTab('metadata')).toBe(true);
-    expect(STUDY_TABS.map((tab) => tab.id)).toEqual(['documents', 'displays', 'text', 'values', 'data', 'metadata']);
+    expect(STUDY_TABS.map((tab) => tab.id)).toEqual(['data', 'metadata', 'text', 'pipeline', 'displays', 'values', 'documents']);
     expect(APP_TABS.find((tab) => tab.id === 'metadata').href).toBe('../metadata/index.html');
     const items = metadataNavItems(meta);
     expect(items.map((item) => item.id)).toEqual(METADATA_PAGES.map((page) => page.id));
     expect(items.find((item) => item.id === 'study').number).toBe('CDISCPILOT01');
     const tree = buildNavTree({ config, displays, metadata: items });
-    expect(tree.groups.map((group) => group.id)).toEqual(['documents', 'displays', 'text', 'values', 'data', 'metadata']);
+    expect(tree.groups.map((group) => group.id)).toEqual(['documents', 'displays', 'text', 'values', 'data', 'metadata', 'pipeline']);
     const html = renderSidebar({ tree, active: 'metadata', selected: { focus: 'section-study' } });
     expect(html).toContain('data-nav-group-root="metadata"');
     expect(html).toContain('data-nav-group="metadata" data-nav-item="approvals"');

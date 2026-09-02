@@ -92,7 +92,14 @@
     "QC-LINK-002": "The assembler records what a document was built from (`inputs`: the template object, the study model, every placed display with its iteration, ARD hash and datasets, every block with its state and derived inputs, every value cited, every dataset reached with the displays that read it) and, per block, the displays its bindings resolved against with iteration and hash; the Reader renders that record as a panel of links above the text and the provenance appendix as links to each display, each dataset and the environment.",
     "QC-LINK-003": "A text block's card lists its inputs derived from its bindings — each display bound with the iteration and ARD hash resolved against, the values cited, its section and its approval, each a link — and names a declared display the block binds nothing from as drift; the frontmatter's `displays:` list stays the author's declaration, the build already failing a block that binds an undeclared display.",
     "QC-LINK-004": "The values pane links the arm a source address names to the study model, the datasets behind the value's display to the Data section, and the documents that place the blocks citing it; the arm link needs no index and is always present, the data and document links appear only when their indexes are given.",
-    "QC-LINK-005": "A document whose build failed a gate is flagged in the explorer (`gates fail`), one that passed is not, and one not yet assembled carries no verdict."
+    "QC-LINK-005": "A document whose build failed a gate is flagged in the explorer (`gates fail`), one that passed is not, and one not yet assembled carries no verdict.",
+    "QC-PIPE-001": "The registry (`site/config.json` → `pipeline.functions`) declares the pipeline's functions by the code's own names with kind, code path, what each reads and writes, what it calls and its gates; the site builds one page per function stating those, linking the code, and listing every element the function produced — datasets read, displays with a current iteration, values in the store, documents assembled — each a link back; a call to an unregistered function is a build warning.",
+    "QC-PIPE-002": "The explorer arranges its groups in three parts in the pipeline's order — Inputs (Data, Metadata, Text), Pipeline (the functions), Outputs (Displays, Values, Documents) — each part headed and noted, while `groups` stays the flat list every consumer reads; the application strip's study views follow the same order and Templates stays global.",
+    "QC-PIPE-003": "The Pipeline pane opens with the whole pipeline as one flow — the three input collections, the functions in order, the three output collections — followed by one section per function addressable by id; a function's permalink (`pipeline/<id>.html`) is absorbed into the Pipeline view with that function in focus.",
+    "QC-FLOW-001": "One renderer draws every flow: three lanes labelled Inputs, Function and Outputs, every box a link when it has one and a plain label otherwise, a sub-line for the hash, count or file, an empty lane saying so rather than vanishing, connectors drawn by the stylesheet and nothing external.",
+    "QC-FLOW-002": "A display's flow lists its datasets with the rows and hash its ARD recorded, its specification files and the study model with the analysis set it resolved, the four functions `regenerate()` calls, and the files of its current iteration — ard.json with its version, rows and hash, table.html, every RTF artifact with its hash, manifest.json; a display with no iteration draws none.",
+    "QC-FLOW-003": "A value's flow reads one ARD row (or its input values) through `regenerate_values()` into its store entry; a text block's flow reads the displays and values it binds and its own source file through the block renderer and the assembler into its rendered prose in each document that places it; a document's flow reads its template, study model, displays, blocks and values through the assembler's seven gates into its JSON and HTML.",
+    "QC-FLOW-004": "A dataset's flow reads the upstream file at the pinned commit (or the dataset it is derived from, or the alternate lane) through vendoring and verification and the preparation layer with its derivation count into the prepared frame every display recorded and the displays computed from it; a pipeline function's flow reads what it reads into what it writes."
   },
   "rows": [
     {
@@ -912,6 +919,69 @@
       "source": "open.csr#78",
       "evidence": "js-unit",
       "link": "site-links.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-PIPE-001",
+      "area": "Pipeline",
+      "text": "The registry (`site/config.json` → `pipeline.functions`) declares the pipeline's functions by the code's own names with kind, code path, what each reads and writes, what it calls and its gates; the site builds one page per function stating those, linking the code, and listing every element the function produced — datasets read, displays with a current iteration, values in the store, documents assembled — each a link back; a call to an unregistered function is a build warning.",
+      "source": "open.csr#82",
+      "evidence": "js-unit",
+      "link": "site-pipeline.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-PIPE-002",
+      "area": "Pipeline",
+      "text": "The explorer arranges its groups in three parts in the pipeline's order — Inputs (Data, Metadata, Text), Pipeline (the functions), Outputs (Displays, Values, Documents) — each part headed and noted, while `groups` stays the flat list every consumer reads; the application strip's study views follow the same order and Templates stays global.",
+      "source": "open.csr#82",
+      "evidence": "js-unit",
+      "link": "site-pipeline.test.js, site-demo.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-PIPE-003",
+      "area": "Pipeline",
+      "text": "The Pipeline pane opens with the whole pipeline as one flow — the three input collections, the functions in order, the three output collections — followed by one section per function addressable by id; a function's permalink (`pipeline/<id>.html`) is absorbed into the Pipeline view with that function in focus.",
+      "source": "open.csr#82",
+      "evidence": "js-unit",
+      "link": "site-pipeline.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-FLOW-001",
+      "area": "Flow",
+      "text": "One renderer draws every flow: three lanes labelled Inputs, Function and Outputs, every box a link when it has one and a plain label otherwise, a sub-line for the hash, count or file, an empty lane saying so rather than vanishing, connectors drawn by the stylesheet and nothing external.",
+      "source": "open.csr#83",
+      "evidence": "js-unit",
+      "link": "site-flow.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-FLOW-002",
+      "area": "Flow",
+      "text": "A display's flow lists its datasets with the rows and hash its ARD recorded, its specification files and the study model with the analysis set it resolved, the four functions `regenerate()` calls, and the files of its current iteration — ard.json with its version, rows and hash, table.html, every RTF artifact with its hash, manifest.json; a display with no iteration draws none.",
+      "source": "open.csr#83",
+      "evidence": "js-unit",
+      "link": "site-flow.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-FLOW-003",
+      "area": "Flow",
+      "text": "A value's flow reads one ARD row (or its input values) through `regenerate_values()` into its store entry; a text block's flow reads the displays and values it binds and its own source file through the block renderer and the assembler into its rendered prose in each document that places it; a document's flow reads its template, study model, displays, blocks and values through the assembler's seven gates into its JSON and HTML.",
+      "source": "open.csr#83",
+      "evidence": "js-unit",
+      "link": "site-flow.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-FLOW-004",
+      "area": "Flow",
+      "text": "A dataset's flow reads the upstream file at the pinned commit (or the dataset it is derived from, or the alternate lane) through vendoring and verification and the preparation layer with its derivation count into the prepared frame every display recorded and the displays computed from it; a pipeline function's flow reads what it reads into what it writes.",
+      "source": "open.csr#83",
+      "evidence": "js-unit",
+      "link": "site-flow.test.js",
       "status": "draft"
     }
   ]
