@@ -2,6 +2,9 @@
 # Do open.csr's populations and end-of-study displays agree with the report the
 # CDISC pilot itself published?
 #
+# Four displays are held to the report: t-populations (DST02) and t-end-of-study
+# (DST03) rebuild Tables 14-1.01 and 14-1.02; t-demographics (DMT01) rebuilds
+# Table 14-2.01 and t-exposure (EXT01) Table 14-4.01 (#61, D0032).
 # t-populations (DST02) and t-end-of-study (DST03) rebuild Tables 14-1.01 and
 # 14-1.02 of the CDISCPILOT01 clinical study report. Those tables were produced
 # in 2006 by SAS programs (adsl1.sas, adsl2.sas) written by a different team, on
@@ -134,7 +137,103 @@ fisher_p <- function(flag) {
 
 fmt_p <- function(p) if (p < 0.0001) "<.0001" else formatC(p, format = "f", digits = 4)
 
+# The demographics and exposure tables are continuous summaries and category
+# counts rather than subject flags. Recomputed here in base R, SAS rounding, with
+# the report's own presentation rules: a share under one half of a percent prints
+# "<1%", a count of nobody prints as a bare 0.
+fmt_num <- function(x, digits) formatC(round_half_up(x, digits), format = "f", digits = digits)
+fmt_n_pct_demo <- function(n, N) {
+  if (n == 0) return("0")
+  pct <- 100 * n / N
+  shown <- if (pct > 0 && round_half_up(pct, 0) == 0) "<1" else as.character(as.integer(round_half_up(pct, 0)))
+  sprintf("%d (%s%%)", n, shown)
+}
+summ_cells <- function(x_by_group, stat, digits) {
+  vapply(x_by_group, function(x) {
+    x <- x[!is.na(x)]
+    switch(stat,
+      N = as.character(length(x)),
+      mean = fmt_num(mean(x), digits), sd = fmt_num(stats::sd(x), digits),
+      median = fmt_num(stats::median(x), digits), min = fmt_num(min(x), digits), max = fmt_num(max(x), digits)
+    )
+  }, character(1))
+}
+anova_p <- function(x, g) summary(stats::aov(x ~ factor(g)))[[1]][["Pr(>F)"]][[1]]
+chisq_p <- function(x, g) suppressWarnings(stats::chisq.test(table(g, x), correct = FALSE))$p.value
+
+# Race (Origin), restated from the report: Hispanic by ethnicity first, then race.
+race_origin <- function(race, ethnic) {
+  ifelse(ethnic == "HISPANIC OR LATINO", "Hispanic",
+    ifelse(race == "WHITE", "Caucasian", ifelse(race == "BLACK OR AFRICAN AMERICAN", "African Descent", "Other")))
+}
+
+demo_digits <- c(mean = 1, sd = 2, median = 1, min = 1, max = 1)
+demo_vars <- list(
+  age = "AGE", mmse = "MMSETOT", durdis = "DURDIS", educ = "EDUCLVL",
+  weight = "WEIGHTBL", height = "HEIGHTBL", bmi = "BMIBL"
+)
+demo_cats <- list(
+  agegr = list(var = "AGEGR1", levels = c("<65", "65-80", ">80")),
+  sex = list(var = "SEX", levels = c("M", "F")),
+  raceor = list(var = "RACEOR", levels = c("Caucasian", "African Descent", "Hispanic", "Other")),
+  durdisgr = list(var = "DURDSGR1", levels = c("<12", ">=12")),
+  bmigr = list(var = "BMIBLGR1", levels = c("<25", "25-<30", ">=30"))
+)
+
+route_a_demographics <- function(perturb = FALSE) {
+  d <- as.data.frame(adsl)
+  d <- d[blank_na(d$ITTFL) == "Y", , drop = FALSE]
+  d$RACEOR <- race_origin(blank_na(d$RACE), blank_na(d$ETHNIC))
+  if (perturb) d$AGE[1] <- d$AGE[1] + 40
+  g <- blank_na(d$TRT01P)
+  by_group <- function(x) c(lapply(arms, function(a) x[g == a]), list(x))
+  out <- list()
+  for (nm in names(demo_vars)) {
+    x <- as.numeric(d[[demo_vars[[nm]]]])
+    out[[paste0(nm, ":N")]] <- c(summ_cells(by_group(x), "N", 0), fmt_p(anova_p(x[!is.na(x)], g[!is.na(x)])))
+    for (st in c("mean", "sd", "median", "min", "max")) {
+      out[[paste0(nm, ":", st)]] <- c(summ_cells(by_group(x), st, demo_digits[[st]]), "")
+    }
+  }
+  for (nm in names(demo_cats)) {
+    v <- blank_na(d[[demo_cats[[nm]]$var]])
+    N <- c(vapply(arms, function(a) sum(g == a & nzchar(v)), numeric(1)), sum(nzchar(v)))
+    p <- fmt_p(chisq_p(v[nzchar(v)], g[nzchar(v)]))
+    if (nm %in% c("sex", "raceor")) out[[paste0(nm, ":N")]] <- c(as.character(N), p)
+    for (i in seq_along(demo_cats[[nm]]$levels)) {
+      lv <- demo_cats[[nm]]$levels[i]
+      n <- c(vapply(arms, function(a) sum(g == a & v == lv), numeric(1)), sum(v == lv))
+      cells <- vapply(seq_along(n), function(j) fmt_n_pct_demo(n[j], N[j]), character(1))
+      # a sub-block with no n row prints its test beside its first level
+      out[[paste0(nm, ":", lv)]] <- c(cells, if (i == 1 && !nm %in% c("sex", "raceor")) p else "")
+    }
+  }
+  out
+}
+
+route_a_exposure <- function(perturb = FALSE) {
+  d <- as.data.frame(adsl)
+  d <- d[blank_na(d$SAFFL) == "Y", , drop = FALSE]
+  if (perturb) d$AVGDD[1] <- d$AVGDD[1] + 1
+  g <- blank_na(d$TRT01P)
+  comp <- blank_na(d$COMP24FL) == "Y"
+  out <- list()
+  for (an in c(avg_daily_dose = "AVGDD", total_dose = "CUMDOSE")) {
+    nm <- names(which(c(avg_daily_dose = "AVGDD", total_dose = "CUMDOSE") == an))
+    x <- as.numeric(d[[an]])
+    groups <- c(lapply(arms, function(a) x[g == a & comp]), lapply(arms, function(a) x[g == a]))
+    for (st in c("N", "mean", "sd", "median", "min", "max")) {
+      digits <- if (st == "N") 0 else demo_digits[[st]]
+      # no p-value column on this table; the empty seventh cell matches the record's
+      out[[paste0(nm, ":", st)]] <- c(summ_cells(groups, st, digits), "")
+    }
+  }
+  out
+}
+
 route_a <- function(slug, perturb = FALSE) {
+  if (slug == "t-demographics") return(route_a_demographics(perturb))
+  if (slug == "t-exposure") return(route_a_exposure(perturb))
   defs <- definitions[[slug]]
   out <- list()
   for (nm in names(defs)) {
@@ -184,7 +283,9 @@ norm_cell <- function(x) {
 route_b <- function(slug, perturb = FALSE) {
   cur <- jsonlite::fromJSON(file.path(root, "outputs", slug, "current.json"), simplifyVector = TRUE)
   html <- paste(readLines(file.path(root, cur$table), warn = FALSE), collapse = "\n")
-  if (perturb) html <- sub("60 \\(70%\\)", "61 (70%)", html)
+  # The perturbation has to reach every display, whatever its cells say: bump the
+  # first published cell of the first column by a leading digit.
+  if (perturb) html <- sub('(<td headers="stub_1_[0-9]+ col1"[^>]*>)([0-9])', "\\19\\2", html)
   stubs <- regmatches(html, gregexpr('<th id="stub_1_[0-9]+"[^>]*>.*?</th>', html))[[1]]
   ids <- as.integer(sub('^<th id="stub_1_([0-9]+)".*$', "\\1", stubs))
   labels <- norm_label(strip_tags(stubs))
@@ -197,7 +298,24 @@ route_b <- function(slug, perturb = FALSE) {
     rows[[i]] <- list(label = labels[i], cells = norm_cell(strip_tags(tds)))
   }
   # Section headings render as a labelled row with every cell empty.
-  Filter(function(r) any(nzchar(r$cells)), rows)
+  rows <- Filter(function(r) any(nzchar(r$cells)), rows)
+  spec <- record$displays[[slug]]
+  needs_map <- any(vapply(spec$rows, function(r) !is.null(r$published_from), logical(1)))
+  if (!needs_map) {
+    return(rows)
+  }
+  # The report and the rendered display do not share a layout: each record row
+  # says which rendered rows, by label and occurrence, supply its cells.
+  lapply(spec$rows, function(r) {
+    cells <- unlist(lapply(r$published_from, function(pf) {
+      hits <- Filter(function(x) identical(x$label, norm_label(pf$label)), rows)
+      if (length(hits) < pf$occurrence) {
+        stop(slug, ": the rendered display has no occurrence ", pf$occurrence, " of a row labelled '", pf$label, "'.", call. = FALSE)
+      }
+      hits[[pf$occurrence]]$cells[unlist(pf$columns)]
+    }))
+    list(label = norm_label(r$label), cells = cells)
+  })
 }
 
 # ---- route C: the transcribed report ----------------------------------------
@@ -257,9 +375,16 @@ locate_pdf <- function() {
 # The report page is fixed-width text: a data row is a label followed by exactly
 # four "n ( p%)" cells and an optional p-value. Parsing it this way rather than
 # by column position means a shifted margin cannot silently drop a column.
-cell_pattern <- "[0-9]+[[:space:]]*\\([[:space:]]*[0-9]+%\\)"
+# A printed cell: a count with its percentage ("14 ( 16%)", "1 ( <1%)"), or a
+# bare number ("75.2", "0"). Labels can carry digits too ("65-80 yrs", "[2]"),
+# so a line's cells are the LAST n_cells matches, a trailing four-decimal
+# p-value is read as the p-value column, and the text before the first cell is
+# the label. Header, footer and note lines are skipped by name.
+cell_pattern <- "(<\\.0001|<?[0-9]+(\\.[0-9]+)?([[:space:]]*\\([[:space:]]*<?[0-9]+%\\))?)"
+pvalue_pattern <- "^(<\\.0001|[0-9]\\.[0-9]{4})$"
+skip_pattern <- "\\(N=|^[[:space:]]*(Protocol:|Population:|Table 14|Source:|NOTE:|\\[1\\]|Summary|Placebo|Xanomeline|square|definite)"
 
-parse_report_page <- function(pdf, page) {
+parse_report_page <- function(pdf, page, n_cells = 4, allow_p = TRUE) {
   out <- tempfile(fileext = ".txt")
   status <- suppressWarnings(system2(
     "pdftotext",
@@ -276,16 +401,22 @@ parse_report_page <- function(pdf, page) {
   lines <- readLines(out, warn = FALSE)
   rows <- list()
   for (line in lines) {
+    if (!nzchar(trimws(line)) || grepl(skip_pattern, line)) next
     m <- gregexpr(cell_pattern, line)[[1]]
-    if (length(m) != 4 || m[1] == -1) next
+    if (m[1] == -1 || length(m) < n_cells) next
     starts <- as.integer(m)
     lens <- attr(m, "match.length")
-    cells <- vapply(seq_along(starts), function(i) {
-      norm_cell(substr(line, starts[i], starts[i] + lens[i] - 1))
-    }, character(1))
-    label <- norm_label(substr(line, 1, starts[1] - 1))
-    tail_txt <- trimws(substr(line, starts[4] + lens[4], nchar(line)))
-    rows[[length(rows) + 1]] <- list(label = label, cells = cells, p = tail_txt)
+    txt <- vapply(seq_along(starts), function(i) substr(line, starts[i], starts[i] + lens[i] - 1), character(1))
+    p <- ""
+    if (allow_p && length(txt) >= n_cells + 1 && grepl(pvalue_pattern, trimws(txt[length(txt)]))) {
+      p <- trimws(txt[length(txt)])
+      keep <- seq_len(length(txt) - 1)
+      txt <- txt[keep]; starts <- starts[keep]; lens <- lens[keep]
+    }
+    idx <- seq.int(length(txt) - n_cells + 1, length(txt))
+    cells <- vapply(txt[idx], norm_cell, character(1))
+    label <- norm_label(substr(line, 1, starts[idx[1]] - 1))
+    rows[[length(rows) + 1]] <- list(label = label, cells = unname(cells), p = p)
   }
   list(lines = lines, rows = rows)
 }
@@ -303,26 +434,36 @@ verify_transcription_run <- function(mutate = NULL) {
   }
 
   for (slug in names(record$displays)) {
-    page <- source_doc$pages[[slug]]
-    parsed <- parse_report_page(pdf, page)
+    page <- unlist(source_doc$pages[[slug]])
+    spec <- record$displays[[slug]]
+    n_cells <- spec$n_cells %||% 4
+    parsed <- list(lines = character(0), rows = list())
+    for (pg in page) {
+      one <- parse_report_page(pdf, pg, n_cells = n_cells, allow_p = n_cells == 4)
+      parsed$lines <- c(parsed$lines, one$lines)
+      parsed$rows <- c(parsed$rows, one$rows)
+    }
     printed <- parsed$rows
     expected <- record$displays[[slug]]$rows
     if (!is.null(mutate)) expected <- mutate(expected)
 
     if (length(printed) != length(expected)) {
       bad <- c(bad, sprintf(
-        "  %s: page %s of the report has %d data rows, the record has %d",
-        slug, page, length(printed), length(expected)
+        "  %s: page(s) %s of the report have %d data rows, the record has %d",
+        slug, paste(page, collapse = "-"), length(printed), length(expected)
       ))
       next
     }
     for (i in seq_along(expected)) {
       e <- expected[[i]]
       p <- printed[[i]]
-      if (!identical(norm_label(e$label), p$label)) {
+      # `report_label` is what the report prints before the cells (the block name
+      # shares the line with the first row); `label` is what the display prints.
+      want_label <- norm_label(e$report_label %||% e$label)
+      if (!identical(want_label, p$label)) {
         bad <- c(bad, sprintf(
           "  %s row %d: record label '%s', report prints '%s'",
-          slug, i, norm_label(e$label), p$label
+          slug, i, want_label, p$label
         ))
       }
       rec_cells <- vapply(e$printed, norm_cell, character(1))
@@ -392,7 +533,7 @@ if (verify_transcription) {
   cat(sprintf(
     "OK: all %d transcribed rows across %d tables match pages %s of %s (sha256 %s).\n",
     n_rows, length(record$displays),
-    paste(unlist(source_doc$pages), collapse = " and "),
+    paste(unlist(source_doc$pages), collapse = ", "),
     basename(source_doc$path), substr(source_doc$sha256, 1, 12)
   ))
   quit(status = 0)

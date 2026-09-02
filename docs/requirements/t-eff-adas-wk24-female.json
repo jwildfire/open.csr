@@ -2,8 +2,10 @@
   "component": "t-eff-adas-wk24-female",
   "matrix": "displays.md",
   "requirements": {
-    "DSP-DEMO-001": "The age summary (n, mean, SD, median, min, max) by treatment arm equals the value computed directly from ADSL, at the display's declared precision.",
-    "DSP-DEMO-002": "Sex, race and age-group counts and percentages by treatment arm and overall equal the values computed directly from ADSL.",
+    "DSP-DEMO-001": "The age summary (n, mean, SD, median, min, max) by treatment arm equals the value computed directly from the vendored pilot ADSL on the intent-to-treat population; the display carries the report's Placebo, low dose, high dose, Total and p-value columns.",
+    "DSP-DEMO-002": "Sex, Race (Origin) and age-group counts and percentages by treatment arm and overall equal the values computed directly from ADSL, printed as the report prints them: integer percentages, a bare 0 for nobody, `<1%` for a share under half a percent.",
+    "DSP-DEMO-003": "Every p-value the display prints is the test the report's footnote names — one-way ANOVA across the three arms for a continuous block, Pearson's chi-square (no continuity correction) for a categorical one — recomputed independently and printed to four decimals, on the block's n row (or the first level of a sub-block) and nowhere else.",
+    "DSP-DEMO-004": "Race (Origin) is the report's classification recoded from the study's race and ethnicity — ethnicity first, then race — and reproduces 218 Caucasian, 23 African Descent, 12 Hispanic, 1 Other, with every Hispanic subject White by race so 218 + 12 = 230; the CDISC-coded race stays in the ARD for the narrative and is not rendered.",
     "DSP-DISP-001": "Randomised, treated, completed and discontinued counts reproduce `EOSSTT` by treatment arm, with percentages based on randomised subjects.",
     "DSP-DISP-002": "The derived discontinuation reasons partition the discontinued subjects exactly, in every column including Total, and the death count matches `DTHFL`.",
     "DSP-POP-001": "The ITT, Safety and Efficacy rows equal the counts of the study's own `ITTFL`, `SAFFL` and `EFFFL` in the CDISC pilot ADSL, by planned treatment group and overall, with percentages based on the group's randomised N.",
@@ -15,6 +17,7 @@
     "DSP-EOS-003": "A p-value appears on exactly the three rows the statistical analysis plan names — protocol completion, adverse event and lack of efficacy — and each equals a Fisher's exact test computed independently across the three treatment groups. No other row carries one.",
     "DSP-EOS-004": "Every percentage, the reason rows included, is based on the treatment group's randomised N rather than on the number of early terminations.",
     "DSP-REF-001": "Every cell `t-populations` and `t-end-of-study` publish equals the figure the CDISC pilot's own clinical study report printed for Tables 14-1.01 and 14-1.02 in 2006, from SAS programs sharing no code with this repository. The transcribed reference is at `quality/data/reference-report-agreement.json`; `qc/reference-report-agreement.R` compares it against both a from-scratch recomputation and the committed rendered HTML and exits non-zero on any disagreement, and `--verify-transcription` re-derives the transcription itself from the source document.",
+    "DSP-REF-002": "Every cell `t-demographics` and `t-exposure` publish equals the figure the CDISC pilot's own clinical study report printed for Tables 14-2.01 and 14-4.01 — 58 report lines of four cells and a p-value, and 12 lines of six cells gathered from the rendered blocks the record names — as transcribed in `quality/data/reference-report-agreement.json` and re-derived from the pinned document by `--verify-transcription`.",
     "DSP-EXP-001": "Duration-of-exposure statistics equal those computed directly from the ADEX `TDURD` parameter for each treatment arm.",
     "DSP-EXP-002": "Cumulative exposure categories are monotone non-increasing and each equals the number of subjects reaching that duration threshold.",
     "DSP-AE-001": "Any-AE and serious-AE subject counts and percentages equal the values computed directly from ADAE over the safety analysis set.",
@@ -56,7 +59,7 @@
     {
       "id": "DSP-DEMO-001",
       "area": "",
-      "text": "The age summary (n, mean, SD, median, min, max) by treatment arm equals the value computed directly from ADSL, at the display's declared precision.",
+      "text": "The age summary (n, mean, SD, median, min, max) by treatment arm equals the value computed directly from the vendored pilot ADSL on the intent-to-treat population; the display carries the report's Placebo, low dose, high dose, Total and p-value columns.",
       "source": "",
       "evidence": "",
       "link": "",
@@ -65,7 +68,25 @@
     {
       "id": "DSP-DEMO-002",
       "area": "",
-      "text": "Sex, race and age-group counts and percentages by treatment arm and overall equal the values computed directly from ADSL.",
+      "text": "Sex, Race (Origin) and age-group counts and percentages by treatment arm and overall equal the values computed directly from ADSL, printed as the report prints them: integer percentages, a bare 0 for nobody, `<1%` for a share under half a percent.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "DSP-DEMO-003",
+      "area": "",
+      "text": "Every p-value the display prints is the test the report's footnote names — one-way ANOVA across the three arms for a continuous block, Pearson's chi-square (no continuity correction) for a categorical one — recomputed independently and printed to four decimals, on the block's n row (or the first level of a sub-block) and nowhere else.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "DSP-DEMO-004",
+      "area": "",
+      "text": "Race (Origin) is the report's classification recoded from the study's race and ethnicity — ethnicity first, then race — and reproduces 218 Caucasian, 23 African Descent, 12 Hispanic, 1 Other, with every Hispanic subject White by race so 218 + 12 = 230; the CDISC-coded race stays in the ARD for the narrative and is not rendered.",
       "source": "",
       "evidence": "",
       "link": "",
@@ -165,6 +186,15 @@
       "id": "DSP-REF-001",
       "area": "",
       "text": "Every cell `t-populations` and `t-end-of-study` publish equals the figure the CDISC pilot's own clinical study report printed for Tables 14-1.01 and 14-1.02 in 2006, from SAS programs sharing no code with this repository. The transcribed reference is at `quality/data/reference-report-agreement.json`; `qc/reference-report-agreement.R` compares it against both a from-scratch recomputation and the committed rendered HTML and exits non-zero on any disagreement, and `--verify-transcription` re-derives the transcription itself from the source document.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "DSP-REF-002",
+      "area": "",
+      "text": "Every cell `t-demographics` and `t-exposure` publish equals the figure the CDISC pilot's own clinical study report printed for Tables 14-2.01 and 14-4.01 — 58 report lines of four cells and a p-value, and 12 lines of six cells gathered from the rendered blocks the record names — as transcribed in `quality/data/reference-report-agreement.json` and re-derived from the pinned document by `--verify-transcription`.",
       "source": "",
       "evidence": "",
       "link": "",

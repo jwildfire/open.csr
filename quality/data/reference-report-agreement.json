@@ -1,12 +1,14 @@
 {
   "record": "reference-report-agreement",
-  "what": "The figures the CDISC pilot's own clinical study report printed for Tables 14-1.01 and 14-1.02, transcribed cell by cell. open.csr rebuilds those two displays as t-populations and t-end-of-study; qc/reference-report-agreement.R checks that a from-scratch recomputation and the committed rendered HTML both land on every string below.",
+  "what": "The figures the CDISC pilot's own clinical study report printed for Tables 14-1.01, 14-1.02, 14-2.01 and 14-4.01, transcribed cell by cell. open.csr rebuilds those four displays as t-populations, t-end-of-study, t-demographics and t-exposure; qc/reference-report-agreement.R checks that a from-scratch recomputation and the committed rendered HTML both land on every string below.",
   "reference": {
     "document": "Clinical Study Report, CDISC SDTM/ADaM Pilot Project, protocol CDISCPILOT01, FINAL, 27 June 2006",
     "published_by": "CDISC SDTM/ADaM Pilot Project Team",
     "tables": {
       "t-populations": "Table 14-1.01, Summary of Populations (Population: All Subjects)",
-      "t-end-of-study": "Table 14-1.02, Summary of End of Study Data (Population: Intent-to-Treat)"
+      "t-end-of-study": "Table 14-1.02, Summary of End of Study Data (Population: Intent-to-Treat)",
+      "t-demographics": "Table 14-2.01, Summary of Demographic and Baseline Characteristics (Population: Intent-to-Treat)",
+      "t-exposure": "Table 14-4.01, Summary of Planned Exposure to Study Drug, as of End of Study (Population: Safety)"
     },
     "produced_by": "SAS programs adsl1.sas and adsl2.sas, run 21:02 Monday, 26 June 2006, per the Source line printed on each table.",
     "analysis_plan": "Statistical Analysis Plan section 9.7.1.2: 'The number of subjects randomized, the number of subjects in each analysis dataset, and the disposition of subjects were tabulated by treatment group. Specific reasons for early study discontinuation (protocol completed, lack of efficacy, and adverse event) were compared using a Fisher's exact test.' The display shells are Attachment 13.1.1 Templates 1 and 2.",
@@ -19,16 +21,22 @@
       "sha256": "0cab016c76abb3dcaef31110611c95dbd9cd00df083b35e6d28fd69fca0d842d",
       "pages": {
         "t-populations": 43,
-        "t-end-of-study": 44
+        "t-end-of-study": 44,
+        "t-demographics": [
+          46,
+          47,
+          48
+        ],
+        "t-exposure": 62
       },
       "not_vendored": "The PDF is deliberately NOT vendored into this repository. Pages 154-409 of it — the protocol and the sample CRF — carry 'Copyright (c) 2006 Eli Lilly and Company' and are not ours to redistribute. The two pages this record transcribes, 43 and 44, are result tables authored by the CDISC SDTM/ADaM Pilot Project Team and sit outside that range; they are read, not copied.",
-      "verified": "2026-08-27, by `Rscript qc/reference-report-agreement.R --verify-transcription`, against the document whose SHA-256 is pinned above. Every cell, row label and printed p-value below was re-derived from the PDF text and matched.",
+      "verified": "2026-08-27, by `Rscript qc/reference-report-agreement.R --verify-transcription`, against the document whose SHA-256 is pinned above. Every cell, row label and printed p-value below was re-derived from the PDF text and matched. Extended 2026-09-02 (#61) to Tables 14-2.01 (pages 46-48) and 14-4.01 (page 62), re-verified against the same document by the same command.",
       "verification_found": "Two errors in the hand transcription, both introduced when this record was first written and both invisible to the three-route comparison because the specs were written from the same misreading: (1) a p-value of 0.5000 recorded against the Death row, which the report does not print — the report prints a p-value on exactly the three rows the SAP names; (2) the two tables' population labels recorded the wrong way round.",
       "not_in_ci": "This check is not a CI step. It needs the network and a PDF text extractor (poppler's pdftotext), and a build that fails because a third-party download was slow teaches people to ignore it. It is a maintainer command, to be run whenever this record is edited. What CI does run is the three-route comparison, which no longer has anything to compare against if this record is wrong — which is exactly why the record's own provenance is pinned here rather than asserted."
     }
   },
   "comparison": {
-    "route_a": "A from-scratch recomputation in qc/reference-report-agreement.R that reads the vendored adsl.xpt.gz with {haven} and never loads {opencsr}.",
+    "route_a": "A from-scratch recomputation in qc/reference-report-agreement.R that reads the vendored adsl.xpt.gz with {haven} and never loads {opencsr}: subject-level flags for the two disposition tables; means, SDs, medians, extremes, ANOVA and chi-square p-values for the demographics table; dose summaries for the exposure table. SAS rounding throughout.",
     "route_b": "The cell text parsed out of the committed outputs/<slug>/<version>/table.html, which is what the pipeline published.",
     "route_c": "This record: what the 2006 SAS programs printed.",
     "rule": "All three must agree on every cell. Any disagreement is exit status 1."
@@ -248,6 +256,1093 @@
             "0 ( 0%)",
             "0 ( 0%)",
             "0 ( 0%)"
+          ]
+        }
+      ]
+    },
+    "t-demographics": {
+      "table": "14-2.01",
+      "columns": [
+        "Placebo",
+        "Xanomeline Low Dose",
+        "Xanomeline High Dose",
+        "Total"
+      ],
+      "column_n": [
+        86,
+        84,
+        84,
+        254
+      ],
+      "note": "The report prints a p-value beside each block's n row (or beside the first level of a sub-block without one): one-way ANOVA for a continuous measure, Pearson's chi-square for a categorical one. `report_label` is the text the report prints before the cells on that line; `label` is what the rendered display prints, which the published-display route reads.",
+      "rows": [
+        {
+          "analysis": "age:N",
+          "label": "n",
+          "report_label": "Age (y) n",
+          "printed": [
+            "86",
+            "84",
+            "84",
+            "254"
+          ],
+          "p_value_printed": "0.5934"
+        },
+        {
+          "analysis": "age:mean",
+          "label": "Mean",
+          "report_label": "Mean",
+          "printed": [
+            "75.2",
+            "75.7",
+            "74.4",
+            "75.1"
+          ]
+        },
+        {
+          "analysis": "age:sd",
+          "label": "SD",
+          "report_label": "SD",
+          "printed": [
+            "8.59",
+            "8.29",
+            "7.89",
+            "8.25"
+          ]
+        },
+        {
+          "analysis": "age:median",
+          "label": "Median",
+          "report_label": "Median",
+          "printed": [
+            "76.0",
+            "77.5",
+            "76.0",
+            "77.0"
+          ]
+        },
+        {
+          "analysis": "age:min",
+          "label": "Min",
+          "report_label": "Min",
+          "printed": [
+            "52.0",
+            "51.0",
+            "56.0",
+            "51.0"
+          ]
+        },
+        {
+          "analysis": "age:max",
+          "label": "Max",
+          "report_label": "Max",
+          "printed": [
+            "89.0",
+            "88.0",
+            "88.0",
+            "89.0"
+          ]
+        },
+        {
+          "analysis": "agegr:<65",
+          "label": "<65 yrs",
+          "report_label": "<65 yrs",
+          "printed": [
+            "14 (16%)",
+            "8 (10%)",
+            "11 (13%)",
+            "33 (13%)"
+          ],
+          "p_value_printed": "0.1439"
+        },
+        {
+          "analysis": "agegr:65-80",
+          "label": "65-80 yrs",
+          "report_label": "65-80 yrs",
+          "printed": [
+            "42 (49%)",
+            "47 (56%)",
+            "55 (65%)",
+            "144 (57%)"
+          ]
+        },
+        {
+          "analysis": "agegr:>80",
+          "label": ">80 yrs",
+          "report_label": ">80 yrs",
+          "printed": [
+            "30 (35%)",
+            "29 (35%)",
+            "18 (21%)",
+            "77 (30%)"
+          ]
+        },
+        {
+          "analysis": "sex:N",
+          "label": "n",
+          "report_label": "Sex n",
+          "printed": [
+            "86",
+            "84",
+            "84",
+            "254"
+          ],
+          "p_value_printed": "0.1409"
+        },
+        {
+          "analysis": "sex:M",
+          "label": "Male",
+          "report_label": "Male",
+          "printed": [
+            "33 (38%)",
+            "34 (40%)",
+            "44 (52%)",
+            "111 (44%)"
+          ]
+        },
+        {
+          "analysis": "sex:F",
+          "label": "Female",
+          "report_label": "Female",
+          "printed": [
+            "53 (62%)",
+            "50 (60%)",
+            "40 (48%)",
+            "143 (56%)"
+          ]
+        },
+        {
+          "analysis": "raceor:N",
+          "label": "n",
+          "report_label": "Race (Origin) n",
+          "printed": [
+            "86",
+            "84",
+            "84",
+            "254"
+          ],
+          "p_value_printed": "0.6477"
+        },
+        {
+          "analysis": "raceor:Caucasian",
+          "label": "Caucasian",
+          "report_label": "Caucasian",
+          "printed": [
+            "75 (87%)",
+            "72 (86%)",
+            "71 (85%)",
+            "218 (86%)"
+          ]
+        },
+        {
+          "analysis": "raceor:African Descent",
+          "label": "African Descent",
+          "report_label": "African Descent",
+          "printed": [
+            "8 (9%)",
+            "6 (7%)",
+            "9 (11%)",
+            "23 (9%)"
+          ]
+        },
+        {
+          "analysis": "raceor:Hispanic",
+          "label": "Hispanic",
+          "report_label": "Hispanic",
+          "printed": [
+            "3 (3%)",
+            "6 (7%)",
+            "3 (4%)",
+            "12 (5%)"
+          ]
+        },
+        {
+          "analysis": "raceor:Other",
+          "label": "Other",
+          "report_label": "Other",
+          "printed": [
+            "0",
+            "0",
+            "1 (1%)",
+            "1 (<1%)"
+          ]
+        },
+        {
+          "analysis": "mmse:N",
+          "label": "n",
+          "report_label": "MMSE n",
+          "printed": [
+            "86",
+            "84",
+            "84",
+            "254"
+          ],
+          "p_value_printed": "0.5947"
+        },
+        {
+          "analysis": "mmse:mean",
+          "label": "Mean",
+          "report_label": "Mean",
+          "printed": [
+            "18.0",
+            "17.9",
+            "18.5",
+            "18.1"
+          ]
+        },
+        {
+          "analysis": "mmse:sd",
+          "label": "SD",
+          "report_label": "SD",
+          "printed": [
+            "4.27",
+            "4.22",
+            "4.16",
+            "4.21"
+          ]
+        },
+        {
+          "analysis": "mmse:median",
+          "label": "Median",
+          "report_label": "Median",
+          "printed": [
+            "19.5",
+            "18.0",
+            "20.0",
+            "19.0"
+          ]
+        },
+        {
+          "analysis": "mmse:min",
+          "label": "Min",
+          "report_label": "Min",
+          "printed": [
+            "10.0",
+            "10.0",
+            "10.0",
+            "10.0"
+          ]
+        },
+        {
+          "analysis": "mmse:max",
+          "label": "Max",
+          "report_label": "Max",
+          "printed": [
+            "23.0",
+            "24.0",
+            "24.0",
+            "24.0"
+          ]
+        },
+        {
+          "analysis": "durdis:N",
+          "label": "n",
+          "report_label": "Duration of disease n",
+          "printed": [
+            "86",
+            "84",
+            "84",
+            "254"
+          ],
+          "p_value_printed": "0.1530"
+        },
+        {
+          "analysis": "durdis:mean",
+          "label": "Mean",
+          "report_label": "Mean",
+          "printed": [
+            "42.7",
+            "48.7",
+            "40.5",
+            "43.9"
+          ]
+        },
+        {
+          "analysis": "durdis:sd",
+          "label": "SD",
+          "report_label": "SD",
+          "printed": [
+            "30.24",
+            "29.58",
+            "24.69",
+            "28.40"
+          ]
+        },
+        {
+          "analysis": "durdis:median",
+          "label": "Median",
+          "report_label": "Median",
+          "printed": [
+            "35.3",
+            "40.3",
+            "36.0",
+            "36.3"
+          ]
+        },
+        {
+          "analysis": "durdis:min",
+          "label": "Min",
+          "report_label": "Min",
+          "printed": [
+            "7.2",
+            "7.8",
+            "2.2",
+            "2.2"
+          ]
+        },
+        {
+          "analysis": "durdis:max",
+          "label": "Max",
+          "report_label": "Max",
+          "printed": [
+            "183.1",
+            "130.8",
+            "135.0",
+            "183.1"
+          ]
+        },
+        {
+          "analysis": "durdisgr:<12",
+          "label": "<12 months",
+          "report_label": "<12 months",
+          "printed": [
+            "5 (6%)",
+            "3 (4%)",
+            "4 (5%)",
+            "12 (5%)"
+          ],
+          "p_value_printed": "0.7885"
+        },
+        {
+          "analysis": "durdisgr:>=12",
+          "label": ">=12 months",
+          "report_label": ">=12 months",
+          "printed": [
+            "81 (94%)",
+            "81 (96%)",
+            "80 (95%)",
+            "242 (95%)"
+          ]
+        },
+        {
+          "analysis": "educ:N",
+          "label": "n",
+          "report_label": "Years of education n",
+          "printed": [
+            "86",
+            "84",
+            "84",
+            "254"
+          ],
+          "p_value_printed": "0.3875"
+        },
+        {
+          "analysis": "educ:mean",
+          "label": "Mean",
+          "report_label": "Mean",
+          "printed": [
+            "12.6",
+            "13.2",
+            "12.5",
+            "12.8"
+          ]
+        },
+        {
+          "analysis": "educ:sd",
+          "label": "SD",
+          "report_label": "SD",
+          "printed": [
+            "2.95",
+            "4.15",
+            "2.92",
+            "3.38"
+          ]
+        },
+        {
+          "analysis": "educ:median",
+          "label": "Median",
+          "report_label": "Median",
+          "printed": [
+            "12.0",
+            "12.0",
+            "12.0",
+            "12.0"
+          ]
+        },
+        {
+          "analysis": "educ:min",
+          "label": "Min",
+          "report_label": "Min",
+          "printed": [
+            "6.0",
+            "3.0",
+            "6.0",
+            "3.0"
+          ]
+        },
+        {
+          "analysis": "educ:max",
+          "label": "Max",
+          "report_label": "Max",
+          "printed": [
+            "21.0",
+            "24.0",
+            "20.0",
+            "24.0"
+          ]
+        },
+        {
+          "analysis": "weight:N",
+          "label": "n",
+          "report_label": "Baseline weight(kg) n",
+          "printed": [
+            "86",
+            "83",
+            "84",
+            "253"
+          ],
+          "p_value_printed": "0.0030"
+        },
+        {
+          "analysis": "weight:mean",
+          "label": "Mean",
+          "report_label": "Mean",
+          "printed": [
+            "62.8",
+            "67.3",
+            "70.0",
+            "66.6"
+          ]
+        },
+        {
+          "analysis": "weight:sd",
+          "label": "SD",
+          "report_label": "SD",
+          "printed": [
+            "12.77",
+            "14.12",
+            "14.65",
+            "14.13"
+          ]
+        },
+        {
+          "analysis": "weight:median",
+          "label": "Median",
+          "report_label": "Median",
+          "printed": [
+            "60.6",
+            "64.9",
+            "69.2",
+            "66.7"
+          ]
+        },
+        {
+          "analysis": "weight:min",
+          "label": "Min",
+          "report_label": "Min",
+          "printed": [
+            "34.0",
+            "45.4",
+            "41.7",
+            "34.0"
+          ]
+        },
+        {
+          "analysis": "weight:max",
+          "label": "Max",
+          "report_label": "Max",
+          "printed": [
+            "86.2",
+            "106.1",
+            "108.0",
+            "108.0"
+          ]
+        },
+        {
+          "analysis": "height:N",
+          "label": "n",
+          "report_label": "Baseline height(cm) n",
+          "printed": [
+            "86",
+            "84",
+            "84",
+            "254"
+          ],
+          "p_value_printed": "0.1262"
+        },
+        {
+          "analysis": "height:mean",
+          "label": "Mean",
+          "report_label": "Mean",
+          "printed": [
+            "162.6",
+            "163.4",
+            "165.8",
+            "163.9"
+          ]
+        },
+        {
+          "analysis": "height:sd",
+          "label": "SD",
+          "report_label": "SD",
+          "printed": [
+            "11.52",
+            "10.42",
+            "10.13",
+            "10.76"
+          ]
+        },
+        {
+          "analysis": "height:median",
+          "label": "Median",
+          "report_label": "Median",
+          "printed": [
+            "162.6",
+            "162.6",
+            "165.1",
+            "162.9"
+          ]
+        },
+        {
+          "analysis": "height:min",
+          "label": "Min",
+          "report_label": "Min",
+          "printed": [
+            "137.2",
+            "135.9",
+            "146.1",
+            "135.9"
+          ]
+        },
+        {
+          "analysis": "height:max",
+          "label": "Max",
+          "report_label": "Max",
+          "printed": [
+            "185.4",
+            "195.6",
+            "190.5",
+            "195.6"
+          ]
+        },
+        {
+          "analysis": "bmi:N",
+          "label": "n",
+          "report_label": "Baseline BMI n",
+          "printed": [
+            "86",
+            "83",
+            "84",
+            "253"
+          ],
+          "p_value_printed": "0.0133"
+        },
+        {
+          "analysis": "bmi:mean",
+          "label": "Mean",
+          "report_label": "Mean",
+          "printed": [
+            "23.6",
+            "25.1",
+            "25.3",
+            "24.7"
+          ]
+        },
+        {
+          "analysis": "bmi:sd",
+          "label": "SD",
+          "report_label": "SD",
+          "printed": [
+            "3.67",
+            "4.27",
+            "4.16",
+            "4.09"
+          ]
+        },
+        {
+          "analysis": "bmi:median",
+          "label": "Median",
+          "report_label": "Median",
+          "printed": [
+            "23.4",
+            "24.3",
+            "24.8",
+            "24.2"
+          ]
+        },
+        {
+          "analysis": "bmi:min",
+          "label": "Min",
+          "report_label": "Min",
+          "printed": [
+            "15.1",
+            "17.7",
+            "13.7",
+            "13.7"
+          ]
+        },
+        {
+          "analysis": "bmi:max",
+          "label": "Max",
+          "report_label": "Max",
+          "printed": [
+            "33.3",
+            "40.1",
+            "34.5",
+            "40.1"
+          ]
+        },
+        {
+          "analysis": "bmigr:<25",
+          "label": "<25",
+          "report_label": "<25",
+          "printed": [
+            "59 (69%)",
+            "47 (56%)",
+            "44 (52%)",
+            "150 (59%)"
+          ],
+          "p_value_printed": "0.2326"
+        },
+        {
+          "analysis": "bmigr:25-<30",
+          "label": "25-<30",
+          "report_label": "25-<30",
+          "printed": [
+            "21 (24%)",
+            "27 (32%)",
+            "28 (33%)",
+            "76 (30%)"
+          ]
+        },
+        {
+          "analysis": "bmigr:>=30",
+          "label": ">=30",
+          "report_label": ">=30",
+          "printed": [
+            "6 (7%)",
+            "10 (12%)",
+            "12 (14%)",
+            "28 (11%)"
+          ]
+        }
+      ]
+    },
+    "t-exposure": {
+      "table": "14-4.01",
+      "columns": [
+        "Completers at Week 24: Placebo",
+        "Completers at Week 24: Xanomeline Low Dose",
+        "Completers at Week 24: Xanomeline High Dose",
+        "Safety Population: Placebo",
+        "Safety Population: Xanomeline Low Dose",
+        "Safety Population: Xanomeline High Dose"
+      ],
+      "column_n": [
+        60,
+        28,
+        30,
+        86,
+        84,
+        84
+      ],
+      "n_cells": 6,
+      "note": "The report lays the two populations out as column groups; the rendered display lays them out as row blocks under one set of treatment columns. `published_from` says which rendered row (by its label and the occurrence of that label in reading order) and which columns supply each of the six report cells, in order.",
+      "rows": [
+        {
+          "analysis": "avg_daily_dose:N",
+          "label": "n",
+          "report_label": "Average daily dose (mg) n",
+          "printed": [
+            "60",
+            "28",
+            "30",
+            "86",
+            "84",
+            "84"
+          ],
+          "published_from": [
+            {
+              "label": "n",
+              "occurrence": 3,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "label": "n",
+              "occurrence": 1,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "analysis": "avg_daily_dose:mean",
+          "label": "Mean",
+          "report_label": "mean",
+          "printed": [
+            "0.0",
+            "54.0",
+            "77.0",
+            "0.0",
+            "54.0",
+            "71.6"
+          ],
+          "published_from": [
+            {
+              "label": "Mean",
+              "occurrence": 3,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "label": "Mean",
+              "occurrence": 1,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "analysis": "avg_daily_dose:sd",
+          "label": "SD",
+          "report_label": "std",
+          "printed": [
+            "0.00",
+            "0.00",
+            "0.58",
+            "0.00",
+            "0.00",
+            "8.11"
+          ],
+          "published_from": [
+            {
+              "label": "SD",
+              "occurrence": 3,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "label": "SD",
+              "occurrence": 1,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "analysis": "avg_daily_dose:median",
+          "label": "Median",
+          "report_label": "median",
+          "printed": [
+            "0.0",
+            "54.0",
+            "76.9",
+            "0.0",
+            "54.0",
+            "75.1"
+          ],
+          "published_from": [
+            {
+              "label": "Median",
+              "occurrence": 3,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "label": "Median",
+              "occurrence": 1,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "analysis": "avg_daily_dose:min",
+          "label": "Min",
+          "report_label": "min",
+          "printed": [
+            "0.0",
+            "54.0",
+            "76.1",
+            "0.0",
+            "54.0",
+            "54.0"
+          ],
+          "published_from": [
+            {
+              "label": "Min",
+              "occurrence": 3,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "label": "Min",
+              "occurrence": 1,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "analysis": "avg_daily_dose:max",
+          "label": "Max",
+          "report_label": "max",
+          "printed": [
+            "0.0",
+            "54.0",
+            "78.6",
+            "0.0",
+            "54.0",
+            "78.6"
+          ],
+          "published_from": [
+            {
+              "label": "Max",
+              "occurrence": 3,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "label": "Max",
+              "occurrence": 1,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "analysis": "total_dose:N",
+          "label": "n",
+          "report_label": "Cumulative dose at end of study n",
+          "printed": [
+            "60",
+            "28",
+            "30",
+            "86",
+            "84",
+            "84"
+          ],
+          "published_from": [
+            {
+              "label": "n",
+              "occurrence": 4,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "label": "n",
+              "occurrence": 2,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "analysis": "total_dose:mean",
+          "label": "Mean",
+          "report_label": "mean",
+          "printed": [
+            "0.0",
+            "9918.6",
+            "14089.5",
+            "0.0",
+            "5347.3",
+            "7551.0"
+          ],
+          "published_from": [
+            {
+              "label": "Mean",
+              "occurrence": 4,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "label": "Mean",
+              "occurrence": 2,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "analysis": "total_dose:sd",
+          "label": "SD",
+          "report_label": "std",
+          "printed": [
+            "0.00",
+            "603.84",
+            "481.01",
+            "0.00",
+            "3680.35",
+            "5531.04"
+          ],
+          "published_from": [
+            {
+              "label": "SD",
+              "occurrence": 4,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "label": "SD",
+              "occurrence": 2,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "analysis": "total_dose:median",
+          "label": "Median",
+          "report_label": "median",
+          "printed": [
+            "0.0",
+            "9936.0",
+            "14080.5",
+            "0.0",
+            "4455.0",
+            "5778.0"
+          ],
+          "published_from": [
+            {
+              "label": "Median",
+              "occurrence": 4,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "label": "Median",
+              "occurrence": 2,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "analysis": "total_dose:min",
+          "label": "Min",
+          "report_label": "min",
+          "printed": [
+            "0.0",
+            "7884.0",
+            "12960.0",
+            "0.0",
+            "108.0",
+            "54.0"
+          ],
+          "published_from": [
+            {
+              "label": "Min",
+              "occurrence": 4,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "label": "Min",
+              "occurrence": 2,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "analysis": "total_dose:max",
+          "label": "Max",
+          "report_label": "max",
+          "printed": [
+            "0.0",
+            "11448.0",
+            "15417.0",
+            "0.0",
+            "11448.0",
+            "15417.0"
+          ],
+          "published_from": [
+            {
+              "label": "Max",
+              "occurrence": 4,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "label": "Max",
+              "occurrence": 2,
+              "columns": [
+                1,
+                2,
+                3
+              ]
+            }
           ]
         }
       ]

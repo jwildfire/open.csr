@@ -43,14 +43,15 @@ default_patterns <- function() {
 #' format_stat(8.5865, "sd")     # "8.59"
 #' format_stat(8.2e-14, "pval", list(pval = 4)) # "<0.0001"
 #' @export
-format_stat <- function(value, stat_name, digits = list(), proportions = proportion_stats()) {
+format_stat <- function(value, stat_name, digits = list(), proportions = proportion_stats(),
+                        sub_one = FALSE) {
   if (is.null(value) || length(value) == 0) {
     return(NA_character_)
   }
   if (length(value) > 1) {
     return(paste(
       vapply(value, format_stat, character(1),
-        stat_name = stat_name, digits = digits, proportions = proportions
+        stat_name = stat_name, digits = digits, proportions = proportions, sub_one = sub_one
       ),
       collapse = ", "
     ))
@@ -70,6 +71,14 @@ format_stat <- function(value, stat_name, digits = list(), proportions = proport
     if (!is.na(bound)) {
       return(bound)
     }
+  }
+  # `format: sub_one_pct: true` — a percentage shown to no decimals that is
+  # greater than zero but rounds to zero prints as "<1", the way the report's
+  # demographics table wrote "1 ( <1%)". Opt-in per display: the same report's
+  # end-of-study table prints "1 ( 0%)" for the same share, so neither
+  # convention can be the engine's.
+  if (sub_one && stat_name %in% proportions && d == 0L && value > 0 && round_half_up(value, 0L) == 0) {
+    return("<1")
   }
   formatC(round_half_up(value, d), format = "f", digits = d, big.mark = "")
 }
@@ -226,7 +235,7 @@ expand_rows <- function(rows, display_spec, vcfg) {
       label = r$label %||% r$level %||% r$variable %||% r$analysis,
       analysis = r$analysis, variable = r$variable, variable_level = r$level,
       pattern = r$pattern %||% "n_pct", indent = r$indent %||% 0,
-      digits = r$digits, na_text = r$na_text
+      digits = r$digits, na_text = r$na_text, p_from = r$p_from
     )
   }
   out <- drop_empty_sections(out)
@@ -238,7 +247,7 @@ expand_rows <- function(rows, display_spec, vcfg) {
 plan_row <- function(label, analysis = NA_character_, variable = NA_character_,
                      variable_level = NA_character_, group2_level = NA_character_,
                      pattern = NA_character_, indent = 0, section = FALSE,
-                     digits = list(), na_text = NA_character_) {
+                     digits = list(), na_text = NA_character_, p_from = NA_character_) {
   out <- data.frame(
     label = label, analysis = analysis %||% NA_character_,
     variable = variable %||% NA_character_,
@@ -247,6 +256,11 @@ plan_row <- function(label, analysis = NA_character_, variable = NA_character_,
     pattern = pattern %||% NA_character_,
     indent = as.integer(indent), section = section,
     na_text = na_text %||% NA_character_,
+    # `p_from:` names a sibling analysis whose hypothesis-test rows fill this
+    # row's p-value column — the reference demographics table prints a
+    # sub-block's test beside its first level, and that level's counts come
+    # from a different analysis than the test does.
+    p_from = p_from %||% NA_character_,
     stringsAsFactors = FALSE
   )
   out$digits <- list(digits %||% list())
@@ -267,11 +281,14 @@ expand_levels <- function(rows, r, min_pct) {
     passes_threshold(cand[cand$variable_level == lv, , drop = FALSE], min_pct)
   }, logical(1))
   levs <- levs[keep]
+  # `level_labels: { F: Female, M: Male }` prints a level under the report's
+  # word for it; the ARD keeps the data's own level so bindings stay addressable.
+  labels <- r$level_labels %||% list()
   lapply(levs, function(lv) {
     plan_row(
-      label = paste0(lv), analysis = r$analysis, variable = r$variable,
+      label = as.character(labels[[lv]] %||% lv), analysis = r$analysis, variable = r$variable,
       variable_level = lv, pattern = r$pattern %||% "n_pct",
-      indent = r$indent %||% 1, digits = r$digits
+      indent = r$indent %||% 1, digits = r$digits, p_from = r$p_from
     )
   })
 }
@@ -425,7 +442,9 @@ table_body <- function(rows, display_spec, vcfg, patterns, digits,
     if (isTRUE(plan$section[i])) next
     for (j in seq_along(cols$levels)) {
       pat <- col_patterns[[cols$levels[j]]] %||% plan$pattern[i]
-      cells[i, j] <- cell_value(rows, plan[i, ], cols$levels[j], patterns, digits, pat, proportions)
+      this <- plan[i, ]
+      if (!is.null(col_patterns[[cols$levels[j]]]) && !is.na(this$p_from)) this$analysis <- this$p_from
+      cells[i, j] <- cell_value(rows, this, cols$levels[j], patterns, digits, pat, proportions)
     }
   }
   tbl <- tibble::tibble(label = indent_label(plan$label, plan$indent))
@@ -463,13 +482,25 @@ cell_value <- function(rows, plan_row, col_level, patterns, digits,
     return("")
   }
   digits <- utils::modifyList(as.list(digits), as.list(plan_row$digits[[1]] %||% list()))
+  # `format: zero_count: "0"` prints a count of nobody as the bare figure the
+  # report prints, rather than "0 (0%)": a percentage of nobody says nothing.
+  if (identical(pattern_name, "n_pct") && !is.null(patterns$zero_count)) {
+    n_hit <- sub$stat[sub$stat_name == "n"]
+    if (length(n_hit) && isTRUE(unlist(n_hit[[1]]) == 0)) {
+      return(as.character(patterns$zero_count))
+    }
+  }
   pattern <- patterns[[pattern_name]] %||% pattern_name
   needed <- regmatches(pattern, gregexpr("\\{[^}]+\\}", pattern))[[1]]
   out <- pattern
   for (tok in needed) {
     nm <- substr(tok, 2, nchar(tok) - 1)
     hit <- sub$stat[sub$stat_name == nm]
-    val <- if (length(hit)) format_stat(unlist(hit[[1]]), nm, digits, proportions) else NA_character_
+    val <- if (length(hit)) {
+      format_stat(unlist(hit[[1]]), nm, digits, proportions, sub_one = isTRUE(patterns$sub_one_pct))
+    } else {
+      NA_character_
+    }
     if (is.na(val)) {
       # A statistic that exists but is not estimable is not the same as a cell
       # with nothing behind it. `na_text:` lets the row say which it is — a

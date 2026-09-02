@@ -1,0 +1,55 @@
+{
+  "display": "t-demographics",
+  "version": "v004",
+  "created": "2026-09-02T15:39:23Z",
+  "actor": "@obotclaw",
+  "change_request": "Table 14-2.01 of the reference report (D0032, #61): intent-to-treat population, a Total and a p-value column (one-way ANOVA / Pearson chi-square per block), the report rows — age and its groups, sex, Race (Origin) recoded from race and ethnicity, MMSE, duration of disease and its groups, years of education, baseline weight, height, BMI and its groups. The FDA-standard DMT01 shape is superseded; CDISC-coded race and ethnicity stay in the ARD for the narrative bindings.",
+  "regulatory_id": "DMT01",
+  "git_commit": null,
+  "spec_hash": "sha256:1db216cf8f6d81a73469c0afb0c7ffaa6ae987f22f7e9ce0d047af310da061b2",
+  "display_hash": "sha256:b2e005bfe913dfdd4b86b1e3be1500bb29f9b2312000b5767af62ff124b89c8a",
+  "ard_hash": "sha256:c9e63ef82035c2cc33bfe7817451343c1df0c62b1a389834b78f652193d252ab",
+  "ard_rows": 524,
+  "ard_warnings": 0,
+  "ard_errors": 0,
+  "datasets": "adsl",
+  "data": [
+    {
+      "dataset": "adsl",
+      "hash": "sha256:3139478d86fda4c38e8bb2f41d348518f4a65f58bcdd7e9650fda8da7a9a6838",
+      "n_row": 254,
+      "n_col": 54,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    }
+  ],
+  "environment": {
+    "r": "4.3.3",
+    "os": "Darwin 23.6.0",
+    "packages": {
+      "cards": "0.6.1",
+      "cardx": "0.2.5",
+      "gtsummary": "2.3.0",
+      "gt": "1.0.0",
+      "dplyr": "1.1.4",
+      "pharmaverseadam": "1.1.0",
+      "jsonlite": "2.0.0",
+      "yaml": "2.3.10",
+      "digest": "0.6.37"
+    }
+  },
+  "variants": {
+    "post_text": {
+      "file": "table.html",
+      "rtf": "table.rtf",
+      "rtf_hash": "sha256:7177d7826b314e6daf05c45a46ae091a3bc058654e1b831a3557dc6e2af6a13e",
+      "n_rows": 67
+    },
+    "in_text": {
+      "file": "table-in-text.html",
+      "rtf": "table-in-text.rtf",
+      "rtf_hash": "sha256:34490ec6a5fd3e35167a8135373d7eb33cb61b77f430f55ee77d648b0fea9307",
+      "n_rows": 67
+    }
+  }
+}

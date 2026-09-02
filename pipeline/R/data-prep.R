@@ -285,6 +285,7 @@ prep_adsl <- function(adsl, vitals = NULL) {
   adsl$RACE <- factor(as.character(adsl$RACE))
   adsl$AGEGR1 <- factor(as.character(adsl$AGEGR1), levels = c("18-64", ">64"))
   adsl$ETHNIC <- factor(as.character(adsl$ETHNIC))
+  adsl$RACEOR <- race_origin(adsl$RACE, adsl$ETHNIC)
   adsl <- merge_baseline_vitals(adsl, vitals)
   tibble::as_tibble(adsl)
 }
@@ -343,6 +344,7 @@ prep_adsl_phuse <- function(adsl) {
   adsl$BLWT <- as.numeric(adsl$WEIGHTBL)
   adsl$BLHT <- as.numeric(adsl$HEIGHTBL)
   adsl$BLBMI <- as.numeric(adsl$BMIBL)
+  adsl$RACEOR <- race_origin(adsl$RACE, adsl$ETHNIC)
   adsl$TRT01A <- factor(as.character(adsl$TRT01A), levels = trt_levels())
   # Actual and planned agree for all 254 subjects in this study, unlike the
   # pharmaverseadam one where twelve differ. Carried anyway, and as a factor
@@ -363,6 +365,30 @@ prep_adsl_phuse <- function(adsl) {
 #' the same 254 subjects; neither is wrong; they are not the same display row.
 #' @noRd
 phuse_agegr1_levels <- function() c("<65", "65-80", ">80")
+
+#' Race (Origin), as the 2006 report coded it
+#'
+#' The reference clinical study report prints one "Race (Origin)" classification
+#' with Hispanic as a category of its own — 218 Caucasian, 23 African Descent,
+#' 12 Hispanic, 1 Other — where CDISC-era ADaM carries race and ethnicity as two
+#' variables (230 White, 23 Black or African American, 1 American Indian or
+#' Alaska Native; 12 Hispanic or Latino). The two say the same thing: every
+#' Hispanic subject is White by race, so 218 + 12 = 230. This derivation states
+#' the recode rather than leaving a reader to infer it: ethnicity first, then
+#' race, with the report's own labels. It is not a data conflict and needs no
+#' source-priority rule (D0032, #61).
+#' @noRd
+race_origin <- function(race, ethnic) {
+  race <- as.character(race)
+  ethnic <- as.character(ethnic)
+  out <- ifelse(
+    !is.na(ethnic) & ethnic == "HISPANIC OR LATINO", "Hispanic",
+    ifelse(race == "WHITE", "Caucasian",
+      ifelse(race == "BLACK OR AFRICAN AMERICAN", "African Descent", "Other")
+    )
+  )
+  factor(out, levels = c("Caucasian", "African Descent", "Hispanic", "Other"))
+}
 
 #' Derivations applied to every non-ADSL PHUSE dataset (see [prepare_data()])
 #' @noRd

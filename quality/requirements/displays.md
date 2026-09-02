@@ -44,8 +44,10 @@ live in [`tfl-engine.md`](tfl-engine.md).
 
 | ID | Requirement | Type | Verification | Status |
 |---|---|---|---|---|
-| DSP-DEMO-001 | The age summary (n, mean, SD, median, min, max) by treatment arm equals the value computed directly from ADSL, at the display's declared precision. | Functional | `test-displays.R` | Verified |
-| DSP-DEMO-002 | Sex, race and age-group counts and percentages by treatment arm and overall equal the values computed directly from ADSL. | Functional | `test-displays.R` | Verified |
+| DSP-DEMO-001 | The age summary (n, mean, SD, median, min, max) by treatment arm equals the value computed directly from the vendored pilot ADSL on the intent-to-treat population; the display carries the report's Placebo, low dose, high dose, Total and p-value columns. | Correctness | `test-displays.R` | Verified |
+| DSP-DEMO-002 | Sex, Race (Origin) and age-group counts and percentages by treatment arm and overall equal the values computed directly from ADSL, printed as the report prints them: integer percentages, a bare 0 for nobody, `<1%` for a share under half a percent. | Correctness | `test-displays.R` | Verified |
+| DSP-DEMO-003 | Every p-value the display prints is the test the report's footnote names — one-way ANOVA across the three arms for a continuous block, Pearson's chi-square (no continuity correction) for a categorical one — recomputed independently and printed to four decimals, on the block's n row (or the first level of a sub-block) and nowhere else. | Correctness | `test-displays.R` | Verified |
+| DSP-DEMO-004 | Race (Origin) is the report's classification recoded from the study's race and ethnicity — ethnicity first, then race — and reproduces 218 Caucasian, 23 African Descent, 12 Hispanic, 1 Other, with every Hispanic subject White by race so 218 + 12 = 230; the CDISC-coded race stays in the ARD for the narrative and is not rendered. | Traceability | `test-displays.R` | Verified |
 
 ## Disposition (DST01)
 
@@ -87,6 +89,7 @@ completion-status source, and it prints no denominator rule for the reason rows.
 | ID | Requirement | Type | Verification | Status |
 |---|---|---|---|---|
 | DSP-REF-001 | Every cell `t-populations` and `t-end-of-study` publish equals the figure the CDISC pilot's own clinical study report printed for Tables 14-1.01 and 14-1.02 in 2006, from SAS programs sharing no code with this repository. The transcribed reference is at `quality/data/reference-report-agreement.json`; `qc/reference-report-agreement.R` compares it against both a from-scratch recomputation and the committed rendered HTML and exits non-zero on any disagreement, and `--verify-transcription` re-derives the transcription itself from the source document. | Quality evidence | `test-displays.R`, `qc/reference-report-agreement.R` | Verified |
+| DSP-REF-002 | Every cell `t-demographics` and `t-exposure` publish equals the figure the CDISC pilot's own clinical study report printed for Tables 14-2.01 and 14-4.01 — 58 report lines of four cells and a p-value, and 12 lines of six cells gathered from the rendered blocks the record names — as transcribed in `quality/data/reference-report-agreement.json` and re-derived from the pinned document by `--verify-transcription`. | Regulatory | `test-displays.R` | Verified |
 
 ## Exposure (EXT01)
 
