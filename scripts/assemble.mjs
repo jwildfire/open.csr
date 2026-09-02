@@ -57,6 +57,7 @@ import { fileURLToPath } from 'node:url';
 import yaml from 'js-yaml';
 
 import { checkValueStore, hashFile, loadValueStore, valueIndex } from './values-lib.mjs';
+import { checkAssemblyStudy, checkTreatmentConsistency, loadStudyModel } from './study-lib.mjs';
 import {
   loadTextLibrary,
   loadArd,
@@ -459,6 +460,16 @@ export function assemble({ write = true, template = 'ich-e3' } = {}) {
     checked: valueReport.checked,
     violations: valueReport.violations
   };
+  // One study: every placed display's per-arm counts must be the study model's
+  // for its analysis set, and no two displays may report the same set with
+  // different counts (D0032 R2, #59). A display with no population record is a
+  // named warning — "not gated" is reported, never passed off as clean.
+  const studyModel = loadStudyModel(ROOT);
+  gates.treatmentConsistency = checkTreatmentConsistency(studyModel, ards);
+  for (const e of checkAssemblyStudy(studyModel, assembly.study)) gates.treatmentConsistency.errors.push(e);
+  gates.treatmentConsistency.ok = gates.treatmentConsistency.errors.length === 0;
+  for (const w of gates.treatmentConsistency.warnings) gates.warnings.push(w);
+  gates.ok = gates.ok && gates.treatmentConsistency.ok;
 
   // The same accounting for the TFL Library. A display the library holds but this
   // document does not carry is reported, exactly as an unassembled text block is:
@@ -1054,6 +1065,13 @@ function reportBuild(doc, tpl) {
     'approval',
     true,
     gates.approval.excluded.length ? `${gates.approval.excluded.length} draft block(s) excluded` : 'all blocks included'
+  );
+  line(
+    'treatment consistency',
+    gates.treatmentConsistency.ok,
+    gates.treatmentConsistency.errors.length
+      ? gates.treatmentConsistency.errors.join('; ')
+      : `${gates.treatmentConsistency.checked.length} display(s) agree with library/study.yaml on who was in the study`
   );
   if (doc.buildErrors.length) for (const e of doc.buildErrors) console.log(`  ! ${e}`);
   for (const w of gates.warnings) console.log(`  ~ ${w}`);

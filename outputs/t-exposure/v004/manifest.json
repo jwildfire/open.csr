@@ -1,0 +1,55 @@
+{
+  "display": "t-exposure",
+  "version": "v004",
+  "created": "2026-09-02T15:23:19Z",
+  "actor": "@obotclaw",
+  "change_request": "One study (D0032 R2, #60): rebuilt from ADSL AVGDD and CUMDOSE for the safety population and the Week 24 completers, as Table 14-4.01 of the reference report summarises them; duration of treatment (TRTDUR) and the exposure categories kept for the Section 12.1 narrative under their existing binding names. No exposure dataset is read.",
+  "regulatory_id": "EXT01",
+  "git_commit": null,
+  "spec_hash": "sha256:065027fd70c7f99747dbb9c73a6e94ca1205bd29ba1f88f62d8a125124cc3cc9",
+  "display_hash": "sha256:d4dbe6344e5ee371b1d5cb708be04cb14039868c8469972fc116b27d1622064a",
+  "ard_hash": "sha256:de9e7ac7bedab71bc5e127e92efa72f80a1e39215132b55ff52f46e4402675d6",
+  "ard_rows": 208,
+  "ard_warnings": 0,
+  "ard_errors": 0,
+  "datasets": "adsl",
+  "data": [
+    {
+      "dataset": "adsl",
+      "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+      "n_row": 254,
+      "n_col": 53,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    }
+  ],
+  "environment": {
+    "r": "4.3.3",
+    "os": "Darwin 23.6.0",
+    "packages": {
+      "cards": "0.6.1",
+      "cardx": "0.2.5",
+      "gtsummary": "2.3.0",
+      "gt": "1.0.0",
+      "dplyr": "1.1.4",
+      "pharmaverseadam": "1.1.0",
+      "jsonlite": "2.0.0",
+      "yaml": "2.3.10",
+      "digest": "0.6.37"
+    }
+  },
+  "variants": {
+    "post_text": {
+      "file": "table.html",
+      "rtf": "table.rtf",
+      "rtf_hash": "sha256:aae09a86874922d365a89bdef61a4ce963f0e4db360669dcd961eed08ca5b886",
+      "n_rows": 42
+    },
+    "in_text": {
+      "file": "table-in-text.html",
+      "rtf": "table-in-text.rtf",
+      "rtf_hash": "sha256:1f0830424147c5b40b0a75201648fd33085c15e2e126c35a4985f5542f77af8f",
+      "n_rows": 42
+    }
+  }
+}

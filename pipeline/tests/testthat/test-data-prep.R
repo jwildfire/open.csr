@@ -1,5 +1,9 @@
+# The pharmaverse re-derivation is the ALTERNATE lane since v0.4.0 (D0032 R2,
+# #60). The derivations below exist because that packaging lacks what the
+# study's own states, so they are tested on the lane that needs them.
+
 test_that("TFL-PREP-001: screen failures are excluded from every prepared dataset (#1)", {
-  prepared <- fixture_data()
+  prepared <- fixture_data_pv()
   raw_sf <- pharmaverseadam::adsl$USUBJID[pharmaverseadam::adsl$ARM == "Screen Failure"]
   expect_length(raw_sf, 52)
   expect_equal(nrow(prepared$adsl), nrow(pharmaverseadam::adsl) - 52)
@@ -10,7 +14,7 @@ test_that("TFL-PREP-001: screen failures are excluded from every prepared datase
 })
 
 test_that("TFL-PREP-002: ITTFL is derived from randomisation, SAFFL is used as shipped (#1)", {
-  prepared <- fixture_data()
+  prepared <- fixture_data_pv()
   expected_itt <- ifelse(!is.na(prepared$adsl$RANDDT), "Y", "N")
   expect_identical(prepared$adsl$ITTFL, expected_itt)
   # every non-screen-failure subject in CDISCPILOT01 was randomised and dosed
@@ -20,8 +24,8 @@ test_that("TFL-PREP-002: ITTFL is derived from randomisation, SAFFL is used as s
 })
 
 test_that("TFL-PREP-003: COMPLFL and DISCREAS reconstruct EOSSTT exactly (#1)", {
-  adsl <- fixture_data()$adsl
-  ref <- ref_adsl()
+  adsl <- fixture_data_pv()$adsl
+  ref <- ref_adsl_pv()
   expect_equal(sum(adsl$COMPLFL == "Y"), sum(ref$EOSSTT == "COMPLETED"))
   expect_equal(sum(adsl$COMPLFL == "N"), sum(ref$EOSSTT == "DISCONTINUED"))
   # DISCREAS is populated for discontinued subjects only, and partitions them
@@ -36,7 +40,7 @@ test_that("TFL-PREP-003: COMPLFL and DISCREAS reconstruct EOSSTT exactly (#1)", 
 })
 
 test_that("TFL-PREP-004: baseline vitals are merged from ADVS onto ADSL (#1)", {
-  adsl <- fixture_data()$adsl
+  adsl <- fixture_data_pv()$adsl
   advs <- pharmaverseadam::advs
   bl <- advs[advs$ABLFL %in% "Y" & advs$PARAMCD == "WEIGHT" & advs$USUBJID %in% adsl$USUBJID, ]
   expect_equal(sum(!is.na(adsl$BLWT)), nrow(bl))
@@ -46,7 +50,7 @@ test_that("TFL-PREP-004: baseline vitals are merged from ADVS onto ADSL (#1)", {
 })
 
 test_that("TFL-PREP-005: the manifest describes every prepared dataset with a sha256 hash (#1)", {
-  prepared <- fixture_data()
+  prepared <- fixture_data_pv()
   m <- data_manifest(prepared)
   expect_setequal(m$dataset, names(prepared))
   expect_equal(m$n_row[m$dataset == "adsl"], nrow(prepared$adsl))
@@ -59,25 +63,25 @@ test_that("TFL-PREP-005: the manifest describes every prepared dataset with a sh
 })
 
 test_that("TFL-PREP-006: the analysis-set registry rejects unknown sets and applies flags (#1)", {
-  prepared <- fixture_data()
+  prepared <- fixture_data_pv()
   expect_error(apply_analysis_set(prepared$adsl, "responders"), "Unknown analysis_set")
   # 'efficacy' IS a known set (it maps to EFFFL); on a source that does not
   # state one, the failure must name the missing flag, not the set
   expect_error(apply_analysis_set(prepared$adsl, "efficacy"), "population flag 'EFFFL'")
   expect_equal(nrow(apply_analysis_set(prepared$adsl, "safety")), 254)
   expect_equal(nrow(apply_analysis_set(prepared$adsl, "all")), 254)
-  expect_equal(
-    nrow(apply_analysis_set(prepared$adsl, "completers")),
-    sum(prepared$adsl$COMPLFL == "Y")
-  )
+  # 'completers' is the study model's COMP24FL: stated by the study's own package,
+  # absent from the re-derivation, so the alternate lane must say so by name
+  expect_error(apply_analysis_set(prepared$adsl, "completers"), "population flag 'COMP24FL'")
+  expect_equal(nrow(apply_analysis_set(fixture_data()$adsl, "completers")), 118)
   expect_error(apply_analysis_set(data.frame(x = 1), "safety"), "population flag")
 })
 
 test_that("TFL-PREP-007: treatment arms are ordered by dose, not alphabetically (#1)", {
-  adsl <- fixture_data()$adsl
+  adsl <- fixture_data_pv()$adsl
   expect_identical(
     levels(adsl$TRT01A),
     c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose")
   )
-  expect_identical(levels(fixture_data()$adae$TRT01A), levels(adsl$TRT01A))
+  expect_identical(levels(fixture_data_pv()$adae$TRT01A), levels(adsl$TRT01A))
 })

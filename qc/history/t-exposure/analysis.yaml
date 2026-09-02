@@ -1,0 +1,51 @@
+id: t-exposure
+title: "Extent of Exposure to Study Drug"
+regulatory_id: EXT01
+type: table
+dataset: adex
+analysis_set: safety
+denominator: adsl
+group:
+  - TRT01A
+total: true
+analyses:
+  - name: duration
+    method: continuous
+    label: "Duration of exposure (days)"
+    variables: [AVAL]
+    filter: "PARAMCD == 'TDURD'"
+  - name: total_dose
+    method: continuous
+    label: "Total dose administered (mg)"
+    variables: [AVAL]
+    filter: "PARAMCD == 'TDOSE'"
+  - name: avg_daily_dose
+    method: continuous
+    label: "Average daily dose (mg)"
+    variables: [AVAL]
+    filter: "PARAMCD == 'AVDDSE'"
+  - name: dose_intensity
+    method: continuous
+    label: "Overall dose intensity (%)"
+    variables: [AVAL]
+    filter: "PARAMCD == 'TDOSINT'"
+  - name: dur_any
+    method: subject_count
+    label: "Exposed for at least 1 day"
+    variable: EXPCAT
+    filter: "PARAMCD == 'TDURD' & AVAL >= 1"
+  - name: dur_30
+    method: subject_count
+    label: "Exposed for at least 30 days"
+    variable: EXPCAT
+    filter: "PARAMCD == 'TDURD' & AVAL >= 30"
+  - name: dur_90
+    method: subject_count
+    label: "Exposed for at least 90 days"
+    variable: EXPCAT
+    filter: "PARAMCD == 'TDURD' & AVAL >= 90"
+  - name: dur_180
+    method: subject_count
+    label: "Exposed for at least 180 days"
+    variable: EXPCAT
+    filter: "PARAMCD == 'TDURD' & AVAL >= 180"

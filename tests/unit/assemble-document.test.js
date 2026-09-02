@@ -23,7 +23,7 @@ describe('Assembled CSR document model', () => {
       expect(Array.isArray(doc[key]), key).toBe(true);
     }
     expect(doc.provenanceAppendix.section).toBe('16.1.9');
-    for (const key of ['structure', 'bindingResolution', 'numericFidelity', 'approval', 'crossReferences']) {
+    for (const key of ['structure', 'bindingResolution', 'numericFidelity', 'approval', 'crossReferences', 'treatmentConsistency']) {
       expect(doc.gates[key], key).toBeDefined();
     }
   });
@@ -110,10 +110,9 @@ describe('Assembled CSR document model', () => {
     const packagings = new Set(
       provenance.displays.flatMap((d) => d.data.map((x) => x.source_pkg))
     );
-    expect([...packagings].sort()).toEqual([
-      'pharmaverseadam',
-      'phuse-org/phuse-scripts:data/adam',
-    ]);
+    // One study, one packaging (D0032 R2, #60): the alternate lane is measured
+    // by qc/source-agreement.R and read by nothing the document places.
+    expect([...packagings].sort()).toEqual(['phuse-org/phuse-scripts:data/adam']);
     expect(section('16.1.9').populated).toBe(true);
   });
 

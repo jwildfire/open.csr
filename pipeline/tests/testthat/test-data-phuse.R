@@ -63,8 +63,10 @@ test_that("TFL-PREP-009: the whole CDISCPILOT01 ADaM package is preparable (#39)
   expect_setequal(phuse_datasets(), c(pilot, "adcm"))
 
   reg <- data_sources()
-  expect_identical(unname(reg[c("adsl", "adae", "adex", "adlb", "advs")]),
-    rep("pharmaverseadam", 5))
+  # the study's own package is the default for everything it publishes (#60);
+  # the two datasets it lacks are the only ones the alternate serves by default
+  expect_identical(unname(reg[c("adsl", "adae", "advs")]), rep("phuse", 3))
+  expect_identical(unname(reg[c("adex", "adlb")]), rep("pharmaverseadam", 2))
   expect_identical(
     unname(reg[c("adqsadas", "adqscibc", "adqsnpix", "adtte", "adlbc", "adlbh", "adlbhy", "adcm")]),
     rep("phuse", 8)
@@ -86,9 +88,10 @@ test_that("TFL-PREP-009: the whole CDISCPILOT01 ADaM package is preparable (#39)
   # adex exists only in the pharmaverse re-derivation; asking PHUSE for it must
   # say so rather than return an empty frame
   expect_error(prepare_data("adex", sources = "phuse"), "Unknown dataset")
-  # the default `datasets` is the pharmaverseadam safety spine, so asking for it
-  # wholesale from PHUSE names the two datasets PHUSE does not have
-  expect_error(prepare_data(sources = "phuse"), "Unknown dataset\\(s\\): adex, adlb")
+  # asking PHUSE for the two datasets only the re-derivation has names both
+  expect_error(prepare_data(c("adsl", "adex", "adlb"), sources = "phuse"), "Unknown dataset\\(s\\): adex, adlb")
+  # and the default `datasets` prepares wholesale from the study's own package
+  expect_true(all(data_sources_used(prepare_data()) == "phuse"))
 })
 
 test_that("TFL-PREP-010: TRT01A on every dataset comes from the prepared ADSL (#39)", {
@@ -179,7 +182,7 @@ test_that("TFL-PREP-012: ADCM's two-study relabelling is reversed, and proven (#
 test_that("TFL-PREP-013: the manifest names the upstream commit for PHUSE data (#39)", {
   prepared <- prepare_data(c("adae", "adqsadas"))
   m <- data_manifest(prepared)
-  expect_identical(m$source_pkg[m$dataset == "adae"], "pharmaverseadam")
+  expect_identical(m$source_pkg[m$dataset == "adae"], "phuse-org/phuse-scripts:data/adam")
   expect_identical(
     m$source_pkg[m$dataset == "adqsadas"], "phuse-org/phuse-scripts:data/adam"
   )
@@ -188,21 +191,24 @@ test_that("TFL-PREP-013: the manifest names the upstream commit for PHUSE data (
   expect_equal(m$n_row[m$dataset == "adqsadas"], nrow(prepared$adqsadas))
 })
 
-test_that("TFL-PREP-014: adding PHUSE data moves nothing the displays already stand on (#39)", {
-  # every dataset the six committed displays read must still come from
-  # pharmaverseadam, and be byte-identical to the reference computation
-  prepared <- prepare_data(c("adae", "adex"))
+test_that("TFL-PREP-014: the alternate lane still prepares whole, with its own derivations and arms (#39)", {
+  # since v0.4.0 the re-derivation is the alternate (D0032 R2, #60); it must
+  # stay readable wholesale, keep its own grouping, and carry its own arms onto
+  # every dataset it serves — the lane is measured, not silently retired
+  prepared <- fixture_data_pv()
   m <- data_manifest(prepared)
   expect_true(all(m$source_pkg == "pharmaverseadam"))
   expect_identical(m$hash[m$dataset == "adsl"], hash_object(prepared$adsl))
-  expect_equal(nrow(prepared$adsl), nrow(ref_adsl()))
-  expect_equal(nrow(prepared$adae), nrow(ref_adae()))
-  expect_equal(nrow(prepared$adex), nrow(ref_adex()))
+  expect_equal(nrow(prepared$adsl), nrow(ref_adsl_pv()))
   expect_identical(levels(prepared$adsl$AGEGR1), c("18-64", ">64"))
-  # single-sourcing TRT01A must not have moved a single record's arm
-  ref <- ref_adae()
-  expect_equal(n_disagreeing(prepared$adae$TRT01A, ref$TRT01A), 0)
-  expect_equal(n_disagreeing(prepared$adex$TRT01A, ref_adex()$TRT01A), 0)
+  arm <- stats::setNames(as.character(prepared$adsl$TRT01A), prepared$adsl$USUBJID)
+  for (nm in c("adae", "adex", "advs")) {
+    expect_equal(n_disagreeing(prepared[[nm]]$TRT01A, arm[prepared[[nm]]$USUBJID]), 0, info = nm)
+  }
+  # and it is the lane on which twelve subjects sit on a different actual arm
+  ph <- fixture_data()$adsl
+  moved <- sum(as.character(prepared$adsl$TRT01A) != as.character(ph$TRT01A)[match(prepared$adsl$USUBJID, ph$USUBJID)])
+  expect_equal(moved, 12)
 })
 
 test_that("TFL-PREP-015: the efficacy analysis set exists and fails loudly without EFFFL (#39)", {
@@ -211,7 +217,7 @@ test_that("TFL-PREP-015: the efficacy analysis set exists and fails loudly witho
   expect_true(all(apply_analysis_set(ph, "efficacy")$EFFFL == "Y"))
   # the pharmaverse packaging states no efficacy set; asking for one must name
   # the missing flag rather than quietly return every subject
-  pv <- fixture_data()$adsl
+  pv <- fixture_data_pv()$adsl
   expect_false("EFFFL" %in% names(pv))
   expect_error(apply_analysis_set(pv, "efficacy"), "population flag 'EFFFL'")
 })

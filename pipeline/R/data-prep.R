@@ -5,7 +5,7 @@
 #' these levels rather than relying on alphabetical ordering.
 #' @noRd
 trt_levels <- function() {
-  c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose")
+  study_arm_labels()
 }
 
 #' Screen-failure arm label used by CDISCPILOT01
@@ -139,7 +139,7 @@ treatment_period_last_week <- function() 24
 #' efficacy <- prepare_data(c("adqsadas", "adqscibc"), sources = "phuse")
 #' }
 #' @export
-prepare_data <- function(datasets = c("adsl", "adae", "adex", "adlb", "advs", "adcm"),
+prepare_data <- function(datasets = c("adsl", "adae", "advs", "adcm"),
                          source_pkg = "pharmaverseadam",
                          sources = NULL) {
   registry <- data_sources(sources)
@@ -332,6 +332,7 @@ prep_adsl_phuse <- function(adsl) {
   adsl$SAFFL <- blank_to(adsl$SAFFL, "N")
   adsl$ITTFL <- blank_to(adsl$ITTFL, "N")
   adsl$EFFFL <- blank_to(adsl$EFFFL, "N")
+  adsl$COMP24FL <- blank_to(adsl$COMP24FL, "N")
   disc <- blank_to(adsl$DISCONFL, "N")
   dth <- blank_to(adsl$DTHFL, "N")
   adsl$COMPLFL <- ifelse(disc == "Y", "N", "Y")
@@ -425,11 +426,10 @@ merge_baseline_vitals <- function(adsl, vitals) {
 #' standing for three minutes is not the baseline for their supine SBP.
 #' @noRd
 advs_series_key <- function(advs) {
-  paste(
-    advs$USUBJID, advs$PARAMCD,
-    ifelse(is.na(advs$ATPT), "", as.character(advs$ATPT)),
-    sep = "\r"
-  )
+  atpt <- as.character(advs$ATPT)
+  # SAS-era ADaM writes an unset timepoint as a blank string; pharmaverse as NA.
+  atpt[is.na(atpt)] <- ""
+  paste(advs$USUBJID, advs$PARAMCD, atpt, sep = "\r")
 }
 
 #' ADVS derivations (see [prepare_data()])
@@ -441,6 +441,12 @@ advs_series_key <- function(advs) {
 #' @noRd
 prep_advs <- function(advs) {
   key <- advs_series_key(advs)
+  # The pharmaverse re-derivation carries derived records (DTYPE = AVERAGE, LOV)
+  # that must not feed a baseline or a last value; the pilot's own ADVS has no
+  # DTYPE column because it has no derived records. The column is added, all
+  # missing, so "observed" reads the same on both lanes — here and in every
+  # display filter that says `is.na(DTYPE)`.
+  if (!"DTYPE" %in% names(advs)) advs$DTYPE <- NA_character_
   observed <- is.na(advs$DTYPE) & !is.na(advs$AVAL)
 
   is_baseline <- observed & !is.na(advs$AVISIT) & advs$AVISIT == "Baseline"
@@ -488,18 +494,16 @@ data_manifest <- function(prepared) {
 #'
 #' @noRd
 analysis_set_flag <- function(analysis_set) {
-  reg <- c(
-    safety = "SAFFL", itt = "ITTFL", efficacy = "EFFFL",
-    completers = "COMPLFL", all = NA_character_
-  )
-  if (!analysis_set %in% names(reg)) {
+  sets <- study_model()$analysis_sets
+  if (!analysis_set %in% names(sets)) {
     stop(
       "Unknown analysis_set '", analysis_set, "'. Known sets: ",
-      paste(names(reg), collapse = ", "), ".",
+      paste(names(sets), collapse = ", "), " (library/study.yaml).",
       call. = FALSE
     )
   }
-  unname(reg[analysis_set])
+  flag <- sets[[analysis_set]]$flag
+  if (is.null(flag) || isTRUE(is.na(flag))) NA_character_ else as.character(flag)
 }
 
 #' Apply an analysis set to a dataset

@@ -1,0 +1,55 @@
+{
+  "display": "t-disposition",
+  "version": "v003",
+  "created": "2026-09-02T15:19:12Z",
+  "actor": "@obotclaw",
+  "change_request": "One study (D0032 R2, #60): read the CDISC pilot own ADaM package, which assigns every subject the arm the rest of the report uses. Spec unchanged; lane changed.",
+  "regulatory_id": "DST01",
+  "git_commit": null,
+  "spec_hash": "sha256:8c432e510cf8fe58349f0315cb25c51231c261a2276707cfd7168cd064a3d62d",
+  "display_hash": "sha256:c00f24720932be1d3c05e8af6faef5feaec615578a2da9ebd5ea8b145d5a9a1b",
+  "ard_hash": "sha256:5a073a0a558678bc67b89573bc98619270f854d3af5d5cbdc18cd0ce8ed4f530",
+  "ard_rows": 84,
+  "ard_warnings": 0,
+  "ard_errors": 0,
+  "datasets": "adsl",
+  "data": [
+    {
+      "dataset": "adsl",
+      "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+      "n_row": 254,
+      "n_col": 53,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    }
+  ],
+  "environment": {
+    "r": "4.3.3",
+    "os": "Darwin 23.6.0",
+    "packages": {
+      "cards": "0.6.1",
+      "cardx": "0.2.5",
+      "gtsummary": "2.3.0",
+      "gt": "1.0.0",
+      "dplyr": "1.1.4",
+      "pharmaverseadam": "1.1.0",
+      "jsonlite": "2.0.0",
+      "yaml": "2.3.10",
+      "digest": "0.6.37"
+    }
+  },
+  "variants": {
+    "post_text": {
+      "file": "table.html",
+      "rtf": "table.rtf",
+      "rtf_hash": "sha256:6579d64f0693839e3b73b3229efef327a3e7ef0f06a151308fdfdc55c4953e4a",
+      "n_rows": 10
+    },
+    "in_text": {
+      "file": "table-in-text.html",
+      "rtf": "table-in-text.rtf",
+      "rtf_hash": "sha256:8d38ef33a5f331da17816cb79bca115ade01dc6097897b286425378e528ec085",
+      "n_rows": 10
+    }
+  }
+}

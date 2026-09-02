@@ -1,9 +1,9 @@
 {
   "display": "f-derm-time-to-event",
-  "version": "v001",
-  "updated": "2026-08-27T05:00:35Z",
-  "path": "outputs/f-derm-time-to-event/v001",
-  "ard": "outputs/f-derm-time-to-event/v001/ard.json",
-  "table": "outputs/f-derm-time-to-event/v001/table.html",
+  "version": "v002",
+  "updated": "2026-09-02T15:23:21Z",
+  "path": "outputs/f-derm-time-to-event/v002",
+  "ard": "outputs/f-derm-time-to-event/v002/ard.json",
+  "table": "outputs/f-derm-time-to-event/v002/table.html",
   "variants": "post_text"
 }

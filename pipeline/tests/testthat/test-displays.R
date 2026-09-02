@@ -30,7 +30,10 @@ test_that("DSP-DEMO-002: sex, race and age-group counts match ADSL (#1)", {
       paste0(n_white, " (", format_stat(n_white / nrow(sub), "p"), "%)")
     )
   }
-  expect_identical(cell(disp, ">64", "Total"), paste0(sum(ref$AGEGR1 == ">64"), " (87.0%)"))
+  # the pilot's own age grouping, three levels, as the reference report prints it
+  n80 <- sum(ref$AGEGR1 == ">80")
+  expect_identical(n80, 77L)
+  expect_identical(cell(disp, ">80", "Total"), paste0(n80, " (", format_stat(n80 / nrow(ref), "p"), "%)"))
 })
 
 test_that("DSP-DISP-001: disposition counts reproduce EOSSTT (#1)", {
@@ -39,8 +42,9 @@ test_that("DSP-DISP-001: disposition counts reproduce EOSSTT (#1)", {
   for (arm in c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose")) {
     sub <- ref[ref$TRT01A == arm, ]
     expect_match(cell(disp, "Subjects randomised", arm), paste0("^", nrow(sub), " \\(100\\.0%\\)$"))
-    expect_match(cell(disp, "Completed the study", arm), paste0("^", sum(sub$EOSSTT == "COMPLETED"), " \\("))
-    expect_match(cell(disp, "Discontinued the study", arm), paste0("^", sum(sub$EOSSTT == "DISCONTINUED"), " \\("))
+    # the pilot's ADSL states completion as the complement of its DISCONFL
+    expect_match(cell(disp, "Completed the study", arm), paste0("^", sum(blank_na(sub$DISCONFL) != "Y"), " \\("))
+    expect_match(cell(disp, "Discontinued the study", arm), paste0("^", sum(blank_na(sub$DISCONFL) == "Y"), " \\("))
   }
 })
 
@@ -54,36 +58,51 @@ test_that("DSP-DISP-002: the derived discontinuation reasons partition the disco
       info = arm
     )
   }
-  expect_equal(count_of("Died on study", "Total"), sum(ref_adsl()$DTHFL == "Y", na.rm = TRUE))
+  expect_equal(count_of("Died on study", "Total"), sum(blank_na(ref_adsl()$DTHFL) == "Y"))
 })
 
-test_that("DSP-EXP-001: exposure duration matches the ADEX TDURD parameter (#1)", {
+test_that("DSP-EXP-001: average daily dose and cumulative dose match the pilot's ADSL computed directly (#60)", {
   disp <- fixture_display("t-exposure")
-  dur <- ref_adex()[ref_adex()$PARAMCD == "TDURD", ]
+  ref <- ref_adsl()
+  means <- which(plain(disp$table$label) == "Mean")
+  sds <- which(plain(disp$table$label) == "SD")
+  ns <- which(plain(disp$table$label) == "n")
+  # five continuous blocks: two for the safety population, two for the completers, then duration
+  expect_length(means, 5)
   for (arm in c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose")) {
-    x <- dur$AVAL[dur$TRT01A == arm]
-    idx <- which(plain(disp$table$label) == "Mean (SD)")[1]
     j <- which(disp$columns$levels == arm)
-    expect_identical(
-      disp$table[[paste0("col", j)]][idx],
-      paste0(format_stat(mean(x), "mean"), " (", format_stat(stats::sd(x), "sd"), ")")
-    )
+    sub <- ref[ref$TRT01A == arm, ]
+    expect_identical(disp$table[[paste0("col", j)]][ns[1]], as.character(nrow(sub)))
+    expect_identical(disp$table[[paste0("col", j)]][means[1]], format_stat(mean(sub$AVGDD), "mean", list(mean = 1)))
+    expect_identical(disp$table[[paste0("col", j)]][sds[2]], format_stat(stats::sd(sub$CUMDOSE), "sd", list(sd = 2)))
+    expect_identical(disp$table[[paste0("col", j)]][means[5]], format_stat(mean(sub$TRTDUR), "mean", list(mean = 1)))
   }
-  idx <- which(plain(disp$table$label) == "Median")[1]
-  x <- dur$AVAL[dur$TRT01A == "Placebo"]
-  expect_identical(disp$table$col1[idx], format_stat(stats::median(x), "median"))
+  # the figures the reference report prints for the safety population
+  expect_identical(disp$table$col1[means[1]], "0.0")
+  expect_identical(disp$table$col2[means[1]], "54.0")
+  expect_identical(disp$table$col3[means[1]], "71.6")
+  expect_identical(disp$table$col3[sds[1]], "8.11")
+  expect_identical(disp$table$col3[means[2]], "7551.0")
 })
 
-test_that("DSP-EXP-002: cumulative exposure categories are monotone non-increasing (#1)", {
+test_that("DSP-EXP-002: the completers block summarises the subjects flagged COMP24FL, the exposure categories are monotone, and no exposure dataset is read (#60)", {
   disp <- fixture_display("t-exposure")
-  labels <- c("≥ 1 day", "≥ 30 days", "≥ 90 days", "≥ 180 days")
-  dur <- ref_adex()[ref_adex()$PARAMCD == "TDURD", ]
+  ref <- ref_adsl()
+  ns <- which(plain(disp$table$label) == "n")
+  means <- which(plain(disp$table$label) == "Mean")
   for (arm in c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose")) {
-    counts <- vapply(labels, function(l) as.integer(sub(" .*$", "", cell(disp, l, arm))), integer(1))
+    j <- which(disp$columns$levels == arm)
+    comp <- ref[ref$TRT01A == arm & blank_na(ref$COMP24FL) == "Y", ]
+    expect_identical(disp$table[[paste0("col", j)]][ns[3]], as.character(nrow(comp)))
+    expect_identical(disp$table[[paste0("col", j)]][means[4]], format_stat(mean(comp$CUMDOSE), "mean", list(mean = 1)))
+    counts <- vapply(c("≥ 1 day", "≥ 30 days", "≥ 90 days", "≥ 180 days"), function(l) as.integer(sub(" .*$", "", cell(disp, l, arm))), integer(1))
     expect_true(all(diff(counts) <= 0), info = arm)
-    x <- dur$AVAL[dur$TRT01A == arm]
+    x <- ref$TRTDUR[ref$TRT01A == arm]
     expect_equal(unname(counts), c(sum(x >= 1), sum(x >= 30), sum(x >= 90), sum(x >= 180)), info = arm)
   }
+  expect_identical(unname(vapply(1:3, function(j) disp$table[[paste0("col", j)]][ns[3]], character(1))), c("60", "28", "30"))
+  ard <- fixture_ard("t-exposure")
+  expect_setequal(vapply(ard$provenance$data, function(d) d$dataset, character(1)), "adsl")
 })
 
 test_that("DSP-AE-001: AE overview subject counts match ADAE computed directly (#1)", {

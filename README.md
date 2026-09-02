@@ -46,7 +46,7 @@ Full walkthrough, with a diagram and one display followed end to end from the da
 
 ## Status
 
-v0 in progress: pipeline, six safety displays, text and template libraries, evidence framework, and a GitHub Pages demo. Demo data is [`{pharmaverseadam}`](https://pharmaverse.github.io/pharmaverseadam/) CDISCPILOT01 — public, regenerable, no proprietary data anywhere in the repo.
+v0 in progress: pipeline, six safety displays, text and template libraries, evidence framework, and a GitHub Pages demo. Demo data is the CDISC pilot's own ADaM package (every display since v0.4.0), with [`{pharmaverseadam}`](https://pharmaverse.github.io/pharmaverseadam/) CDISCPILOT01 — public, regenerable, no proprietary data anywhere in the repo.
 
 Tracking: [open.csr#1](https://github.com/jwildfire/open.csr/issues/1) · [obot.roadmap#111](https://github.com/jwildfire/obot.roadmap/issues/111)
 

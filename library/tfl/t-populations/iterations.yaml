@@ -25,4 +25,15 @@ iterations:
   display_hash: sha256:9ac815d290f719b956f05fbc8d2353a3d49e676edd6ddb6daedc7481524cccd0
   ard_hash: sha256:61a333a1dc8074996bb9aa8114931d8093626da5a9c92ada5a5aea63ebfa6626
   ard_rows: 60
+- version: v003
+  created: '2026-09-02T15:23:26Z'
+  actor: '@obotclaw'
+  change_request: 'One study (D0032 R2, #59): regenerated so the ARD carries its population
+    record for the treatment-consistency gate. Spec and lane unchanged; every statistic
+    identical.'
+  git_commit: ''
+  spec_hash: sha256:c8dbaff2d4a4cad9b25ac1dcad574d029394f9730e76116bd44b52f60af38414
+  display_hash: sha256:9ac815d290f719b956f05fbc8d2353a3d49e676edd6ddb6daedc7481524cccd0
+  ard_hash: sha256:a78a73c17c1a5ae078f0fdf5a098aac06805bf9387675d823a8b849dce24fb2c
+  ard_rows: 60
 

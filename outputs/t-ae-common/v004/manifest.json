@@ -1,0 +1,63 @@
+{
+  "display": "t-ae-common",
+  "version": "v004",
+  "created": "2026-09-02T15:19:14Z",
+  "actor": "@obotclaw",
+  "change_request": "One study (D0032 R2, #60): read the CDISC pilot own ADaM package, which assigns every subject the arm the rest of the report uses. Spec unchanged; lane changed.",
+  "regulatory_id": "AET02",
+  "git_commit": null,
+  "spec_hash": "sha256:a45e3a1f2586dd0bffa2e2f660162d958e9ae20f6eb87df9511b7d49b5c74203",
+  "display_hash": "sha256:3027c71ea4666f9432c5314a99180c15e7b36b86d611a6cda54fddb56ffd009a",
+  "ard_hash": "sha256:adf6d639a882e4b3bdfda9e157055eed71c84ac7402285b8763445df32705dc1",
+  "ard_rows": 3048,
+  "ard_warnings": 0,
+  "ard_errors": 0,
+  "datasets": ["adsl", "adae"],
+  "data": [
+    {
+      "dataset": "adsl",
+      "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+      "n_row": 254,
+      "n_col": 53,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    },
+    {
+      "dataset": "adae",
+      "hash": "sha256:4ffe4e4c90c8a531e95e4931b601c258ed0b83638d4b346e66635d79e78a7bf1",
+      "n_row": 1191,
+      "n_col": 57,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    }
+  ],
+  "environment": {
+    "r": "4.3.3",
+    "os": "Darwin 23.6.0",
+    "packages": {
+      "cards": "0.6.1",
+      "cardx": "0.2.5",
+      "gtsummary": "2.3.0",
+      "gt": "1.0.0",
+      "dplyr": "1.1.4",
+      "pharmaverseadam": "1.1.0",
+      "jsonlite": "2.0.0",
+      "yaml": "2.3.10",
+      "digest": "0.6.37"
+    }
+  },
+  "variants": {
+    "post_text": {
+      "file": "table.html",
+      "rtf": "table.rtf",
+      "rtf_hash": "sha256:d64d92841e72bd69c734b8a54ab6c0422def367cb930bf33267ef837901b96d4",
+      "n_rows": 253
+    },
+    "in_text": {
+      "file": "table-in-text.html",
+      "rtf": "table-in-text.rtf",
+      "rtf_hash": "sha256:1618c6b3f203de8f7fb24b04f8699ef80e81b72f8fc6d7fda3845c8170ef78bc",
+      "n_rows": 28
+    }
+  }
+}

@@ -117,25 +117,39 @@ shown <- function(x, digits) {
 
 # ---- route B: the data, derived independently --------------------------------
 
-adsl <- as.data.frame(pharmaverseadam::adsl)
-adsl <- adsl[as.character(adsl$ARM) != "Screen Failure", , drop = FALSE]
-adsl <- adsl[!is.na(adsl$SAFFL) & adsl$SAFFL == "Y", , drop = FALSE]
+# The pilot's own package, read straight from the vendored transport files with
+# {haven} — the lane every display reads since v0.4.0 (D0032 R2, #60). Its ADSL
+# has no screen failures; a blank flag is an unset one.
+read_vendored <- function(name) {
+  path <- file.path(root, "pipeline", "inst", "extdata", "phuse-cdiscpilot01", paste0(name, ".xpt.gz"))
+  as.data.frame(haven::read_xpt(memDecompress(readBin(path, "raw", file.size(path)), type = "gzip")))
+}
+adsl <- read_vendored("adsl")
+adsl <- adsl[!is.na(adsl$SAFFL) & as.character(adsl$SAFFL) == "Y", , drop = FALSE]
 safety_ids <- adsl$USUBJID
 denominator <- vapply(GROUPS, function(g) sum(as.character(adsl$TRT01P) == g), numeric(1))
 
 # --- ADVS ---------------------------------------------------------------------
-vs_all <- as.data.frame(pharmaverseadam::advs)
+vs_all <- read_vendored("advs")
 vs_all <- vs_all[vs_all$USUBJID %in% safety_ids, , drop = FALSE]
+# The pilot's ADVS carries TRTP, not TRT01P; the planned arm is joined from its
+# own ADSL by subject — this file's join, not the pipeline's.
+vs_all$TRT01P <- as.character(adsl$TRT01P)[match(vs_all$USUBJID, adsl$USUBJID)]
 
-vs <- vs_all[is.na(vs_all$DTYPE) & !is.na(vs_all$AVAL), , drop = FALSE]
-vs$ATPTX <- ifelse(is.na(vs$ATPT), "-", as.character(vs$ATPT))
+# No derived records in this packaging, and so no DTYPE column. SAS-era ADaM
+# writes an unset timepoint or visit as the blank string where the re-derivation
+# wrote NA: both are read as unset here, as the pipeline reads them.
+vs <- vs_all[!is.na(vs_all$AVAL), , drop = FALSE]
+vs$AVISIT <- as.character(vs$AVISIT)
+vs$AVISIT[!is.na(vs$AVISIT) & !nzchar(vs$AVISIT)] <- NA_character_
+vs$ATPTX <- ifelse(is.na(vs$ATPT) | !nzchar(as.character(vs$ATPT)), "-", as.character(vs$ATPT))
 vs$SERIES <- paste(vs$USUBJID, vs$PARAMCD, vs$ATPTX, sep = "~")
 
 # One observed record per series per analysis visit is what makes "the Week 24
 # value" and "the last value" well defined. Assert it rather than assume it.
 #
 # Records with no AVISIT are screening, retrieval, ambulatory-ECG and unscheduled
-# assessments: 13,174 of the 41,940 observed rows. They also carry no AVISITN, so
+# assessments: 9,857 of the observed rows in the pilot's package. They also carry no AVISITN, so
 # no visit selection below can reach them, and they are excluded from this check
 # rather than allowed to collide with each other under a shared NA.
 named_visit <- vs[!is.na(vs$AVISIT), , drop = FALSE]
@@ -503,7 +517,7 @@ doc <- list(
   routes = list(
     A = "the open.csr pipeline, via each display's committed outputs/<slug>/current ARD",
     B = paste(
-      "recomputed in qc/vitals-conmeds-agreement.R from pharmaverseadam::adsl / advs / adcm,",
+      "recomputed in qc/vitals-conmeds-agreement.R from the vendored CDISCPILOT01 adsl / advs and pharmaverseadam::adcm,",
       "sharing no code with the pipeline"
     ),
     C = paste(
