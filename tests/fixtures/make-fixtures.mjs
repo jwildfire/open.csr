@@ -433,8 +433,27 @@ for (const [cls, { counts, terms }] of Object.entries(CM_CLASSES)) {
 }
 const conmeds = { ...envelope('t-conmeds', [ds('adsl', 254), ds('adcm', 7510)]), rows: conmedRows };
 
+// ---------------------------------------------------------------- t-populations
+// The pilot's own population flags (Table 14-1.01): the five sets the report
+// prints, counted per arm; the section 11.1 narrative binds the efficacy and
+// intent-to-treat rows (#67).
+const populations = {
+  ...envelope('t-populations', [ds('adsl', 254)]),
+  rows: [
+    ...subjectCount('itt', 'ITTFL', N),
+    ...subjectCount('safety', 'SAFFL', N),
+    ...subjectCount('efficacy', 'EFFFL', {
+      Placebo: 79, 'Xanomeline Low Dose': 81, 'Xanomeline High Dose': 74, Total: 234 }),
+    ...subjectCount('complete_wk24', 'COMP24FL', {
+      Placebo: 60, 'Xanomeline Low Dose': 28, 'Xanomeline High Dose': 30, Total: 118 }),
+    ...subjectCount('complete_study', 'DISCONFL', {
+      Placebo: 58, 'Xanomeline Low Dose': 25, 'Xanomeline High Dose': 27, Total: 110 }),
+  ],
+};
+
 const FIXTURES = {
   't-disposition': disposition,
+  't-populations': populations,
   't-demographics': demographics,
   't-exposure': exposure,
   't-ae-overview': aeOverview,
