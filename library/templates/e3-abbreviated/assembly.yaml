@@ -58,7 +58,7 @@ study:
   design: "Randomised, double-blind, placebo-controlled, parallel-group"
   treatment_groups: ["Placebo", "Xanomeline Low Dose", "Xanomeline High Dose"]
   primary_analysis_set: "Safety Analysis Set"
-  data_source: "CDISCPILOT01 ADaM — pharmaverseadam for the safety spine, and the CDISC pilot's own package (phuse-org/phuse-scripts) for Section 14.2"
+  data_source: "CDISCPILOT01 ADaM — the CDISC pilot's own package (phuse-org/phuse-scripts, data/adam/cdiscpilot01), every display"
   scope_note: >-
     The abbreviated form of the clinical study report for this study: the same
     prose and the same displays, in a document model with the efficacy-analysis

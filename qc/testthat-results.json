@@ -1,14 +1,14 @@
 {
   "suite": "r-unit",
   "package": "opencsr",
-  "generated": "2026-08-27T14:58:55Z",
+  "generated": "2026-09-02T15:28:12Z",
   "environment": {
     "r": "4.3.3",
     "os": "Darwin 23.6.0"
   },
   "summary": {
-    "total": 140,
-    "passed": 140,
+    "total": 145,
+    "passed": 145,
     "failed": 0,
     "errored": 0,
     "skipped": 0
@@ -126,7 +126,7 @@
     },
     {
       "file": "test-data-phuse.R",
-      "test": "TFL-PREP-014: adding PHUSE data moves nothing the displays already stand on (#39)",
+      "test": "TFL-PREP-014: the alternate lane still prepares whole, with its own derivations and arms (#39)",
       "status": "pass"
     },
     {
@@ -356,12 +356,12 @@
     },
     {
       "file": "test-displays.R",
-      "test": "DSP-EXP-001: exposure duration matches the ADEX TDURD parameter (#1)",
+      "test": "DSP-EXP-001: average daily dose and cumulative dose match the pilot's ADSL computed directly (#60)",
       "status": "pass"
     },
     {
       "file": "test-displays.R",
-      "test": "DSP-EXP-002: cumulative exposure categories are monotone non-increasing (#1)",
+      "test": "DSP-EXP-002: the completers block summarises the subjects flagged COMP24FL, the exposure categories are monotone, and no exposure dataset is read (#60)",
       "status": "pass"
     },
     {
@@ -662,6 +662,31 @@
     {
       "file": "test-spec-validation.R",
       "test": "TFL-SPEC-006: every committed display in the library validates (#1)",
+      "status": "pass"
+    },
+    {
+      "file": "test-study-model.R",
+      "test": "STD-MODEL-003: the treatment vocabulary and the analysis-set registry resolve from the study model, not from code (#59)",
+      "status": "pass"
+    },
+    {
+      "file": "test-study-model.R",
+      "test": "STD-MODEL-004: every count the model declares is what the default lane's ADSL holds, per arm and per set (#59)",
+      "status": "pass"
+    },
+    {
+      "file": "test-study-model.R",
+      "test": "STD-MODEL-005: every committed ARD carries a population record that agrees with the study model for its analysis set (#59)",
+      "status": "pass"
+    },
+    {
+      "file": "test-study-model.R",
+      "test": "STD-SRC-001: the default registry serves every pilot dataset from the study's own package, and only the two datasets it lacks come from the alternate (#60)",
+      "status": "pass"
+    },
+    {
+      "file": "test-study-model.R",
+      "test": "STD-SRC-002: the pilot's ADVS prepares without derived-record or timepoint columns the alternate carries, and its series keys match (#60)",
       "status": "pass"
     },
     {

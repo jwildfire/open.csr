@@ -1,6 +1,6 @@
 {
   "module": "text",
-  "generated": "2026-08-27T14:58:26.704Z",
+  "generated": "2026-09-02T15:27:43.698Z",
   "records": [
     {
       "requirementIds": [
@@ -317,6 +317,66 @@
     },
     {
       "requirementIds": [
+        "STD-GATE-001"
+      ],
+      "title": "Gate: treatment consistency STD-GATE-001: a display whose arm counts differ from the study model fails the gate, and the error names the display, the arm and both numbers (#59)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/study-model.test.js",
+      "issueRefs": [
+        59
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-GATE-002"
+      ],
+      "title": "Gate: treatment consistency STD-GATE-002: two displays reporting the same analysis set with different counts in one document is an error naming both, even when one of them matches the model (#59)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/study-model.test.js",
+      "issueRefs": [
+        59
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-GATE-003"
+      ],
+      "title": "Gate: treatment consistency STD-GATE-003: a display with no population record is a named warning, never a silent pass; one with no arm grouping is warned and not counted as checked (#59)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/study-model.test.js",
+      "issueRefs": [
+        59
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-GATE-004"
+      ],
+      "title": "Gate: treatment consistency STD-GATE-004: an analysis set the model does not declare is an error, not a skipped check (#59)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/study-model.test.js",
+      "issueRefs": [
+        59
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-GATE-005"
+      ],
+      "title": "Gate: treatment consistency STD-GATE-005: the committed report assembles green on the gate, every placed display is gated by arm, and none of them read the alternate lane (#60)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/study-model.test.js",
+      "issueRefs": [
+        60
+      ]
+    },
+    {
+      "requirementIds": [
         "TXT-EDIT-010"
       ],
       "title": "hiding actually hides TXT-EDIT-010: no class the editor hides is forced visible by a display rule (#113)",
@@ -601,6 +661,30 @@
       "file": "tests/unit/text-status.test.js",
       "issueRefs": [
         2
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-MODEL-001"
+      ],
+      "title": "Study model STD-MODEL-001: library/study.yaml loads with three arms in print order and every analysis set counted per arm (#59)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/study-model.test.js",
+      "issueRefs": [
+        59
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-MODEL-002"
+      ],
+      "title": "Study model STD-MODEL-002: every assembly that declares treatment groups declares the model's arms, in the model's order (#59)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/study-model.test.js",
+      "issueRefs": [
+        59
       ]
     },
     {
@@ -1691,6 +1775,66 @@
       "file": "test-displays.R",
       "issueRefs": [
         1
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-MODEL-003"
+      ],
+      "title": "STD-MODEL-003: the treatment vocabulary and the analysis-set registry resolve from the study model, not from code (#59)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-study-model.R",
+      "issueRefs": [
+        59
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-MODEL-004"
+      ],
+      "title": "STD-MODEL-004: every count the model declares is what the default lane's ADSL holds, per arm and per set (#59)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-study-model.R",
+      "issueRefs": [
+        59
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-MODEL-005"
+      ],
+      "title": "STD-MODEL-005: every committed ARD carries a population record that agrees with the study model for its analysis set (#59)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-study-model.R",
+      "issueRefs": [
+        59
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-SRC-001"
+      ],
+      "title": "STD-SRC-001: the default registry serves every pilot dataset from the study's own package, and only the two datasets it lacks come from the alternate (#60)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-study-model.R",
+      "issueRefs": [
+        60
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-SRC-002"
+      ],
+      "title": "STD-SRC-002: the pilot's ADVS prepares without derived-record or timepoint columns the alternate carries, and its series keys match (#60)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-study-model.R",
+      "issueRefs": [
+        60
       ]
     },
     {

@@ -13,8 +13,14 @@ memo <- function(key, expr) {
   get(key, envir = .fixtures)
 }
 
+#' The default lane: the study's own ADaM package (D0032 R2, #60)
 fixture_data <- function() {
-  memo("data", prepare_data(c("adsl", "adae", "adex")))
+  memo("data", prepare_data(c("adsl", "adae", "advs")))
+}
+
+#' The alternate lane, for the tests of the derivations only it needs
+fixture_data_pv <- function() {
+  memo("data_pv", prepare_data(c("adsl", "adae", "adex", "advs"), sources = "pharmaverseadam"))
 }
 
 #' The committed ARD for a display's current iteration
@@ -34,28 +40,33 @@ fixture_display <- function(slug, variant = "post_text") {
 
 # ---- independent reference data ---------------------------------------------
 
-#' ADSL exactly as this project defines the safety analysis set, computed
-#' directly from the source package rather than through prepare_data().
+#' ADSL exactly as this project defines the safety analysis set, read straight
+#' from the vendored pilot file rather than through prepare_data(). The pilot's
+#' package has no screen failures, so the safety flag is the only filter.
 ref_adsl <- function() {
   memo("ref_adsl", {
+    d <- ref_phuse_adsl()
+    d[blank_na(d$SAFFL) == "Y", , drop = FALSE]
+  })
+}
+
+#' The alternate lane's ADSL, for the tests of the derivations only it needs
+ref_adsl_pv <- function() {
+  memo("ref_adsl_pv", {
     d <- pharmaverseadam::adsl
     d[d$ARM != "Screen Failure" & !is.na(d$SAFFL) & d$SAFFL == "Y", , drop = FALSE]
   })
 }
 
+#' ADAE for the safety set, with the actual arm joined from ADSL by subject —
+#' the pilot's ADAE carries TRTA, not TRT01A, and the join is its own.
 ref_adae <- function() {
   memo("ref_adae", {
-    ids <- ref_adsl()$USUBJID
-    d <- pharmaverseadam::adae
-    d[d$USUBJID %in% ids, , drop = FALSE]
-  })
-}
-
-ref_adex <- function() {
-  memo("ref_adex", {
-    ids <- ref_adsl()$USUBJID
-    d <- pharmaverseadam::adex
-    d[d$USUBJID %in% ids, , drop = FALSE]
+    adsl <- ref_adsl()
+    d <- ref_phuse_xpt("adae")
+    d <- d[d$USUBJID %in% adsl$USUBJID, , drop = FALSE]
+    d$TRT01A <- as.character(adsl$TRT01A)[match(d$USUBJID, adsl$USUBJID)]
+    d
   })
 }
 
@@ -83,6 +94,8 @@ scratch_root <- function(slugs) {
   dir.create(root, recursive = TRUE)
   dir.create(file.path(root, "docs", "design"), recursive = TRUE)
   file.create(file.path(root, "docs", "design", "contracts.md"))
+  # the study model travels with the specs: nothing can name an arm without it
+  file.copy(file.path(csr_root(), "library", "study.yaml"), file.path(root, "library", "study.yaml"))
   for (slug in slugs) {
     dir.create(file.path(root, "library", "tfl", slug), recursive = TRUE)
     for (f in list.files(display_dir(slug), full.names = TRUE)) {
@@ -104,14 +117,16 @@ scratch_root <- function(slugs) {
 #' collected discontinuation reasons. Reading the file directly here keeps the
 #' expected values independent of the data layer under test, the same way
 #' `qc/reference-report-agreement.R` does.
-ref_phuse_adsl <- function() {
-  memo("ref_phuse_adsl", {
+ref_phuse_xpt <- function(name) {
+  memo(paste0("ref_phuse_", name), {
     path <- file.path(
-      csr_root(), "pipeline", "inst", "extdata", "phuse-cdiscpilot01", "adsl.xpt.gz"
+      csr_root(), "pipeline", "inst", "extdata", "phuse-cdiscpilot01", paste0(name, ".xpt.gz")
     )
     haven::read_xpt(memDecompress(readBin(path, "raw", file.size(path)), type = "gzip"))
   })
 }
+
+ref_phuse_adsl <- function() ref_phuse_xpt("adsl")
 
 #' A character column with missing and empty values collapsed to ""
 #'

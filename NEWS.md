@@ -5,6 +5,14 @@ work accumulates under a vX.Y.Z (Upcoming) heading that loses the suffix when
 the release is cut; the GitHub release publishes from the section verbatim.
 -->
 
+# open.csr v0.4.0 (Upcoming)
+
+- **The report describes one study.** Until now the six displays the project started with read the pharmaverse re-derivation of CDISCPILOT01 and grouped by its actual-treatment column, which assigns twelve subjects to a different arm than the study's own package does: section 10 said 86, 96 and 72 subjects were on the three arms while section 14 said 86, 84 and 84. Every display now reads the pilot's own ADaM package, vendored from `phuse-org/phuse-scripts` (design decision D12, revised). The re-derivation remains readable through `prepare_data(sources = "pharmaverseadam")` and is measured against the package by `qc/source-agreement.R`; nothing the report places reads it. ([#60](https://github.com/jwildfire/open.csr/issues/60), [D0032](https://jwildfire.github.io/obot.roadmap/reports/decisions/2026-09-02-open-csr-replication-plan/))
+- **A study model, declared once.** `library/study.yaml` holds the arms in print order, the columns that carry an arm label, the analysis sets with the flag defining each and the subjects each holds per arm, the cut-off and the data source. The pipeline's treatment vocabulary and analysis-set registry read it instead of carrying the study in code, and `test-study-model.R` re-measures every count in it against the data on every run. ([#59](https://github.com/jwildfire/open.csr/issues/59))
+- **The build fails when two displays disagree about who was in the study.** Every ARD now records the population it summarises — analysis set, grouping column, distinct subjects per arm — and the assembler's new treatment-consistency gate holds every placed display to the study model and to every other display in the document. A display whose counts differ is a build error naming the display, the arm and both numbers; a display with no population record is a warning that names it, never a silent pass. The gate was proved on the old ARDs before the lane moved: it went red on all six.
+- **Exposure needs no exposure dataset.** The reference's Table 14-4.01 summarises average daily dose and cumulative dose, which the pilot's ADSL carries as columns; the display is rebuilt from them for the safety population and the Week 24 completers, and reproduces the report's printed figures. The pharmaverse ADEX it used to read was the last technical reason to keep the re-derivation as a default, and it did not hold.
+- The four vital-sign and medication displays moved lanes with everything else; their three-route agreement with the 2006 report still holds on the pilot's own ADVS, whose blank timepoints and absent derived-record column the preparation layer now handles.
+
 # open.csr v0.3.0
 
 The release that fills the report. v0.2.0 carried six safety displays over a single

@@ -1,0 +1,57 @@
+{
+  "display": "t-cibic-week24",
+  "version": "v004",
+  "created": "2026-09-02T15:23:21Z",
+  "actor": "@obotclaw",
+  "change_request": "One study (D0032 R2, #59): regenerated so the ARD carries its population record for the treatment-consistency gate. Spec and lane unchanged; every statistic identical.",
+  "regulatory_id": "EFF02",
+  "git_commit": null,
+  "spec_hash": "sha256:190d1760455c525851b8e46bcdc832e327d003c61819565c98dfaf7430dd231b",
+  "display_hash": "sha256:c326ce82ba6f2f3b91fcd7939de5e653079d38b62137791e47efcd19f2824143",
+  "ard_hash": "sha256:a8f78f3440c225ac975343e85610fe98e285c15c75d32619ea447fdda4cfbeb1",
+  "ard_rows": 43,
+  "ard_warnings": 0,
+  "ard_errors": 0,
+  "datasets": ["adsl", "adqscibc"],
+  "data": [
+    {
+      "dataset": "adsl",
+      "hash": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+      "n_row": 254,
+      "n_col": 53,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    },
+    {
+      "dataset": "adqscibc",
+      "hash": "sha256:f6461f436ff8d39a434fe5ecb7e1bcaf1b6da2913c4cbf2bf2c09d4c71d77873",
+      "n_row": 730,
+      "n_col": 38,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    }
+  ],
+  "environment": {
+    "r": "4.3.3",
+    "os": "Darwin 23.6.0",
+    "packages": {
+      "cards": "0.6.1",
+      "cardx": "0.2.5",
+      "gtsummary": "2.3.0",
+      "gt": "1.0.0",
+      "dplyr": "1.1.4",
+      "pharmaverseadam": "1.1.0",
+      "jsonlite": "2.0.0",
+      "yaml": "2.3.10",
+      "digest": "0.6.37"
+    }
+  },
+  "variants": {
+    "post_text": {
+      "file": "table.html",
+      "rtf": "table.rtf",
+      "rtf_hash": "sha256:73649eaf774bd72777179cc064b7e3bf682100426a1550ff9f49a8c0cf08fd06",
+      "n_rows": 12
+    }
+  }
+}

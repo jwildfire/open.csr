@@ -1,0 +1,86 @@
+# ------------------------------------------------------------------------------
+# study.yaml — the study model: what CDISCPILOT01 IS, declared once.
+# ------------------------------------------------------------------------------
+# Everything that names an arm, an analysis set or the data cut-off reads this
+# file. The pipeline's treatment vocabulary (`trt_levels()`) and analysis-set
+# registry (`analysis_set_flag()`) resolve here rather than carrying the study in
+# code, and the assembler's treatment-consistency gate holds every placed display
+# to the counts declared under `analysis_sets`: a display built on a packaging
+# that assigns subjects differently fails the document build, by name, rather
+# than printing a second version of the study three sections after the first
+# (D0032 R2, #59).
+#
+# The counts are DATA, not derivations. They were measured from the pilot's own
+# ADaM package — the default lane — and `test-study-model.R` re-measures them
+# on every run. Data and file disagreeing fails the test; display and file
+# disagreeing fails the assembly. The file is the one place both look.
+# ------------------------------------------------------------------------------
+id: CDISCPILOT01
+title: >-
+  Safety and Efficacy of the Xanomeline Transdermal Therapeutic System (TTS) in
+  Patients with Mild to Moderate Alzheimer's Disease
+short_title: "Xanomeline TTS in Mild to Moderate Alzheimer's Disease"
+phase: "Phase 2"
+cutoff: "2014-07-01"
+
+# The arms, in the order every display prints them. `label` is the string the
+# data carries; nothing else in the repository may spell an arm.
+arms:
+  - id: placebo
+    label: "Placebo"
+  - id: low
+    label: "Xanomeline Low Dose"
+  - id: high
+    label: "Xanomeline High Dose"
+
+# The columns that carry an arm label, and which assignment each one is. A
+# display's `group:` must name one of these; the population record on its ARD is
+# counted on the subject-level column of the same assignment.
+group_variables:
+  TRT01P: planned
+  TRT01A: actual
+  TRTP: planned
+  TRTA: actual
+assignment_columns:
+  planned: TRT01P
+  actual: TRT01A
+
+# Where the data comes from. `default` feeds every display. `alternates` stay
+# readable through prepare_data(sources = ...), are measured against the default
+# by qc/source-agreement.R, and nothing else reads them.
+source:
+  default: phuse
+  default_label: "CDISCPILOT01 ADaM package (phuse-org/phuse-scripts, data/adam/cdiscpilot01)"
+  alternates: [pharmaverseadam]
+
+# Analysis sets: the flag that defines each (`null` = no filter) and the subjects
+# it holds per arm on the default lane (`subjects`, not `n`: YAML 1.1 parsers read a
+# bare `n` as the boolean false). Planned and actual treatment agree for
+# every subject in this packaging, so one count serves both assignments.
+analysis_sets:
+  all:
+    label: "All Randomised Subjects"
+    flag: null
+    subjects: { "Placebo": 86, "Xanomeline Low Dose": 84, "Xanomeline High Dose": 84 }
+  safety:
+    label: "Safety Analysis Set"
+    flag: SAFFL
+    subjects: { "Placebo": 86, "Xanomeline Low Dose": 84, "Xanomeline High Dose": 84 }
+  itt:
+    label: "Intent-to-Treat Population"
+    flag: ITTFL
+    subjects: { "Placebo": 86, "Xanomeline Low Dose": 84, "Xanomeline High Dose": 84 }
+  efficacy:
+    label: "Efficacy Analysis Set"
+    flag: EFFFL
+    subjects: { "Placebo": 79, "Xanomeline Low Dose": 81, "Xanomeline High Dose": 74 }
+  completers:
+    label: "Completers at Week 24"
+    flag: COMP24FL
+    subjects: { "Placebo": 60, "Xanomeline Low Dose": 28, "Xanomeline High Dose": 30 }
+
+# The report this study's displays are measured against. The document itself is
+# not vendored (see the agreement record for why); its identity is pinned there.
+reference:
+  profile: cdisc-pilot-csr
+  report: quality/data/reference-report-agreement.json

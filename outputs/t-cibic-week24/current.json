@@ -1,9 +1,9 @@
 {
   "display": "t-cibic-week24",
-  "version": "v003",
-  "updated": "2026-08-27T03:53:36Z",
-  "path": "outputs/t-cibic-week24/v003",
-  "ard": "outputs/t-cibic-week24/v003/ard.json",
-  "table": "outputs/t-cibic-week24/v003/table.html",
+  "version": "v004",
+  "updated": "2026-09-02T15:23:21Z",
+  "path": "outputs/t-cibic-week24/v004",
+  "ard": "outputs/t-cibic-week24/v004/ard.json",
+  "table": "outputs/t-cibic-week24/v004/table.html",
   "variants": "post_text"
 }

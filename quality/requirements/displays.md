@@ -4,10 +4,9 @@ Requirements for the individual tables and listings in the v0 TFL library. Each
 requirement is a statement about *the numbers a display reports*, verified by
 recomputing them directly from the source datasets with `dplyr` and comparing
 against the rendered cells — value-level regression rather than pixel comparison
-(design decision D4). Which source depends on the display: the first six read
-`{pharmaverseadam}`, and the two specified against the CDISC pilot's own ADaM
-packaging are recomputed from the vendored `.xpt.gz` read straight with
-`{haven}`, never through `prepare_data()`.
+(design decision D4). Since v0.4.0 every display reads the CDISC pilot's own
+ADaM packaging (D0032 R2), and the second measurement is recomputed from the
+vendored `.xpt.gz` read straight with `{haven}`, never through `prepare_data()`.
 
 Requirements for the individual tables, listings and figures in the v0 TFL
 library. Each requirement is a statement about *the numbers a display reports*,
@@ -16,8 +15,8 @@ rendered cells — value-level regression rather than pixel comparison (design
 decision D4).
 
 Where the second measurement comes from depends on what the display claims. The
-six safety displays are recomputed directly from the source `{pharmaverseadam}`
-datasets with `dplyr`; the five efficacy and time-to-event displays are checked
+six safety displays are recomputed directly from the vendored source datasets
+with base R; the five efficacy and time-to-event displays are checked
 against the analysis the study's own report published, because a display that
 carries a model cannot be qualified by two implementations of the same
 misunderstanding. That distinction is set out under
@@ -149,7 +148,7 @@ own footnotes so a reader of the table sees it:
 | DSP-CM-001 | Subject counts by therapeutic class and coded medication equal those computed directly from ADCM, with each subject counted once per class and once per medication however many records they have, and the rendered percentage is that count over the treatment group's safety analysis set. | Functional | `test-displays-vitals.R` | Verified |
 | DSP-CM-002 | No therapeutic class count exceeds the number of subjects taking any concomitant medication, and no medication count exceeds the class it is nested under -- a subject counted in a part is counted in the whole. | Consistency | `test-displays-vitals.R` | Verified |
 | DSP-CM-003 | The in-text variant of CMT01 applies the 5% threshold declared in its spec: medications reaching 5% in any treatment group are shown, medications below it in every group are not, and the full display is unaffected. | Functional | `test-displays-vitals.R` | Verified |
-| DSP-VWC-001 | All four displays group by planned treatment over the safety analysis set, carry no pooled Total column, and head their columns with the safety analysis set sizes -- which differ from the actual-treatment sizes, so the choice is consequential rather than cosmetic. | Regulatory | `test-displays-vitals.R` | Verified |
+| DSP-VWC-001 | All four displays group by planned treatment over the safety analysis set, carry no pooled Total column, and head their columns with the safety analysis set sizes. On the pharmaverse re-derivation the library first read, planned and actual differed for twelve subjects, so the choice was consequential; on the study's own package (the default since v0.4.0, #60) the two agree for every subject, and both facts are asserted so the choice stays visible. | Regulatory | `test-displays-vitals.R` | Verified |
 | DSP-VWC-002 | The committed three-route agreement record reports no disagreement, leaves no publishable statistic unchecked, and describes the iteration of each display that is committed now rather than an earlier one. | Quality evidence | `test-displays-vitals.R` | Verified |
 
 ## Efficacy — ADAS-Cog and NPI-X (EFT01–EFT09)

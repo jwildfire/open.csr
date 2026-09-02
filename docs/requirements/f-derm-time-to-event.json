@@ -30,7 +30,7 @@
     "DSP-CM-001": "Subject counts by therapeutic class and coded medication equal those computed directly from ADCM, with each subject counted once per class and once per medication however many records they have, and the rendered percentage is that count over the treatment group's safety analysis set.",
     "DSP-CM-002": "No therapeutic class count exceeds the number of subjects taking any concomitant medication, and no medication count exceeds the class it is nested under -- a subject counted in a part is counted in the whole.",
     "DSP-CM-003": "The in-text variant of CMT01 applies the 5% threshold declared in its spec: medications reaching 5% in any treatment group are shown, medications below it in every group are not, and the full display is unaffected.",
-    "DSP-VWC-001": "All four displays group by planned treatment over the safety analysis set, carry no pooled Total column, and head their columns with the safety analysis set sizes -- which differ from the actual-treatment sizes, so the choice is consequential rather than cosmetic.",
+    "DSP-VWC-001": "All four displays group by planned treatment over the safety analysis set, carry no pooled Total column, and head their columns with the safety analysis set sizes. On the pharmaverse re-derivation the library first read, planned and actual differed for twelve subjects, so the choice was consequential; on the study's own package (the default since v0.4.0, #60) the two agree for every subject, and both facts are asserted so the choice stays visible.",
     "DSP-VWC-002": "The committed three-route agreement record reports no disagreement, leaves no publishable statistic unchecked, and describes the iteration of each display that is committed now rather than an earlier one.",
     "DSP-EFF-001": "Every descriptive statistic in the six ANCOVA-style ADAS-Cog and NPI-X displays — n, mean, SD, median, minimum and maximum, at baseline, on treatment and for the change — equals the value computed directly from the vendored ADaM package, at the display's declared precision.",
     "DSP-EFF-002": "The ANCOVA statistics — dose-response p-value, pairwise differences of least-squares means, their standard errors, p-values and confidence intervals — reproduce the CDISCPILOT01 reference report exactly, for every display that reports them.",
@@ -308,7 +308,7 @@
     {
       "id": "DSP-VWC-001",
       "area": "",
-      "text": "All four displays group by planned treatment over the safety analysis set, carry no pooled Total column, and head their columns with the safety analysis set sizes -- which differ from the actual-treatment sizes, so the choice is consequential rather than cosmetic.",
+      "text": "All four displays group by planned treatment over the safety analysis set, carry no pooled Total column, and head their columns with the safety analysis set sizes. On the pharmaverse re-derivation the library first read, planned and actual differed for twelve subjects, so the choice was consequential; on the study's own package (the default since v0.4.0, #60) the two agree for every subject, and both facts are asserted so the choice stays visible.",
       "source": "",
       "evidence": "",
       "link": "",

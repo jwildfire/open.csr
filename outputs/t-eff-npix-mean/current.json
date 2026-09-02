@@ -1,9 +1,9 @@
 {
   "display": "t-eff-npix-mean",
-  "version": "v002",
-  "updated": "2026-08-27T03:50:45Z",
-  "path": "outputs/t-eff-npix-mean/v002",
-  "ard": "outputs/t-eff-npix-mean/v002/ard.json",
-  "table": "outputs/t-eff-npix-mean/v002/table.html",
+  "version": "v003",
+  "updated": "2026-09-02T15:23:25Z",
+  "path": "outputs/t-eff-npix-mean/v003",
+  "ard": "outputs/t-eff-npix-mean/v003/ard.json",
+  "table": "outputs/t-eff-npix-mean/v003/table.html",
   "variants": "post_text"
 }

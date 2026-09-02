@@ -1,0 +1,27 @@
+id: l-ae-serious
+title: "Listing of Serious Adverse Events"
+regulatory_id: AEL01
+type: listing
+dataset: adae
+analysis_set: safety
+denominator: adsl
+group: []
+total: false
+analyses:
+  - name: sae_records
+    method: listing
+    label: "Serious adverse events"
+    filter: "AESER == 'Y'"
+    sort: [USUBJID, ASTDY]
+    variables:
+      - USUBJID
+      - TRT01A
+      - AGE
+      - SEX
+      - AEBODSYS
+      - AEDECOD
+      - AESEV
+      - AEREL
+      - ASTDY
+      - AENDY
+      - AEOUT

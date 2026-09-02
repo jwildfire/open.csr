@@ -1,9 +1,9 @@
 {
   "display": "t-populations",
-  "version": "v002",
-  "updated": "2026-08-27T03:44:48Z",
-  "path": "outputs/t-populations/v002",
-  "ard": "outputs/t-populations/v002/ard.json",
-  "table": "outputs/t-populations/v002/table.html",
+  "version": "v003",
+  "updated": "2026-09-02T15:23:26Z",
+  "path": "outputs/t-populations/v003",
+  "ard": "outputs/t-populations/v003/ard.json",
+  "table": "outputs/t-populations/v003/table.html",
   "variants": ["post_text", "in_text"]
 }

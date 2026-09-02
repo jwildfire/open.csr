@@ -47,7 +47,8 @@ test_that("TFL-RND-003: columns follow the declared order and carry group counts
     disp$columns$levels,
     c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose", "Total")
   )
-  expect_equal(unname(disp$columns$n), c(86, 96, 72, 254))
+  # the pilot's own package: planned and actual agree, 86 / 84 / 84 (#60)
+  expect_equal(unname(disp$columns$n), c(86, 84, 84, 254))
   expect_match(disp$html, "\\(N=86\\)")
   # a column declared but absent from the ARD is simply not rendered
   spec <- read_display_spec("t-demographics")

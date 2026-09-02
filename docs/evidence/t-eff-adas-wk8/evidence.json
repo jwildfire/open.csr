@@ -1,7 +1,91 @@
 {
   "module": "t-eff-adas-wk8",
-  "generated": "2026-08-27T14:58:26.704Z",
+  "generated": "2026-09-02T15:27:43.698Z",
   "records": [
+    {
+      "requirementIds": [
+        "STD-GATE-001"
+      ],
+      "title": "Gate: treatment consistency STD-GATE-001: a display whose arm counts differ from the study model fails the gate, and the error names the display, the arm and both numbers (#59)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/study-model.test.js",
+      "issueRefs": [
+        59
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-GATE-002"
+      ],
+      "title": "Gate: treatment consistency STD-GATE-002: two displays reporting the same analysis set with different counts in one document is an error naming both, even when one of them matches the model (#59)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/study-model.test.js",
+      "issueRefs": [
+        59
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-GATE-003"
+      ],
+      "title": "Gate: treatment consistency STD-GATE-003: a display with no population record is a named warning, never a silent pass; one with no arm grouping is warned and not counted as checked (#59)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/study-model.test.js",
+      "issueRefs": [
+        59
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-GATE-004"
+      ],
+      "title": "Gate: treatment consistency STD-GATE-004: an analysis set the model does not declare is an error, not a skipped check (#59)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/study-model.test.js",
+      "issueRefs": [
+        59
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-GATE-005"
+      ],
+      "title": "Gate: treatment consistency STD-GATE-005: the committed report assembles green on the gate, every placed display is gated by arm, and none of them read the alternate lane (#60)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/study-model.test.js",
+      "issueRefs": [
+        60
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-MODEL-001"
+      ],
+      "title": "Study model STD-MODEL-001: library/study.yaml loads with three arms in print order and every analysis set counted per arm (#59)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/study-model.test.js",
+      "issueRefs": [
+        59
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-MODEL-002"
+      ],
+      "title": "Study model STD-MODEL-002: every assembly that declares treatment groups declares the model's arms, in the model's order (#59)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/study-model.test.js",
+      "issueRefs": [
+        59
+      ]
+    },
     {
       "requirementIds": [
         "DSP-ALL-001"
@@ -133,6 +217,66 @@
       "issueRefs": [
         1
       ]
+    },
+    {
+      "requirementIds": [
+        "STD-MODEL-003"
+      ],
+      "title": "STD-MODEL-003: the treatment vocabulary and the analysis-set registry resolve from the study model, not from code (#59)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-study-model.R",
+      "issueRefs": [
+        59
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-MODEL-004"
+      ],
+      "title": "STD-MODEL-004: every count the model declares is what the default lane's ADSL holds, per arm and per set (#59)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-study-model.R",
+      "issueRefs": [
+        59
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-MODEL-005"
+      ],
+      "title": "STD-MODEL-005: every committed ARD carries a population record that agrees with the study model for its analysis set (#59)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-study-model.R",
+      "issueRefs": [
+        59
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-SRC-001"
+      ],
+      "title": "STD-SRC-001: the default registry serves every pilot dataset from the study's own package, and only the two datasets it lacks come from the alternate (#60)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-study-model.R",
+      "issueRefs": [
+        60
+      ]
+    },
+    {
+      "requirementIds": [
+        "STD-SRC-002"
+      ],
+      "title": "STD-SRC-002: the pilot's ADVS prepares without derived-record or timepoint columns the alternate carries, and its series keys match (#60)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-study-model.R",
+      "issueRefs": [
+        60
+      ]
     }
   ],
   "traceability": {
@@ -141,14 +285,14 @@
       "adsl"
     ],
     "adamHashes": {
-      "adsl": "sha256:6534192e6ae2a8789015148d2068ecdd8421791ea6d7f9cc307fef1db97945f9",
-      "adqsadas": "sha256:0f3e481baf734dc3e5ce7373d255269c2285400ff5bee77be525d832bade80cf"
+      "adsl": "sha256:70c7278e83e571a7d4a94fd864c98bf8ca243c7c2cc9eec8b99a40fa7bc98e35",
+      "adqsadas": "sha256:d6ee9a321a2a9d338285cc702d750624eefd6da11b0da0ae260a4133a492215f"
     },
-    "ardFile": "outputs/t-eff-adas-wk8/v001/ard.json",
-    "ardHash": "sha256:c9148b11c442f55b51fe62f5d0965d7ea7c73a018f84f45eef01db6619c30260",
+    "ardFile": "outputs/t-eff-adas-wk8/v002/ard.json",
+    "ardHash": "sha256:ec13102c2c4e89aab2bcbf1a7f291a98236e5ccbe422774f1e71ea547f1d865d",
     "displayFile": "library/tfl/t-eff-adas-wk8/display.yaml",
     "specHash": "sha256:6508cc49120671f7d2e9bffe8f3163278727686c7e9f5d67933b79a55283021a",
-    "iteration": "v001",
+    "iteration": "v002",
     "sourceCommit": null
   },
   "environment": {

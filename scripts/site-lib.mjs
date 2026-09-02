@@ -917,7 +917,7 @@ export function renderHome({ config, displays, textBlocks, quality, documents = 
 
   const architecture = `
 <pre class="ascii" aria-label="Architecture diagram">
- pharmaverseadam ──▶ data-prep ──▶  ARDs  ──▶ displays ──▶ assembled CSR ──▶ demo site
+ CDISC pilot ADaM ──▶ data-prep ──▶  ARDs  ──▶ displays ──▶ assembled CSR ──▶ demo site
       (ADaM)        (R, tested)    (cards)   (gt/tfrmt/    (Node, from       (GitHub
                                               r2rtf)        the E3 model)     Pages)
                          ▲            ▲           ▲              ▲
@@ -1151,7 +1151,7 @@ export function renderGallery({ config, displays, usage = null } = {}) {
         'and its change-request timeline.'
     ),
     `<p class="sub">Demo study <span class="mono">${escapeHtml(study.id || '—')}</span> · ` +
-      `${escapeHtml(study.source || 'pharmaverseadam')} · data cut-off ` +
+      `${escapeHtml(study.source || 'CDISCPILOT01 ADaM package')} · data cut-off ` +
       `<span class="mono">${escapeHtml(study.cutoff || '—')}</span></p>`,
     displays.length ? `<div class="card-grid">${cards}</div>` : empty('No displays registered yet.')
   ].join('\n');

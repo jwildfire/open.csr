@@ -1,0 +1,43 @@
+id: t-end-of-study
+title: "Summary of End of Study Data"
+study: CDISCPILOT01
+population_label: "Intent-to-Treat"
+cutoff: "2015-03-05"
+source: "Source: adsl (phuse-org/phuse-scripts, data/adam/cdisc — the CDISC pilot submission's own ADaM package). Data cut-off: 2015-03-05."
+footnotes:
+  - "[1] Fisher's exact test, comparing the row against the rest of the treatment group across all three groups at once. The statistical analysis plan (section 9.7.1.2) specifies this test for protocol completion, lack of efficacy and adverse event only; the other rows are descriptive and carry no p-value."
+  - "[2] Lack of efficacy is based on either patient/caregiver perception or physician perception."
+  - "N in the column headers is the number of subjects randomised to that treatment group; every percentage on this table, including the reasons for early termination, is based on it rather than on the number of early terminations — as the reference report does. The reference's own note calls N the number of subjects \"entered in study (i.e., signed informed consent)\"; this display does not repeat that wording, because 306 subjects were screened and 254 randomised, and it is the 254 that N counts."
+  - "The population line above reads Intent-to-Treat because that is what the reference report prints above this table. In this study it selects the same 254 subjects as the whole analysis dataset, since every subject in it carries ITTFL = Y."
+  - "Completion status is the study's own COMP24FL and the reason is its DCREASCD. Both are collected fields carried in the CDISC pilot's ADSL; neither exists in the pharmaverse re-derivation of this study, so this display reads the pilot package directly."
+  - "Treatment groups are planned (randomised) treatment, TRT01P. In this ADSL planned and actual treatment agree for all 254 subjects."
+  - "144 subjects discontinued the study in total; the 136 counted here are those who did so before Week 24. The remaining 8 discontinued after completing Week 24."
+  - "The cut-off shown is the latest subject end date (RFENDT) recorded in the vendored ADSL. The CDISC pilot package states no separate database-lock date."
+columns:
+  order: [Placebo, "Xanomeline Low Dose", "Xanomeline High Dose", Total, "p-value"]
+  patterns:
+    "p-value": pvalue
+format:
+  pvalue: "{p_value_fmt}"
+  digits:
+    p: 0
+rows:
+  - { label: "Completion Status:", section: true }
+  - { analysis: completed_wk24, label: "Completed Week 24 [1]", pattern: n_pct, indent: 1 }
+  - { analysis: early_term, label: "Early Termination (prior to Week 24)", pattern: n_pct, indent: 1 }
+  - { analysis: completion_missing, label: "Missing", pattern: n_pct, indent: 1 }
+  - { label: "Reason for Early Termination (prior to Week 24):", section: true }
+  - { analysis: et_ae, label: "Adverse Event [1]", pattern: n_pct, indent: 1 }
+  - { analysis: et_death, label: "Death", pattern: n_pct, indent: 1 }
+  - { analysis: et_loe, label: "Lack of Efficacy [1][2]", pattern: n_pct, indent: 1 }
+  - { analysis: et_ltfu, label: "Lost to Follow-up", pattern: n_pct, indent: 1 }
+  - { analysis: et_withdrew, label: "Subject decided to withdraw", pattern: n_pct, indent: 1 }
+  - { analysis: et_physician, label: "Physician decided to withdraw subject", pattern: n_pct, indent: 1 }
+  - { analysis: et_ie, label: "Protocol criteria not met", pattern: n_pct, indent: 1 }
+  - { analysis: et_protocol, label: "Protocol violation", pattern: n_pct, indent: 1 }
+  - { analysis: et_sponsor, label: "Sponsor decision", pattern: n_pct, indent: 1 }
+  - { analysis: et_missing, label: "Missing", pattern: n_pct, indent: 1 }
+variants:
+  post_text: {}
+  in_text:
+    title: "Summary of End of Study Data (Summary)"

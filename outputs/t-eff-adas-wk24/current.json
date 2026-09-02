@@ -1,9 +1,9 @@
 {
   "display": "t-eff-adas-wk24",
-  "version": "v001",
-  "updated": "2026-08-27T02:21:19Z",
-  "path": "outputs/t-eff-adas-wk24/v001",
-  "ard": "outputs/t-eff-adas-wk24/v001/ard.json",
-  "table": "outputs/t-eff-adas-wk24/v001/table.html",
+  "version": "v002",
+  "updated": "2026-09-02T15:23:23Z",
+  "path": "outputs/t-eff-adas-wk24/v002",
+  "ard": "outputs/t-eff-adas-wk24/v002/ard.json",
+  "table": "outputs/t-eff-adas-wk24/v002/table.html",
   "variants": "post_text"
 }

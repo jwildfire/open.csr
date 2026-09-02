@@ -19,4 +19,28 @@ iterations:
   display_hash: sha256:5cf918ab32731b85dcf031052e201c763ba0972d98f2badb1c8d7a216b812c44
   ard_hash: sha256:f14f5e37bcd2a6ddbbc146d05fbbf599b1362fd28d2f1c13895e0d61dadcfb4c
   ard_rows: 176
+- version: v003
+  created: '2026-09-02T15:19:12Z'
+  actor: '@obotclaw'
+  change_request: 'One study (D0032 R2, #60): rebuilt from ADSL AVGDD and CUMDOSE
+    for the safety population and the Week 24 completers, as Table 14-4.01 of the
+    reference report summarises them. No exposure dataset is read.'
+  git_commit: ''
+  spec_hash: sha256:a9667a1703a154132ab1c333a5c20dccd2da76532a46e210d8134c25e61bb889
+  display_hash: sha256:e8dbf5c517d75e9dc62d5aa69bfaaa4f0e9c92f04e1be113e9c9c073a26a2798
+  ard_hash: sha256:c110b87cdaa190a4e0b856a7644595884e8ac9d1e405ca9a4a4324e6370a560f
+  ard_rows: 96
+- version: v004
+  created: '2026-09-02T15:23:19Z'
+  actor: '@obotclaw'
+  change_request: 'One study (D0032 R2, #60): rebuilt from ADSL AVGDD and CUMDOSE
+    for the safety population and the Week 24 completers, as Table 14-4.01 of the
+    reference report summarises them; duration of treatment (TRTDUR) and the exposure
+    categories kept for the Section 12.1 narrative under their existing binding names.
+    No exposure dataset is read.'
+  git_commit: ''
+  spec_hash: sha256:065027fd70c7f99747dbb9c73a6e94ca1205bd29ba1f88f62d8a125124cc3cc9
+  display_hash: sha256:d4dbe6344e5ee371b1d5cb708be04cb14039868c8469972fc116b27d1622064a
+  ard_hash: sha256:de9e7ac7bedab71bc5e127e92efa72f80a1e39215132b55ff52f46e4402675d6
+  ard_rows: 208
 
