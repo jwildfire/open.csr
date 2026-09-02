@@ -124,7 +124,10 @@ regenerate <- function(slug, root = csr_root(), change_request = "Initial genera
   }
   check_data_sources(data, analysis_spec, needed, slug)
 
-  custom_env <- source_custom(display_dir(slug, root))
+  # `custom_from: <slug>` lets a display borrow another display's custom.R, so
+  # two tables that must count the same way (the incidence table and its
+  # serious-events companion) share one implementation rather than a copy.
+  custom_env <- source_custom(display_dir(analysis_spec$custom_from %||% slug, root))
   rows <- build_ard(analysis_spec, data, custom_env)
 
   version <- version_label(next_version(slug, root))

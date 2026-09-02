@@ -112,3 +112,23 @@ test_that("TFL-RND-008: a level prints under its declared label, a sub-block's t
   expect_identical(format_stat(1 / 254, "p", list(p = 1), sub_one = TRUE), "0.4")
   expect_identical(format_stat(0, "p", list(p = 0), sub_one = TRUE), "0")
 })
+
+test_that("TFL-RND-009: a hierarchical row plan can order its levels by name, by one arm's count, or by the subjects summed across arms, and a bare-zero option applies to any pattern that prints a count (#62)", {
+  ard <- fixture_ard("t-ae-incidence")
+  spec <- read_display_spec("t-ae-incidence")
+  hier <- which(vapply(spec$rows, function(r) identical(r$type, "hierarchical"), logical(1)))
+  by_high <- render_display(ard, spec)
+  spec$rows[[hier]]$sort <- list(outer = "alpha", inner = list(by = "sum"))
+  by_sum <- render_display(ard, spec)
+  spec$rows[[hier]]$sort <- NULL
+  by_default <- render_display(ard, spec)
+  socs <- function(d) { l <- plain(d$table$label); ind <- attr(regexpr("^(\u00a0\u00a0\u00a0)*", d$table$label), "match.length"); l[ind == 0 & l != "ANY BODY SYSTEM"] }
+  expect_identical(socs(by_high), sort(socs(by_high)))
+  expect_false(identical(socs(by_default), sort(socs(by_default))))
+  expect_false(identical(by_high$table$label, by_sum$table$label))
+  # a count of nobody prints bare under the events pattern too
+  expect_identical(cell(by_high, "CARDIAC DISORDER", "Placebo"), "0")
+  spec$format$zero_count <- NULL
+  long <- render_display(ard, spec)
+  expect_identical(cell(long, "CARDIAC DISORDER", "Placebo"), "0 (0.0%) [0]")
+})

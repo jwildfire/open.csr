@@ -151,10 +151,10 @@ post_text:
       - f-derm-time-to-event               # Figure 14-1
 
   - section: "14.3.1"
-    displays: [t-exposure, t-ae-overview, t-ae-common]
+    displays: [t-exposure, t-ae-overview, t-ae-common, t-ae-incidence]
 
   - section: "14.3.2"
-    displays: [l-ae-serious]
+    displays: [l-ae-serious, t-sae-incidence]
 
   - section: "14.3.5"
     displays: [t-vitals, t-vitals-change, t-weight, t-conmeds]

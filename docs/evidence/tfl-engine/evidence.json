@@ -1,6 +1,6 @@
 {
   "module": "tfl-engine",
-  "generated": "2026-09-02T15:48:06.260Z",
+  "generated": "2026-09-02T16:07:18.703Z",
   "records": [
     {
       "requirementIds": [
@@ -876,6 +876,18 @@
       "file": "test-render.R",
       "issueRefs": [
         61
+      ]
+    },
+    {
+      "requirementIds": [
+        "TFL-RND-009"
+      ],
+      "title": "TFL-RND-009: a hierarchical row plan can order its levels by name, by one arm's count, or by the subjects summed across arms, and a bare-zero option applies to any pattern that prints a count (#62)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-render.R",
+      "issueRefs": [
+        62
       ]
     },
     {

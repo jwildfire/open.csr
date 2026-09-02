@@ -1,0 +1,63 @@
+{
+  "display": "t-sae-incidence",
+  "version": "v003",
+  "created": "2026-09-02T15:55:20Z",
+  "actor": "@obotclaw",
+  "change_request": "Terms ordered by subjects summed across the arms, then name, which is the order the reference serious-events program prints.",
+  "regulatory_id": "AET04",
+  "git_commit": null,
+  "spec_hash": "sha256:065d87f5040a5927a3927158a61b168fcd2f60725b9afdc25057beaa22a83a4e",
+  "display_hash": "sha256:2e8296c3061f15bfb06c8eb0228fab6917e7c48fddd0086f357c87afd039b1a8",
+  "ard_hash": "sha256:2d6415956676c1674e40035a66b4623c1872942576655314b891fc52c30540ac",
+  "ard_rows": 64,
+  "ard_warnings": 0,
+  "ard_errors": 0,
+  "datasets": ["adsl", "adae"],
+  "data": [
+    {
+      "dataset": "adsl",
+      "hash": "sha256:3139478d86fda4c38e8bb2f41d348518f4a65f58bcdd7e9650fda8da7a9a6838",
+      "n_row": 254,
+      "n_col": 54,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    },
+    {
+      "dataset": "adae",
+      "hash": "sha256:4ffe4e4c90c8a531e95e4931b601c258ed0b83638d4b346e66635d79e78a7bf1",
+      "n_row": 1191,
+      "n_col": 57,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    }
+  ],
+  "environment": {
+    "r": "4.3.3",
+    "os": "Darwin 23.6.0",
+    "packages": {
+      "cards": "0.6.1",
+      "cardx": "0.2.5",
+      "gtsummary": "2.3.0",
+      "gt": "1.0.0",
+      "dplyr": "1.1.4",
+      "pharmaverseadam": "1.1.0",
+      "jsonlite": "2.0.0",
+      "yaml": "2.3.10",
+      "digest": "0.6.37"
+    }
+  },
+  "variants": {
+    "post_text": {
+      "file": "table.html",
+      "rtf": "table.rtf",
+      "rtf_hash": "sha256:4586728f2c7cc2a3e680e185dbb76279d448eda5f5ce2854380defdf16de5048",
+      "n_rows": 4
+    },
+    "in_text": {
+      "file": "table-in-text.html",
+      "rtf": "table-in-text.rtf",
+      "rtf_hash": "sha256:36aafe2281aa0d3270917b24a190bb5688d44c155fc608225f7a5952746e1519",
+      "n_rows": 4
+    }
+  }
+}

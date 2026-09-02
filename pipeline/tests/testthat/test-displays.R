@@ -477,7 +477,7 @@ test_that("DSP-REF-001: both displays publish the figures the pilot's own report
     simplifyVector = FALSE
   )
   norm <- function(x) trimws(gsub("[[:space:]]+", " ", gsub("\\(\\s+", "(", x)))
-  expect_setequal(names(record$displays), c("t-populations", "t-end-of-study", "t-demographics", "t-exposure"))
+  expect_setequal(names(record$displays), c("t-populations", "t-end-of-study", "t-demographics", "t-exposure", "t-ae-incidence", "t-sae-incidence"))
   n_checked <- 0L
   for (slug in c("t-populations", "t-end-of-study")) {
     disp <- fixture_display(slug)
@@ -541,4 +541,128 @@ test_that("DSP-REF-002: the demographics and exposure displays publish every cel
     n_checked <- n_checked + length(got)
   }
   expect_identical(n_checked, 58L * 5L + 12L * 6L)
+})
+
+# The incidence tables, Tables 14-5.01 and 14-5.02 of the reference report (#62).
+# Expected values come from the vendored ADAE and ADSL read with {haven}.
+
+aei_ref <- function(serious = FALSE) {
+  adsl <- ref_adsl()
+  ae <- ref_phuse_xpt("adae")
+  ae <- ae[ae$USUBJID %in% adsl$USUBJID & blank_na(ae$TRTEMFL) == "Y", , drop = FALSE]
+  if (serious) ae <- ae[blank_na(ae$AESER) == "Y", , drop = FALSE]
+  ae$ARM <- as.character(adsl$TRT01A)[match(ae$USUBJID, adsl$USUBJID)]
+  ae
+}
+aei_fisher <- function(k1, n1, k2, n2) {
+  if (k1 == 0 && k2 == 0) return("")
+  p <- stats::fisher.test(rbind(c(k1, k2), c(n1 - k1, n2 - k2)))$p.value
+  s <- if (p >= 0.995) ">0.99" else if (p < 0.0005) "<0.001" else formatC(round_half_up(p, 3), format = "f", digits = 3)
+  if (p < 0.15) paste0(s, "*") else s
+}
+
+test_that("DSP-AEI-001: the any-event row and every organ-class row count subjects, percentages and events as the reference does, recomputed directly from ADAE (#62)", {
+  disp <- fixture_display("t-ae-incidence")
+  ae <- aei_ref()
+  adsl <- ref_adsl()
+  arms <- c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose")
+  N <- vapply(arms, function(a) sum(adsl$TRT01A == a), numeric(1))
+  cell_for <- function(sub, i) {
+    n <- length(unique(sub$USUBJID[sub$ARM == arms[i]]))
+    if (n == 0) "0" else sprintf("%d (%s%%) [%d]", n, format_stat(n / N[i], "p", list(p = 1)), sum(sub$ARM == arms[i]))
+  }
+  for (i in seq_along(arms)) {
+    expect_identical(cell(disp, "ANY BODY SYSTEM", arms[i]), cell_for(ae, i))
+    expect_identical(cell(disp, "CARDIAC DISORDERS", arms[i]), cell_for(ae[ae$AEBODSYS == "CARDIAC DISORDERS", ], i))
+    expect_identical(cell(disp, "SINUS BRADYCARDIA", arms[i]), cell_for(ae[ae$AEDECOD == "SINUS BRADYCARDIA", ], i))
+  }
+  # the figures the report prints on its first line
+  expect_identical(cell(disp, "ANY BODY SYSTEM", "Placebo"), "65 (75.6%) [281]")
+  expect_identical(cell(disp, "ANY BODY SYSTEM", "Xanomeline High Dose"), "76 (90.5%) [433]")
+  expect_identical(disp$columns$levels, c(arms, "Placebo vs. Low Dose", "Placebo vs. High Dose"))
+})
+
+test_that("DSP-AEI-002: every p-value is Fisher's exact test of placebo against the arm on subject incidence, starred below 0.15, >0.99 when it rounds to one, and blank where neither arm has a subject with the event (#62)", {
+  disp <- fixture_display("t-ae-incidence")
+  ae <- aei_ref()
+  adsl <- ref_adsl()
+  arms <- c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose")
+  N <- vapply(arms, function(a) sum(adsl$TRT01A == a), numeric(1))
+  k <- function(sub, i) length(unique(sub$USUBJID[sub$ARM == arms[i]]))
+  checks <- list(
+    list(label = "ANY BODY SYSTEM", sub = ae),
+    list(label = "SINUS BRADYCARDIA", sub = ae[ae$AEDECOD == "SINUS BRADYCARDIA", ]),
+    list(label = "MYOCARDIAL INFARCTION", sub = ae[ae$AEDECOD == "MYOCARDIAL INFARCTION", ]),
+    list(label = "CARDIAC DISORDER", sub = ae[ae$AEDECOD == "CARDIAC DISORDER", ])
+  )
+  for (chk in checks) {
+    expect_identical(cell(disp, chk$label, "Placebo vs. Low Dose"), aei_fisher(k(chk$sub, 1), N[1], k(chk$sub, 2), N[2]), info = chk$label)
+    expect_identical(cell(disp, chk$label, "Placebo vs. High Dose"), aei_fisher(k(chk$sub, 1), N[1], k(chk$sub, 3), N[3]), info = chk$label)
+  }
+  expect_identical(cell(disp, "ANY BODY SYSTEM", "Placebo vs. Low Dose"), "0.007*")
+  expect_identical(cell(disp, "MYOCARDIAL INFARCTION", "Placebo vs. High Dose"), ">0.99")
+  expect_identical(cell(disp, "CARDIAC DISORDER", "Placebo vs. Low Dose"), "")
+})
+
+test_that("DSP-AEI-003: organ classes print alphabetically and preferred terms by high-dose subjects then name, the order the reference prints; the serious-events table orders terms by subjects summed across the arms (#62)", {
+  disp <- fixture_display("t-ae-incidence")
+  lab <- plain(disp$table$label)
+  ind <- attr(regexpr("^(\u00a0\u00a0\u00a0)*", disp$table$label), "match.length") / 3
+  socs <- lab[ind == 0 & lab != "ANY BODY SYSTEM"]
+  expect_identical(socs, sort(socs))
+  expect_identical(lab[1], "ANY BODY SYSTEM")
+  ae <- aei_ref()
+  card <- lab[seq(which(lab == "CARDIAC DISORDERS") + 1, which(lab == socs[2]) - 1)]
+  high <- vapply(card, function(p) length(unique(ae$USUBJID[ae$AEDECOD == p & ae$ARM == "Xanomeline High Dose"])), numeric(1))
+  expect_identical(card, card[order(-high, card)])
+  sae <- plain(fixture_display("t-sae-incidence")$table$label)
+  expect_identical(sae, c("ANY BODY SYSTEM", "NERVOUS SYSTEM DISORDERS", "SYNCOPE", "PARTIAL SEIZURES WITH SECONDARY GENERALISATION"))
+})
+
+test_that("DSP-AEI-004: the serious-events table counts the same way as the incidence table through one shared implementation (#62)", {
+  spec <- read_analysis_spec("t-sae-incidence")
+  expect_identical(spec$custom_from, "t-ae-incidence")
+  expect_false(file.exists(file.path(display_dir("t-sae-incidence"), "custom.R")))
+  disp <- fixture_display("t-sae-incidence")
+  ae <- aei_ref(serious = TRUE)
+  expect_equal(nrow(ae), 3)
+  expect_identical(cell(disp, "ANY BODY SYSTEM", "Placebo"), "0")
+  expect_identical(cell(disp, "ANY BODY SYSTEM", "Xanomeline High Dose"), "2 (2.4%) [2]")
+  expect_identical(cell(disp, "ANY BODY SYSTEM", "Placebo vs. High Dose"), "0.243")
+})
+
+test_that("DSP-REF-003: the incidence and serious-events displays publish every cell the pilot's own report printed for Tables 14-5.01 and 14-5.02 — 258 lines of three cells and two p-values (#62)", {
+  record <- jsonlite::fromJSON(
+    file.path(csr_root(), "quality", "data", "reference-report-agreement.json"),
+    simplifyVector = FALSE
+  )
+  norm <- function(x) trimws(gsub("[[:space:]]+", " ", gsub("\\(\\s+", "(", x)))
+  n_checked <- 0L
+  for (slug in c("t-ae-incidence", "t-sae-incidence")) {
+    tb <- fixture_display(slug)$table
+    keep <- vapply(seq_len(nrow(tb)), function(i) any(nzchar(unlist(tb[i, -1]))), logical(1))
+    tb <- tb[keep, , drop = FALSE]
+    tb$label <- plain(tb$label)
+    rows <- record$displays[[slug]]$rows
+    known <- record$displays[[slug]]$known_differences %||% list()
+    expect_identical(nrow(tb), length(rows), info = slug)
+    for (i in seq_along(rows)) {
+      expect_identical(tb$label[i], norm(rows[[i]]$label), info = rows[[i]]$analysis)
+      for (k in 1:3) {
+        expect_identical(norm(tb[[paste0("col", k)]][i]), norm(rows[[i]]$printed[[k]]), info = paste(rows[[i]]$analysis, k))
+      }
+      want <- vapply(rows[[i]]$p_values_printed, function(x) x %||% "", character(1))
+      for (kd in known) {
+        # a recorded difference: the display prints what the record says it prints
+        if (identical(kd$analysis, rows[[i]]$analysis)) {
+          expect_identical(tb[[paste0("col", kd$column)]][i], kd$recomputed, info = kd$analysis)
+          want[kd$column - 3] <- kd$recomputed
+        }
+      }
+      expect_identical(unname(c(tb$col4[i], tb$col5[i])), unname(want), info = rows[[i]]$analysis)
+      n_checked <- n_checked + 5L
+    }
+  }
+  expect_length(record$displays[["t-ae-incidence"]]$known_differences, 4)
+  expect_identical(n_checked, 258L * 5L)
 })

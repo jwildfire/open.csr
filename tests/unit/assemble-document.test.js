@@ -54,10 +54,13 @@ describe('Assembled CSR document model', () => {
       if (s.postText.length) expect(s.number.startsWith('14')).toBe(true);
       for (const d of s.postText) expect(d.variant).toBe('post_text');
     }
+    // exposure, the two FDA-standard AE tables, and the reference report's
+    // incidence table (#62), numbered in placement order
     expect(section('14.3.1').postText.map((d) => d.number)).toEqual([
       '14.3.1.1',
       '14.3.1.2',
       '14.3.1.3',
+      '14.3.1.4',
     ]);
   });
 
