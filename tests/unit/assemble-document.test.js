@@ -47,7 +47,8 @@ describe('Assembled CSR document model', () => {
   });
 
   it('RPT-ASM-008: in-text displays land in narrative sections and post-text displays only under Section 14 (#1)', () => {
-    expect(section('10.1').displays.map((d) => d.slug)).toEqual(['t-disposition']);
+    // the disposition table and, since #63, the report's Figure 10-1 beside it
+    expect(section('10.1').displays.map((d) => d.slug)).toEqual(['t-disposition', 'f-disposition']);
     expect(section('12.2.1').displays.map((d) => d.slug)).toEqual(['t-ae-overview']);
     for (const s of doc.sections) {
       for (const d of s.displays) expect(d.variant).toBe('in_text');

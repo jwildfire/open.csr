@@ -10,6 +10,7 @@
     "DSP-AEI-002": "Every p-value is Fisher's exact test of placebo against the active arm on subject incidence, printed to three decimals with an asterisk below 0.15 and `>0.99` when it rounds to one, and blank where neither arm has a subject with the event.",
     "DSP-AEI-003": "Organ classes print alphabetically and preferred terms within a class by high-dose subjects descending then name, the order the reference prints; the serious-events table orders its terms by subjects summed across the arms, as its own program does.",
     "DSP-AEI-004": "The serious-events display counts through the incidence display's implementation (`custom_from`), carries no custom code of its own, and reports the three serious treatment-emergent events the data hold.",
+    "DSP-FLOW-001": "The disposition figure counts the subjects screened (every subject in the study's SDTM DM), the screen failures (DM's arm label), the randomised (every subject in ADSL), the Week 24 completers (COMP24FL) and the study completers (the complement of DISCONFL), equal to a direct count of the vendored files — 306, 52, 254, 118 and 110 as the reference report's Figure 10-1 prints — draws them as a self-contained flow, and prints them in its table.",
     "DSP-SITE-001": "The subjects-by-site display counts, per site, per arm and overall, the intent-to-treat, efficacy and Week 24 completer subjects, equal to a direct count of the vendored ADSL, in twelve columns of arm by population with the TOTAL line last.",
     "DSP-SITE-002": "Every site is listed on its own line labelled with its pooled id and its own id; the seven small sites pool under 900 and follow the ten that stand alone, in the reference's order.",
     "DSP-INTXT-001": "The demographics display's in-text variant is the report's Table 11-1 — mean and range, percentages, race as White/Caucasian or other, no p-value column — rendered from the same ARD as the full table.",
@@ -134,6 +135,15 @@
       "id": "DSP-AEI-004",
       "area": "",
       "text": "The serious-events display counts through the incidence display's implementation (`custom_from`), carries no custom code of its own, and reports the three serious treatment-emergent events the data hold.",
+      "source": "",
+      "evidence": "",
+      "link": "",
+      "status": "Verified"
+    },
+    {
+      "id": "DSP-FLOW-001",
+      "area": "",
+      "text": "The disposition figure counts the subjects screened (every subject in the study's SDTM DM), the screen failures (DM's arm label), the randomised (every subject in ADSL), the Week 24 completers (COMP24FL) and the study completers (the complement of DISCONFL), equal to a direct count of the vendored files — 306, 52, 254, 118 and 110 as the reference report's Figure 10-1 prints — draws them as a self-contained flow, and prints them in its table.",
       "source": "",
       "evidence": "",
       "link": "",

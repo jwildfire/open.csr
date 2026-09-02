@@ -1,6 +1,6 @@
 {
   "module": "tfl-engine",
-  "generated": "2026-09-02T16:20:30.837Z",
+  "generated": "2026-09-02T16:34:20.837Z",
   "records": [
     {
       "requirementIds": [
@@ -792,6 +792,30 @@
       "file": "test-data-prep.R",
       "issueRefs": [
         61
+      ]
+    },
+    {
+      "requirementIds": [
+        "TFL-PREP-018"
+      ],
+      "title": "TFL-PREP-018: the medication analysis dataset is derived from the study's own SDTM CM domain and reproduces every statistic the remapped PHUSE copy gave the medication table (#65)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-data-phuse.R",
+      "issueRefs": [
+        65
+      ]
+    },
+    {
+      "requirementIds": [
+        "TFL-PREP-019"
+      ],
+      "title": "TFL-PREP-019: DM is the screened population and is the one dataset prepare_data() does not restrict to the subjects in ADSL (#63)",
+      "suite": "r-unit",
+      "passed": true,
+      "file": "test-data-phuse.R",
+      "issueRefs": [
+        63
       ]
     },
     {
