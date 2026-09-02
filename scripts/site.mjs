@@ -73,6 +73,7 @@ import {
   renderValuesPane
 } from './app-lib.mjs';
 import { loadAssembly, loadSections } from './template-lib.mjs';
+import { buildDataIndex, datasetStatus, loadDataPackage, renderDataPane, renderDatasetPage, renderLanesPage } from './data-lib.mjs';
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const buildDir = path.join(rootDir, 'site', '_build');
@@ -142,6 +143,21 @@ const ards = Object.fromEntries(
     .map((display) => [display.slug, display.outputs.current.ard])
 );
 
+// --- Data: what was measured (#76) -----------------------------------------
+// The registry names the package and its datasets; the pages are built from
+// the package's provenance record and from every current ARD's envelope.
+const dataPackage = loadDataPackage(rootDir, config);
+warnings.push(...dataPackage.warnings);
+const dataIndex = buildDataIndex({ datasets: dataPackage.datasets, displays });
+const navDatasets = [
+  ...dataPackage.datasets.map((dataset) => ({
+    id: dataset.id,
+    title: dataset.title,
+    status: datasetStatus(dataset, dataIndex)
+  })),
+  ...(dataPackage.configured ? [{ id: 'lanes', title: 'Source lanes', status: 'ok' }] : [])
+];
+
 const KIND_LABEL = {
   engine: 'Engine',
   text: 'Text Library',
@@ -210,7 +226,14 @@ const displayFragments = displays.map((display) => {
     regulatoryId: display.regulatoryId,
     type: display.type,
     status: display.status,
-    html: renderDisplayPage({ config, display, evidence, requirements, usedIn: usage.get(display.slug) })
+    html: renderDisplayPage({
+      config,
+      display,
+      evidence,
+      requirements,
+      usedIn: usage.get(display.slug),
+      datasets: dataIndex
+    })
   };
 });
 
@@ -434,6 +457,34 @@ const valuesContent = renderValuesPane({
   gate: valueGate
 });
 
+// The Data pane and its standalone pages (#76): one page per dataset, one for
+// the lanes, and the index that is also the pane — the Values arrangement.
+const dataContent = renderDataPane({ data: dataPackage, index: dataIndex, root: '../' });
+page(path.join(buildDir, 'data', 'index.html'), {
+  title: `Data · ${config.siteTitle}`,
+  root: '../',
+  description:
+    'What was measured: every dataset the study\'s package carries, where each file came from, ' +
+    'what the preparation layer did to it, and every display whose results were computed from it.',
+  content: dataContent
+});
+if (dataPackage.configured) {
+  for (const dataset of dataPackage.datasets) {
+    page(path.join(buildDir, 'data', `${dataset.id}.html`), {
+      title: `${dataset.title} · data · ${config.siteTitle}`,
+      root: '../',
+      description: dataset.blurb || `The ${dataset.id} dataset: provenance, preparation, and the displays that read it.`,
+      content: renderDatasetPage({ data: dataPackage, dataset, index: dataIndex, root: '../' })
+    });
+  }
+  page(path.join(buildDir, 'data', 'lanes.html'), {
+    title: `Source lanes · data · ${config.siteTitle}`,
+    root: '../',
+    description: 'The two packagings of the study, which one each dataset resolves to, and the measured divergences between them.',
+    content: renderLanesPage({ data: dataPackage, root: '../' })
+  });
+}
+
 const appPanes = [
   { id: 'documents', html: readerAppContent },
   {
@@ -450,6 +501,7 @@ const appPanes = [
   },
   { id: 'text', html: textStatusContent },
   { id: 'values', html: valuesContent },
+  { id: 'data', html: dataContent },
   { id: 'templates', html: templatesContent }
 ];
 
@@ -459,6 +511,7 @@ const navTree = buildNavTree({
   displays,
   textBlocks,
   values: valueStore?.values || [],
+  datasets: navDatasets,
   documents,
   current: csr.id,
   rendered: documentEntries.map((entry) => entry.id),

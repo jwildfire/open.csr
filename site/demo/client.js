@@ -341,8 +341,9 @@ if (app) {
       event.preventDefault();
       const group = item.getAttribute('data-nav-group');
       const id = item.getAttribute('data-nav-item');
-      const key = { documents: 'doc', displays: 'display', text: 'block', values: 'focus' }[group];
-      goto({ tab: group, [key]: id, focus: group === 'text' || group === 'values' ? id : null });
+      const key = { documents: 'doc', displays: 'display', text: 'block', values: 'focus', data: 'focus' }[group];
+      const focusId = group === 'data' ? (id === 'lanes' ? 'lanes' : `dataset-${id}`) : id;
+      goto({ tab: group, [key]: focusId, focus: group === 'text' || group === 'values' || group === 'data' ? focusId : null });
     });
   }
 

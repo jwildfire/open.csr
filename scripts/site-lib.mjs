@@ -1317,6 +1317,31 @@ export function artifactFileName(slug, artifact) {
   return `${slug}${suffix}.${artifact.format}`;
 }
 
+/**
+ * The dataset links a display header prints in place of its dataset labels
+ * (#76): each carries the hash and row count the display's own ARD recorded,
+ * so the reader lands on the exact input, not on the dataset in general.
+ */
+export function datasetLinks(ids = [], { ard = null, root = '../' } = {}) {
+  const recorded = new Map(
+    (Array.isArray(ard?.provenance?.data) ? ard.provenance.data : []).map((entry) => [entry.dataset, entry])
+  );
+  return ids
+    .map((id) => {
+      const entry = recorded.get(id);
+      const title = entry
+        ? `${entry.n_row ?? '?'} rows · ${entry.hash || 'no hash'}`
+        : 'not named in this iteration’s ARD';
+      const short = entry?.hash ? String(entry.hash).replace(/^sha256:/, '').slice(0, 7) : '';
+      return (
+        `<a class="mono dataset-link" href="${escapeHtml(root)}data/${escapeHtml(id)}.html" ` +
+        `title="${escapeHtml(title)}">${escapeHtml(id)}</a>` +
+        (short ? ` <span class="sub mono dataset-hash">${escapeHtml(short)}</span>` : '')
+      );
+    })
+    .join(', ');
+}
+
 export function renderDisplayPage({
   config,
   display,
@@ -1325,7 +1350,11 @@ export function renderDisplayPage({
   // Every document that places this display, from displayUsage(). Absent on a
   // caller that has no library to hand — the page then simply does not make the
   // claim, rather than making an empty one (#42).
-  usedIn = null
+  usedIn = null,
+  // The Data section's index (#76). When given, the Datasets fact links each
+  // dataset to its page, carrying the hash and row count THIS iteration's ARD
+  // recorded for it; when absent, the labels print as before.
+  datasets = null
 } = {}) {
   const outputs = display.outputs || {};
   const current = outputs.current;
@@ -1395,7 +1424,9 @@ export function renderDisplayPage({
     ['Current iteration', current ? `<span class="mono">${escapeHtml(current.version)}</span>` : '—'],
     [
       'Datasets',
-      (display.datasets || []).map((d) => `<span class="mono">${escapeHtml(d)}</span>`).join(', ') || '—'
+      datasets
+        ? datasetLinks(display.datasets || [], { ard: current?.ard }) || '—'
+        : (display.datasets || []).map((d) => `<span class="mono">${escapeHtml(d)}</span>`).join(', ') || '—'
     ],
     [
       'Evidence',
