@@ -274,7 +274,8 @@ test_that("DSP-ALL-001: every display renders a table that actually contains num
     disp <- fixture_display(slug)
     expect_gt(nrow(disp$table), 2)
     cells <- unlist(disp$table[, setdiff(names(disp$table), "label")])
-    expect_gt(sum(grepl("[0-9]", cells)), 5)
+    # five is the disposition flow's whole table (#63); anything smaller is a display with nothing in it
+    expect_gte(sum(grepl("[0-9]", cells)), 5)
     expect_match(disp$html, "[0-9]", info = slug)
   }
 })
@@ -665,4 +666,25 @@ test_that("DSP-REF-003: the incidence and serious-events displays publish every 
   }
   expect_length(record$displays[["t-ae-incidence"]]$known_differences, 4)
   expect_identical(n_checked, 258L * 5L)
+})
+
+test_that("DSP-FLOW-001: the disposition figure counts screened, screen-failure, randomised, Week 24 and study completers from DM and ADSL directly, prints them in its table and draws them in its flow (#63)", {
+  disp <- fixture_display("f-disposition")
+  dm <- ref_phuse_xpt("dm")
+  adsl <- ref_phuse_adsl()
+  want <- c(
+    length(unique(dm$USUBJID)),
+    sum(blank_na(dm$ARM) == "Screen Failure"),
+    nrow(adsl),
+    sum(blank_na(adsl$COMP24FL) == "Y"),
+    sum(blank_na(adsl$DISCONFL) != "Y")
+  )
+  expect_identical(want, c(306L, 52L, 254L, 118L, 110L))
+  expect_identical(disp$table$col1, as.character(want))
+  for (n in want) expect_true(grepl(paste0("= ", n, "<"), disp$figure), info = n)
+  expect_false(grepl("http", disp$figure, fixed = TRUE))
+  expect_true(grepl("<svg", disp$figure, fixed = TRUE))
+  # the screened count is DM's, not ADSL's: this is the one display reading the screened population
+  prov <- fixture_ard("f-disposition")$provenance$data
+  expect_setequal(vapply(prov, function(x) x$dataset, character(1)), c("adsl", "dm"))
 })

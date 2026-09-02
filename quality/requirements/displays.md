@@ -52,6 +52,7 @@ live in [`tfl-engine.md`](tfl-engine.md).
 | DSP-AEI-002 | Every p-value is Fisher's exact test of placebo against the active arm on subject incidence, printed to three decimals with an asterisk below 0.15 and `>0.99` when it rounds to one, and blank where neither arm has a subject with the event. | Correctness | `test-displays.R` | Verified |
 | DSP-AEI-003 | Organ classes print alphabetically and preferred terms within a class by high-dose subjects descending then name, the order the reference prints; the serious-events table orders its terms by subjects summed across the arms, as its own program does. | Regulatory | `test-displays.R` | Verified |
 | DSP-AEI-004 | The serious-events display counts through the incidence display's implementation (`custom_from`), carries no custom code of its own, and reports the three serious treatment-emergent events the data hold. | Traceability | `test-displays.R` | Verified |
+| DSP-FLOW-001 | The disposition figure counts the subjects screened (every subject in the study's SDTM DM), the screen failures (DM's arm label), the randomised (every subject in ADSL), the Week 24 completers (COMP24FL) and the study completers (the complement of DISCONFL), equal to a direct count of the vendored files — 306, 52, 254, 118 and 110 as the reference report's Figure 10-1 prints — draws them as a self-contained flow, and prints them in its table. | Correctness | `test-displays.R` | Verified |
 
 ## Disposition (DST01)
 

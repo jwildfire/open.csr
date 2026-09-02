@@ -93,7 +93,7 @@ slots:
 
   - section: "10.1"
     text: [TXT-E3-1001, TXT-E3-1002]
-    displays: [t-disposition]
+    displays: [t-disposition, f-disposition]
 
   - section: "11.1"
     text: [TXT-E3-1101]

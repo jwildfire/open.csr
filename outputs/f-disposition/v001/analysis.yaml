@@ -1,0 +1,29 @@
+# ------------------------------------------------------------------------------
+# f-disposition — Subject Disposition (flow)
+# ------------------------------------------------------------------------------
+# Target: Figure 10-1 of the CDISCPILOT01 clinical study report (27 June 2006),
+# page 24: subjects screened, of whom the screen failures and those randomised
+# into the treatment phase, of whom those who completed Week 24 and those who
+# completed the study through Week 26. Five counts, drawn as a flow.
+#
+# The screened population is the study's SDTM DM domain — 306 subjects, 52 of
+# whom never reached ADSL — which is why this is the one display that reads
+# `dm` and why prepare_data() keeps DM whole (#63, D0032). Every other count is
+# ADSL's: randomised subjects, COMP24FL, and the complement of DISCONFL that the
+# populations table already prints as "Complete Study".
+# ------------------------------------------------------------------------------
+id: f-disposition
+title: "Subject Disposition"
+regulatory_id: DSF01
+type: figure
+dataset: dm
+analysis_set: all
+denominator: adsl
+group:
+  - TRT01P
+total: false
+analyses:
+  - name: flow
+    method: figure
+    custom: ard_disposition_flow
+    label: "Subjects screened, randomised, and completing the study"

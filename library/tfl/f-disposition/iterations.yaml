@@ -1,0 +1,14 @@
+display: f-disposition
+iterations:
+- version: v001
+  created: '2026-09-02T16:24:32Z'
+  actor: '@obotclaw'
+  change_request: 'Figure 10-1 of the reference report (D0032, #63): subjects screened,
+    screen failures, randomised, completed Week 24 and completed the study, as a flow
+    from the study SDTM DM and ADSL.'
+  git_commit: ''
+  spec_hash: sha256:abf4fa1cd7f2bb7e8fea1db662e08d98cbe5ad7fada0abc0f5346843e98aa501
+  display_hash: sha256:334133a00bd56486d689d479d3d92b5a88d02d320d030e1c8788ceb964165715
+  ard_hash: sha256:700d5e705c1072eabb911963e071b51354ace9f8ff7059664622cb099d93c20f
+  ard_rows: 5
+

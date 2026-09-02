@@ -1,0 +1,63 @@
+{
+  "display": "t-conmeds",
+  "version": "v003",
+  "created": "2026-09-02T16:21:44Z",
+  "actor": "@obotclaw",
+  "change_request": "Concomitant medications derived from the study own SDTM CM domain (D0032, #65): every statistic identical to the relabelled PHUSE copy it replaces, which stays vendored for the check that proves it.",
+  "regulatory_id": "CMT01",
+  "git_commit": null,
+  "spec_hash": "sha256:5b8045eb70da88bc2f3876b8a6fc2d35c907e604991fe8e467f4f32c097c32d1",
+  "display_hash": "sha256:a79342e396606c4bc2932b2c164b228aadba158339e805bdb2a514ba0e477534",
+  "ard_hash": "sha256:95799f768cea8ad4a42678bfed452e799de35b67b257f647c9260b4292b20a07",
+  "ard_rows": 414,
+  "ard_warnings": 0,
+  "ard_errors": 0,
+  "datasets": ["adsl", "adcm"],
+  "data": [
+    {
+      "dataset": "adsl",
+      "hash": "sha256:3139478d86fda4c38e8bb2f41d348518f4a65f58bcdd7e9650fda8da7a9a6838",
+      "n_row": 254,
+      "n_col": 54,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    },
+    {
+      "dataset": "adcm",
+      "hash": "sha256:78178a0cbb946b71631f2084ec81fb87734ad0307c3f7d8e5e9497bd95e51253",
+      "n_row": 7510,
+      "n_col": 28,
+      "source_pkg": "phuse-org/phuse-scripts:data/adam",
+      "source_version": "398a6d33ced9359ffb58c46650a6d488811176b1"
+    }
+  ],
+  "environment": {
+    "r": "4.3.3",
+    "os": "Darwin 23.6.0",
+    "packages": {
+      "cards": "0.6.1",
+      "cardx": "0.2.5",
+      "gtsummary": "2.3.0",
+      "gt": "1.0.0",
+      "dplyr": "1.1.4",
+      "pharmaverseadam": "1.1.0",
+      "jsonlite": "2.0.0",
+      "yaml": "2.3.10",
+      "digest": "0.6.37"
+    }
+  },
+  "variants": {
+    "post_text": {
+      "file": "table.html",
+      "rtf": "table.rtf",
+      "rtf_hash": "sha256:871a6fa8e7664430081f7e33f2f6083a0f86627fb634d919765319ea7a759ca8",
+      "n_rows": 46
+    },
+    "in_text": {
+      "file": "table-in-text.html",
+      "rtf": "table-in-text.rtf",
+      "rtf_hash": "sha256:052fe88427eeb166bace3b0f6ca3bc206cf8769d0c362064991d1f028dc40df3",
+      "n_rows": 14
+    }
+  }
+}

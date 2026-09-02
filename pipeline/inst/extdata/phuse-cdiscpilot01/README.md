@@ -42,7 +42,9 @@ And one that is not:
 
 | File | Contents |
 |---|---|
-| `adcm` | Concomitant medications. **Not part of the CDISC pilot package**: it is absent from the study's `define.xml`, from its data guide, and from the `cdiscpilot01/` folder. It comes from PHUSE's `data/adam/cdisc/`, which PHUSE's own README flags as "2-study data that seem out-of-place here". Half the subjects were relabelled into a synthetic `CDISCPILOT02`; `prepare_data()` reverses that and proves the remap. See `prep_adcm_phuse()`. |
+| `adcm` | Concomitant medications, PHUSE's relabelled copy. **Not part of the CDISC pilot package** and, since v0.4.0, **not read by any display**: the medication analysis dataset is derived from the study's own SDTM `cm` below (`derive_adcm()`, #65). The copy stays vendored so the derivation can be held to it on every statistic the medication table publishes (TFL-PREP-018); `prep_adcm_phuse()` reverses its relabelling for that check. |
+| `cm` | The study's SDTM concomitant-medications domain (`data/sdtm/cdiscpilot01/cm.xpt`), 7,510 records for 229 subjects, from which `adcm` is derived. |
+| `dm` | The study's SDTM demographics domain (`data/sdtm/cdiscpilot01/dm.xpt`): all 306 screened subjects, including the 52 screen failures the ADaM package does not carry, which the disposition figure needs. |
 
 Screen failures are already excluded — the data guide states that subjects who
 failed screening were not included in any analysis dataset — so the 306-subject
