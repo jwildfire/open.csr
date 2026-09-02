@@ -82,7 +82,12 @@
     "QC-DATA-002": "The reverse index is built from the ARDs alone: a display whose current ARD names a dataset in its provenance envelope appears under that dataset with the iteration, row count, prepared hash and ARD hash the envelope recorded; a dataset no ARD names has an empty entry; a dataset an ARD names that the registry does not know still gets one.",
     "QC-DATA-003": "The Data pane is one page with the package record, one section per dataset (facts, derivation notes, the read-by table linking each display in the form the app absorbs, the upstream path linking the source repository at the pinned commit, a derived dataset linking what it was derived from) and the lanes section naming both packagings and listing only the variables the agreement record says differ; each dataset also has a standalone page with the same facts.",
     "QC-DATA-004": "Given the data index, a display's header links each dataset it declares to that dataset's page, carrying as its title the row count and hash THIS iteration's ARD recorded and a short hash beside the link; a dataset the header names but the ARD does not is still linked and says so; without the index the labels print as before.",
-    "QC-DATA-005": "Data is a view of the study after Values and a collection in the explorer with one item per dataset (its id as the number, planned when not vendored) plus the lanes; a dataset permalink (`data/<id>.html`) is absorbed into the Data view with that dataset in focus, the lanes and the index likewise, at any authored depth."
+    "QC-DATA-005": "Data is a view of the study after Values and a collection in the explorer with one item per dataset (its id as the number, planned when not vendored) plus the lanes; a dataset permalink (`data/<id>.html`) is absorbed into the Data view with that dataset in focus, the lanes and the index likewise, at any authored depth.",
+    "QC-META-001": "The study page renders `library/study.yaml` as declared: id, title, phase, cut-off and source, the arms in print order, the columns that carry an arm label with the assignment each means, and every analysis set with its label, flag and subjects per arm totalled — linking to the Data section for the source; a repository without a study model renders the empty state and reports it in the build warnings.",
+    "QC-META-002": "The specifications page lists every display with its analysis and display files, its current iteration's spec, display and ARD hashes, and every iteration with the actor, change request and hashes its manifest recorded (either manifest shape); custom code shared through `custom_from` is stated from the borrowing side and the owning side; value declarations are read from `library/values/values.yaml` with their kind and declaration, each linking to the store.",
+    "QC-META-003": "The approvals page lists every text block with its tier, version, approval state, approver, date and drafting model from its frontmatter, with counts of approved, draft and generated blocks held out of the report, each block linking to the Text view.",
+    "QC-META-004": "Environments are every distinct R, operating-system and package-version record across every iteration of every display, each listing the iterations built in it; document models are the template objects on disk with sections, slots and the documents assembled from each, an empty library saying so; the requirements page lists every matrix under `quality/requirements/` with its row count, its source link and a route to its evidence page.",
+    "QC-META-005": "Metadata is a view of the study after Data and a collection in the explorer with one item per page (the study id, the counts as numbers); the pane carries every section by id; a page permalink (`metadata/<page>.html`) is absorbed into the view with that section in focus and a fragment on it selects the deeper anchor; the Templates view keeps its own tab and permalink as the shortcut to the document models."
   },
   "rows": [
     {
@@ -812,6 +817,51 @@
       "source": "open.csr#76",
       "evidence": "js-unit",
       "link": "site-data.test.js, site-demo.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-META-001",
+      "area": "Metadata",
+      "text": "The study page renders `library/study.yaml` as declared: id, title, phase, cut-off and source, the arms in print order, the columns that carry an arm label with the assignment each means, and every analysis set with its label, flag and subjects per arm totalled — linking to the Data section for the source; a repository without a study model renders the empty state and reports it in the build warnings.",
+      "source": "open.csr#77",
+      "evidence": "js-unit",
+      "link": "site-metadata.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-META-002",
+      "area": "Metadata",
+      "text": "The specifications page lists every display with its analysis and display files, its current iteration's spec, display and ARD hashes, and every iteration with the actor, change request and hashes its manifest recorded (either manifest shape); custom code shared through `custom_from` is stated from the borrowing side and the owning side; value declarations are read from `library/values/values.yaml` with their kind and declaration, each linking to the store.",
+      "source": "open.csr#77",
+      "evidence": "js-unit",
+      "link": "site-metadata.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-META-003",
+      "area": "Metadata",
+      "text": "The approvals page lists every text block with its tier, version, approval state, approver, date and drafting model from its frontmatter, with counts of approved, draft and generated blocks held out of the report, each block linking to the Text view.",
+      "source": "open.csr#77",
+      "evidence": "js-unit",
+      "link": "site-metadata.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-META-004",
+      "area": "Metadata",
+      "text": "Environments are every distinct R, operating-system and package-version record across every iteration of every display, each listing the iterations built in it; document models are the template objects on disk with sections, slots and the documents assembled from each, an empty library saying so; the requirements page lists every matrix under `quality/requirements/` with its row count, its source link and a route to its evidence page.",
+      "source": "open.csr#77",
+      "evidence": "js-unit",
+      "link": "site-metadata.test.js",
+      "status": "draft"
+    },
+    {
+      "id": "QC-META-005",
+      "area": "Metadata",
+      "text": "Metadata is a view of the study after Data and a collection in the explorer with one item per page (the study id, the counts as numbers); the pane carries every section by id; a page permalink (`metadata/<page>.html`) is absorbed into the view with that section in focus and a fragment on it selects the deeper anchor; the Templates view keeps its own tab and permalink as the shortcut to the document models.",
+      "source": "open.csr#77",
+      "evidence": "js-unit",
+      "link": "site-metadata.test.js, site-demo.test.js",
       "status": "draft"
     }
   ]

@@ -1,6 +1,6 @@
 {
   "module": "quality",
-  "generated": "2026-09-02T20:56:54.640Z",
+  "generated": "2026-09-02T21:05:09.974Z",
   "records": [
     {
       "requirementIds": [
@@ -408,6 +408,54 @@
       "file": "tests/unit/site-demo.test.js",
       "issueRefs": [
         36
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-META-003"
+      ],
+      "title": "approvals, environments, models and requirements QC-META-003: every text block is listed with its tier, version, approval state, approver, date and drafting model (#77)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-metadata.test.js",
+      "issueRefs": [
+        77
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-META-004"
+      ],
+      "title": "approvals, environments, models and requirements QC-META-004: document models are the template objects on disk, with the documents assembled from each, and an empty library says so (#77)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-metadata.test.js",
+      "issueRefs": [
+        77
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-META-004"
+      ],
+      "title": "approvals, environments, models and requirements QC-META-004: environments are deduplicated across every iteration, each listing the iterations built in it (#77)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-metadata.test.js",
+      "issueRefs": [
+        77
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-META-004"
+      ],
+      "title": "approvals, environments, models and requirements QC-META-004: the requirements page lists every matrix with its row count and a route to its evidence (#77)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-metadata.test.js",
+      "issueRefs": [
+        77
       ]
     },
     {
@@ -1372,6 +1420,42 @@
     },
     {
       "requirementIds": [
+        "QC-META-002"
+      ],
+      "title": "specifications and their history QC-META-002: every display is listed with its two specification files and every iteration with the actor, request and hashes its manifest recorded (#77)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-metadata.test.js",
+      "issueRefs": [
+        77
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-META-002"
+      ],
+      "title": "specifications and their history QC-META-002: shared custom code is stated from the borrowing side and the owning side (#77)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-metadata.test.js",
+      "issueRefs": [
+        77
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-META-002"
+      ],
+      "title": "specifications and their history QC-META-002: value declarations are read from the source file and link to the store (#77)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-metadata.test.js",
+      "issueRefs": [
+        77
+      ]
+    },
+    {
+      "requirementIds": [
         "STD-MODEL-001"
       ],
       "title": "Study model STD-MODEL-001: library/study.yaml loads with three arms in print order and every analysis set counted per arm (#59)",
@@ -2164,6 +2248,30 @@
     },
     {
       "requirementIds": [
+        "QC-META-005"
+      ],
+      "title": "the pane, the explorer and the deep links QC-META-005: a metadata page permalink is absorbed into the Metadata view with that section in focus (#77)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-metadata.test.js",
+      "issueRefs": [
+        77
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-META-005"
+      ],
+      "title": "the pane, the explorer and the deep links QC-META-005: the pane carries every section by id, and Metadata is a view of the study after Data with one explorer item per page (#77)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-metadata.test.js",
+      "issueRefs": [
+        77
+      ]
+    },
+    {
+      "requirementIds": [
         "QC-SITE-009"
       ],
       "title": "the repository this site is built from QC-SITE-009: this repo's own library is plural and every object is assembled (#32)",
@@ -2280,6 +2388,30 @@
       "file": "tests/unit/site-render.test.js",
       "issueRefs": [
         1
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-META-001"
+      ],
+      "title": "the study model QC-META-001: a repository without a study model renders the empty state and says so in the warnings (#77)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-metadata.test.js",
+      "issueRefs": [
+        77
+      ]
+    },
+    {
+      "requirementIds": [
+        "QC-META-001"
+      ],
+      "title": "the study model QC-META-001: the study page states the arms in print order, the columns that carry an arm label, and every analysis set with its flag and subjects per arm (#77)",
+      "suite": "js-unit",
+      "passed": true,
+      "file": "tests/unit/site-metadata.test.js",
+      "issueRefs": [
+        77
       ]
     },
     {
