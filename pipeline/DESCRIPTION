@@ -1,6 +1,6 @@
 Package: opencsr
 Title: Analysis Results Data and Display Engine for open.csr
-Version: 0.3.0
+Version: 0.4.0
 Authors@R:
     person("open.csr", "contributors", role = c("aut", "cre"),
            email = "noreply@example.org")

@@ -5,7 +5,22 @@ work accumulates under a vX.Y.Z (Upcoming) heading that loses the suffix when
 the release is cut; the GitHub release publishes from the section verbatim.
 -->
 
-# open.csr v0.4.0 (Upcoming)
+# open.csr v0.4.0
+
+The release that makes the report describe one study. v0.3.0 carried twenty-six
+displays over two packagings of the CDISC pilot that disagreed about who was on which
+arm — section 10 of the same document said 86, 96 and 72 subjects were on the three
+arms while section 14 said 86, 84 and 84. This release reads the study's own package
+everywhere, declares the study once in a model the build holds every display to, and
+fails the document when two displays disagree about it.
+
+It also carries the reference report further into the library: demographics,
+adverse-event incidence, serious-event incidence and subjects by site in the report's
+own shape, the subject disposition flow, and three of the report's in-text tables drawn
+from the section 14 results rather than declared and left empty — thirty displays, up
+from twenty-six, 1,970 published cells agreeing with the 2006 report three ways and
+the transcription of it re-derived from the document at its pinned hash. The six
+laboratory families and Table 12-3 are the next release, by the plan that scoped this one.
 
 - **The report describes one study.** Until now the six displays the project started with read the pharmaverse re-derivation of CDISCPILOT01 and grouped by its actual-treatment column, which assigns twelve subjects to a different arm than the study's own package does: section 10 said 86, 96 and 72 subjects were on the three arms while section 14 said 86, 84 and 84. Every display now reads the pilot's own ADaM package, vendored from `phuse-org/phuse-scripts` (design decision D12, revised). The re-derivation remains readable through `prepare_data(sources = "pharmaverseadam")` and is measured against the package by `qc/source-agreement.R`; nothing the report places reads it. ([#60](https://github.com/jwildfire/open.csr/issues/60), [D0032](https://jwildfire.github.io/obot.roadmap/reports/decisions/2026-09-02-open-csr-replication-plan/))
 - **A study model, declared once.** `library/study.yaml` holds the arms in print order, the columns that carry an arm label, the analysis sets with the flag defining each and the subjects each holds per arm, the cut-off and the data source. The pipeline's treatment vocabulary and analysis-set registry read it instead of carrying the study in code, and `test-study-model.R` re-measures every count in it against the data on every run. ([#59](https://github.com/jwildfire/open.csr/issues/59))
@@ -21,7 +36,7 @@ the release is cut; the GitHub release publishes from the section verbatim.
 - The study's SDTM DM domain is vendored alongside: all 306 screened subjects, the 52 screen failures included, which the ADaM package does not carry and the disposition figure needs.
 - **Figure 10-1, the subject disposition flow, is drawn.** 306 screened, of whom 52 screen failures and 254 randomised; of those, 118 completed Week 24 and 110 the study — counted from DM and ADSL, printed in the display's own table, and drawn as a self-contained flow beside the disposition table in Section 10.1. The renderer gained a second kind of figure for it.
 - **Subjects by site, and the report's in-text tables.** Table 14-1.03 — intent-to-treat, efficacy and Week 24 completer counts per site and arm, small sites pooled under 900 — joins the library and agrees with the report on all 216 cells. Three of the report's in-text tables are now drawn from the Section 14 displays' own results rather than declared and left empty: Table 11-1 (demographics as mean and range and percentages), Table 12-1 (terms at 5% or more, flat, title case, an asterisk where the placebo comparison has p < 0.15) and Table 12-4 (weight as n and mean per arm). Each is a variant of the display it summarises, so it cannot disagree with it. ([#63](https://github.com/jwildfire/open.csr/issues/63))
-- The renderer gained what those needed and nothing more: a column may name its own group, analysis and pattern; a variant may redraw a display with its own rows, columns and format over the same ARD; a hierarchical row may print its inner level flat and in title case. Table 12-3 (vital signs) draws on two displays' results and Figure 10-1 needs the screened count the ADaM package does not carry; both are still owed.
+- The renderer gained what those needed and nothing more: a column may name its own group, analysis and pattern; a variant may redraw a display with its own rows, columns and format over the same ARD; a hierarchical row may print its inner level flat and in title case. Table 12-3 (vital signs) draws on two displays' results and is still owed; Figure 10-1 is drawn below from the vendored DM.
 - **Kenward-Roger was tried, and it is not the whole explanation.** The repeated-measures display footnotes five cells that differ from the reference at the last digit, attributed to the Kenward-Roger corrections the pipeline does not implement. `qc/mmrm-kenward-roger.R` refits the same model with `{mmrm}` using them: it reproduces SAS's REML criterion to every printed digit and moves exactly one of the five cells — the lower confidence limit of high dose against placebo now prints -1.9 as the report does — while the three p-values stay a thousandth below the report's and the high-dose standard error still prints 0.55 against 0.56. The pipeline keeps the model-based fit; the display's footnote now says what was tried and what remains. ([#66](https://github.com/jwildfire/open.csr/issues/66))
 - The four vital-sign and medication displays moved lanes with everything else; their three-route agreement with the 2006 report still holds on the pilot's own ADVS, whose blank timepoints and absent derived-record column the preparation layer now handles.
 
